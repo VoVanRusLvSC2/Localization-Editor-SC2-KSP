@@ -1,5 +1,8 @@
 # Localization-Editor-SC2-KSP
-A localization editor for StarCraft II maps and mods. Opens GameStrings.txt files, translates them into selected languages, and automatically saves them into the correct SC2Data directory structure.
+
+A localization editor for StarCraft II maps and mods.  
+Opens `GameStrings.txt` files, translates them into selected languages, and automatically saves them into the correct `.SC2Data/LocalizedData` directory structure.
+
 ---
 
 ## Requirements
@@ -28,13 +31,15 @@ mvn -v
 
 Required only if you want to use LibreTranslate.
 
-Install Python 3.9+ from:  
+Install **Python 3.9+** from:  
 https://www.python.org/downloads/
+
+⚠ On Windows, make sure to check **"Add Python to PATH"** during installation.
 
 Install LibreTranslate:
 
 ```bash
-pip install libretranslate
+python -m pip install libretranslate
 ```
 
 Start the LibreTranslate server:
@@ -48,6 +53,8 @@ The application expects LibreTranslate running at:
 ```
 http://127.0.0.1:5000
 ```
+
+If LibreTranslate is not running, auto-translation will not work.
 
 ---
 
