@@ -18,12 +18,12 @@ public interface LibreTranslateApi {
     @POST("translate")
     Call<ResponseBody> translateRaw(@Body TranslateRequest request);
 
-    // batch: q = [ "a", "b", ... ] -> [ "перевод a", "перевод b", ... ]
+    // batch: q = [ "a", "b", ... ] -> [ "translated a", "translated b", ... ]
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("translate")
     Call<List<String>> translateBatch(@Body Map<String, Object> body);
 
-    // универсальный «на всякий»
+    // generic fallback method
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("translate")
     Call<com.google.gson.JsonElement> translateAny(@Body Map<String, Object> body);

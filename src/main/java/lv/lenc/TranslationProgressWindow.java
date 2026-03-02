@@ -40,7 +40,7 @@ public final class TranslationProgressWindow {
         percent = new Label("0%");
         bar = new ProgressBar(0);
 
-// контент
+            // content
         VBox content = new VBox(8, title, line1, line2, percent, bar);
         content.setAlignment(Pos.CENTER);
 
@@ -60,14 +60,14 @@ public final class TranslationProgressWindow {
         );
         stage.setScene(scene);
 
-// classes на контролы
+        // CSS classes for controls
         title.getStyleClass().add("nova-title");
         line1.getStyleClass().add("nova-line1");
         line2.getStyleClass().add("nova-line2");
         percent.getStyleClass().add("nova-percent");
         bar.getStyleClass().add("translation-progress-bar");
 
-// ширины как в “панели”
+    // widths match the main panel
         frame.setMinWidth(520);
         frame.setPrefWidth(520);
 
@@ -91,7 +91,7 @@ public final class TranslationProgressWindow {
             if (!stage.isShowing()) stage.show();
             stage.sizeToScene();
 
-            // ✅ сверху по центру относительно главного окна
+            // top-centered relative to the main window
             Window owner = stage.getOwner();
             if (owner != null) {
                 double x = owner.getX() + (owner.getWidth() - stage.getWidth()) / 2.0;
@@ -114,7 +114,7 @@ public final class TranslationProgressWindow {
         });
     }
 
-    // принимает строку "строка1||строка2"
+    // accepts string in format "line1||line2"
     public void updateFromProgress(double value01, String packedText) {
         String l1 = "";
         String l2 = "";
@@ -126,7 +126,7 @@ public final class TranslationProgressWindow {
         update(value01, l1, l2);
     }
 
-    // лучше hide, а не close — можно показывать много раз
+    // use hide instead of close — allows reopening multiple times
     public void close() {
         if (Platform.isFxApplicationThread()) {
             stage.hide();

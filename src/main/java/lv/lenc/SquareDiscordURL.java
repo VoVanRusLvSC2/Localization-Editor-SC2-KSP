@@ -50,10 +50,10 @@ public class SquareDiscordURL extends StackPane {
         icon.setPrefSize(iconSize, iconSize);
         icon.setMaxSize(iconSize, iconSize);
 
-// IMPORTANT: make CSS background scale with the region
-// This sets only the background-size, images from CSS (normal/hover/pressed) remain.
+        // IMPORTANT: make CSS background scale with the region
+        // This sets only the background-size, images from CSS (normal/hover/pressed) remain.
         icon.setStyle("-fx-background-size: " + iconSize + "px " + iconSize + "px;");
-// === SIZE: design = 80x80 at 1920x1080 ===
+        // === SIZE: design = 80x80 at 1920x1080 ===
 
         setPrefSize(size, size);
         setMinSize(size, size);
@@ -63,14 +63,14 @@ public class SquareDiscordURL extends StackPane {
         wipe.setMouseTransparent(true);
         wipe.setOpacity(0);
 
-// --- WIPE SIZE (design: 70px height at 80px button) ---
+        // --- WIPE SIZE (design: 70px height at 80px button) ---
         double wipeH = size * (75.0 / 80.0);     // 0.875
         wipe.setMinHeight(wipeH);
         wipe.setPrefHeight(wipeH);
         wipe.setMaxHeight(wipeH);
-// масштабируем фон самой кнопки под рассчитанный size
+    //
         setStyle("-fx-background-size: " + size + "px " + size + "px;");
-// --- WIPE BACKGROUND SIZE (design: 104px bg-height at 80px button) ---
+    // --- WIPE BACKGROUND SIZE (design: 104px bg-height at 80px button) ---
         double wipeBgH = size * (112.0 / 80.0);  // 1.30
         wipe.setStyle("-fx-background-size: 100% " + wipeBgH + "px;");
         wipeHolder.setMouseTransparent(true);

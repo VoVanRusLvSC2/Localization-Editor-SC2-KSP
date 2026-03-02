@@ -10,7 +10,7 @@ public class MyButton extends Button implements Disabable {
     public void disable(Boolean bol)
     {
     if ( bol == true){
-        this.disableProperty().set(true); // Устанавливаем свойство disabled в true
+        this.disableProperty().set(true); // Set disabled property to true
     }
     else { this.disableProperty().set(false);}
     }

@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public final class LocalizationProjectContext {
 
-    private File openedFile;   // выбранный пользователем файл (GameStrings.txt)
-    private File projectRoot;  // папка где лежат xxXX.SC2Data рядом
+    private File openedFile;   // file selected by the user (GameStrings.txt)
+    private File projectRoot;  // folder containing xxXX.SC2Data directories
 
     public boolean isReady() {
         return openedFile != null && projectRoot != null;
@@ -34,7 +34,7 @@ public final class LocalizationProjectContext {
         openedFile = fileSelected;
         projectRoot = findProjectRootFromFile(fileSelected).orElse(null);
 
-        // Файл загружен — значит open успешен
+        // File loaded successfully — open succeeded
         return true;
     }
 
@@ -54,7 +54,7 @@ public final class LocalizationProjectContext {
     public boolean saveAllTargets(CustomTableView tableView) {
         if (!isReady()) return false;
 
-        // взять языки прямо из колонок таблицы (кроме N и key)
+        // get languages directly from table columns (excluding N and key)
         List<String> langs = tableView.getColumns().stream()
                 .map(c -> c.getText())
                 .filter(t -> t != null && t.matches("[a-z]{2}[A-Z]{2}")) // ruRU, enUS, zhCN...
@@ -66,10 +66,10 @@ public final class LocalizationProjectContext {
         }
         return ok;
     }
-    // ===== helpers =====
+    // ===== Helper methods =====
     private Optional<File> findProjectRootFromFile(File file) {
-        // ищем вверх по папкам: .../<lang>.SC2Data/LocalizedData/<file>
-        // projectRoot = папка, где лежит <lang>.SC2Data
+        // search upward: .../<lang>.SC2Data/LocalizedData/<file>
+        // projectRoot = folder containing <lang>.SC2Data
         File p = file.getParentFile(); // LocalizedData
         while (p != null) {
             File name = p.getName() != null ? p : null;

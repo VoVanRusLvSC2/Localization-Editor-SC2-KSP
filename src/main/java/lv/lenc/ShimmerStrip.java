@@ -26,7 +26,7 @@ public class ShimmerStrip extends StackPane {
             double offsetY
     ) {
 
-        // Маска с wrap по всей высоте shimmer
+        // Mask tiled across full shimmer height
         Image maskImg = new Image(alphaGridPath);
         final int tileW = (int) Math.round(maskImg.getWidth());
         final int tileH = (int) Math.round(maskImg.getHeight());
@@ -42,15 +42,15 @@ public class ShimmerStrip extends StackPane {
             for (int y = 0; y < ih; y++) {                    // <-- ih
                 final int yy = y % tileH;                     // wrap Y
                 for (int x = 0; x < iw; x++) {                // <-- iw
-                    int xx = (x + uvOffsetX) % tileW;         // wrap X со сдвигом
-                    if (xx < 0) xx += tileW;                  // нормализуем отрицательный модуль
+                    int xx = (x + uvOffsetX) % tileW; // wrap X with offset
+                    if (xx < 0) xx += tileW; // normalize negative modulo
                     pw.setColor(x, y, pr.getColor(xx, yy));
                 }
             }
         } else {
             final int uvOffsetY = +(tileH / 2);               // ~= +0.5*tileH
             for (int y = 0; y < ih; y++) {                    // <-- ih
-                int yy = (y + uvOffsetY) % tileH;             // wrap Y со сдвигом
+                int yy = (y + uvOffsetY) % tileH; // wrap Y with offset
                 if (yy < 0) yy += tileH;
                 for (int x = 0; x < iw; x++) {                // <-- iw
                     int xx = x % tileW;                       // wrap X

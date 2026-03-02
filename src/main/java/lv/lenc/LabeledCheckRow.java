@@ -15,10 +15,10 @@ public class LabeledCheckRow extends HBox {
     private final CheckBox checkBox;
 
     public LabeledCheckRow(String text, boolean initialChecked) {
-        super(UiScaleHelper.scale(8)); // расстояние между label и галочкой
+        super(UiScaleHelper.scale(8)); // spacing between label and checkbox
 
         this.label = new GlowingLabel(text);
-        this.label.setFont(Font.font("Arial", FontWeight.BOLD, UiScaleHelper.scaleX(16))); // масштабируемый шрифт
+        this.label.setFont(Font.font("Arial", FontWeight.BOLD, UiScaleHelper.scaleX(16))); // 
 
         this.checkBox = new CheckBox();
         this.checkBox.setSelected(initialChecked);
@@ -31,7 +31,7 @@ public class LabeledCheckRow extends HBox {
         setSpacing(UiScaleHelper.scaleX(8));
         setPadding(new Insets(0, UiScaleHelper.scaleX(12), 0, UiScaleHelper.scaleX(12)));
         setMaxWidth(Double.MAX_VALUE);
-        double baseFont = 16; // база под FullHD
+        double baseFont = 16; // FullHD base font size
         double scaledFont = UiScaleHelper.scaleY(baseFont);
 
         checkBox.setStyle("-fx-font-size: " + scaledFont + "px;");

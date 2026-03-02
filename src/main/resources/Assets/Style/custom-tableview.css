@@ -1,13 +1,15 @@
-/* ========== ОСНОВНОЕ ========== */
+/* ========== MAIN ========== */
+
+
 .table-view {
     -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-selection-bar: #1bff9e;
     -fx-selection-bar-text: white;
 }
-/* Фон заголовков таблицы */
+/* Table header background */
 .table-view .column-header-background {
-    -fx-background-color: rgba(0,0,0,0.1); /* более светлый и яркий */
+    -fx-background-color: rgba(0,0,0,0.1);
 }
 .table-view .placeholder {
     -fx-font-size: 2em;
@@ -16,7 +18,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #80d2a2;
     -fx-background-color: transparent;
-    -fx-padding: 0.4em 0.6em; /* вместо 4 6 4 6px */
+    -fx-padding: 0.35em 0.5em;
     -fx-alignment: center;
 }
 
@@ -30,8 +32,7 @@
     -fx-background-color: transparent;
 }
 
-
-/* ========== КОЛОНКИ N и key ========== */
+/* ========== N and key COLUMNS ========== */
 
 .table-view .table-cell.col-n,
 .table-view .table-cell.col-key {
@@ -47,7 +48,8 @@
     -fx-text-fill: WHITE;
 }
 .table-view .table-cell.col-key {
-    -fx-text-fill: #e7b98a; /* белый с лёгким оранжево-коричневым оттенком */
+    -fx-text-fill: #e7b98a;
+    -fx-font-size: 1.1em;
 }
 /*.table-view .table-cell.col-key .text {
     -fx-fill: #fff5e6;
@@ -56,11 +58,11 @@
     -fx-effect: dropshadow(gaussian, #cc5c28, 8, 0.15, 0, 0);
 } */
 .table-view .table-cell.col-n .text {
-    -fx-font-size: 1.3em; /* ≈ 16px если base 13–14px */
+    -fx-font-size: 1.6em; /* ≈ 16px если base 13–14px */
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, #cc5c28, 10, 0.2, 0, 0);
 }
-/* ========== ЗАГОЛОВКИ КОЛОНОК ========== */
+/* ========== COLUMN HEADERS ========== */
 .table-view .column-header {
     -fx-background-color: transparent;
     -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_normal.png");
@@ -87,8 +89,8 @@
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* ========== ПОЛОСА ПРОКРУТКИ ========== */
-/* Общие стили для вертикального и горизонтального ScrollBar */
+/* ========== SCROLLBAR ========== */
+/* Common styles for vertical and horizontal ScrollBar */
 .scroll-bar:vertical,
 .scroll-bar:horizontal {
     -fx-background-color: transparent;
@@ -101,7 +103,7 @@
     -fx-border-image-repeat: stretch;
 }
 
-/* Специфическая ширина/высота */
+/* Specific width/height */
 .scroll-bar:vertical {
     -fx-pref-width: 1.7em; /* ≈ 21px */
 }
@@ -109,7 +111,7 @@
     -fx-pref-height: 1.7em; /* ≈ 21px */
 }
 
-/* Thumb — ползунок (обычное состояние) */
+/* Thumb — slider (normal state) */
 .scroll-bar .thumb {
     -fx-background-color: rgba(98, 202, 162, 1);
     -fx-background-radius: 0px;
@@ -121,7 +123,7 @@
                 dropshadow(gaussian, rgba(7, 30, 20, 0.6), 18, 0.2, 0, 0);
 }
 
-/* Thumb при наведении */
+/* Thumb on hover */
 .scroll-bar .thumb:hover {
     -fx-background-color: rgba(156, 255, 210, 1);
     -fx-border-color: rgba(173, 255, 221, 1);
@@ -129,12 +131,12 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 168, 1), 9, 0.4, 0, 0);
 }
 
-/* Thumb при нажатии */
+/* Thumb when pressed */
 .scroll-bar .thumb:pressed {
-    -fx-background-color: rgba(156, 255, 210, 1); /* можно усилить эффект, если хочешь */
+    -fx-background-color: rgba(156, 255, 210, 1);
 }
 
-/* Убираем стрелки ↑ ↓ ← → */
+/* Remove arrows ↑ ↓ ← → */
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
     -fx-padding: 0;
@@ -147,7 +149,7 @@
 }
 
 
-/* Скрываем стрелки */
+/* Hide arrows */
 .increment-button,
 .decrement-button {
     -fx-padding: 0;
@@ -170,12 +172,12 @@
     -fx-border-image-insets: 0;
     -fx-padding: 0.1em 0.5em;
     -fx-min-height: 2em; /* ~22px */
-    -fx-font-size: 1em;
+    -fx-font-size: 1.05em;
     -fx-highlight-fill: #3b1a0f;
     -fx-highlight-text-fill: white;
 }
 .custom-table-cell {
-    -fx-padding: 0.25em 0.4em;
+   /* -fx-padding: 0.25em 0.4em;*/
     -fx-min-height: 1.75em;   /* ~34px */
     -fx-pref-height: 1.95em;  /* ~38px */
     -fx-border-image-width: 0.3em; /* 4px */
@@ -187,8 +189,9 @@
     -fx-blend-mode: lighten;
     -fx-text-fill: #80d2a2;
     -fx-font-weight: bold;
+    -fx-font-size: 1.05em;
 }
-/* ===== FIX: белый "угол" у TableView справа сверху ===== */
+/* ===== FIX: white "corner" at top-right of TableView ===== */
 .table-view .corner,
 .table-view .filler {
     -fx-background-color: transparent;
@@ -197,7 +200,7 @@
     -fx-border-color: transparent;
 }
 
-/* ===== FIX: убрать белую заливку у трека ScrollBar (иногда вылазит белым) ===== */
+/* ===== FIX: remove white fill from ScrollBar track (sometimes appears white) ===== */
 .scroll-bar .track,
 .scroll-bar .track-background {
     -fx-background-color: transparent;
@@ -206,11 +209,57 @@
     -fx-border-color: transparent;
 }
 
-/* Если у тебя появляется "кусок" сверху у вертикального скролла */
+/* If a small top fragment appears on the vertical scrollbar */
 .scroll-bar:vertical .increment-button,
 .scroll-bar:vertical .decrement-button,
 .scroll-bar:horizontal .increment-button,
 .scroll-bar:horizontal .decrement-button {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+/* Remove default cell borders (horizontal + vertical grid lines) */
+.table-view {
+    -fx-table-cell-border-color: transparent;
+}
+
+/* Remove cell borders completely */
+.table-view .table-cell {
+    -fx-border-color: transparent;
+}
+
+/* Remove row borders */
+.table-row-cell {
+    -fx-border-color: transparent;
+}
+/* Keep cell layout stable across ALL states (no size jump on hover/selected/editing) */
+.table-view .custom-table-cell,
+.table-view .custom-table-cell:hover,
+.table-view .custom-table-cell:selected,
+.table-view .custom-table-cell:focused,
+.table-view .custom-table-cell:editing {
+    /* IMPORTANT: same padding/insets/border-image metrics in all states */
+    -fx-padding: 0.25em 0.4em;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+    -fx-border-image-slice: 12 fill;
+    -fx-border-image-width: 0.3em;
+    -fx-border-image-insets: 0;
+    -fx-border-image-repeat: stretch;
+}
+/* Normal / hover / selected textures without changing layout */
+.table-view .custom-table-cell {
+    -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_normal.png");
+}
+
+.table-view .custom-table-cell:selected,
+.table-view .custom-table-cell:editing {
+    -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_selected.png");
+}
+.table-view .custom-table-cell,
+.table-view .custom-table-cell:hover,
+.table-view .custom-table-cell:selected,
+.table-view .custom-table-cell:focused,
+.table-view .custom-table-cell:editing {
+    -fx-font-weight: bold;
 }

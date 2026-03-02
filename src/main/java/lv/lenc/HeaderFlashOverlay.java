@@ -11,10 +11,10 @@ public class HeaderFlashOverlay {
     private final Pane overlayPane = new Pane();
 
     public HeaderFlashOverlay(CustomTableView tableView, Node root) {
-        overlayPane.setPickOnBounds(false); // не блокирует клики мыши
+        overlayPane.setPickOnBounds(false); // does not block mouse clicks
         overlayPane.getStyleClass().add("header-flash-overlay");
 
-        // динамическая величина (её в CSS без костылей не посчитать)
+        // dynamic value (cannot be calculated in CSS directly)
         double borderWidth = UiScaleHelper.scaleY(6);
 
         Platform.runLater(() -> {
@@ -26,12 +26,12 @@ public class HeaderFlashOverlay {
                 flash.setOpacity(0.0);
                 flash.setMouseTransparent(true);
 
-                // сюда только то, что реально динамическое:
+                //only dynamic properties here:
                 flash.setStyle("-fx-border-image-width: " + borderWidth + ";");
 
                 overlayPane.getChildren().add(flash);
 
-                // следим за размерами и позицией заголовка
+                // track header size and position
                 region.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
                     var scenePos = region.localToScene(0, 0);
                     var rootLocal = root.sceneToLocal(scenePos);
@@ -62,7 +62,7 @@ public class HeaderFlashOverlay {
 
                     Region borderFade = new Region();
                     borderFade.getStyleClass().add("header-flash-border");
-                    borderFade.setStyle("-fx-border-image-width: " + borderWidth + ";"); // динамика
+                    borderFade.setStyle("-fx-border-image-width: " + borderWidth + ";"); // 
                     borderFade.setLayoutX(rootLocal.getX());
                     borderFade.setLayoutY(rootLocal.getY());
                     borderFade.setPrefWidth(w);

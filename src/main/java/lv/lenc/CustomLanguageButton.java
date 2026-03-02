@@ -15,15 +15,15 @@ public class CustomLanguageButton extends Button implements Disabable {
         setPrefSize(width, height);
         setMaxSize(width, height);
 
-        // CSS-класс
+        // CSS class
         getStyleClass().add("lang-btn");
-        double baseFont = UiScaleHelper.scaleY(17); // или то, что в Main как база
+        double baseFont = UiScaleHelper.scaleY(17); // 
         setStyle("-fx-font-size: " + baseFont + "px;");
     }
 
     @Override
     public void disable(Boolean bol) {
         setDisable(bol != null && bol);
-        setOpacity(1); // как было
+        setOpacity(1); // 
     }
 }

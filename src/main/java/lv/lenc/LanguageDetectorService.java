@@ -46,6 +46,5 @@ public class LanguageDetectorService {
         detector.append(text);
         String lang = detector.detect();
         return supportedLanguages.getOrDefault(lang, "unknown");
-        // !!! DetectorFactory.clear(); УБРАТЬ
     }
 }

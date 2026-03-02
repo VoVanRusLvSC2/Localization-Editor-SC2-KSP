@@ -17,18 +17,17 @@ import javafx.scene.text.Text;
             this.texturePath = texturePath;
             this.realWidth  = UiScaleHelper.SCREEN_WIDTH  * (widthFullHD  / 1920.0);
             this.realHeight = UiScaleHelper.SCREEN_HEIGHT * (heightFullHD / 1080.0);
-            // Делаем размеры адаптивными от FullHD
+            // Make sizes adaptive relative to FullHD
             setMinSize(realWidth, realHeight);
             setPrefSize(realWidth, realHeight);
             setMaxSize(realWidth, realHeight);
 
 
-            // Твои стили и остальной код
             applyBaseStyles();
             applyTrackAndThumbStyles();
             applyListItemStyles();
             this.disabledProperty().addListener((obs, wasDisabled, isNowDisabled) -> updateStyle());
-            updateStyle(); // Первоначальная установка стиля
+            updateStyle();
         }
 
 
@@ -54,9 +53,9 @@ import javafx.scene.text.Text;
             String textColor = isDisabled ? "gray" : "linear-gradient(from 0% 0% to 100% 100%, white, limegreen)";
             double opacity = 1.0;
 
-            // тут размеры стрелки и паддинг делаем относительно ширины/высоты
-            double arrowSize   = realHeight * (16.0 / 40.0);   // если дизайн ComboBox высотой 40px
-            double arrowRight  = realWidth  * (20.0 / 220.0);  // если дизайн ширина 220px
+            // Arrow size and padding calculated relative to width/height
+            double arrowSize   = realHeight * (16.0 / 40.0);
+            double arrowRight  = realWidth  * (20.0 / 220.0);
             double leftPadding = realWidth  * (15.0 / 220.0);
             double paddingTop  = realHeight * (-4.0 / 40.0);
 
@@ -191,20 +190,20 @@ import javafx.scene.text.Text;
             this.hide();
         }
 
-        // Применяем стили для треков и ползунков
+        // 
         private void applyTrackAndThumbStyles() {
             String arrowNormal = "ui_glue_dropdownarrow_normal_terran.png";
             double borderRadius = UiScaleHelper.scaleY(5);
             double borderRadiusHigh = UiScaleHelper.scaleY(25);
             double borderWidth = UiScaleHelper.scaleY(5);
             double borderWidthBar = UiScaleHelper.scaleY(3);
-        /* .thumb — это сам ползунок, который вы можете перетаскивать.
-           .track — это основа (дорожка), по которой перемещается thumb. */
+        /* .thumb —
+           .track — cell for  thumb. */
             Platform.runLater(() -> {
-                // Настраиваем нижнюю стрелку (decrement-button) с рамкой
+        // Configure decrement button (bottom arrow) with border
                 Node decrementButton = this.lookup(".decrement-button");
                 if (decrementButton != null) {
-                    // Скрываем внутреннюю стрелку
+                // Hide internal arrow
                     Node decrementArrow = decrementButton.lookup(".decrement-arrow");
                     if (decrementArrow != null) {
                         String currentStyle = decrementArrow.getStyle();
@@ -214,28 +213,28 @@ import javafx.scene.text.Text;
                         );
                     }
 
-                    // Добавляем кастомную текстуру для нижней стрелки и рамку
+                    // Apply custom texture and border to decrement button
                     String currentStyle = decrementButton.getStyle();
 
                     decrementButton.setStyle(
                             currentStyle + "; " +
-                                    "-fx-background-color: transparent; " + // Прозрачный фон
-                                    "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // Кастомная текстура
-                                    "-fx-background-size: 16px 16px; " + // Размер текстуры
+                                    "-fx-background-color: transparent; " +
+                                    "-fx-background-image: url('" + texturePath + arrowNormal + "'); " +
+                                    "-fx-background-size: 16px 16px; " +
                                     "-fx-background-repeat: no-repeat; " +
-                                    "-fx-background-position: center;" + // Центрирование текстуры
-                                    "-fx-rotate: 180;" + // Поворот на 180 градусов
-                                    "-fx-border-color: limegreen; " + // Зеленая рамка
-                                    "-fx-border-width:" + borderWidth + "px;"  + // Толщина рамки
-                                    "-fx-border-radius:" + borderRadius + "px;" + // Скругленные углы
-                                    "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // Тень для контраста
+                                    "-fx-background-position: center;" +
+                                    "-fx-rotate: 180;" +
+                                    "-fx-border-color: limegreen; " +
+                                    "-fx-border-width:" + borderWidth + "px;"  +
+                                    "-fx-border-radius:" + borderRadius + "px;" +
+                                    "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);"
                     );
                 }
 
-                // Настраиваем верхнюю стрелку (increment-button) с рамкой
+                // Configure increment button (top arrow) with border
                 Node incrementButton = this.lookup(".increment-button");
                 if (incrementButton != null) {
-                    // Скрываем внутреннюю стрелку
+                    // 
                     Node incrementArrow = incrementButton.lookup(".increment-arrow");
                     if (incrementArrow != null) {
                         String currentStyle = incrementArrow.getStyle();
@@ -245,62 +244,62 @@ import javafx.scene.text.Text;
                         );
                     }
 
-                    // Добавляем кастомную текстуру для верхней стрелки и рамку
+                    // 
                     String currentStyle = incrementButton.getStyle();
                     incrementButton.setStyle(
                             currentStyle + "; " +
-                                    "-fx-background-color: transparent; " + // Прозрачный фон
-                                    "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // Кастомная текстура
-                                    "-fx-background-size: 16px 16px; " + // Размер текстуры
+                                    "-fx-background-color: transparent; " + // 
+                                    "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // 
+                                    "-fx-background-size: 16px 16px; " + // 
                                     "-fx-background-repeat: no-repeat; " +
-                                    "-fx-background-position: center;" + // Центрирование текстуры
-                                    "-fx-border-color: limegreen; " + // Зеленая рамка
-                                    "-fx-border-width:" + borderWidth + "px;"  + // Толщина рамки
-                                    "-fx-border-radius:" + borderRadius + "px;" + // Скругленные углы
-                                    "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // Тень для контраста
+                                    "-fx-background-position: center;" + // 
+                                    "-fx-border-color: limegreen; " + // 
+                                    "-fx-border-width:" + borderWidth + "px;"  + // 
+                                    "-fx-border-radius:" + borderRadius + "px;" + // 
+                                    "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // 
                     );
                 }
 
-                // Настройка дорожки
+                // Configure scrollbar track
                 Node track = this.lookup(".track");
                 if (track != null) {
                     String currentStyle = track.getStyle();
                     track.setStyle(
                             currentStyle + "; " +
                                     "-fx-background-color: transparent; " +
-                                    "-fx-border-color: limegreen; " + // Рамка вокруг дорожки
-                                    "-fx-border-width:" + borderWidth + "px;"  + // Толщина рамки
-                                    "-fx-border-radius:" + borderRadiusHigh + "px;" // Скругленные углы
+                                    "-fx-border-color: limegreen; " +
+                                    "-fx-border-width:" + borderWidth + "px;"  +
+                                    "-fx-border-radius:" + borderRadiusHigh + "px;"
                     );
                 }
 
-                // Настройка фона дорожки (track-background)
+                // Configure track background)
                 Node trackBackground = this.lookup(".track-background");
                 if (trackBackground != null) {
                     String currentStyle = trackBackground.getStyle();
                     trackBackground.setStyle(
                             currentStyle + "; " +
-                                    "-fx-background-color: #001000; " // Цвет фона
+                                    "-fx-background-color: #001000; "
                     );
                 }
 
-                // Настройка ползунка (thumb)
+                // Configure scrollbar thumb
                 Node thumb = this.lookup(".thumb");
                 if (thumb != null) {
                     String currentStyle = thumb.getStyle();
                     thumb.setStyle(
                             currentStyle + "; " +
                                     "-fx-background-color: limegreen; " +
-                                    "-fx-border-color: black; " + // Черная рамка вокруг ползунка
-                                    "-fx-border-width:" + borderWidthBar + "px;"  + // Толщина рамки
-                                    "-fx-border-radius:" + borderRadiusHigh + "px;" // Скругленные углы
+                                    "-fx-border-color: black; " +
+                                    "-fx-border-width:" + borderWidthBar + "px;"  +
+                                    "-fx-border-radius:" + borderRadiusHigh + "px;"
                     );
                 }
             });
 
         }
 
-        // Применяем стили для элементов списка
+        // Apply styles for list items
         private void applyListItemStyles() {
             String frameTexture = "ui_glue_dropdownmenuframe_terran.png";
             String frameSelectedTexture = "ui_glue_dropdownmenubutton_selected_terran.png";
@@ -314,7 +313,7 @@ import javafx.scene.text.Text;
                         setGraphic(null);
                         setStyle(""); // Reset style for empty cells
                     } else {
-                        // 🔥 Уменьшаем высоту ячейки на 40%
+                        // Reduce cell height by 40%
                         setText(item.toString()); // Set the text of the item
                         String currentStyle = getStyle(); // Retrieve the current style
                         setStyle(
@@ -329,7 +328,7 @@ import javafx.scene.text.Text;
                                         "-fx-alignment: center;"
                         );
 
-                        // Изменение стиля при наведении мыши
+                        // Hover style
                         setOnMouseEntered(e -> {
                             if (!isSelected()) {
                                 String hoverStyle = getStyle();
@@ -347,7 +346,7 @@ import javafx.scene.text.Text;
                             }
                         });
 
-                        // Восстановление стиля при выходе мыши
+                        // Restore style on mouse exit
                         setOnMouseExited(e -> {
                             if (!isSelected()) {
                                 String exitStyle = getStyle();

@@ -2,8 +2,8 @@ package lv.lenc;
 
 public class TranslateRequest {
     private String q;
-    private String source; // "en", "ru" или "auto"
-    private String target; // язык результата, напр. "ru"
+    private String source; // "en", "ru" or "auto"
+    private String target; // target language, e.g. "ru"
     private String format = "text";
     private String api_key = "";
 

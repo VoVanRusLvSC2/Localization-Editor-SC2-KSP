@@ -18,7 +18,7 @@ import javafx.scene.effect.ColorInput;
 import javafx.util.Duration;
 
 public class TitleLabelGlow extends StackPane {
-    private static final Color GLOW_COLOR = Color.rgb(0, 218, 205, 1.0); // бирюзовый
+    private static final Color GLOW_COLOR = Color.rgb(0, 218, 205, 1.0); // turquoise
     private final Label label;
     private final ImageView glowImage;
     private final String loc;
@@ -26,7 +26,7 @@ public class TitleLabelGlow extends StackPane {
     public TitleLabelGlow(String text, LocalizationManager localizationManager) {
         this.loc = localizationManager.getCurrentLanguage();
 
-        double fontSize = UiScaleHelper.scaleY(54); // ← адаптирован под экран
+        double fontSize = UiScaleHelper.scaleY(54); //
 
         label = new Label(text.toUpperCase());
         label.setFont(Font.font("Arial", FontWeight.BOLD, fontSize));

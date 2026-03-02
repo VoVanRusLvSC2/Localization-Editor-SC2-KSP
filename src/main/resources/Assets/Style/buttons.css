@@ -4,7 +4,7 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% 100%;
     -fx-font-family: "Arial Black";
-    -fx-padding: 4 10 4 10; /* если надо — потом масштабируешь кодом через setPadding */
+    -fx-padding: 4 10 4 10;
 }
 
 /* GREEN */
@@ -27,7 +27,7 @@
     -fx-background-image: url("../Textures/ui_battlenet_glues_greenbuttons_alternate_largeselected_ONE_UPSCALE_APS.png");
 }
 
-/* RED (аналогично) */
+/* RED */
 .long-button:red {
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, #ffe0e0, #aa5555);
     -fx-background-image: url("../Textures/ui_battlenet_glues_redbuttons_alternate_largeup_ONE_UPSCALE_APS.png");

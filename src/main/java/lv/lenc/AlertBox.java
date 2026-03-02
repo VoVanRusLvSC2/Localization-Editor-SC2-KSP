@@ -21,7 +21,7 @@ import java.net.URL;
 
 public class AlertBox {
 
-    public static boolean display(Window owner, Label titleLabel, Label descriptionLabel, LocalizationManager localization) {
+    public static boolean display(Window owner, Label descriptionLabel, LocalizationManager localization) {
         final boolean[] result = {false};
 
         // Your current resources folder (keep exact case)
@@ -41,7 +41,6 @@ public class AlertBox {
         window.setTitle(localization.get("label.ExitConfirmation"));
         window.setWidth(windowWidth);
         window.setHeight(windowHeight);
-        window.initStyle(StageStyle.TRANSPARENT);
 
         // Background
         Image backgroundImg = new Image(texturePath + "ui_battlenet_glues_pageassets_dialogstandardbgUPSCALE3_APS.png");

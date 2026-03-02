@@ -28,14 +28,14 @@ public class SettingsManager {
         Properties props = new Properties();
         try (FileInputStream in = new FileInputStream(SETTINGS_FILE)) {
             props.load(in);
-            return props.getProperty(LANGUAGE_KEY, "en"); // по умолчанию EN
+            return props.getProperty(LANGUAGE_KEY, "en"); // default EN
         } catch (IOException e) {
-            return "en"; // если файла нет — тоже EN
+            return "en"; // if file does not exist — use EN
         }
     }
     public static void saveAlphaValues(double grid, double point, double flash) {
         Properties props = new Properties();
-        props.setProperty(LANGUAGE_KEY, loadLanguage()); // сохранить текущий язык тоже
+        props.setProperty(LANGUAGE_KEY, loadLanguage()); // also save current language
         props.setProperty(GRID_ALPHA_KEY, String.valueOf(grid));
         props.setProperty(POINT_ALPHA_KEY, String.valueOf(point));
         props.setProperty(FLASH_ALPHA_KEY, String.valueOf(flash));
@@ -56,8 +56,7 @@ public class SettingsManager {
             return defaultValue;
         }
     }
-     //=== Checkbox ===
-
+    // === Checkbox handling ===
 
     public static boolean loadCheckboxState(String key, boolean defaultValue) {
         Properties props = loadAllProperties();
@@ -67,7 +66,7 @@ public class SettingsManager {
         Properties props = new Properties();
         try (FileInputStream in = new FileInputStream(SETTINGS_FILE)) {
             props.load(in);
-        } catch (IOException ignored) {} // если файла нет — создастся позже
+        } catch (IOException ignored) {} // if file does not exist — it will be created later
         return props;
     }
 
@@ -95,7 +94,7 @@ public class SettingsManager {
             e.printStackTrace();
         }
     }
-    // 1. Метод для загрузки всех значений (Object[])
+    // 1. Method to load all UI settings (Object[])
     public static Object[] loadUiSettings() {
         double gridAlpha = loadAlpha("gridAlpha", DEFAULT_GRID_ALPHA);
         double pointAlpha = loadAlpha("pointAlpha", DEFAULT_POINT_ALPHA);
@@ -107,7 +106,7 @@ public class SettingsManager {
         return new Object[]{ gridAlpha, pointAlpha, flashAlpha, tableLighting, shimmers, backgroundBlur };
     }
 
-    // 2. Метод для присвоения (принимает ссылки на твои объекты)
+    // 2. Method to apply settings (receives references to your objects)
     public static void applyUiSettings(Object[] ui,
                                        BackgroundGridLayer backgroundLayer,
                                        CustomBorder borderTable) {

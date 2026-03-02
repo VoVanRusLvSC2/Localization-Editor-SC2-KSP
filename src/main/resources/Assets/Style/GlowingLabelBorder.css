@@ -1,7 +1,7 @@
 /* base (green) */
 .glowing-label-border {
 
-    /* было: 3 24 3 24 */
+
     -fx-padding: 0.2em 1em 0.2em 1em;
 
     -fx-background-color: rgba(20, 8, 5, 0.95);
@@ -11,7 +11,7 @@
     -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_over.png");
     -fx-border-image-slice: 12 fill;
 
-    /* было 7px */
+
     -fx-border-image-width: 0.7em;
 
     -fx-border-image-repeat: stretch;

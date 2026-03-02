@@ -67,7 +67,7 @@ public class CustomFileChooser extends StackPane implements Disabable {
 
         getChildren().add(button);
 
-        // (опционально) центрируем кнопку внутри StackPane
+        // (optional) center button inside StackPane
         StackPane.setAlignment(button, javafx.geometry.Pos.CENTER);
     }
     public File openFile(Stage stage) {

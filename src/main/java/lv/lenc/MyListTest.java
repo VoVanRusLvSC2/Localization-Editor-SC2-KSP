@@ -9,7 +9,7 @@ public class MyListTest<E> extends ArrayList<E> implements List<E> {
     @Override
     public boolean add(E e) {
         if (this.size() >= 10) {
-            throw new IllegalStateException("Нельзя добавить более 10 элементов.");
+            throw new IllegalStateException("Cannot add more than 10 elements.");
         }
         return super.add(e);
     }
@@ -17,7 +17,7 @@ public class MyListTest<E> extends ArrayList<E> implements List<E> {
     @Override
     public boolean addAll(Collection<? extends E> c) {
         if (this.size() + c.size() > 10) {
-            throw new IllegalStateException("Нельзя добавить более 10 элементов.");
+            throw new IllegalStateException("Cannot add more than 10 elements.");
         }
         return super.addAll(c);
     }

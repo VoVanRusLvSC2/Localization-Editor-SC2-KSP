@@ -25,7 +25,7 @@ public class GlowingLabelWithBorder extends StackPane {
         setMinSize(w, h);
         setMaxSize(w, h);
 
-        // === font size scaling (как в CustomLongButton) ===
+        // === font size scaling (
         double fs = UiScaleHelper.scaleY(fontSizeFullHD);
         label.setStyle("-fx-font-family: 'Arial Black'; -fx-font-size: " + fs + "px;");
         label.setAlignment(Pos.CENTER);
@@ -35,9 +35,9 @@ public class GlowingLabelWithBorder extends StackPane {
         getChildren().add(label);
     }
 
-    // старый можешь оставить для совместимости:
+    //
     public GlowingLabelWithBorder(String text) {
-        this(text, 220, 70, 17); // подбери под свой “File Name”
+        this(text, 220, 70, 17); // 
     }
 
     public void setText(String text) { label.setText(text); }

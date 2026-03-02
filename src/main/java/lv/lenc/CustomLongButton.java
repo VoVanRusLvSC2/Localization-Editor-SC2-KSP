@@ -43,11 +43,11 @@ public class CustomLongButton extends MyButton {
         double paddingLeftRight = UiScaleHelper.scaleX(10);
         setPadding(new Insets(paddingTopBottom, paddingLeftRight, paddingTopBottom, paddingLeftRight));
 
-        // классы для CSS
+        // CSS classes
         getStyleClass().add("long-btn");
         getStyleClass().add(isGreen ? "green" : "red");
 
-        // selected -> включаем псевдокласс :selected (CSS будет менять картинку)
+        // selected -> enable :selected pseudo-class (CSS will switch textur
         selected.addListener((obs, oldVal, newVal) ->
                 pseudoClassStateChanged(PSEUDO_SELECTED, newVal)
         );
@@ -75,17 +75,17 @@ public class CustomLongButton extends MyButton {
 
         setOnMousePressed(e -> {
             if (isSelected()) return;
-            // стиль не трогаем — :pressed отработает в CSS
+
         });
 
         setOnMouseReleased(e -> {
             if (isSelected()) return;
-            // стиль не трогаем — вернётся normal/hover сам
+
         });
 
         setOnMouseClicked(e -> {
             if (isSelected()) {
-                e.consume(); // как у тебя: если выбран — отменяем клики
+                e.consume();
             }
         });
 
@@ -94,7 +94,7 @@ public class CustomLongButton extends MyButton {
         });
     }
 
-    // ===== PUBLIC (как у тебя) =====
+        // ===== PUBLIC API =====
 
     public void select() {
         setSelected(true);

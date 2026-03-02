@@ -31,7 +31,7 @@ public final class TranslationService {
 
     public static final String BASE_URL = "http://127.0.0.1:5000/";
     public static final String SEP = "\n";
-    // Теги мы уже не шлём. Дополнительно защищаем «геометрические» символы (шкалы).
+    // We no longer send tags. Additionally protect "geometric" symbols (progress bars).
     private static final Pattern GEOM_RUN = Pattern.compile("[\\u2580-\\u259F\\u25A0-\\u25FF]+");
     private static final AtomicReference<Call<?>> inFlight = new AtomicReference<>();
 //    private static final Retrofit RT = new Retrofit.Builder()
@@ -45,12 +45,12 @@ public final class TranslationService {
     public static final LibreTranslateApi api; // = RT.create(LibreTranslateApi.class);
 
     static {
-        // 1) Настраиваем Dispatcher
+        // 1) Configure Dispatcher
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequests(1);
         dispatcher.setMaxRequestsPerHost(1);
 
-        // 2) Собираем OkHttpClient с нужными таймаутами
+        // 2) Build OkHttpClient with required timeouts
         OkHttpClient http = new OkHttpClient.Builder()
                 .dispatcher(dispatcher)
                 .connectTimeout(Duration.ofSeconds(5))
@@ -58,21 +58,21 @@ public final class TranslationService {
                 .writeTimeout(Duration.ofSeconds(120))
                 .callTimeout(Duration.ofSeconds(150))
                 .retryOnConnectionFailure(true)
-                //.protocols(Collections.singletonList(Protocol.HTTP_1_1)) // если нужно
+                //.protocols(Collections.singletonList(Protocol.HTTP_1_1)) // 
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
                                 .header("Accept", "application/json")
                                 .build()))
                 .build();
 
-        // 3) Создаём Retrofit с этим клиентом
+        // 2) Build OkHttpClient with required timeouts
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(http)   // <- вот здесь клиент подключается!
+                .client(http)   // <- 
                 .build();
 
-        // 4) Создаём API
+        // 4) Create API instance
         api = retrofit.create(LibreTranslateApi.class);
 
     }
@@ -92,13 +92,13 @@ public final class TranslationService {
             if (gm.start() > tp) {
                 String t1 = text.substring(tp, gm.start());
                 String clean1 = sanitizeVisible(t1);
-                tokens.add(t1); // кладём оригинал; заменим на перевод при сборке
+                tokens.add(t1); // keep original; replace with translation during rebuild
                 if (!clean1.isEmpty()) {
                     textPositions.add(tokens.size() - 1);
                     toTranslate.add(clean1);
                 }
             }
-            // серия «квадратиков» — не переводим, просто сохраняем как отдельный токен
+            // geometric block sequence — do not translate, keep as separate token
             tokens.add(gm.group());
             tp = gm.end();
         }
@@ -114,10 +114,10 @@ public final class TranslationService {
     }
     public static void cancelInFlight() {
         Call<?> c = inFlight.getAndSet(null);
-        if (c != null) c.cancel(); // прерывает текущий execute() -> выбросит исключение
+        if (c != null) c.cancel(); // interrupts current execute() -> throws exception
     }
 
-    // пример внутри твоего translatePreservingTags/translate...
+    // example usage inside translatePreservingTags/translate...
     private static <T> T executeTracked(Call<T> call) throws Exception {
         inFlight.set(call);
         try {
@@ -129,12 +129,12 @@ public final class TranslationService {
     private static final Pattern TAG_LIKE = Pattern.compile("(?s)<\\s*[/]?\\w+[^>]*>");
 
     private static boolean looksLikeHtml(String s) {
-        // отсекаем случаи "2 < 5"
+        // filter out cases like "2 < 5"
         if (s == null || s.indexOf('<') < 0 || s.indexOf('>') < 0) return false;
         return TAG_LIKE.matcher(s).find();
     }
 
-    // План сборки: либо plain строка, либо HTML-фрагмент с текстовыми узлами
+    // Rebuild plan: either plain string or HTML fragment with text nodes
     private static abstract class RebuildPlan {
         abstract void consumeTranslated(ListIterator<String> it);
         abstract String result();
@@ -145,13 +145,13 @@ public final class TranslationService {
             Pattern.compile("(?i)<n\\b([^>]*)></n>");
 
     private static String normalizeCustomTags(String html) {
-        // <s ...></s>  или  <c ...></c>  ->  <s ...> / <c ...>
+        // <s ...></s>  
         html = EMPTY_SC_PAIR.matcher(html).replaceAll("<$1$2>");
-        // <n ...></n> -> <n .../>   (на случай если парсер развернул)
+        // <n ...></n> -> <n .../>   (
         html = N_PAIR.matcher(html).replaceAll("<n$1/>");
         return html;
     }
-    // Простой случай – не HTML
+    // Simple case – not HTML
     private static class PlainPlan extends RebuildPlan {
         private String translated;
         @Override public void consumeTranslated(ListIterator<String> it) {
@@ -166,47 +166,47 @@ public final class TranslationService {
     private static String sanitizeVisible(String s) {
         if (s == null) return "";
 
-        // 0) раскодировать html-сущности
+        // 0) decode HTML entities
         s = Parser.unescapeEntities(s, true);
 
-        // 1) нормализовать форму
+        // 1) normalize Unicode form
         s = Normalizer.normalize(s, Normalizer.Form.NFKC);
 
-        // 2) убрать только невидимые/управляющие символы
-        //    (НЕ трогаем Block Elements U+2580–259F и Geometric Shapes U+25A0–25FF!)
+        // 2) remove invisible/control characters only
+        //    (DO NOT touch Block Elements U+2580–259F and Geometric Shapes U+25A0–25FF!)
         s = s.replace('\u00A0', ' ')
                 .replaceAll("[\\u0000-\\u001F\\u007F\\u200B-\\u200F\\u2028\\u2029\\u2060\\uFEFF]", "");
 
-        // 3) схлопнуть переводы строк и многократные пробелы
+        // 3) collapse line breaks and multiple spaces
         s = s.replaceAll("[\\r\\n]+", " ").replaceAll("\\s+", " ").trim();
 
-        // 4) поправить пробелы вокруг пунктуации: убрать перед ,:;!? и гарантировать один после
+        // 4) normalize spacing around punctuation
         s = normalizePunctuationSpacing(s);
 
         return s;
     }
 
     private static String normalizePunctuationSpacing(String s) {
-        // убрать пробелы ПЕРЕД знаками
+        // remove spaces BEFORE punctuation
         s = s.replaceAll("\\s+([,:;!?])", "$1");
-        // гарантировать один пробел ПОСЛЕ (если дальше буква/цифра/кавычка)
+        // ensure single space AFTER (if followed by letter/digit/quote)
         s = s.replaceAll("([,:;!?])(?!\\s|$)", "$1 ");
-        // убрать пробелы сразу после открывающих скобок/кавычек и перед закрывающими
+        // remove spaces after opening brackets/quotes and before closing ones
         s = s.replaceAll("([\\(\\[\\{«])\\s+", "$1")
                 .replaceAll("\\s+([\\)\\]\\}»])", "$1");
         return s;
     }
-    // --- ДОБАВИТЬ где-нибудь рядом с sanitizeVisible ---
+    // --- ADD near sanitizeVisible ---
     private static String extractVisibleText(String s) {
         if (s == null || s.isEmpty()) return "";
-        // Jsoup парсит фрагмент и возвращает "видимый" текст без тегов,
-        // с развёрнутыми сущностями и схлопнутыми пробелами между узлами.
+        // Jsoup parses fragment and returns visible text without tags,
+        // with entities resolved and whitespace normalized.
         String text = Jsoup.parseBodyFragment(s).text();
-        // Прогоним через вашу очистку: нормализация, невидимые, пробелы.
+        // Pass through sanitizeVisible: normalization, invisible chars, spacing.
         return sanitizeVisible(text);
     }
 
-    // Готовим батч к переводу: извлекаем текстовые узлы для HTML, plain – как есть
+    // Pass through sanitizeVisible: normalization, invisible chars, spacing.
     private static class PrepResult {
         final List<String> toTranslate;
         final List<RebuildPlan> plans;
@@ -214,13 +214,13 @@ public final class TranslationService {
             this.toTranslate = toTranslate; this.plans = plans;
         }
     }
-    // Токен: <...> (любой тег, вкл. самозакрывающиеся). Без «парсинга», просто вырезаем.
+    // Token: <...> (any tag, including self-closing). No parsing, just extract.
     private static final Pattern TAG_TOKEN = Pattern.compile("(?s)<[^>]*?>");
 
-    // План сборки «теги + тексты»: в перевод уходит только текст
+    // Rebuild plan: tags + text, only text is translated
     private static class TokenPlan extends RebuildPlan {
-        private final List<String> tokens;        // чередуются: текст/тег/текст...
-        private final List<Integer> textPositions; // индексы токенов, которые были текстом и ушли в перевод
+        private final List<String> tokens;        //
+        private final List<Integer> textPositions; //
 
         TokenPlan(List<String> tokens, List<Integer> textPositions) {
             this.tokens = tokens;
@@ -229,17 +229,17 @@ public final class TranslationService {
 
         @Override public void consumeTranslated(ListIterator<String> it) {
             for (int pos : textPositions) {
-                // получить следующий переведённый фрагмент
+                // get next translated fragment
                 String t = it.next();
                 if (t == null) t = "";
-                // подправим пробелы/переводы (та же политика, что и PlainPlan)
+                // normalize spacing/line breaks (same policy as PlainPlan)
                 t = t.replace('\u00A0',' ').replaceAll("[\\r\\n]+", " ").trim();
                 tokens.set(pos, t);
             }
         }
 
         @Override public String result() {
-            // просто склеиваем без форматного pretty-print
+            // simply concatenate without pretty-print formatting
             StringBuilder sb = new StringBuilder();
             for (String tk : tokens) sb.append(tk);
             return sb.toString();
@@ -258,7 +258,7 @@ public final class TranslationService {
             if (looksLikeHtml(s)) {
                 htmlCnt++;
 
-                // Токенизируем по тегам; внутри текстовых сегментов дополнительно режем по GEOM_RUN.
+                // Tokenize by tags; inside text segments additionally split by GEOM_RUN.
                 List<String> tokens = new ArrayList<>();
                 List<Integer> textPositions = new ArrayList<>();
                 int pos = 0;
@@ -269,17 +269,17 @@ public final class TranslationService {
                         String text = s.substring(pos, m.start());
                         splitTextByGeomAndQueue(text, tokens, textPositions, toTranslate);
                     }
-                    // сам тег — отдельный токен, не идёт в перевод
+                    // tag itself — separate token, not sent for translation
                     tokens.add(s.substring(m.start(), m.end()));
                     pos = m.end();
                 }
-                // хвост после последнего тега
+                // tail after last tag
                 if (pos < s.length()) {
                     String text = s.substring(pos);
                     splitTextByGeomAndQueue(text, tokens, textPositions, toTranslate);
                 }
 
-                // План сборки: заменим только отмеченные текстовые токены
+                // Rebuild plan: replace only marked text tokens
                 plans.add(new TokenPlan(tokens, textPositions));
 
             } else {
@@ -307,7 +307,7 @@ public final class TranslationService {
         if (targetsIso == null || targetsIso.isEmpty())
             throw new IllegalArgumentException("targetsIso is empty");
 
-        // дедуп
+        //
         Map<String, Integer> firstIndex = new java.util.LinkedHashMap<>();
         List<String> unique = new java.util.ArrayList<>();
         int[] mapToUnique = new int[texts.size()];
@@ -332,7 +332,7 @@ public final class TranslationService {
             String targetIso = targetsIso.get(i);
             int langNo = i + 1;
 
-            // перевод unique с прогрессом по батчам
+            //
             List<String> uniqOut = translatePreservingTagsBatched(
                     api, unique, sourceIso, targetIso, stop,
                     (partFraction, msg) -> {
@@ -352,7 +352,7 @@ public final class TranslationService {
 
             if (stop != null && stop.getAsBoolean()) return out;
 
-            // раздедуп
+            // deduplicate restore
             List<String> fullOut = new java.util.ArrayList<>(texts.size());
             for (int k = 0; k < texts.size(); k++) {
                 fullOut.add(uniqOut.get(mapToUnique[k]));
@@ -365,7 +365,7 @@ public final class TranslationService {
     }
 
     static List<String> extractTranslations(JsonElement body, int expected) throws IOException {
-        if (body == null || body.isJsonNull()) throw new IOException("Пустой ответ от сервера");
+        if (body == null || body.isJsonNull()) throw new IOException("Empty response from server");
 
         List<String> out = new ArrayList<>();
 
@@ -393,7 +393,7 @@ public final class TranslationService {
             }
         }
 
-        throw new IOException("Неожиданный формат ответа: " + body);
+        throw new IOException("Unexpected response format: " + body);
     }
 
     static String parseOneTranslation(JsonElement el) throws IOException {
@@ -404,7 +404,7 @@ public final class TranslationService {
             JsonElement t = el.getAsJsonObject().get("translatedText");
             if (t.isJsonPrimitive() && t.getAsJsonPrimitive().isString()) return t.getAsString();
         }
-        throw new IOException("Неожиданный элемент перевода: " + el);
+        throw new IOException("Unexpected translation element: " + el);
     }
     private static List<String> rebuildFromTranslations(List<String> translated, List<RebuildPlan> plans) {
         List<String> out = new ArrayList<>(plans.size());
@@ -417,15 +417,15 @@ public final class TranslationService {
     }
 
     /**
-     * Главный метод: переводим список строк, где HTML-теги сохраняем как есть,
-     * а переводим только текстовые узлы внутри.
+     * Main method: translate list of strings while preserving HTML tags,
+     * translating only text nodes inside.
      */
     private static final int BATCH_MAX_ITEMS = 120;
 
     private static final int BATCH_MAX_CHARS = 18_000;
     /**
-     * Переводит список строк, сохраняя теги (переводим только текстовые узлы).
-     * <n/> и любые <c ...> остаются как есть.
+     * Main method: translate list of strings while preserving HTML tags,
+     * translating only text nodes inside.
      */
     public static List<String> translatePreservingTags(
             LibreTranslateApi api,
@@ -438,7 +438,7 @@ public final class TranslationService {
         System.out.println("[LT] translatePreservingTags start: items=" + inputs.size() +
                 " chars=" + sumChars(inputs) + " " + source + "->" + target);
 
-        // подготовка: вытаскиваем только тексты из HTML, plain — как есть
+        // 
         PrepResult prep = prepareForTranslation(inputs);
         System.out.println("[LT] prepared: toTranslate=" + prep.toTranslate.size() +
                 " plans=" + prep.plans.size());
@@ -448,12 +448,12 @@ public final class TranslationService {
             return new ArrayList<>(inputs);
         }
 
-        // запрос массивом q (никакого join/split!)
+        // 
         Map<String, Object> body = new HashMap<>();
         body.put("q", prep.toTranslate);
         body.put("source", source);
         body.put("target", target);
-        body.put("format", "text"); // теги мы уже «сохранили», переводим только текст
+        body.put("format", "text"); // 
 
         var resp = api.translateAny(body).execute();
         int code = (resp != null ? resp.code() : -1);
@@ -462,12 +462,12 @@ public final class TranslationService {
             throw new IOException("[LT] HTTP " + code + ": " + err);
         }
 
-// универсальный разбор
+
         List<String> tr = extractTranslations(resp.body(), prep.toTranslate.size());
         System.out.println("[LT] got " + tr.size() + " translations for " + prep.toTranslate.size());
 
         if (tr.size() != prep.toTranslate.size()) {
-            System.out.println("[LT] raw: " + resp.body()); // подсказка в лог
+            System.out.println("[LT] raw: " + resp.body()); // debug hint
             throw new IllegalStateException("[LT] MISMATCH: in=" + prep.toTranslate.size() + " out=" + tr.size());
         }
 
@@ -507,7 +507,7 @@ public final class TranslationService {
                             " attempt " + attempt + "/3 items=" + part.size() +
                             " chars=" + sumChars(part));
 
-                    // ⬇⬇ ВАЖНО: вызываем НЕбатчевую версию
+                    // IMPORTANT: call non-batched version
                     List<String> translated = translatePreservingTags(api, part, source, target);
 
                     out.addAll(translated);
@@ -572,7 +572,7 @@ public final class TranslationService {
                             " attempt " + attempt + "/3 items=" + part.size() +
                             " chars=" + sumChars(part));
 
-                    // вызываем НЕбатчевую версию
+                    // 
                     List<String> translated = translatePreservingTags(api, part, source, target);
                     out.addAll(translated);
 
@@ -625,16 +625,16 @@ public final class TranslationService {
         return batches;
     }
 
-    // ===== пример использования вместо translateBatch(...) =====
+    // ===== example usage instead of translateBatch(...) =====
     public static List<String> translateOnceEnRuPreservingTags(List<String> texts)
             throws IOException, InterruptedException {
         long t0 = System.nanoTime();
         List<String> out = translatePreservingTagsBatched(TranslationService.api, texts, "en", "ru");
         long ms = (System.nanoTime() - t0) / 1_000_000L;
-        System.out.println("EN->RU (preserve tags): batch=" + texts.size() + " заняло " + ms + " ms");
+        System.out.println("EN->RU (preserve tags): batch=" + texts.size() + " took " + ms + " ms");
         return out;
     }
-    // ===== запуск и проверка =====
+    // ===== startup and health check =====
     public static boolean isLtAlive() {
         try (java.net.Socket s = new java.net.Socket()) {
             s.connect(new java.net.InetSocketAddress("127.0.0.1", 5000), 800);
@@ -649,7 +649,7 @@ public final class TranslationService {
             if (isLtAlive()) return;
             Thread.sleep(sleepMs);
         }
-        throw new RuntimeException("LibreTranslate не поднялся на 127.0.0.1:5000");
+        throw new RuntimeException("LibreTranslate did not start on 127.0.0.1:5000");
     }
 
     public static Process startLtProcess() throws Exception {
@@ -696,9 +696,8 @@ public final class TranslationService {
                     .redirectError(ProcessBuilder.Redirect.DISCARD)
                     .start();
         }
-
         throw new IllegalStateException(
-                "Не найден docker, libretranslate или python в PATH."
+                "docker, libretranslate or python not found in PATH."
         );
     }
 
@@ -717,9 +716,9 @@ public final class TranslationService {
             String source, String target
     ) throws IOException {
         Map<String, Object> body = new java.util.HashMap<>();
-        body.put("q", texts);               // <= МАССИВ
-        body.put("source", source);         // "auto" или ISO-код
-        body.put("target", target);         // ISO-код
+        body.put("q", texts);               //  <= ARRAY
+        body.put("source", source);         // "auto" or ISO code
+        body.put("target", target);         // ISO code
         body.put("format", "text");
 
 
@@ -736,24 +735,24 @@ public final class TranslationService {
         if (translated.size() != texts.size()) {
 
             throw new IllegalStateException(
-                    "отправили: " + (String.join(SEP, texts)) +
-                            "\n получили: " + resp.getTranslatedText());
+                    "sent: " + (String.join(SEP, texts)) +
+                            "\n received: " + resp.getTranslatedText());
         }
-//        System.out.println(texts.size() + "получили " + translated.size());
+//        System.out.println(texts.size() + "
         return translated;
 //        Response<List<String>> resp = api.translate(body).execute();
 //        if (!resp.isSuccessful() || resp.body() == null) {
 //            throw new IOException("LT error " + resp.code() + ": " + resp.errorBody());
 //        }
-//        return resp.body();                 // тот же порядок, что и вход
+//        return resp.body();                 // 
     }
 
     public static List<String> translateOnceEnRu(List<String> texts) throws IOException {
         long t0 = System.nanoTime();
-        // один прогон, жёстко EN -> RU
+        // single run, hardcoded EN -> RU
         List<String> out = translateBatch(TranslationService.api, texts, "en", "ru");
         long ms = (System.nanoTime() - t0) / 1_000_000L;
-        System.out.println("EN->RU: batch=" + texts.size() + " заняло " + ms + " ms");
+        System.out.println("EN->RU: batch=" + texts.size() + " took " + ms + " ms");
         return out;
     }
 

@@ -18,7 +18,7 @@ public final class TranslateCancelSaveButton extends StackPane {
     public enum State { TRANSLATE, CANCEL, SAVE }
 
     private final LocalizationManager localization;
-    private final MyButton button; // ВОТ он, твой стилизованный
+    private final MyButton button; // your styled button instance
 
     private final ObjectProperty<State> state = new SimpleObjectProperty<>(State.TRANSLATE);
     private final AtomicBoolean cancelRequested = new AtomicBoolean(false);
@@ -45,7 +45,7 @@ public final class TranslateCancelSaveButton extends StackPane {
                 strengthGlowMAX
         );
 
-        // чтобы translateRU.setDisable(true) отключал реальную кнопку
+        // bind disableProperty so external setDisable(true) disables the internal button
         button.disableProperty().bind(disableProperty());
 
         getChildren().add(button);
@@ -112,7 +112,7 @@ public final class TranslateCancelSaveButton extends StackPane {
 
         cancelRequested.set(false);
         state.set(State.CANCEL);
-      //  button.setDisable(false); // на всякий
+      //  button.setDisable(false); // button.setDisable(false); // just in case
 
         try {
             running = translateStarter.get();

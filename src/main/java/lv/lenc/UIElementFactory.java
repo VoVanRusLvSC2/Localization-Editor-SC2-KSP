@@ -21,22 +21,22 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.image.Image;
-import javafx.application.Platform; // Для работы с Platform.runLater
-import javafx.scene.Node;           // Для узла Node, который используется при поиске через lookup()
-import javafx.scene.control.ComboBox; // Для ComboBox
-import javafx.scene.layout.Region;  // Для Region, чтобы установить стиль list-view
+import javafx.application.Platform; // For Platform.runLater
+import javafx.scene.Node;           // Node used for lookup()
+import javafx.scene.control.ComboBox; // ComboBox
+import javafx.scene.layout.Region;  // Region to style list-view
 
 
 public class UIElementFactory {
 
     /**
-     * Создает стандартную кнопку с заданным текстом, размерами и шрифтом.
+     * Creates a standard button with specified text, size, and font.
      *
-     * @param text      Текст кнопки
-     * @param width     Ширина кнопки
-     * @param height    Высота кнопки
-     * @param fontSize  Размер шрифта текста
-     * @return Созданная кнопка
+     * @param text      Button text
+     * @param width     Button width
+     * @param height    Button height
+     * @param fontSize  Font size
+     * @return Created button
      */
     public static Button createButton(String text, double width, double height, double fontSize) {
         Button button = new Button(text);
@@ -47,14 +47,14 @@ public class UIElementFactory {
     }
 
     /**
-     * Создает настраиваемую кнопку с текстурой, градиентом текста, мягким свечением и эффектом Glow.
+     * Creates a customizable textured button with text gradient and glow effect.
      *
-     * @param text            Текст кнопки
-     * @param texturePath     Путь к папке с текстурами
-     * @param isGreen         Флаг, определяющий цветовую схему кнопки
-     * @param strengthGlow    Начальный уровень свечения
-     * @param strengthGlowMAX Максимальный уровень свечения
-     * @return Созданная кнопка с пользовательскими стилями
+     * @param text            Button text
+     * @param texturePath     Path to texture folder
+     * @param isGreen         Determines button color scheme
+     * @param strengthGlow    Initial glow level
+     * @param strengthGlowMAX Maximum glow level
+     * @return Styled button instance
      */
     public static MyButton createCustomLongButton(String text, String texturePath, boolean isGreen, double strengthGlow, double strengthGlowMAX) {
         MyButton button = new MyButton(text);
@@ -103,7 +103,7 @@ public class UIElementFactory {
 
         updateStyle.run();
 
-        // Наведение
+        // 
         button.setOnMouseEntered(e -> {
             if (!isPressed[0]) {
                 button.setStyle(
@@ -151,33 +151,33 @@ public class UIElementFactory {
 
 
     /**
-     * Создает настраиваемую кнопку с текстурой, градиентом текста, мягким свечением и эффектом Glow.
+     * Creates a customizable language button with texture and glow effect.
      *
-     * @param text        Текст кнопки
-     * @param texturePath Путь к папке с текстурами
-     * @return Созданная кнопка с пользовательскими стилями
+     * @param text        Button text
+     * @param texturePath Path to texture folder
+     * @return Styled button instance
      */
     public static MyButton createCustomLanguageButton(String text, String texturePath) {
         MyButton button = new MyButton(text);
         final boolean[] isPressed = {false};
         button.setPrefSize(75, 54);
         button.setMaxSize(75, 54);
-        // Определяем пути к текстурам
+        // 
         String normalTexture = "ui_glues_greenbuttons_squarebackbuttonnormal.png";
         String overTexture = "ui_glues_greenbuttons_squarebackbuttonover.png";
         String downTexture = "ui_glues_greenbuttons_squarebackbuttondown.png";
         String disabledTexture = "ui_glues_greenbuttons_squarebackbuttondisabled.png";
 
-        // Эффект Glow для всей кнопки
+        // 
         Glow buttonGlow = new Glow(0.15);
         button.setEffect(buttonGlow);
 
-        // Эффект свечения текста
+        // 
         DropShadow textGlow = new DropShadow();
         textGlow.setColor(Color.LIMEGREEN);
         textGlow.setRadius(5);
 
-        // Метод для обновления стиля в зависимости от состояния кнопки
+        // 
         Runnable updateStyle = () -> {
             String currentTexture = button.isDisabled() ? disabledTexture : normalTexture;
             double glowLevel = button.isDisabled() ? 0.0 : 0.15;
@@ -194,13 +194,13 @@ public class UIElementFactory {
             buttonGlow.setLevel(glowLevel);
         };
 
-        // Изначальная установка стиля
+        // 
         updateStyle.run();
 
-        // Обновляем стиль при изменении disabled-свойства
+        // 
         button.disabledProperty().addListener((obs, oldVal, newVal) -> updateStyle.run());
 
-        // Состояние при наведении
+        // 
         button.setOnMouseEntered(e -> {
             if (!isPressed[0] && !button.isDisabled()) {
                 button.setStyle(
@@ -217,14 +217,14 @@ public class UIElementFactory {
             }
         });
 
-        // Состояние при выходе мыши
+        // 
         button.setOnMouseExited(e -> {
             if (!isPressed[0]) {
                 updateStyle.run();
             }
         });
 
-        // Состояние при нажатии
+        // 
         button.setOnMousePressed(e -> {
             if (!button.isDisabled()) {
                 isPressed[0] = true;
@@ -241,7 +241,7 @@ public class UIElementFactory {
             }
         });
 
-        // Состояние при отпускании
+        // 
         button.setOnMouseReleased(e -> {
             if (!button.isDisabled()) {
                 isPressed[0] = false;
@@ -254,11 +254,11 @@ public class UIElementFactory {
 
 
     /**
-     * Создает настраиваемую кнопку выхода с текстурой, градиентом текста и эффектом Glow.
+     * Creates a custom quit button with texture, text gradient and glow effect.
      *
-     * @param text        Текст кнопки
-     * @param texturePath Путь к папке с текстурами
-     * @return Созданная кнопка с пользовательскими стилями
+     * @param text        Button text
+     * @param texturePath Path to texture folder
+     * @return Styled quit button
      */
     public static MyButton createCustomQuitButton(String text, String texturePath) {
         MyButton button = new MyButton(text);
@@ -282,7 +282,7 @@ public class UIElementFactory {
 
         DropShadow textGlow = new DropShadow();
         textGlow.setColor(Color.LIMEGREEN);
-        textGlow.setRadius(glowRadius); // масштабированное значение
+        textGlow.setRadius(glowRadius); // 
 
         Runnable updateStyle = () -> {
             String currentTexture = button.isDisabled() ? disabledTexture : normalTexture;
@@ -356,7 +356,7 @@ public class UIElementFactory {
         MyButton button = new MyButton(text);
         final boolean[] isPressed = {false};
 
-        // Размеры и шрифт через масштабирование
+        // 
         double btnWidth = UiScaleHelper.scaleX(170);
         double btnHeight = UiScaleHelper.scaleY(54);
         double fontSize = UiScaleHelper.scaleY(14);
@@ -471,16 +471,16 @@ public class UIElementFactory {
     //     );
 
     //     Platform.runLater(() -> {
-    //         // Изменение рамки контейнера для элементов списка
+    //         // 
     //         Node listView = comboBox.lookup(".list-view");
     //         if (listView != null && listView instanceof Region) {
     //             ((Region) listView).setStyle(
-    //                 "-fx-background-color: #001000;" + // Цвет фона контейнера
-    //                 "-fx-border-color: limegreen;" + // Зеленая рамка
-    //                 "-fx-border-width: 2px;" + // Толщина рамки
-    //                 "-fx-border-radius: 8px;" + // Скругление углов рамки
-    //                 "-fx-background-radius: 8px;" + // Скругление фона
-    //                 "-fx-padding: 2px;" // Отступ для предотвращения перекрытия рамки
+    //                 "-fx-background-color: #001000;" + // 
+    //                 "-fx-border-color: limegreen;" + // 
+    //                 "-fx-border-width: 2px;" + // 
+    //                 "-fx-border-radius: 8px;" + // 
+    //                 "-fx-background-radius: 8px;" + // 
+    //                 "-fx-padding: 2px;" // 
     //             );
     //         }
     //     });
@@ -548,14 +548,14 @@ public class UIElementFactory {
     //         "-fx-padding: -4 0 0 15; " +
     //         "-fx-alignment: center-left;"
     //     ));
-    //     comboBox.setOnShown(e -> Platform.runLater(() -> { // ТЕКСТ В САМОМ COMBOBOX БЕЗ ВЫПАДЮЩЕГО СПИСКА
+    //     comboBox.setOnShown(e -> Platform.runLater(() -> { // 
     //         comboBox.lookupAll(".list-cell").forEach(cell -> {
     //             cell.setStyle(
-    //                 "-fx-background-color: transparent;" + /* Прозрачный фон */
-    //            //     "-fx-background-image: url('" + texturePath + frameTexture + "');" + /* Текстура фрейма */
-    //                 "-fx-background-size: stretch;" + /* Растянуть текстуру */
-    //                 "-fx-background-repeat: no-repeat;" + /* Не повторять текстуру */
-    //                 "-fx-background-position: center;" + /* Центрировать текстуру */
+    //                 "-fx-background-color: transparent;" + /* 
+    //            //     "-fx-background-image: url('" + texturePath + frameTexture + "');" + /* 
+    //                 "-fx-background-size: stretch;" + /* 
+    //                 "-fx-background-repeat: no-repeat;" + /* 
+    //                 "-fx-background-position: center;" + /* 
     //                 "-fx-font-family: 'Arial Black';" +
     //                 "-fx-font-size: 14px;" +
     //                 "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" +
@@ -566,20 +566,20 @@ public class UIElementFactory {
     //     }));
 
 
-    //  comboBox.show();// Чтобы стиль текста применился показываем
-    //  comboBox.hide();// Скрываем чтобы с откроем окна не было откротого листа
+    //  comboBox.show();// 
+    //  comboBox.hide();// 
 
     //     return comboBox;
     // }
     // public static ComboBox<String> addTrackTrumb(ComboBox<String> comboBox, String texturePath) {
     //     String arrowNormal = "ui_glue_dropdownarrow_normal_terran.png";
-    //     /* .thumb — это сам ползунок, который вы можете перетаскивать.
-    //        .track — это основа (дорожка), по которой перемещается thumb. */
+    //     /* .thumb — 
+    //        .track — 
     //     Platform.runLater(() -> {
-    //         // Настраиваем нижнюю стрелку (decrement-button) с рамкой
+    //         // 
     //         Node decrementButton = comboBox.lookup(".decrement-button");
     //         if (decrementButton != null) {
-    //             // Скрываем внутреннюю стрелку
+    //             // 
     //             Node decrementArrow = decrementButton.lookup(".decrement-arrow");
     //             if (decrementArrow != null) {
     //                 String currentStyle = decrementArrow.getStyle();
@@ -589,27 +589,27 @@ public class UIElementFactory {
     //                 );
     //             }
 
-    //             // Добавляем кастомную текстуру для нижней стрелки и рамку
+    //             // 
     //             String currentStyle = decrementButton.getStyle();
     //             decrementButton.setStyle(
     //                 currentStyle + "; " +
-    //                 "-fx-background-color: transparent; " + // Прозрачный фон
-    //                 "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // Кастомная текстура
-    //                 "-fx-background-size: 16px 16px; " + // Размер текстуры
+    //                 "-fx-background-color: transparent; " + // 
+    //                 "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // 
+    //                 "-fx-background-size: 16px 16px; " + // 
     //                 "-fx-background-repeat: no-repeat; " +
-    //                 "-fx-background-position: center;" + // Центрирование текстуры
-    //                 "-fx-rotate: 180;" + // Поворот на 180 градусов
-    //                 "-fx-border-color: limegreen; " + // Зеленая рамка
-    //                 "-fx-border-width: 2px; " + // Толщина рамки
-    //                 "-fx-border-radius: 5px;" + // Скругленные углы
-    //                 "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // Тень для контраста
+    //                 "-fx-background-position: center;" + // 
+    //                 "-fx-rotate: 180;" + // 
+    //                 "-fx-border-color: limegreen; " + // 
+    //                 "-fx-border-width: 2px; " + // 
+    //                 "-fx-border-radius: 5px;" + // 
+    //                 "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // 
     //             );
     //         }
 
-    //         // Настраиваем верхнюю стрелку (increment-button) с рамкой
+    //         // 
     //         Node incrementButton = comboBox.lookup(".increment-button");
     //         if (incrementButton != null) {
-    //             // Скрываем внутреннюю стрелку
+    //             // 
     //             Node incrementArrow = incrementButton.lookup(".increment-arrow");
     //             if (incrementArrow != null) {
     //                 String currentStyle = incrementArrow.getStyle();
@@ -619,55 +619,55 @@ public class UIElementFactory {
     //                 );
     //             }
 
-    //             // Добавляем кастомную текстуру для верхней стрелки и рамку
+    //             // 
     //             String currentStyle = incrementButton.getStyle();
     //             incrementButton.setStyle(
     //                 currentStyle + "; " +
-    //                 "-fx-background-color: transparent; " + // Прозрачный фон
-    //                 "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // Кастомная текстура
-    //                 "-fx-background-size: 16px 16px; " + // Размер текстуры
+    //                 "-fx-background-color: transparent; " + // 
+    //                 "-fx-background-image: url('" + texturePath + arrowNormal + "'); " + // 
+    //                 "-fx-background-size: 16px 16px; " + // 
     //                 "-fx-background-repeat: no-repeat; " +
-    //                 "-fx-background-position: center;" + // Центрирование текстуры
-    //                 "-fx-border-color: limegreen; " + // Зеленая рамка
-    //                 "-fx-border-width: 2px; " + // Толщина рамки
-    //                 "-fx-border-radius: 5px;" + // Скругленные углы
-    //                 "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // Тень для контраста
+    //                 "-fx-background-position: center;" + // 
+    //                 "-fx-border-color: limegreen; " + // 
+    //                 "-fx-border-width: 2px; " + // 
+    //                 "-fx-border-radius: 5px;" + // 
+    //                 "-fx-effect: dropshadow(gaussian, black, 5, 0.5, 0, 0);" // 
     //             );
     //         }
 
-    //         // Настройка дорожки
+    //         // 
     //         Node track = comboBox.lookup(".track");
     //         if (track != null) {
     //             String currentStyle = track.getStyle();
     //             track.setStyle(
     //                 currentStyle + "; " +
     //                 "-fx-background-color: transparent; " +
-    //                 "-fx-border-color: limegreen; " + // Рамка вокруг дорожки
+    //                 "-fx-border-color: limegreen; " + // 
     //                 "-fx-border-width: 2px; " +
-    //                 "-fx-border-radius: 25px;" // Скругление углов рамки
+    //                 "-fx-border-radius: 25px;" // 
     //             );
     //         }
 
-    //         // Настройка фона дорожки (track-background)
+    //         // 
     //         Node trackBackground = comboBox.lookup(".track-background");
     //         if (trackBackground != null) {
     //             String currentStyle = trackBackground.getStyle();
     //             trackBackground.setStyle(
     //                 currentStyle + "; " +
-    //                 "-fx-background-color: #001000; " // Цвет фона
+    //                 "-fx-background-color: #001000; " // 
     //             );
     //         }
 
-    //         // Настройка ползунка (thumb)
+    //         // 
     //         Node thumb = comboBox.lookup(".thumb");
     //         if (thumb != null) {
     //             String currentStyle = thumb.getStyle();
     //             thumb.setStyle(
     //                 currentStyle + "; " +
     //                 "-fx-background-color: limegreen; " +
-    //                 "-fx-border-color: black; " + // Черная рамка вокруг ползунка
+    //                 "-fx-border-color: black; " + // 
     //                 "-fx-border-width: 3px;" +
-    //                 "-fx-border-radius: 25px;" // Скругленные углы
+    //                 "-fx-border-radius: 25px;" // 
     //             );
     //         }
     //     });
@@ -702,13 +702,13 @@ public class UIElementFactory {
     //                     "-fx-font-family: 'Arial Black';" +
     //                     "-fx-font-size: 14;" +
     //                     "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" +
-    //                     "-fx-alignment: center;" // Центрирование текста
+    //                     "-fx-alignment: center;" // 
     //                 );
 
-    //                 // Изменение стиля при наведении мыши
+    //                 // 
     //                 setOnMouseEntered(e -> {
-    //                     if (!isSelected()) { // Проверяем, не выделен ли элемент
-    //                         String hoverStyle = getStyle(); // Получаем текущий стиль
+    //                     if (!isSelected()) { // 
+    //                         String hoverStyle = getStyle(); // 
     //                         setStyle(
     //                             hoverStyle + "; " +
     //                             "-fx-background-color: black;" +
@@ -717,16 +717,16 @@ public class UIElementFactory {
     //                             "-fx-background-repeat: no-repeat; " +
     //                             "-fx-font-family: 'Arial Black';" +
     //                             "-fx-font-size: 14;" +
-    //                             "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, yellow, red);" + // Градиент при наведении
+    //                             "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, yellow, red);" + // 
     //                             "-fx-alignment: center;"
     //                         );
     //                     }
     //                 });
 
-    //                 // Восстановление стиля при выходе мыши
+    //                 // 
     //                 setOnMouseExited(e -> {
-    //                     if (!isSelected()) { // Проверяем, не выделен ли элемент
-    //                         String exitStyle = getStyle(); // Получаем текущий стиль
+    //                     if (!isSelected()) { // 
+    //                         String exitStyle = getStyle(); // 
     //                         setStyle(
     //                             exitStyle + "; " +
     //                             "-fx-background-color: black;" +
@@ -735,26 +735,26 @@ public class UIElementFactory {
     //                             "-fx-background-repeat: no-repeat; " +
     //                             "-fx-font-family: 'Arial Black';" +
     //                             "-fx-font-size: 14;" +
-    //                             "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" + // Исходный градиент
+    //                             "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" + // 
     //                             "-fx-alignment: center;"
     //                         );
     //                     }
     //                 });
     //             }
 
-    //             // Применяем другой стиль для выбранной ячейки
+    //             // 
     //             if (isSelected()) {
-    //                 String selectedStyle = getStyle(); // Получаем текущий стиль
+    //                 String selectedStyle = getStyle(); // 
     //                 setStyle(
     //                     selectedStyle + "; " +
-    //                     "-fx-background-color: rgba(0, 0, 0, 0.5);" + // Полупрозрачный черный фон
+    //                     "-fx-background-color: rgba(0, 0, 0, 0.5);" + // 
     //                     "-fx-background-image: url('" + texturePath + frameSelectedTexture + "');" +
     //                     "-fx-background-size: 100% 100%; " +
     //                     "-fx-background-repeat: no-repeat; " +
     //                     "-fx-font-family: 'Arial Black';" +
     //                     "-fx-font-size: 14px;" +
-    //                     "-fx-text-fill: white;" + // Белый текст для выделенного элемента
-    //                     "-fx-alignment: center;" // Центрирование текста
+    //                     "-fx-text-fill: white;" + // 
+    //                     "-fx-alignment: center;" // 
     //                 );
     //             }
     //         }
@@ -763,7 +763,7 @@ public class UIElementFactory {
     // }
 
     // public static ComboBox<String> setCustomClassicListItem(ComboBox<String> comboBox) {
-    //     // Настройка дополнительных элементов ComboBox
+    //     // 
     //     Platform.runLater(() -> {
     //         comboBox.setCellFactory(param -> new ListCell<String>() {
     //             @Override
@@ -789,12 +789,12 @@ public class UIElementFactory {
     //                         "-fx-font-size: 12px;" +
     //                         "-fx-pref-height: 20px;" +
     //                         "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" +
-    //                         "-fx-alignment: center;" // Центрирование текста
+    //                         "-fx-alignment: center;" // 
     //                     );
 
-    //                     // Изменение стиля при наведении мыши
+    //                     // 
     //                     setOnMouseEntered(e -> {
-    //                         if (!isSelected()) { // Проверяем, не выделен ли элемент
+    //                         if (!isSelected()) { // 
     //                             setStyle(
     //                           //      "-fx-border-color: darkgreen;" +
     //                                 "-fx-background-color: rgba(30, 80, 40, 0.2);" +
@@ -809,15 +809,15 @@ public class UIElementFactory {
     //                                 "-fx-font-family: 'Arial Black';" +
     //                                 "-fx-font-size: 12px;" +
     //                                 "-fx-pref-height: 20px;" +
-    //                                 "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, yellow, red);" + // Градиент при наведении
+    //                                 "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, yellow, red);" + // 
     //                                 "-fx-alignment: center;"
     //                             );
     //                         }
     //                     });
 
-    //                     // Восстановление стиля при выходе мыши
+    //                     // 
     //                     setOnMouseExited(e -> {
-    //                         if (!isSelected()) { // Проверяем, не выделен ли элемент
+    //                         if (!isSelected()) { // 
     //                             setStyle(
     //                                 "-fx-background-color: #001000;" +
     //                                 "-fx-background-image: none;"  +
@@ -830,7 +830,7 @@ public class UIElementFactory {
     //                                 "-fx-font-family: 'Arial Black';" +
     //                                 "-fx-font-size: 12px;" +
     //                                 "-fx-pref-height: 20px;" +
-    //                                 "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" + // Исходный градиент
+    //                                 "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" + // 
     //                                 "-fx-alignment: center;"
     //                             );
     //                         }
@@ -840,8 +840,8 @@ public class UIElementFactory {
     //                 // Apply different style for the selected cell
     //                 if (isSelected()) {
     //                     setStyle(
-    //                         "-fx-border-color: darkgreen;" + // Темная рамка для выделения
-    //                         "-fx-background-color: rgba(30, 80, 40, 0.6);" + // Более светлый зелено-бирюзовый фон для выделенного элемента
+    //                         "-fx-border-color: darkgreen;" + // 
+    //                         "-fx-background-color: rgba(30, 80, 40, 0.6);" + // 
     //                         "-fx-background-radius: 3px;" +
     //                         "-fx-border-radius: 3px;" +
     //                         "-fx-background-insets: 0 2 0 2;" +
@@ -849,8 +849,8 @@ public class UIElementFactory {
     //                         "-fx-font-family: 'Arial Black';" +
     //                         "-fx-font-size: 12px;" +
     //                         "-fx-pref-height: 20px;" +
-    //                         "-fx-text-fill: #C7F0C7;" + // Светлый зеленоватый текст для выделенного элемента
-    //                         "-fx-alignment: center;" // Центрирование текста
+    //                         "-fx-text-fill: #C7F0C7;" + // 
+    //                         "-fx-alignment: center;" // 
     //                     );
     //                 }
     //             }
@@ -858,10 +858,10 @@ public class UIElementFactory {
     //     });
     //     Node listView = comboBox.lookup(".list-view");
     //     if (listView instanceof Region) {
-    //         ((Region) listView).setPadding(new Insets(0)); // Убираем отступы
+    //         ((Region) listView).setPadding(new Insets(0)); // 
     //         ((Region) listView).setStyle(
     //             "-fx-background-color: transparent;" +
-    //             "-fx-border-width: 0;" // Убираем рамки
+    //             "-fx-border-width: 0;" // 
     //         );
     //     }
 

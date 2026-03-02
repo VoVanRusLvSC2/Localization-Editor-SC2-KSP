@@ -42,7 +42,7 @@ public class SettingBox {
         final double HEIGHT = UiScaleHelper.scaleY(509);
 
         Stage window = new Stage();
-        window.initOwner(longButton.getScene().getWindow());   // или main.Window если хочешь
+        window.initOwner(longButton.getScene().getWindow());   //
         window.initModality(Modality.WINDOW_MODAL);
 
         window.setAlwaysOnTop(true);
@@ -77,7 +77,7 @@ public class SettingBox {
         frame.setStyle("-fx-background-color: black;");
         frame.setBorder(new Border(border));
 
-        // Левая панель с кнопками
+        // Left panel with buttons
         VBox buttonBox = new VBox(UiScaleHelper.scaleY(20));
         buttonBox.setPadding(new Insets(
                 UiScaleHelper.scaleY(20),
@@ -105,7 +105,7 @@ public class SettingBox {
         selectionMarkImage.setRotate(270);
         selectionMarkImage.setFitWidth(UiScaleHelper.scaleX(75));
         selectionMarkImage.setPreserveRatio(true);
-        selectionMarkImage.setVisible(false); // по умолчанию скрыт
+        selectionMarkImage.setVisible(false); // hidden by default
 
         // StackPane leftPanel = new StackPane();
         //      leftPanel.getChildren().addAll(lefthighlightRegion, selectionMarkImage, buttonBox);
@@ -114,7 +114,7 @@ public class SettingBox {
         lefthighlightRegion.setLayoutX(0);
         lefthighlightRegion.setLayoutY(0);
         buttonBox.setLayoutX(0);
-        buttonBox.setLayoutY(0); // или сколько надо по смещению
+        buttonBox.setLayoutY(0);
 
 
         leftPanel.getChildren().addAll(lefthighlightRegion, buttonBox, selectionMarkImage);
@@ -173,7 +173,7 @@ public class SettingBox {
         // UI Settings Panel
         uiLabel = new GlowingLabel(
                 localization.get("setting.box.ui.placeholder"));
-        VBox.setMargin(uiLabel, new Insets(0, 0, UiScaleHelper.scaleY(10), 0)); // нижний отступ = 30
+        VBox.setMargin(uiLabel, new Insets(0, 0, UiScaleHelper.scaleY(10), 0)); // 
         uilabelFLASH = new GlowingLabel(
                 localization.get("setting.box.ui.flash")
         );
@@ -210,17 +210,17 @@ public class SettingBox {
                 localization.get("setting.box.ui.backgroundBlur"),
                 SettingsManager.loadCheckboxState(SettingsManager.BLUR_KEY, true)
         );
-        // Для дымки:
+        // For background blur:
         backgroundLightCheckBox.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
             background.blurredLights.setVisible(newVal);
         });
 
-// Для шиммеров:
+        // For shimmers:
         shimmerRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
             background.shimmerContainer.setVisible(newVal);
         });
 
-// Для свечения таблицы:
+        // For table lighting:
         tableLightCheckBox.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
             borderTable.setTableLightingVisible(newVal);
         });
@@ -229,7 +229,7 @@ public class SettingBox {
             background.setFlashAlpha(SettingsManager.DEFAULT_FLASH_ALPHA);
             background.setGridAlpha(SettingsManager.DEFAULT_GRID_ALPHA);
             background.setPointAlpha(SettingsManager.DEFAULT_POINT_ALPHA);
-            sliderFlash.setValue(33); // Если хочешь тоже по дефолту — смотри пункт 3!
+            sliderFlash.setValue(33); // If you want default values — see point 3
             slideGRIDE.setValue(1);
             sliderPoint.setValue(8);
             tableLightCheckBox.getCheckBox().setSelected(SettingsManager.DEFAULT_TABLE_LIGHTING);
@@ -256,12 +256,12 @@ public class SettingBox {
                 slideGRIDE, backgroundLightCheckBox, tableLightCheckBox, shimmerRow, uiDEFAUTBUTTON, saveButton);
         uiBox.setAlignment(Pos.TOP_CENTER);
         Pane uiView = new StackPane(uiBox);
-        // About Autor
+            // About Author
 
         otherDescrption = new GlowingLabel(
                 localization.get("setting.box.other.description"));
-        VBox.setMargin(otherDescrption, new Insets(0, 0, UiScaleHelper.scaleY(10), 0)); // нижний отступ = 30
-        otherDescrption.setWrapText(true); // Включить перенос строк
+        VBox.setMargin(otherDescrption, new Insets(0, 0, UiScaleHelper.scaleY(10), 0)); // 
+        otherDescrption.setWrapText(true); // Enable text wrapping
         otherDescrption.setPrefSize(UiScaleHelper.scaleX(260),UiScaleHelper.scaleY(100));
         discordURL = new CustomAlternativeButton(
                 localization.get("setting.box.other.join"),
@@ -278,12 +278,12 @@ public class SettingBox {
         OtherBox.setAlignment(Pos.TOP_CENTER);
         Pane OtherView = new StackPane(OtherBox);
 
-        // Панели по карте
+        // Panels mapped by index
         Map<Integer, Pane> viewMap = new HashMap<>();
         viewMap.put(0, languageView);
         viewMap.put(1, uiView);
         viewMap.put(4, OtherView);
-        // Настройка панели справа
+        // Configure right panel
         languageView.setVisible(false);
         uiView.setVisible(false);
         OtherView.setVisible(false);
@@ -296,7 +296,7 @@ public class SettingBox {
         rightPanel.setAlignment(Pos.TOP_CENTER);
         rightPanel.setPadding(new Insets(10));
         StackPane.setMargin(lefthighlightRegion, new Insets(0, -UiScaleHelper.scaleX(16), 0, 0));
-        // Кнопки
+        // Menu buttons
         String[] keys = {
                 localization.get("setting.box.language"),
                 localization.get("setting.box.ui"),
@@ -401,8 +401,8 @@ public class SettingBox {
             buttonBox.getChildren().add(menuButtons[i]);
         }
 
-        // Сборка финального интерфейса
-        HBox contentLayout = new HBox(0, leftPanel, rightPanel); // убрали spacing
+        // 
+        HBox contentLayout = new HBox(0, leftPanel, rightPanel); // 
         contentLayout.setAlignment(Pos.TOP_LEFT);
         contentLayout.setPadding(new Insets(
                 UiScaleHelper.scaleY(20),
@@ -468,7 +468,7 @@ public class SettingBox {
             backgroundLightCheckBox.setLabel(localization.get("setting.box.ui.backgroundBlur"));
         }
 
-        // Обновим названия кнопок в меню слева
+        // Update left menu button labels
         if (menuButtons != null) {
             String[] keys = {
                     localization.get("setting.box.language"),

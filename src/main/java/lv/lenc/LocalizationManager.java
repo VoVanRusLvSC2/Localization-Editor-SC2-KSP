@@ -10,7 +10,7 @@ public class LocalizationManager {
     public LocalizationManager(String languageCode) {
         this.currentLanguageCode = languageCode;
         Locale locale = new Locale(languageCode);
-        bundle = ResourceBundle.getBundle("messages", locale); // "messages" - имя файла без расширения
+        bundle = ResourceBundle.getBundle("messages", locale); // "messages" is the base bundle name (no extension)
     }
 
     public String getCurrentLanguage() {

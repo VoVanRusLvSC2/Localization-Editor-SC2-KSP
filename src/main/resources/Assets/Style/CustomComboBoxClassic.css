@@ -213,7 +213,7 @@
     -fx-opacity: 0;
     -fx-padding: 0;
 }
-/* Убрать зарезервированное место под скроллбар в popup ComboBox */
+
 .combo-box-popup > .list-view > .virtual-flow > .scroll-bar:vertical {
     -fx-pref-width: 0;
     -fx-min-width: 0;
@@ -228,7 +228,7 @@
     -fx-padding: 0;
 }
 
-/* На всякий — если “полоска” это corner между скроллами */
+
 .combo-box-popup .corner {
     -fx-pref-width: 0;
     -fx-min-width: 0;

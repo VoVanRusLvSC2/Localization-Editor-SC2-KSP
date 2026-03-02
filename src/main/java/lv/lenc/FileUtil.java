@@ -27,7 +27,7 @@ public class FileUtil {
         try {
           //  System.out.println("Len1: " + fileSelected.getAbsolutePath());
 
-            // Безопасно поднимаемся на 3 уровня вверх
+            // Safely go up 3 directory levels
             File parent = fileSelected.getParentFile();
             if (parent != null) parent = parent.getParentFile();
             if (parent != null) parent = parent.getParentFile();
@@ -42,10 +42,10 @@ public class FileUtil {
                     System.out.println(">" + filtered);
                     return filtered;
                 } else {
-                    System.out.println("В родительской директории нет файлов или она недоступна.");
+                    System.out.println("No files found in parent directory or directory is inaccessible.");
                 }
             } else {
-                System.out.println("Родительская директория на 3 уровня выше не существует.");
+                System.out.println("Parent directory three levels up does not exist.");
             }
         } catch (Exception e2) {
             e2.printStackTrace();
@@ -99,12 +99,12 @@ public class FileUtil {
 //        if (FileUtil.hasLocaleDirs(selected)) {
 //            Map<String, File> files2 = FileUtil.listDirsByMask(selected).stream() // Get into SC2Map
 //                    .map(d -> FileUtil.listFilesByMask(d, selected.getName())) // GET language Folder
-//                    .flatMap(m -> m.entrySet().stream()) //Преобразуем Map-ы в поток пар (язык, файл)
+//                    .flatMap(m -> m.entrySet().stream()) //
 //                    .collect(
 //                            java.util.stream.Collectors.toMap(
-//                                    Map.Entry::getKey,   // язык (ruRU, enUS и т.д.)
-//                                    Map.Entry::getValue, // файл File
-//                                    (v1, v2) -> v1       // если дубли — берём первый найденный
+//                                    Map.Entry::getKey,   // 
+//                                    Map.Entry::getValue, //
+//                                    (v1, v2) -> v1       //
 //                            )
 //                    );
 //            tableView.loadLanguagesToTable(files2); // [NAME FOLDER]:[FILE] -> File key:value into table
@@ -115,7 +115,7 @@ public class FileUtil {
 public static boolean loadSelectedFile2(File fileSelected, CustomTableView tableView) {
     if (fileSelected == null || !fileSelected.exists()) return false;
 
-    // 0) чистим таблицу (FX thread)
+    //
     if (Platform.isFxApplicationThread()) {
         tableView.getItems().clear();
         tableView.refresh();
@@ -126,7 +126,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         });
     }
 
-    // 1) root вида .../xxXX.SC2Data
+    // 1) root  .../xxXX.SC2Data
     Optional<File> rootOpt = findLocaleRoot(fileSelected);
     if (rootOpt.isEmpty()) {
         tableView.loadLanguagesToTable(fileSelected);
@@ -134,15 +134,15 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
     }
 
     File localeRoot   = rootOpt.get();               // .../koKR.SC2Data
-    File projectRoot  = localeRoot.getParentFile();  // где лежат все *.SC2Data
+    File projectRoot  = localeRoot.getParentFile();  // 
 
-    // 2) все соседние *.SC2Data / *.sc2data (любой регистр)
+    // 2*.SC2Data / *.sc2data ()
     File[] dirs = projectRoot.listFiles(f ->
             f.isDirectory() && f.getName().matches("(?i)[a-z]{4}\\.sc2data.*")
     );
     if (dirs == null || dirs.length == 0) return false;
 
-    // 3) найдём папку LocalizedData в пути выбранного файла
+    // 3)LocalizedData
     File cur = fileSelected;
     File selectedLocalizedDir = null;
     while (cur != null) {
@@ -153,17 +153,17 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         cur = cur.getParentFile();
     }
 
-    // 4) относительный путь внутри LocalizedData (важно для подпапок)
+    // 4) Relation path LocalizedData
     String relPath;
     if (selectedLocalizedDir != null) {
         Path base = selectedLocalizedDir.toPath();
         relPath = base.relativize(fileSelected.toPath()).toString();
     } else {
-        // fallback (если файл вообще не под LocalizedData)
+        // fallback
         relPath = fileSelected.getName();
     }
 
-    // 5) собираем ВСЕ языки, даже если файла нет (будет null/пусто)
+    // 5) get all language
     Map<String, File> langFiles = new LinkedHashMap<>();
     for (File d : dirs) {
         String langCode = normalizeLocale(d.getName().substring(0, 4));
@@ -174,7 +174,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         langFiles.put(langCode, langFile.isFile() ? langFile : null);
     }
 
-    // если вообще ни одного языка не нашли — fallback на одиночное
+    //  fallback
     if (langFiles.isEmpty()) {
         tableView.loadLanguagesToTable(fileSelected);
         return !tableView.getItems().isEmpty();
@@ -219,32 +219,32 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
 
         final Path srcPath = originalFile.getAbsoluteFile().toPath();
 
-        // 1) Мульти-локальная структура
+        // 1) Multi
         Optional<File> maybeRoot = findLocaleRoot(originalFile);
         if (maybeRoot.isPresent()) {
-            File srcRoot = maybeRoot.get();                   // напр. ruRU.SC2Data
-            File projectRoot = srcRoot.getParentFile();       // родитель над ruRU.SC2Data
+            File srcRoot = maybeRoot.get();                   //  ruRU.SC2Data
+            File projectRoot = srcRoot.getParentFile();       //  ruRU.SC2Data
             if (projectRoot == null) projectRoot = srcRoot.getAbsoluteFile().getParentFile();
 
             File targetRoot = new File(projectRoot, targetLocale + ".SC2Data");
             File targetLoc  = new File(targetRoot, LOCALIZED_DATA);
 
-            // относительный путь от LocalizedData до файла
+            // relative path LocalizedData to file
             File localizedData = new File(srcRoot, LOCALIZED_DATA);
             Path rel = localizedData.toPath().relativize(srcPath);
             File targetFile = new File(targetLoc, rel.toString());
 
-            // если вдруг совпало с исходником — добавим суффикс
+            //
             if (targetFile.getAbsoluteFile().toPath().equals(srcPath)) {
                 targetFile = withLocaleSuffixSibling(originalFile, targetLocale);
             }
 
-            // создаём директории
+            //
             Files.createDirectories(targetFile.getParentFile().toPath());
             return targetFile;
         }
 
-        // 2) Обычная структура — рядом с исходником, добавив .<ll> перед расширением
+        // 2) .<ll>
         return withLocaleSuffixSibling(originalFile, targetLocale);
     }
 
@@ -262,7 +262,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         Path dir = targetPath.getParent();
         if (dir != null) Files.createDirectories(dir);
 
-        // Бэкап, если уже есть файл
+        // backUP
         if (Files.exists(targetPath)) {
             Path bak = targetPath.resolveSibling(target.getName() + ".bak");
             try {
@@ -271,7 +271,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
             } catch (Exception ignored) { /* не критично */ }
         }
 
-        // Пишем во временный и атомарно переносим
+        // write
         Path tmp = Files.createTempFile(dir, target.getName(), ".tmp");
         Files.write(tmp, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING);
         Files.move(tmp, targetPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);

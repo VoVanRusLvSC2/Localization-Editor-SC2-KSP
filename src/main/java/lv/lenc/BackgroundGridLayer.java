@@ -14,12 +14,12 @@ import javafx.scene.image.PixelWriter;
 import java.util.Arrays;
 
 public class BackgroundGridLayer extends Pane {
-    public final Pane gridLayer = new Pane();   // Слой для клеточек
-    public final Pane pointLayer = new Pane();  // Слой для точек
+    public final Pane gridLayer = new Pane();   // Layer for grid tiles
+    public final Pane pointLayer = new Pane();  // Layer for point grid
     public final Pane shimmerContainer = new Pane();
     private ImageView swipe;
-    public ImageView blurredLights; // Дымка-слой
-    private final double TILE_WIDTH = 51;  // Тут размеры PNG, можно оставить
+    public ImageView blurredLights; // Fog / blurred lights layer
+    private final double TILE_WIDTH = 51;  // 
     private final double TILE_HEIGHT = 96;
 
     private final double sw = UiScaleHelper.SCREEN_WIDTH;
@@ -136,12 +136,12 @@ public class BackgroundGridLayer extends Pane {
         double centerY = sh / 2;
         double shimmerHeight = UiScaleHelper.scaleY(2700); // 2.5 * 1080
         double shimmerWidth = UiScaleHelper.scaleX(3000);  // 1.5625 * 1920
-        // Вертикальные shimmer
+            // Vertical shimmer strips
         for (int i = 0; i < verticalOffsets.length; i++) {
             ShimmerStrip strip = new ShimmerStrip(
                     maskPath, shimmerPathVertical,
                     TILE_WIDTH,         // 51px
-                    shimmerHeight,           // 2700/1080 = 2.5 (если хочешь более адаптивно - умножай)
+                    shimmerHeight,           // 2700/1080 = 2.5
                     ShimmerStrip.Direction.VERTICAL,
                     verticalUp[i],
                     verticalDelays[i],
@@ -154,7 +154,7 @@ public class BackgroundGridLayer extends Pane {
             shimmerContainer.getChildren().add(strip);
         }
 
-        // Горизонтальные shimmer
+        // Horizontal shimmer
         for (int i = 0; i < horizontalOffsets.length; i++) {
 
             ShimmerStrip strip = new ShimmerStrip(
@@ -209,7 +209,7 @@ public class BackgroundGridLayer extends Pane {
                 gridLayer,
                 "/Assets/Textures/ui_nova_storymode_bggrid.png",
                 Color.rgb(0, 255, 168), // #00FFA8
-                00.25 // Альфа = 0.066
+                00.25 // Alpha value
         );
     }
     public void showPoints() {
@@ -217,7 +217,7 @@ public class BackgroundGridLayer extends Pane {
                 pointLayer,
                 "/Assets/Textures/ui_nova_storymode_bgpointgrid.png",
                 Color.rgb(40, 101, 103), // #286567
-                0.25 // Альфа = 1.0, как в SC2
+                0.25 // Alpha value
         );
     }
     private void fillLayer(Pane targetLayer, String texturePath, Color baseColor, double alpha) {

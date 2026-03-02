@@ -13,6 +13,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.converter.DefaultStringConverter;
 
 import java.io.File;
@@ -77,13 +79,14 @@ public class CustomTableView extends TableView<LocalizationData> {
         countColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(getItems().indexOf(cellData.getValue()) + 1))
         );
+// Disable default grid lines (removes white horizontal and vertical lines)
 
         TableColumn<LocalizationData, String> keyColumn = new TableColumn<>("key");
         keyColumn.setCellValueFactory(new PropertyValueFactory<>("key"));
 
         TableColumn<LocalizationData, String> ruRUColumn = new TableColumn<>("ruRU");
         ruRUColumn.setCellValueFactory(new PropertyValueFactory<>("ruRu"));
-        // ─── немецкий ───
+        // ─── German ───
         TableColumn<LocalizationData, String> deDEColumn = new TableColumn<>("deDE");
         deDEColumn.setCellValueFactory(new PropertyValueFactory<>("deDE"));
 
@@ -142,6 +145,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         this.enableHeaderColumnSelectionHighlighting();
         Label placeholderLabel = new Label(localization.get("table.placeholder"));
         this.setPlaceholder(placeholderLabel);
+        this.setFixedCellSize(UiScaleHelper.scaleY(52));
         // edit
         applyCustomCellStyleToAllColumns();
         removeScrollCorner();
@@ -159,10 +163,10 @@ public class CustomTableView extends TableView<LocalizationData> {
                 setText(item);
                 if (!getStyleClass().contains("col-n")) getStyleClass().add("col-n");
                 setStyle(""); //
-                setFont(javafx.scene.text.Font.font(
+                setFont(Font.font(
                         getFont().getFamily(),
-                        javafx.scene.text.FontWeight.BOLD,
-                        scaledFontPx(14)
+                        FontWeight.BOLD,
+                        getFont().getSize()
                 ));
             }
         });
@@ -180,16 +184,16 @@ public class CustomTableView extends TableView<LocalizationData> {
                 setText(item);
                 if (!getStyleClass().contains("col-key")) getStyleClass().add("col-key");
                 setStyle("");
-                setFont(javafx.scene.text.Font.font(
+                setFont(Font.font(
                         getFont().getFamily(),
-                        javafx.scene.text.FontWeight.BOLD,
-                        scaledFontPx(14)
+                        FontWeight.BOLD,
+                        getFont().getSize()
                 ));
             }
         });
     }
     private void captureBaseColumnWidths() {
-        // берем любую языковую колонку как эталон (например ruRU)
+        // 
         TableColumn<LocalizationData, ?> sampleLang = getColumns().stream()
                 .filter(c -> SUPPORTED_LANGS.contains(c.getText()))
                 .findFirst()
@@ -251,13 +255,13 @@ public class CustomTableView extends TableView<LocalizationData> {
             }
 
             if (SUPPORTED_LANGS.contains(name)) {
-                // увеличиваем ТОЛЬКО для видимых колонок
+                // 
                 if (col.isVisible() && singleMode) {
                     col.setMinWidth(baseLangMinW * mult);
                     col.setPrefWidth(baseLangPrefW * mult);
                     col.setMaxWidth(baseLangMaxW);
                 } else {
-                    // возвращаем стандарт
+                    // 
                     col.setMinWidth(baseLangMinW);
                     col.setPrefWidth(baseLangPrefW);
                     col.setMaxWidth(baseLangMaxW);
@@ -284,7 +288,7 @@ public class CustomTableView extends TableView<LocalizationData> {
     }
 
 
-    // Объяви это поле внутри твоего класса
+    // 
     private void applyCustomCellStyleToAllColumns() {
         String headerTextureNormal = "ui_nova_archives_listitem_normal.png";
         String headerTextureOver = "ui_nova_archives_listitem_over.png";
@@ -307,7 +311,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                 private boolean isEditing = false;
 
                 {
-                    // добавляем ховер-эффект для ячейки
+                    // 
                     this.setOnMouseEntered(event -> {
                         isHovered = true;
                         updateCellStyle();
@@ -317,32 +321,44 @@ public class CustomTableView extends TableView<LocalizationData> {
                         updateCellStyle();
                     });
                 }
-
+                private String styleWithTexture(String rowBg, String textureUrl) {
+                    // Layout metrics MUST be identical for normal/hover/selected/editing
+                    return ""
+                            + "-fx-background-color: " + rowBg + ";"
+                            + "-fx-background-insets: 0;"
+                            + "-fx-padding: 0.25em 0.4em;"
+                            + "-fx-alignment: center;"
+                            + "-fx-border-insets: 0;"
+                            + "-fx-border-color: transparent;"
+                            + "-fx-border-image-slice: 12 fill;"
+                            + "-fx-border-image-width: 0.3em;"
+                            + "-fx-border-image-insets: 0;"
+                            + "-fx-border-image-repeat: stretch;"
+                            + "-fx-border-image-source: url('" + textureUrl + "');";
+                            //+ "-fx-font-weight: bold;";
+                }
                 private void updateCellStyle() {
                     int rowIndex = getIndex();
                     String rowBg = (rowIndex % 2 == 0) ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.6)";
-                    String baseTexture = texturePath + "ui_nova_archives_listitem_normal.png";
-                    String hoverTexture = texturePath + "ui_nova_archives_listitem_over.png";
-                    String selectedTexture = texturePath + "ui_nova_archives_listitem_selected.png";
 
-                    String styleBase = "-fx-background-color: " + rowBg + ";" +
-                            "-fx-border-image-source: url('" + baseTexture + "');" +
-                            "-fx-text-fill: #80d2a2;" +
-                            "-fx-font-weight: bold;";
+                    String base = texturePath + "ui_nova_archives_listitem_normal.png";
+                    String over = texturePath + "ui_nova_archives_listitem_over.png";
+                    String sel  = texturePath + "ui_nova_archives_listitem_selected.png";
+
+                    String tex = base;
+                    String textColor = "#80d2a2";
 
                     if (isEditing || isSelected) {
-                        setStyle(styleBase.replace(baseTexture, selectedTexture)
-                                + "-fx-text-fill: white;"
-                                + "-fx-font-weight: bold;"
-                        );
+                        tex = sel;
+                        textColor = "white";
                     } else if (isHovered) {
-                        setStyle(styleBase.replace(baseTexture, hoverTexture)
-                                + "-fx-text-fill: #b0ffd4;"
-                                + "-fx-font-weight: bold;"
-                        );
-                    } else {
-                        setStyle(styleBase);
+                        tex = over;
+                        textColor = "#b0ffd4";
                     }
+
+                    setStyle(styleWithTexture(rowBg, tex)
+                            + "-fx-text-fill: " + textColor + ";"
+                            + "-fx-font-weight: bold;");
                 }
 
                 @Override
@@ -357,10 +373,13 @@ public class CustomTableView extends TableView<LocalizationData> {
                         int rowIndex = getIndex();
                         String rowBg = (rowIndex % 2 == 0) ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.6)";
 
-                        String styleBase = "-fx-background-color: " + rowBg + ";" +
-                                "-fx-border-image-source: url('" + fullTexturePathNormal + "');"; // по умолчанию
+                        String styleBase =
+                                "-fx-background-color: " + rowBg + ";" +
+                                        "-fx-border-image-source: url('" + fullTexturePathNormal + "');" +
+                                        "-fx-font-weight: bold;" +
+                                        "-fx-text-fill: #80d2a2;";
 
-                        // потом меняем в зависимости от состояния
+                        //
                         if (isEditing || isSelected) {
                             setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathSelected));
                         } else if (isHovered) {
@@ -400,7 +419,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                     super.startEdit();
                     isEditing = true;
 
-                    // Обязательно: при старте редактирования делаем стиль жирный!
+                    // 
                     if (getGraphic() instanceof TextField textField) {
                         textField.getStyleClass().add("table-textfield-editing");
 
@@ -416,9 +435,9 @@ public class CustomTableView extends TableView<LocalizationData> {
                     super.commitEdit(newValue);
                     isEditing = false;
                     setTextFill(Color.web("#80d2a2"));
-                    setFont(javafx.scene.text.Font.font(
+                    setFont(Font.font(
                             getFont().getFamily(),
-                            javafx.scene.text.FontWeight.BOLD,
+                            FontWeight.BOLD,
                             getFont().getSize()
                     ));
 
@@ -452,9 +471,9 @@ public class CustomTableView extends TableView<LocalizationData> {
         Platform.runLater(() -> {
             Parent header = (Parent) tableview.lookup("TableHeaderRow");
             if (header == null) {
-                //    System.out.println("TableHeaderRow всё ещё не найден.");
+                //    System.out.println("TableHeaderRow 
             } else {
-                //      System.out.println("Нашли TableHeaderRow!");
+                //      System.out.println("
 
                 ImageView sortIcon = new ImageView(new Image(
                         getClass().getResource("/Assets/Textures/ui_battlenet_glues_greenbuttons_alternate_largedisabled_ONE_UPSCALE_APS.png").toExternalForm()
@@ -503,9 +522,9 @@ public class CustomTableView extends TableView<LocalizationData> {
         }
         Set<String> columnsToHighlight = ConcurrentHashMap.newKeySet();
 
-        Map<String, Map<String, String>> perLang = langFiles.entrySet() // Ruru - KEY:VALUE
+        Map<String, Map<String, String>> perLang = langFiles.entrySet() // Map: langCode -> (KEY:VALUE)
                 .parallelStream() // threaded
-                .filter(entry -> entry.getValue() != null && entry.getValue().exists()) // если есть файл то...
+                .filter(entry -> entry.getValue() != null && entry.getValue().exists()) //
                 .collect(Collectors.toConcurrentMap(
                         // MAP/KEY - RURU -> value GameString.txt
                         entry -> entry.getKey(), // Name Package
@@ -526,21 +545,21 @@ public class CustomTableView extends TableView<LocalizationData> {
                             if (!entry.getKey().equalsIgnoreCase(detectedLang)) {
                                 columnsToHighlight.add(entry.getKey());
                             }
-                            return keyValueMap; // (ruRU): ("HELLO" -> "Привет"),
+                            return keyValueMap; // (ruRU): ("HELLO" -> "
                         }
                 ));
         //Table
-        Set<String> allKeys = perLang.values().stream() // Берем значение самого файла HELLO -> привет
-                .flatMap(m -> m.keySet().stream())// множество ключей(из разных файлов) -> новый поток
-                .collect(Collectors.toCollection(LinkedHashSet::new));// хранит ключи в порядке и без повторения
+        Set<String> allKeys = perLang.values().stream() // // Take all keys from loaded language maps
+                .flatMap(m -> m.keySet().stream())//
+                .collect(Collectors.toCollection(LinkedHashSet::new));//
 
-        ObservableList<LocalizationData> rows = FXCollections.observableArrayList(); // Динамический список
+        ObservableList<LocalizationData> rows = FXCollections.observableArrayList(); //
         // Add to table
-        for (String key : allKeys) { // Перебираем все уникальные ключи в файле
-            LocalizationData id = new LocalizationData(key); // Создаём объект строки таблицы с этим ключом
-            for (String code : perLang.keySet()) { // Для каждого языка (например, "ruRU", "enUS", ...)
-                String val = perLang.get(code).get(key); // берем ключь -> RuRU(code)->PARRAM/VALUE03=Привет Мир(key) (может быть null)
-                String norm = normalizeUi(code); // "ptbr" -> "ptBR", "zhcn" -> "zhCN" и т.д.
+        for (String key : allKeys) { // Iterate over all unique keys
+            LocalizationData id = new LocalizationData(key); //
+            for (String code : perLang.keySet()) { // // For each language (e.g. "ruRU", "enUS", ...)
+                String val = perLang.get(code).get(key); // // get value by key for this language
+                String norm = normalizeUi(code); // "ptbr" -> "ptBR", "zhcn"
                 switch (norm) {
                     case "ruRU" -> id.setRuRu(val);
                     case "deDE" -> id.setDeDe(val);
@@ -560,7 +579,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             System.out.println("Loaded codes: " + perLang.keySet());
             rows.add(id);
         }
-        setItems(rows); // устанавливает список данных в таблицу
+        setItems(rows); // set data into table
         Platform.runLater(this::refresh);
         for (String lang : columnsToHighlight) {
             highlightColumn(lang);
@@ -581,13 +600,13 @@ public class CustomTableView extends TableView<LocalizationData> {
         }
         if (fileText == null) return;
 
-        // Детектируем язык по содержимому
+        //
         Map<String, String> keyValueMap = parseKeyValue(fileText);
         List<String> values = new ArrayList<>(keyValueMap.values());
 
         String detectedLang = detectLanguage(values);
         // highlightColumn(detectedLang);
-        // Формируем строку для одной колонки (detectedLang)
+        // (detectedLang)
         ObservableList<LocalizationData> rows = FXCollections.observableArrayList();
         BiConsumer<LocalizationData, String> setter;
         switch (detectedLang) {
@@ -610,12 +629,12 @@ public class CustomTableView extends TableView<LocalizationData> {
         currentSourceUi = detectedLang;
         for (Map.Entry<String, String> entry : keyValueMap.entrySet()) {
             LocalizationData data = new LocalizationData(entry.getKey());
-            setter.accept(data, entry.getValue()); // установка ячейку "data" -> data.setRuRu(entry.getValue());
+            setter.accept(data, entry.getValue()); // "data" -> data.setRuRu(entry.getValue());
             rows.add(data);
         }
-        setItems(rows); // добаляем в таблицу
+        setItems(rows);
         Platform.runLater(this::refresh);
-        highlightColumn(detectedLang); // Подсветить определённую колонку
+        highlightColumn(detectedLang); // Highlight detected column
 
     }
 
@@ -626,8 +645,8 @@ public class CustomTableView extends TableView<LocalizationData> {
                 .collect(Collectors.toMap(
                         parts -> parts[0],
                         parts -> parts[1],
-                        (a, b) -> a,                     // при дубликатах берём первый
-                        LinkedHashMap::new              // сохраняем порядок
+                        (a, b) -> a,                     // 
+                        LinkedHashMap::new              // 
                 ));
     }
 
@@ -640,11 +659,11 @@ public class CustomTableView extends TableView<LocalizationData> {
                         .orElse(null);
         if (col == null) return;
 
-        // Добавляем кастомный стиль к header
+        // 
         Platform.runLater(() -> {
             Node header = this.lookup(".column-header[data-column-index='" + this.getColumns().indexOf(col) + "']");
             if (header != null) {
-                header.setStyle("-fx-background-color: rgba(255,140,0,0.18);"); // Оранжевый прозрачный
+                header.setStyle("-fx-background-color: rgba(255,140,0,0.18);"); // 
             }
         });
     }
@@ -680,7 +699,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         if (s == null) return false;
         s = s.trim();
         if (s.isEmpty()) return false;
-        return !s.equalsIgnoreCase("null"); // если где-то null приходит строкой
+        return !s.equalsIgnoreCase("null"); // if "null" comes as a literal string
     }
     public String getMainSourceLang() {
         Map<String, Integer> langCounts = new HashMap<>();
@@ -721,7 +740,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             default -> null;
         };
     }
-    // translate
+    // translation logic
     private void setValueForLang(LocalizationData d, String lang, String value) {
         switch (lang) {
             case "ruRU" -> d.setRuRu(value);
@@ -764,12 +783,12 @@ public class CustomTableView extends TableView<LocalizationData> {
         final java.util.function.BooleanSupplier stop = () ->
                 cancelledFinal.getAsBoolean() || Thread.currentThread().isInterrupted();
 
-        // 1) источник (ui)
+        // 1) source  (ui)
         String sourceUi = (sourceLang != null && !sourceLang.isBlank())
                 ? sourceLang
                 : getMainSourceLang();
 
-        // 2) тексты источника
+        // 2) text source
         java.util.List<String> texts = getColumnValues(sourceUi);
         boolean hasAny = texts.stream().anyMatch(s -> s != null && !s.isBlank());
         if (!hasAny) {
@@ -777,7 +796,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             return;
         }
 
-        // 3) цели: UI -> ISO, один ISO может соответствовать нескольким UI (esMX/esES -> es)
+        // 3) goal: UI -> ISO,  UI (esMX/esES -> es)
         java.util.List<String> targetsUi = getTargetColumnsExcluding(sourceUi);
 
         java.util.Map<String, java.util.List<String>> isoToUis = new java.util.LinkedHashMap<>();
@@ -794,24 +813,23 @@ public class CustomTableView extends TableView<LocalizationData> {
             return;
         }
 
-        // 4) ISO источника
+        // 4) ISO source
         String sourceIso = toApiLang(sourceUi);
         if (sourceIso == null || sourceIso.isBlank() || "auto".equalsIgnoreCase(sourceIso)) {
             sourceIso = "en";
         }
 
-        // 5) перевод на все ISO
+        // 5) translate to all ISO
         try {
             if (stop.getAsBoolean()) return;
 
-            // ВАЖНО: должен вызываться translateAll, который переводит ВСЕ targetsIso,
-            // а не только targetsIso.get(0)
+
             java.util.Map<String, java.util.List<String>> byIso =
                     lv.lenc.TranslationService.translateAll(texts, sourceIso, targetsIso);
 
             if (stop.getAsBoolean()) return;
 
-            // 6) разложить по UI-колонкам
+            // 6)
             for (var e : byIso.entrySet()) {
                 if (stop.getAsBoolean()) return;
 
@@ -846,12 +864,12 @@ public class CustomTableView extends TableView<LocalizationData> {
         final java.util.function.BooleanSupplier stop = () ->
                 cancelledFinal.getAsBoolean() || Thread.currentThread().isInterrupted();
 
-        // 1) источник (UI)
+
         String sourceUi = (sourceLang != null && !sourceLang.isBlank())
                 ? sourceLang
                 : getMainSourceLang();
 
-        // 2) тексты источника
+
         java.util.List<String> texts = getColumnValues(sourceUi);
         boolean hasAny = texts.stream().anyMatch(s -> s != null && !s.isBlank());
         if (!hasAny) {
@@ -859,18 +877,15 @@ public class CustomTableView extends TableView<LocalizationData> {
             return;
         }
 
-        // 3) цели UI (в порядке таблицы!)
-        // ВАЖНО: твой getTargetColumnsExcluding сейчас берёт SUPPORTED_LANGS.stream().toList()
-        // у Set порядок не гарантируется. Поэтому фиксируем порядок вручную:
         final java.util.List<String> targetsUi = java.util.List.of(
                         "ruRU","deDE","enUS","esMX","esES","frFR","itIT","plPL","ptBR","koKR","zhCN","zhTW"
                 ).stream()
                 .filter(ui -> !ui.equalsIgnoreCase(sourceUi))
                 .toList();
 
-        final int totalUiTargets = targetsUi.size(); // сколько UI-колонок заполняем
+        final int totalUiTargets = targetsUi.size();
 
-        // 4) ISO-цели + карта iso -> ui[]
+
         final java.util.Map<String, java.util.List<String>> isoToUis = new java.util.LinkedHashMap<>();
         for (String ui : targetsUi) {
             if (stop.getAsBoolean()) return;
@@ -881,7 +896,6 @@ public class CustomTableView extends TableView<LocalizationData> {
             isoToUis.computeIfAbsent(iso, k -> new java.util.ArrayList<>()).add(ui);
         }
 
-        // порядок ISO делаем по порядку UI-колонок
         final java.util.List<String> targetsIso = new java.util.ArrayList<>();
         {
             java.util.Set<String> added = new java.util.HashSet<>();
@@ -897,19 +911,18 @@ public class CustomTableView extends TableView<LocalizationData> {
             return;
         }
 
-        // 5) ISO источника
+
         String sourceIso = toApiLang(sourceUi);
         if (sourceIso == null || sourceIso.isBlank() || "auto".equalsIgnoreCase(sourceIso)) {
             sourceIso = "en";
         }
 
-        // iso -> "ui для показа" (первый из группы)
+
         final java.util.Map<String, String> isoToShowUi = new java.util.HashMap<>();
         for (var e : isoToUis.entrySet()) {
             if (!e.getValue().isEmpty()) isoToShowUi.put(e.getKey(), e.getValue().get(0));
         }
 
-        // 6) переводим ВСЕ ISO с прогрессом
         try {
             java.util.Map<String, java.util.List<String>> byIso =
                     lv.lenc.TranslationService.translateAll(
@@ -920,15 +933,15 @@ public class CustomTableView extends TableView<LocalizationData> {
                             (all01, msg) -> {
                                 if (progress == null) return;
 
-                                // определяем "какой сейчас ISO" по all01
+                                //
                                 int isoCount = Math.max(1, targetsIso.size());
                                 int isoIndex = Math.min(isoCount - 1, (int) Math.floor(all01 * isoCount));
                                 String curIso = targetsIso.get(Math.max(0, isoIndex));
 
-                                // показываем UI-цель, а не iso
+                                //
                                 String tgtUiShow = isoToShowUi.getOrDefault(curIso, curIso);
 
-                                // номер UI-колонки (k/total) по targetsUi (который в порядке таблицы)
+                                //
                                 int k = 1;
                                 for (int i = 0; i < targetsUi.size(); i++) {
                                     if (targetsUi.get(i).equalsIgnoreCase(tgtUiShow)) {
@@ -946,7 +959,7 @@ public class CustomTableView extends TableView<LocalizationData> {
 
             if (stop.getAsBoolean()) return;
 
-            // 7) разложить по UI-колонкам
+            //
             for (var e : byIso.entrySet()) {
                 if (stop.getAsBoolean()) return;
 
@@ -964,7 +977,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             javafx.application.Platform.runLater(this::refresh);
 
         } catch (Exception ex) {
-            if (stop.getAsBoolean()) return; // отмена — молча
+            if (stop.getAsBoolean()) return; //
             System.err.println("[LT] translate failed: " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -972,13 +985,13 @@ public class CustomTableView extends TableView<LocalizationData> {
 
     private static String extractBatchLine(String msg) {
         if (msg == null) return "";
-        // ожидаем что где-то будет "batch x/y"
+        //
         int idx = msg.indexOf("batch");
         if (idx >= 0) return msg.substring(idx).trim();
         return "";
     }
 
-    // собрать все значения столбца (ui-код: "enUS", "ruRU"...)
+    // (ui-code: "enUS", "ruRU"...)
     private java.util.List<String> getColumnValues(String uiLang) {
         java.util.List<String> out = new java.util.ArrayList<>(getItems().size());
         for (LocalizationData row : getItems()) {
@@ -988,14 +1001,14 @@ public class CustomTableView extends TableView<LocalizationData> {
         return out;
     }
 
-    // целевые UI-столбцы: все поддерживаемые, кроме источника и "Key"/"N"
+    //
     private java.util.List<String> getTargetColumnsExcluding(String sourceUi) {
         return SUPPORTED_LANGS.stream()
                 .filter(l -> !l.equalsIgnoreCase(sourceUi))
                 .toList();
     }
 
-    // проставить целый столбец значений (values.size() == числу строк)
+    //
     private void setColumnValues(String uiLang, java.util.List<String> values) {
         var items = getItems();
         int n = Math.min(items.size(), values.size());
@@ -1018,7 +1031,7 @@ public class CustomTableView extends TableView<LocalizationData> {
 
         List<String> texts = getColumnValues(sourceUi);
 
-        // есть ли вообще что переводить
+        //
         boolean hasAny = texts.stream().anyMatch(s -> s != null && !s.isBlank());
         if (!hasAny) {
             System.err.println("[LT] nothing to translate in column " + sourceUi);
@@ -1031,7 +1044,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         if ("auto".equalsIgnoreCase(targetIso) || targetIso == null) return;
 
         try {
-            // переводим ТОЛЬКО в 1 язык
+            //
             Map<String, List<String>> byIso =
                     TranslationService.translateAll(texts, sourceIso, List.of(targetIso));
 
@@ -1044,7 +1057,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             }
 
         } catch (Exception ex) {
-            if (stop.getAsBoolean()) return; // отменили — молча
+            if (stop.getAsBoolean()) return; //
             System.err.println("[LT] translate failed: " + ex.getMessage());
             ex.printStackTrace();
         }
@@ -1059,7 +1072,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         final java.util.function.BooleanSupplier stop =
                 (cancelled != null) ? cancelled : () -> false;
 
-        // тексты из sourceUi
+        //
         java.util.List<String> texts = getColumnValues(sourceUi);
         boolean hasAny = texts.stream().anyMatch(s -> s != null && !s.isBlank());
         if (!hasAny) {
@@ -1075,7 +1088,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         if (targetIso == null || targetIso.isBlank() || "auto".equalsIgnoreCase(targetIso)) return;
 
         try {
-            // один язык: используем batched + progress
+            //
             java.util.List<String> out = lv.lenc.TranslationService.translatePreservingTagsBatched(
                     TranslationService.api,
                     texts,
@@ -1130,7 +1143,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             }
             requestLayout();
 
-            // после перестроения — стандартные ширины
+            //
             Platform.runLater(() -> applyColumnSizing(false));
         });
     }
@@ -1158,7 +1171,7 @@ public class CustomTableView extends TableView<LocalizationData> {
 
             requestLayout();
 
-            // после перестроения — увеличенные ширины (x5)
+            //
             Platform.runLater(() -> applyColumnSizing(true /* single mode */));
         });
     }
@@ -1187,7 +1200,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         return best;
     }
     private static double scaledFontPx(double basePx) {
-        // font лучше масштабировать мягко (не как scale() с округлениями)
+        //            // 6) 
         return UiScaleHelper.scaleY(basePx);
     }
 }

@@ -16,7 +16,7 @@ public class CustomSlider extends Slider {
     public CustomSlider(double min, double max, double value) {
         super(min, max, value);
 
-        // Было: setMaxWidth(scaleX(266)) — оставляем как базовый “текущий размер”
+        // Previously: setMaxWidth(scaleX(266)) — keep as base "current size"
         double width = UiScaleHelper.scaleX(266);
         setMaxWidth(width);
         setPrefWidth(width);
@@ -52,7 +52,7 @@ public class CustomSlider extends Slider {
         thumb.setPrefSize(thumbSize, thumbSize);
         thumb.setMaxSize(thumbSize, thumbSize);
 
-        // 2) Твой fill — но тоже полностью scaled
+        // 2) Custom fill — fully scaled as well
         fill.setHeight(UiScaleHelper.scaleY(4));
         fill.setFill(Color.web("#ffd98a"));
         fill.setManaged(false);
@@ -79,13 +79,13 @@ public class CustomSlider extends Slider {
         double trackStart = track.getLayoutX();
         double thumbLeft  = thumb.getLayoutX();
 
-        // Было: offset = 2 (НЕ scaled) — из-за этого на других масштабах “едет”
+        // Previously: offset = 2 (not scaled) — caused misalignment at different scales
         double offset = UiScaleHelper.scaleX(2);
 
         fill.setWidth(Math.max(0, thumbLeft - trackStart - offset));
         fill.setLayoutX(trackStart + offset);
 
-        // Центрируем по высоте дорожки
+        // Center vertically relative to track height
         fill.setLayoutY(track.getLayoutY() + (track.getHeight() - fill.getHeight()) / 2.0);
     }
 
@@ -93,7 +93,7 @@ public class CustomSlider extends Slider {
     protected void layoutChildren() {
         super.layoutChildren();
 
-        // Если скин/лейаут что-то пересчитал — fill должен быть на месте
+        // If skin/layout recalculated geometry — ensure fill stays aligned
         updateFill();
     }
 }

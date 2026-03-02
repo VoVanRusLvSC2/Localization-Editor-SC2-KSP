@@ -3,7 +3,7 @@ package lv.lenc;
 public class LocalizationData {
     private String key;
     private String ruRu = "";
-    private String deDE;   // <- новое поле
+    private String deDE;   // <- 
     private String enUs = "";
     private String esMx = "";
     private String esEs = "";
@@ -173,7 +173,7 @@ public class LocalizationData {
         if (v == null) return null;
         v = v.trim();
         if (v.isEmpty()) return null;
-        if (v.equalsIgnoreCase("null")) return null; // если "null" как текст
+        if (v.equalsIgnoreCase("null")) return null; // if "null" appears as literal text
         return v;
     }
     public String getKey() {

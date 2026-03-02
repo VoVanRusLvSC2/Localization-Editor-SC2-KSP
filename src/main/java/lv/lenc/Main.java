@@ -205,7 +205,7 @@ public class Main extends Application {
             System.out.println("ok=" + ok
                     + " translateDisabled=" + translate.isDisable()
                     + " chooseAllDisabled=" + translateChooseAll.isDisable());
-            // запомнили source после загрузки
+            // remember source after loading
             sourceUi = tableView.getCurrentSourceUi() != null
                     ? tableView.getCurrentSourceUi()
                     : tableView.getMainSourceLang();
@@ -225,7 +225,7 @@ public class Main extends Application {
 
                 if (tableView.isLastLoadWasMulti() && tableView.getLoadedUiLanguages().size() > 1) {
                     tableView.showAllColumns();
-                    sourceUi = tableView.getMainSourceLang();  // ← только это
+                    sourceUi = tableView.getMainSourceLang();  // only this
                 } else {
                     tableView.showOnly(sourceUi, languageDropdown.getValue());
                 }
@@ -264,7 +264,7 @@ public class Main extends Application {
         });
 
         quitButton.setOnAction(e -> {
-            boolean exitConfirmed = AlertBox.display(primaryStage, BoxAlertTitle, BoxAlertDescription, localization);
+            boolean exitConfirmed = AlertBox.display(primaryStage, BoxAlertDescription, localization);// show exit confirmation dialog NO TEXT
             if (exitConfirmed) {
                 Platform.exit();
             }
@@ -298,7 +298,7 @@ public class Main extends Application {
         settingButton.setOnAction(e -> {
             if (settingButton.isSelected()) return;
             settingButton.select();
-            // backgroundLayer/borderTable/tableView будут доступны после buildScene → поэтому show вызываем там
+                // backgroundLayer/borderTable/tableView available after buildScene => show is called there
         });
     }
 
@@ -428,7 +428,7 @@ public class Main extends Application {
         BorderPane.setAlignment(bottomRightContainer, Pos.BOTTOM_RIGHT);
 
         primaryStage.setScene(mainScene);
-        primaryStage.setTitle(localization.get("label.editor.title")); // или любой текст
+        primaryStage.setTitle(localization.get("label.editor.title")); // or any desired title
         primaryStage.setMinWidth(900);
         primaryStage.setMinHeight(600);
 
@@ -438,11 +438,11 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setIconified(false);
 
-// 1) Показать сразу, но невидимо (чтобы не было квадрат/прямоугольник)
+            // 1) Show immediately but invisible (avoid square/rectangle flash)
         primaryStage.setOpacity(0.0);
         primaryStage.show();
 
-// 2) На следующем кадре включить fullscreen и сделать видимым
+            // 2) On next frame enable fullscreen and make visible
         Platform.runLater(() -> {
             primaryStage.setFullScreenExitHint("");
             primaryStage.setFullScreen(true);

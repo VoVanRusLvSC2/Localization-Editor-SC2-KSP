@@ -24,7 +24,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
     private final double cellRadius;
     private final double cellFontSize;
 
-    // --- конструктор с поддержкой относительного fontSize ---
+    // --- Constructor with relative fontSize support ---
     public CustomComboBoxClassic(String texturePath, boolean isGreen,
                                  double widthFullHD, double heightFullHD,
                                  double fontSizeFullHD, double dropdownFontSizeFullHD) {
@@ -32,7 +32,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         this.texturePath = texturePath;
         this.isGreen = isGreen;
 
-        // Адаптивные размеры
+        // 
         double width = UiScaleHelper.scaleX(widthFullHD);
         double height = UiScaleHelper.scaleY(heightFullHD);
         this.fontSize = UiScaleHelper.scale(fontSizeFullHD);
@@ -59,7 +59,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         hideScrollBar();
         getStyleClass().add("classic-combo");
         getStyleClass().add(isGreen ? "theme-green" : "theme-yellow");
-        //setupPopupDownAndHideScroll();   // добавим
+        //setupPopupDownAndHideScroll();   // 
     }
 
     public void disable(Boolean bol) {
@@ -108,7 +108,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         String arrowOver = isGreen ? "ui_glue_dropdownarrow_over_terran.png" : "ui_glue_dropdownarrow_Yellow_normal_terran.png";
         String arrowPressed = isGreen ? "ui_glue_dropdownarrow_pressed_terran.png" : "ui_glue_dropdownarrow_Yellow_normal_terran.png";
 
-        // Основа для всех стилей
+        // Base style for all states
         String baseStyle =
                 "-fx-background-color: transparent; " +
                         "-fx-background-image: url('" + texturePath + normalTexture + "'), url('" + texturePath + arrowNormal + "'); " +
@@ -196,7 +196,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         // Released
         this.setOnMouseReleased(e -> this.setStyle(baseStyle));
 
-        // Для выпадающего списка
+        // For dropdown list
 //        this.setOnShown(e -> Platform.runLater(() -> {
 //            this.lookupAll(".list-cell").forEach(cell -> {
 //                cell.setStyle(
@@ -239,13 +239,13 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
                                 "-fx-font-size: " + fontSize + "px;" +
                                 "-fx-text-fill: " + textGradNormal() + ";" +
                                 "-fx-alignment: center;" +
-                                // под стрелку справа (подкрути число если надо)
+                                // 
                                 "-fx-padding: 0 " + (arrowRight + UiScaleHelper.scaleX(26)) + " 0 0;"
                 );
             }
         });
 
-        // иногда помогает, чтобы buttonCell точно применился
+        // ensures buttonCell is applied correctly
         setCellFactory(lv -> new ListCell<T>() {
 
             @Override
@@ -296,7 +296,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
                     }
                 });
 
-                // selected (после setStyle normal/hover)
+                // selected (
                 if (isSelected()) {
                     setStyle(
                             "-fx-background-color: " + (isGreen ? "rgba(30,80,40,0.65);" : "rgba(120,90,20,0.65);") +
@@ -311,7 +311,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
 
     private String textGradNormal() {
         return isGreen
-                ? "linear-gradient(from 0% 0% to 100% 100%, #F4FFF4, #7CFF9A)" // бледнее
+                ? "linear-gradient(from 0% 0% to 100% 100%, #F4FFF4, #7CFF9A)" // 
                 : "linear-gradient(from 0% 0% to 100% 100%, #FFFBE7, #F0C040)";
     }
 
