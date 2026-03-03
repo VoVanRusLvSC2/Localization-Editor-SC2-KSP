@@ -61,9 +61,18 @@ python -m pip install libretranslate
 
 #### Start LibreTranslate server
 
-```bash
-python -m libretranslate --host 127.0.0.1 --port 5000
-```
+Install OnnxRuntime (Required)
+
+LibreTranslate requires ONNX Runtime to execute translation models.
+
+On Windows, install the recommended version:
+
+python -m pip install onnxruntime==1.16.3
+
+If you need to reinstall:
+
+python -m pip uninstall onnxruntime -y
+python -m pip install onnxruntime==1.16.3
 
 The application expects LibreTranslate running at:
 
