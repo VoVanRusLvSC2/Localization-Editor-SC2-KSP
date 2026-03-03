@@ -45,7 +45,7 @@ mvn -v
 Required only if you want to use LibreTranslate.
 
 Recommended Python versions: **3.10–3.12**  
-⚠ Very new Python versions (for example 3.14+) may not be supported yet.
+Very new Python versions (for example 3.14+) may not be supported yet.
 
 Download Python from:  
 https://www.python.org/downloads/
@@ -76,7 +76,10 @@ python -m pip install libretranslate
 
 LibreTranslate requires **ONNX Runtime** to execute translation models.
 
-On Windows, install the recommended version:
+Install ONNX Runtime:
+
+```bash
+python -m pip install onnxruntime
 
 ```bash
 python -m pip install onnxruntime==1.16.3
@@ -97,19 +100,7 @@ or run `libretranslate.exe` directly from that folder.
 
 ### Start LibreTranslate server
 
-⚠ Do **NOT** use:
-
-```bash
-python -m libretranslate --host 127.0.0.1 --port 5000
-```
-
-It may produce:
-
-```
-No module named libretranslate.__main__; 'libretranslate' is a package and cannot be directly executed
-```
-
-✅ Correct way to start the server:
+Start the LibreTranslate server using the following command:
 
 ```bash
 libretranslate --host 127.0.0.1 --port 5000
