@@ -63,19 +63,6 @@ https://aka.ms/vs/17/release/vc_redist.x64.exe
 
 ---
 
-### Install LibreTranslate
-
-```bash
-python -m pip install --upgrade pip
-
-python -m pip install "wheel==0.45.1"
-
-python -m pip install libretranslate
-
-```
-
----
-
 ### Install OnnxRuntime (Required)
 
 LibreTranslate requires **ONNX Runtime** to execute translation models.
@@ -99,6 +86,18 @@ python -m pip install onnxruntime==1.16.3
 ⚠ If you see a warning that the `Scripts` directory is not on `PATH`
 (for example `Python311\Scripts`), either add it to `PATH`
 or run `libretranslate.exe` directly from that folder.
+
+---
+### Install LibreTranslate
+
+```bash
+python -m pip install --upgrade pip
+
+python -m pip install "wheel==0.45.1"
+
+python -m pip install libretranslate
+
+```
 
 ---
 
