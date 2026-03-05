@@ -128,7 +128,8 @@ You can test the translation server with:
 ```bash
 curl -X POST http://127.0.0.1:5000/translate \
   -H "Content-Type: application/json" \
-  -d "{\"q\":\"Hello world\",\"source\":\"en\",\"target\":\"de\"}"```
+  -d "{\"q\":\"Hello world\",\"source\":\"en\",\"target\":\"de\"}"
+```
   Expected output example:
   ```bash
   {
