@@ -42,8 +42,9 @@ mvn -v
 
 Required only if you want to use LibreTranslate.
 
-Recommended Python versions: **3.11.9**  
-Very new Python versions (for example 3.14+) may not be supported yet.
+Recommended Python versions: **3.11 or 3.12**
+
+Very new Python versions (for example **3.14+**) may produce dependency warnings with LibreTranslate.
 
 Download Python from:  
 https://www.python.org/downloads/
@@ -96,7 +97,14 @@ python -m pip install "wheel==0.45.1"
 python -m pip install libretranslate
 
 ```
+### Fix requests dependency (important)
 
+LibreTranslate currently requires a specific version of `requests`.
+
+Install the compatible version:
+
+```bash
+python -m pip install requests==2.31.0
 ---
 
 ### Start LibreTranslate server
