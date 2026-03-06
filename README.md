@@ -42,8 +42,9 @@ mvn -v
 
 Required only if you want to use LibreTranslate.
 
-Recommended Python versions: **3.11.9**  
-Very new Python versions (for example 3.14+) may not be supported yet.
+Recommended Python versions: **3.11 or 3.12**
+
+Very new Python versions (for example **3.14+**) may produce dependency warnings with LibreTranslate.
 
 Download Python from:  
 https://www.python.org/downloads/
@@ -96,7 +97,15 @@ python -m pip install "wheel==0.45.1"
 python -m pip install libretranslate
 
 ```
+### Fix requests dependency (important)
 
+LibreTranslate currently requires a specific version of `requests`.
+
+Install the compatible version:
+
+```bash
+python -m pip install requests==2.31.0
+```
 ---
 
 ### Start LibreTranslate server
@@ -104,10 +113,12 @@ python -m pip install libretranslate
 Start the LibreTranslate server using the following command:
 
 First start (downloads translation models):
+
 ```bash
 libretranslate --load-only en,ru,de,es,fr,it,pl,pt,ko,zh,zt --update-models
 ```
 Later starts:
+
 ```bash
 libretranslate --load-only en,ru,de,es,fr,it,pl,pt,ko,zh,zt
 ```
@@ -126,9 +137,7 @@ If LibreTranslate is not running, auto-translation will not work.
 Test LibreTranslate (Optional)
 You can test the translation server with:
 ```bash
-curl -X POST http://127.0.0.1:5000/translate \
-  -H "Content-Type: application/json" \
-  -d "{\"q\":\"Hello world\",\"source\":\"en\",\"target\":\"de\"}"
+curl -X POST http://127.0.0.1:5000/translate -H "Content-Type: application/json" -d "{\"q\":\"Hello world\",\"source\":\"en\",\"target\":\"de\"}"
 ```
   Expected output example:
   ```bash
