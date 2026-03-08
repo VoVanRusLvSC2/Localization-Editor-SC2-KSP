@@ -41,19 +41,26 @@ public class CustomSlider extends Slider {
         if (track == null || thumb == null) return;
 
 
-        double trackHeight = UiScaleHelper.scaleY(6);
-        double thumbSize   = UiScaleHelper.scaleY(16);
 
-        track.setMinHeight(trackHeight);
-        track.setPrefHeight(trackHeight);
-        track.setMaxHeight(trackHeight);
+        track.setMinHeight(UiScaleHelper.scaleY(8));
+        track.setPrefHeight(UiScaleHelper.scaleY(8));
+        track.setMaxHeight(UiScaleHelper.scaleY(8));
 
-        thumb.setMinSize(thumbSize, thumbSize);
-        thumb.setPrefSize(thumbSize, thumbSize);
-        thumb.setMaxSize(thumbSize, thumbSize);
+        thumb.setMinSize(UiScaleHelper.scaleY(18), UiScaleHelper.scaleY(18));
+        thumb.setPrefSize(UiScaleHelper.scaleY(18), UiScaleHelper.scaleY(18));
+        thumb.setMaxSize(UiScaleHelper.scaleY(18), UiScaleHelper.scaleY(18));
 
+        double controlHeight = UiScaleHelper.scaleY(34);
+        setMinHeight(controlHeight);
+        setPrefHeight(controlHeight);
+        setMaxHeight(controlHeight);
+
+        track.setMouseTransparent(true);
+        thumb.setMouseTransparent(true);
+
+        setPickOnBounds(true);
         // 2) Custom fill — fully scaled as well
-        fill.setHeight(UiScaleHelper.scaleY(4));
+        fill.setHeight(UiScaleHelper.scaleY(6));
         fill.setFill(Color.web("#ffd98a"));
         fill.setManaged(false);
         fill.setMouseTransparent(true);
@@ -68,7 +75,8 @@ public class CustomSlider extends Slider {
         track.layoutYProperty().addListener((o, a, b) -> updateFill());
         track.heightProperty().addListener((o, a, b) -> updateFill());
         widthProperty().addListener((o, a, b) -> updateFill());
-
+        setOnMousePressed(e -> updateValueFromMouse(e.getX()));
+        setOnMouseDragged(e -> updateValueFromMouse(e.getX()));
         inited = true;
         updateFill();
     }
@@ -95,5 +103,16 @@ public class CustomSlider extends Slider {
 
         // If skin/layout recalculated geometry — ensure fill stays aligned
         updateFill();
+    }
+    @Override
+    public boolean contains(double localX, double localY) {
+        double extra = UiScaleHelper.scaleY(10); //
+        return localX >= 0 && localX <= getWidth()
+                && localY >= -extra && localY <= getHeight() + extra;
+    }
+    private void updateValueFromMouse(double mouseX) {
+        double percent = mouseX / getWidth();
+        percent = Math.max(0.0, Math.min(1.0, percent));
+        setValue(getMin() + percent * (getMax() - getMin()));
     }
 }

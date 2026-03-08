@@ -46,7 +46,7 @@ public class SettingBox {
     private static StackPane overlayRoot;     // full-screen dim layer
     private static StackPane windowHolder;    // centers the window
     private static Pane windowContent;        // actual settings window (your old root)
-
+    private static ParallelTransition selectionAnim;
     // we keep last references for updateTexts() calls
     private static LocalizationManager lastLocalization;
     private static CustomTableView lastTableView;
@@ -559,7 +559,12 @@ public class SettingBox {
                 moveDown.setToY(toY - animLift);
                 moveDown.setInterpolator(Interpolator.EASE_OUT);
 
-                new ParallelTransition(fade, moveDown).play();
+                selectionMarkImage.getTransforms().clear();
+                selectionMarkImage.setOpacity(0);
+                selectionMarkImage.setTranslateY(startTranslate - animLift);
+
+                ParallelTransition pt = new ParallelTransition(fade, moveDown);
+                pt.playFromStart();
             });
 
             if (index >= 2 && index <= 3) {
@@ -595,9 +600,13 @@ public class SettingBox {
 
         // default open first tab (language)
         Platform.runLater(() -> {
-            if (menuButtons != null && menuButtons.length > 0 && menuButtons[0] != null) {
-                menuButtons[0].fire();
-            }
+            javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(Duration.millis(120));
+            delay.setOnFinished(e -> {
+                if (menuButtons != null && menuButtons.length > 0 && menuButtons[0] != null) {
+                    menuButtons[0].fire();
+                }
+            });
+            delay.play();
         });
 
         return root;

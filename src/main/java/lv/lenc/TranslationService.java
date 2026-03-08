@@ -664,53 +664,59 @@ public final class TranslationService {
 
     public static Process startLtProcess() throws IOException {
 
-        // 1)
-        if (isOnPath("docker")) {
-            return new ProcessBuilder(
-                    "docker", "run", "-d", "--rm", "--name", "libretranslate",
-                    "-p", "5000:5000", "libretranslate/libretranslate"
-            )
-                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
-                    .redirectError(ProcessBuilder.Redirect.DISCARD)
-                    .start();
-        }
-
-        // 2)
+        // 1) LibreTranslate CLI из PATH
         if (isOnPath("libretranslate")) {
+            System.out.println("[LT] trying libretranslate CLI");
             return new ProcessBuilder(
-                    "libretranslate", "--host", "0.0.0.0", "--port", "5000"
+                    "libretranslate",
+                    "--host", "127.0.0.1",
+                    "--port", "5000"
             )
-                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
-                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .inheritIO()
                     .start();
         }
 
-        // 3)
+        // 2) local exe рядом с программой
         File localExe = new File("libretranslate.exe");
         if (localExe.exists()) {
+            System.out.println("[LT] trying local libretranslate.exe");
             return new ProcessBuilder(
-                    localExe.getPath(), "--host", "0.0.0.0", "--port", "5000"
+                    localExe.getAbsolutePath(),
+                    "--host", "127.0.0.1",
+                    "--port", "5000"
             )
-                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
-                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .inheritIO()
                     .start();
         }
 
-        // 4)
+        // 3) Python module
         if (isOnPath("python")) {
+            System.out.println("[LT] trying python -m libretranslate");
             return new ProcessBuilder(
                     "python", "-m", "libretranslate",
-                    "--host", "0.0.0.0", "--port", "5000"
+                    "--host", "127.0.0.1",
+                    "--port", "5000"
             )
-                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
-                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .inheritIO()
                     .start();
         }
+
+        // 4) Docker только в самом конце
+        if (isDockerUsable()) {
+            System.out.println("[LT] trying docker");
+            return new ProcessBuilder(
+                    "docker", "run", "--rm",
+                    "-p", "5000:5000",
+                    "libretranslate/libretranslate"
+            )
+                    .inheritIO()
+                    .start();
+        }
+
         throw new IllegalStateException(
-                "docker, libretranslate or python not found in PATH."
+                "LibreTranslate launch failed: no working libretranslate/python/docker found"
         );
     }
-
     private static boolean isOnPath(String tool) {
         try {
             Process p = new ProcessBuilder("cmd", "/c", "where", tool).start();
@@ -719,7 +725,18 @@ public final class TranslationService {
             return false;
         }
     }
+    private static boolean isDockerUsable() {
+        try {
+            Process p = new ProcessBuilder("python", "your_script.py")
+                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
+                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .start();
 
+            return p.waitFor() == 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     static List<String> translateBatch(
             LibreTranslateApi api,
             List<String> texts,

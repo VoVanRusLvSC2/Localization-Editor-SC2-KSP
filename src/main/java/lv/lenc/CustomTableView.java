@@ -307,7 +307,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             editableCol.setCellFactory(column -> new TextFieldTableCell<>(new DefaultStringConverter()) {
 
                 private boolean isHovered = false;
-                private boolean isSelected = false;
+              //  private boolean isSelected = false;
                 private boolean isEditing = false;
 
                 {
@@ -320,25 +320,40 @@ public class CustomTableView extends TableView<LocalizationData> {
                         isHovered = false;
                         updateCellStyle();
                     });
+                    selectedProperty().addListener((obs, oldVal, newVal) -> updateCellStyle());
+                    itemProperty().addListener((obs, oldVal, newVal) -> updateCellStyle());
+                    emptyProperty().addListener((obs, oldVal, newVal) -> updateCellStyle());
                 }
-                private String styleWithTexture(String rowBg, String textureUrl) {
-                    // Layout metrics MUST be identical for normal/hover/selected/editing
+                private String styleWithTexture(String rowBg, String textureUrl, boolean selected) {
+                    double padY = UiScaleHelper.scaleY(selected ? 8 : 5);
+                    double padX = UiScaleHelper.scaleX(selected ? 10 : 7);
+                    double borderSlice = UiScaleHelper.scaleY(selected ? 18 : 12);
+                    double borderWidth = UiScaleHelper.scaleY(selected ? 6 : 4);
+                    double fontSize = UiScaleHelper.scaleY(selected ? 17 : 14);
+
                     return "-fx-background-color: " + rowBg + ";"
                             + "-fx-background-insets: 0;"
-                            + "-fx-padding: 0.25em 0.4em;"
-                            + "-fx-alignment: center;"
+                            + "-fx-padding: " + padY + " " + padX + ";"
+                            + "-fx-alignment: center-left;"
                             + "-fx-border-insets: 0;"
                             + "-fx-border-color: transparent;"
-                            + "-fx-border-image-slice: 12 fill;"
-                            + "-fx-border-image-width: 0.3em;"
+                            + "-fx-border-image-slice: " + borderSlice + " fill;"
+                            + "-fx-border-image-width: " + borderWidth + ";"
                             + "-fx-border-image-insets: 0;"
                             + "-fx-border-image-repeat: stretch;"
-                            + "-fx-border-image-source: url('" + textureUrl + "');";
-                            //+ "-fx-font-weight: bold;";
+                            + "-fx-border-image-source: url('" + textureUrl + "');"
+                            + "-fx-font-size: " + fontSize + "px;";
                 }
                 private void updateCellStyle() {
+                    if (isEmpty()) {
+                        setStyle("");
+                        return;
+                    }
+
                     int rowIndex = getIndex();
-                    String rowBg = (rowIndex % 2 == 0) ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.6)";
+                    String rowBg = (rowIndex % 2 == 0)
+                            ? "rgba(0, 0, 0, 0.5)"
+                            : "rgba(0, 0, 0, 0.6)";
 
                     String base = texturePath + "ui_nova_archives_listitem_normal.png";
                     String over = texturePath + "ui_nova_archives_listitem_over.png";
@@ -346,18 +361,22 @@ public class CustomTableView extends TableView<LocalizationData> {
 
                     String tex = base;
                     String textColor = "#80d2a2";
+                    boolean selectedNow = false;
 
-                    if (isEditing || isSelected) {
+                    if (isEditing || isSelected()) {
                         tex = sel;
                         textColor = "white";
+                        selectedNow = true;
                     } else if (isHovered) {
                         tex = over;
-                        textColor = "#b0ffd4";
+                        textColor = "#80d2a2"; // hover не меняет цвет текста
                     }
 
-                    setStyle(styleWithTexture(rowBg, tex)
-                            + "-fx-text-fill: " + textColor + ";"
-                            + "-fx-font-weight: bold;");
+                    setStyle(
+                            styleWithTexture(rowBg, tex, selectedNow)
+                                    + "-fx-text-fill: " + textColor + ";"
+                                    + "-fx-font-weight: bold;"
+                    );
                 }
 
                 @Override
@@ -369,27 +388,27 @@ public class CustomTableView extends TableView<LocalizationData> {
                         if (!getStyleClass().contains("custom-table-cell")) {
                             getStyleClass().add("custom-table-cell");
                         }
-                        int rowIndex = getIndex();
-                        String rowBg = (rowIndex % 2 == 0) ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.6)";
-
-                        String styleBase =
-                                "-fx-background-color: " + rowBg + ";" +
-                                        "-fx-border-image-source: url('" + fullTexturePathNormal + "');" +
-                                        "-fx-font-weight: bold;" +
-                                        "-fx-text-fill: #80d2a2;";
-
-                        //
-                        if (isEditing || isSelected) {
-                            setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathSelected));
-                        } else if (isHovered) {
-                            setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathOver));
-                        } else {
-                            setStyle(styleBase);
-                        }
+//                        int rowIndex = getIndex();
+//                        String rowBg = (rowIndex % 2 == 0) ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.6)";
+//
+//                        String styleBase =
+//                                "-fx-background-color: " + rowBg + ";" +
+//                                        "-fx-border-image-source: url('" + fullTexturePathNormal + "');" +
+//                                        "-fx-font-weight: bold;" +
+//                                        "-fx-text-fill: #80d2a2;";
+//
+//                        //
+//                        if (isEditing || isSelected()) {
+//                            setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathSelected));
+//                        } else if (isHovered) {
+//                            setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathOver));
+//                        } else {
+//                            setStyle(styleBase);
+//                        }
 
                         column.setOnEditStart(event -> {
                             isEditing = true;
-                            setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathSelected));
+                        //    setStyle(styleBase.replace(fullTexturePathNormal, fullTexturePathSelected));
                         });
 
                         column.setOnEditCommit(event -> {
@@ -408,7 +427,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                         setOnMouseEntered(null);
                         setOnMouseExited(null);
                         setOnMouseClicked(null);
-                        isSelected = false;
+                      //  isSelected = false;
                         isEditing = false;
                     }
                 }
@@ -1198,8 +1217,6 @@ public class CustomTableView extends TableView<LocalizationData> {
         }
         return best;
     }
-    private static double scaledFontPx(double basePx) {
-        //            // 6) 
-        return UiScaleHelper.scaleY(basePx);
-    }
+
+
 }
