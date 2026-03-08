@@ -166,7 +166,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>lv.lenc.AppLauncher</mainClass>
                                     <manifestEntries>
-                                        <Application-Icon>src/main/resources/Assets/Textures/Icon.ico</Application-Icon>
+                                        <Application-Icon>Assets/Textures/Icon.ico</Application-Icon>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
