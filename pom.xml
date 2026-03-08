@@ -131,8 +131,11 @@
                 <version>1.7.3</version>
                 <configuration>
                     <name>Localization Editor</name>
-                    <appVersion>1.0.0</appVersion>
+                    <appVersion>1.0.1</appVersion>
                     <vendor>Lenc</vendor>
+
+                    <icon>src/main/resources/Assets/Textures/Icon.ico</icon>
+
                     <destination>dist</destination>
 
                     <input>target</input>
