@@ -71,14 +71,39 @@ On the first start Docker will download:
 * LibreTranslate container
 * translation models
 
-This may take a few minutes.
+LibreTranslate will also download the required language models during the first start.
+
+You can verify that the models are downloading by checking the container logs:
+
+```bash
+docker logs libretranslate
+```
+
+You should see messages similar to:
+
+```
+Updating language models
+Downloading English -> Russian ...
+Downloading English -> German ...
+Downloading English -> French ...
+Downloading English -> Spanish ...
+Downloading English -> Italian ...
+Downloading English -> Korean ...
+Downloading English -> Polish ...
+Downloading English -> Portuguese ...
+```
+
+When the server is ready, the logs will contain a line like:
+
+```
+Listening at: http://[::]:5000
+```
 
 Only these languages are loaded:
 
 ```
 en, ru, de, es, fr, it, pl, pt, ko, zh, zt
 ```
-
 ---
 
 ### 5. Check that the server works
