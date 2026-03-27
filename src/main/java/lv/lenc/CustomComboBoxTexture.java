@@ -1,10 +1,14 @@
 package lv.lenc;
 
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
     public class CustomComboBoxTexture<T> extends ComboBox<T> implements Disabable {
@@ -12,6 +16,33 @@ import javafx.scene.text.Text;
         private final String texturePath;
         private final double realWidth;
         private final double realHeight;
+
+        private String buildControlStyle(String buttonTexture,
+                                         String arrowTexture,
+                                         double arrowSize,
+                                         double arrowRight,
+                                         double leftPadding,
+                                         double paddingTop) {
+            double controlFontSize = UiScaleHelper.scaleY(16.0);
+            return "-fx-background-color: transparent; " +
+                    "-fx-background-image: url('" + texturePath + buttonTexture + "'), url('" + texturePath + arrowTexture + "'); " +
+                    "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
+                    "-fx-background-repeat: no-repeat, no-repeat; " +
+                    "-fx-background-position: center, right " + arrowRight + "px center; " +
+                    "-fx-background-insets: 0; " +
+                    "-fx-border-insets: 0; " +
+                    "-fx-border-color: transparent; " +
+                    "-fx-border-width: 0; " +
+                    "-fx-focus-color: transparent; " +
+                    "-fx-faint-focus-color: transparent; " +
+                    // Keep label visually centered in all states (normal/hover/pressed).
+                    "-fx-padding:" + paddingTop + " 0 0 0; " +
+                    "-fx-alignment: center; " +
+                    "-fx-font-family: 'Arial Black'; " +
+                    "-fx-font-size: " + controlFontSize + "px; " +
+                    "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);";
+        }
+
         public CustomComboBoxTexture(String texturePath, double widthFullHD, double heightFullHD) {
             super();
             this.texturePath = texturePath;
@@ -26,6 +57,7 @@ import javafx.scene.text.Text;
             applyBaseStyles();
             applyTrackAndThumbStyles();
             applyListItemStyles();
+            applyButtonCellStyle();
             this.disabledProperty().addListener((obs, wasDisabled, isNowDisabled) -> updateStyle());
             updateStyle();
         }
@@ -55,14 +87,15 @@ import javafx.scene.text.Text;
             double paddingTop  = realHeight * (-4.0 / 40.0);
 
             this.setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-background-image: url('" + texturePath + baseTexture + "'), url('" + texturePath + arrowTexture + "'); " +
-                            "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
-                            "-fx-background-repeat: no-repeat, no-repeat; " +
-                            "-fx-background-position: center, right " + arrowRight + "px center; " +
+                    buildControlStyle(
+                            baseTexture,
+                            arrowTexture,
+                            arrowSize,
+                            arrowRight,
+                            leftPadding,
+                            paddingTop
+                    ) +
                             "-fx-opacity: " + opacity + "; " +
-                            "-fx-padding: -4 0 0 " + leftPadding + "; " +
-                            "-fx-alignment: center-left; " +
                             "-fx-text-fill: " + textColor + ";"
             );
         }
@@ -75,23 +108,16 @@ import javafx.scene.text.Text;
             String arrowOver = "ui_glue_dropdownarrow_over_terran.png";
             String arrowPressed = "ui_glue_dropdownarrow_pressed_terran.png";
 
-            double arrowSize = UiScaleHelper.SCREEN_HEIGHT * (16.0 / 1080.0);
-            double arrowRight = UiScaleHelper.SCREEN_WIDTH * (20.0 / 1920.0);
-            double leftPadding = UiScaleHelper.SCREEN_WIDTH * (15.0 / 1920.0);
-            double paddingTop = UiScaleHelper.scaleY(-4);
+            // Keep geometry identical across normal/hover/pressed to avoid text jitter.
+            double arrowSize = realHeight * (16.0 / 40.0);
+            double arrowRight = realWidth * (20.0 / 220.0);
+            double leftPadding = realWidth * (15.0 / 220.0);
+            double paddingTop = realHeight * (-4.0 / 40.0);
             double borderRadius = UiScaleHelper.scaleY(8);
 
             double pading = UiScaleHelper.scaleY(2);
 
-            this.setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-background-image: url('" + texturePath + normalTexture + "'), url('" + texturePath + arrowNormal + "'); " +
-                            "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
-                            "-fx-background-repeat: no-repeat, no-repeat; " +
-                            "-fx-background-position: center, right " + arrowRight + "px center; " +
-                            "-fx-padding: " + paddingTop +" 0 0 " + leftPadding + "; " +
-                            "-fx-alignment: center-left;"
-            );
+            this.setStyle(buildControlStyle(normalTexture, arrowNormal, arrowSize, arrowRight, leftPadding, paddingTop));
 
             Platform.runLater(() -> {
                 Node listView = this.lookup(".list-view");
@@ -114,7 +140,9 @@ import javafx.scene.text.Text;
                 Text textNode = (Text) this.lookup(".text");
                 if (textNode != null) {
                     textNode.setStyle(
-                            "-fx-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);"
+                            "-fx-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);" +
+                                    "-fx-font-family: 'Arial Black';" +
+                                    "-fx-font-size: " + UiScaleHelper.scaleY(16.0) + "px;"
                     );
                 }
             });
@@ -128,43 +156,49 @@ import javafx.scene.text.Text;
             });
 
             this.setOnMouseEntered(e -> this.setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-background-image: url('" + texturePath + overTexture + "'), url('" + texturePath + arrowOver + "'); " +
-                            "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
-                            "-fx-background-repeat: no-repeat, no-repeat; " +
-                            "-fx-background-position: center, right " + arrowRight + "px center; " +
-                            "-fx-padding:" + paddingTop + " 0 0 " + leftPadding + "; " +
-                            "-fx-alignment: center-left;"
+                    buildControlStyle(overTexture, arrowOver, arrowSize, arrowRight, leftPadding, paddingTop)
             ));
 
             this.setOnMouseExited(e -> this.setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-background-image: url('" + texturePath + normalTexture + "'), url('" + texturePath + arrowNormal + "'); " +
-                            "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
-                            "-fx-background-repeat: no-repeat, no-repeat; " +
-                            "-fx-background-position: center, right " + arrowRight + "px center; " +
-                            "-fx-padding:" + paddingTop + " 0 0 " + leftPadding + "; " +
-                            "-fx-alignment: center-left;"
+                    buildControlStyle(normalTexture, arrowNormal, arrowSize, arrowRight, leftPadding, paddingTop)
             ));
 
+            // Keep text position stable on click (pressed texture can visually drop baseline).
             this.setOnMousePressed(e -> this.setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-background-image: url('" + texturePath + downTexture + "'), url('" + texturePath + arrowPressed + "'); " +
-                            "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
-                            "-fx-background-repeat: no-repeat, no-repeat; " +
-                            "-fx-background-position: center, right " + arrowRight + "px center; " +
-                            "-fx-padding:" + paddingTop + " 0 0 " + leftPadding + "; " +
-                            "-fx-alignment: center-left;"
+                    buildControlStyle(overTexture, arrowOver, arrowSize, arrowRight, leftPadding, paddingTop)
             ));
 
             this.setOnMouseReleased(e -> this.setStyle(
-                    "-fx-background-color: transparent; " +
-                            "-fx-background-image: url('" + texturePath + normalTexture + "'), url('" + texturePath + arrowNormal + "'); " +
-                            "-fx-background-size: stretch, " + arrowSize + "px " + arrowSize + "px; " +
-                            "-fx-background-repeat: no-repeat, no-repeat; " +
-                            "-fx-background-position: center, right " + arrowRight + "px center; " +
-                            "-fx-padding:" + paddingTop + " 0 0 " + leftPadding + "; " +
-                            "-fx-alignment: center-left;"
+                    buildControlStyle(
+                            this.isHover() ? overTexture : normalTexture,
+                            this.isHover() ? arrowOver : arrowNormal,
+                            arrowSize,
+                            arrowRight,
+                            leftPadding,
+                            paddingTop
+                    )
+            ));
+
+            this.focusedProperty().addListener((obs, was, isNow) -> this.setStyle(
+                    buildControlStyle(
+                            this.isHover() ? overTexture : normalTexture,
+                            this.isHover() ? arrowOver : arrowNormal,
+                            arrowSize,
+                            arrowRight,
+                            leftPadding,
+                            paddingTop
+                    )
+            ));
+
+            this.showingProperty().addListener((obs, wasShowing, isShowing) -> this.setStyle(
+                    buildControlStyle(
+                            isShowing || this.isHover() ? overTexture : normalTexture,
+                            isShowing || this.isHover() ? arrowOver : arrowNormal,
+                            arrowSize,
+                            arrowRight,
+                            leftPadding,
+                            paddingTop
+                    )
             ));
 
             this.setOnShown(e -> Platform.runLater(() -> {
@@ -298,7 +332,7 @@ import javafx.scene.text.Text;
         private void applyListItemStyles() {
             String frameTexture = "ui_glue_dropdownmenuframe_terran.png";
             String frameSelectedTexture = "ui_glue_dropdownmenubutton_selected_terran.png";
-            double itemFontSize = UiScaleHelper.scaleY(14.0);
+            double itemFontSize = UiScaleHelper.scaleY(16.0);
             this.setCellFactory(param -> new ListCell<T>() {
                 @Override
                 protected void updateItem(T item, boolean empty) {
@@ -374,6 +408,75 @@ import javafx.scene.text.Text;
                                         "-fx-alignment: center;"
                         );
                     }
+                }
+            });
+        }
+
+        private void applyButtonCellStyle() {
+            final double buttonFontSize = UiScaleHelper.scaleY(16.0);
+            final double rightReserved = UiScaleHelper.SCREEN_WIDTH * (30.0 / 1920.0);
+            final double leftReserved = UiScaleHelper.SCREEN_WIDTH * (40.0 / 1920.0);
+            final double visualCenterShift = (leftReserved - rightReserved) / 2.0;
+
+            setButtonCell(new ListCell<>() {
+                private final Label stableLabel = new Label();
+                private final StackPane labelHolder = new StackPane(stableLabel);
+
+                {
+                    setMaxWidth(Double.MAX_VALUE);
+                    prefWidthProperty().bind(CustomComboBoxTexture.this.widthProperty());
+
+                    stableLabel.setMouseTransparent(true);
+                    stableLabel.setStyle(
+                            "-fx-font-family: 'Arial Black';" +
+                                    "-fx-font-size: " + buttonFontSize + "px;" +
+                                    "-fx-text-fill: linear-gradient(from 0% 0% to 100% 100%, white, limegreen);"
+                    );
+                    stableLabel.setTranslateX(visualCenterShift);
+
+                    labelHolder.setMouseTransparent(true);
+                    labelHolder.setAlignment(Pos.CENTER);
+                    labelHolder.setPrefHeight(realHeight);
+                    labelHolder.setMinHeight(realHeight);
+                    labelHolder.setMaxHeight(realHeight);
+                    labelHolder.setMaxWidth(Double.MAX_VALUE);
+                    labelHolder.prefWidthProperty().bind(CustomComboBoxTexture.this.widthProperty());
+
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    setText(null);
+                    setGraphic(labelHolder);
+                    setStyle(
+                            "-fx-background-color: transparent;" +
+                                    "-fx-padding: 0;" +
+                                    "-fx-alignment: center;" +
+                                    "-fx-background-insets: 0;" +
+                                    "-fx-border-insets: 0;" +
+                                    "-fx-text-overrun: clip;"
+                    );
+                }
+
+                @Override
+                protected void updateItem(T item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                        setStyle("");
+                        return;
+                    }
+
+                    stableLabel.setText(item.toString());
+                    setText(null);
+                    setGraphic(labelHolder);
+                    setStyle(
+                            "-fx-background-color: transparent;" +
+                                    "-fx-padding: 0;" +
+                                    "-fx-alignment: center;" +
+                                    "-fx-background-insets: 0;" +
+                                    "-fx-border-insets: 0;" +
+                                    "-fx-text-overrun: clip;"
+                    );
                 }
             });
         }

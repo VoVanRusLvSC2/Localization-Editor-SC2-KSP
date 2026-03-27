@@ -6,7 +6,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BackgroundGridLayer extends Pane {
     public final Pane gridLayer = new Pane();   // Layer for grid tiles
@@ -19,6 +21,8 @@ public class BackgroundGridLayer extends Pane {
 
     private final double sw = UiScaleHelper.SCREEN_WIDTH;
     private final double sh = UiScaleHelper.SCREEN_HEIGHT;
+    private final List<Animation> animations = new ArrayList<>();
+    private final List<ShimmerStrip> shimmerStrips = new ArrayList<>();
     public BackgroundGridLayer() {
         setMouseTransparent(true);
 
@@ -85,10 +89,15 @@ public class BackgroundGridLayer extends Pane {
         alphaTimeline.play();
         xTimeline.play();
         yTimeline.play();
+
+        animations.add(alphaTimeline);
+        animations.add(xTimeline);
+        animations.add(yTimeline);
     }
 
     private void showShimmers() {
         shimmerContainer.getChildren().clear();
+        shimmerStrips.clear();
 
         // --- Vertical shimmers ---
         double[] verticalOffsets = Arrays.stream(new int[] {
@@ -147,6 +156,7 @@ public class BackgroundGridLayer extends Pane {
             strip.setLayoutX(centerX + verticalOffsets[i] - TILE_WIDTH / 2.0);
             strip.setLayoutY(0);
             shimmerContainer.getChildren().add(strip);
+            shimmerStrips.add(strip);
         }
 
         // Horizontal shimmer
@@ -165,6 +175,7 @@ public class BackgroundGridLayer extends Pane {
             strip.setLayoutX(0);
             strip.setLayoutY(centerY + horizontalOffsets[i] - TILE_WIDTH / 2.0);
             shimmerContainer.getChildren().add(strip);
+            shimmerStrips.add(strip);
         }
 
         shimmerContainer.prefWidthProperty().bind(widthProperty());
@@ -280,5 +291,21 @@ public class BackgroundGridLayer extends Pane {
         move.setInterpolator(Interpolator.LINEAR);
         move.setCycleCount(Animation.INDEFINITE);
         move.play();
+        animations.add(move);
+    }
+
+    public void setAnimationEnabled(boolean enabled) {
+        for (Animation animation : animations) {
+            if (animation == null) continue;
+            if (enabled) {
+                animation.play();
+            } else {
+                animation.pause();
+            }
+        }
+
+        for (ShimmerStrip strip : shimmerStrips) {
+            strip.setAnimationEnabled(enabled);
+        }
     }
 }

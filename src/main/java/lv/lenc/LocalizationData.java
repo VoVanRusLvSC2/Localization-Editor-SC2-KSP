@@ -4,18 +4,18 @@ import java.util.Locale;
 
 public class LocalizationData {
     private final String key;
-    private String ruRu = "";
-    private String deDE;   // <- 
-    private String enUs = "";
-    private String esMx = "";
-    private String esEs = "";
-    private String frFr = "";
-    private String itIt = "";
-    private String plPl = "";
-    private String ptBr = "";
-    private String koKr = "";
-    private String zhCn = "";
-    private String zhTw = "";
+    private String ruRu;
+    private String deDE;
+    private String enUs;
+    private String esMx;
+    private String esEs;
+    private String frFr;
+    private String itIt;
+    private String plPl;
+    private String ptBr;
+    private String koKr;
+    private String zhCn;
+    private String zhTw;
 
     public LocalizationData(String key, String value, String language) {
         this.key = key;
@@ -197,6 +197,28 @@ public class LocalizationData {
         if (v.equalsIgnoreCase("null")) return null; // if "null" appears as literal text
         return v;
     }
+    
+    public void setByLang(String lang, String value) {
+        if (lang == null) return;
+        
+        switch (lang.toLowerCase()) {
+            case "ruru": setRuRu(value); break;
+            case "dede": setDeDe(value); break;
+            case "enus": setEnUs(value); break;
+            case "esmx": setEsMx(value); break;
+            case "eses": setEsEs(value); break;
+            case "frfr": setFrFr(value); break;
+            case "itit": setItIt(value); break;
+            case "plpl": setPlPl(value); break;
+            case "ptbr": setPtBr(value); break;
+            case "kokr": setKoKr(value); break;
+            case "zhcn": setZhCn(value); break;
+            case "zhtw": setZhTw(value); break;
+            default:
+                // unsupported lang - ignore
+        }
+    }
+
     public String getKey() {
         return key;
     }

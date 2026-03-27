@@ -185,7 +185,7 @@
     -fx-border-image-slice: 12 fill;
     -fx-border-image-repeat: stretch;
     -fx-border-image-insets: 0;
-    -fx-alignment: center;
+    -fx-alignment: center-left;
     -fx-blend-mode: lighten;
     -fx-text-fill: #80d2a2;
     -fx-font-weight: bold;

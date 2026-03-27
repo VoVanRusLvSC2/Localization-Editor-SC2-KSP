@@ -8,6 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomBorder extends StackPane {
     ImageView bg;
     ImageView bgH;
@@ -17,6 +20,7 @@ public class CustomBorder extends StackPane {
     ImageView lSR;
     ImageView lT;
     public ImageView scan1, scan2, scan3;
+    private final List<Animation> animations = new ArrayList<>();
 
     public CustomBorder(CustomTableView table) {
         double sw = UiScaleHelper.SCREEN_WIDTH;
@@ -124,6 +128,7 @@ public class CustomBorder extends StackPane {
         anim.setInterpolator(Interpolator.EASE_OUT);
         anim.setCycleCount(Animation.INDEFINITE);
         anim.play();
+        animations.add(anim);
 
         return image;
     }
@@ -164,6 +169,7 @@ public class CustomBorder extends StackPane {
         }
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+        animations.add(timeline);
 
         return scan;
     }
@@ -172,5 +178,20 @@ public class CustomBorder extends StackPane {
         scan1.setVisible(visible);
         scan2.setVisible(visible);
         scan3.setVisible(visible);
+    }
+
+    public boolean isTableLightingVisible() {
+        return scan1 != null && scan1.isVisible();
+    }
+
+    public void setAnimationEnabled(boolean enabled) {
+        for (Animation animation : animations) {
+            if (animation == null) continue;
+            if (enabled) {
+                animation.play();
+            } else {
+                animation.pause();
+            }
+        }
     }
 }

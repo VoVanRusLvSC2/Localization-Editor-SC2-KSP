@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lv.lenc</groupId>
     <artifactId>Localization_Editor_SC2_KSP</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.3</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
@@ -124,6 +124,20 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.png</include>
+                    <include>**/*.ico</include>
+                    <include>**/*.css</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.txt</include>
+                    <include>**/*.csv</include>
+                </includes>
+            </resource>
+        </resources>
+        
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -180,13 +194,13 @@
                 </executions>
                 <configuration>
                     <name>Localization Editor SC2 KSP</name>
-                    <appVersion>1.0.2</appVersion>
+                    <appVersion>${project.version}</appVersion>
                     <vendor>Lenc</vendor>
 
                     <destination>dist</destination>
 
                     <input>target</input>
-                    <mainJar>Localization_Editor_SC2_KSP-1.0-SNAPSHOT.jar</mainJar>
+                    <mainJar>${project.build.finalName}.jar</mainJar>
                     <mainClass>lv.lenc.AppLauncher</mainClass>
 
                     <type>EXE</type>

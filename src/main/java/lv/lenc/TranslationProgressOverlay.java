@@ -62,7 +62,7 @@ public final class TranslationProgressOverlay extends StackPane {
     }
 
     public void showReset() {
-        Platform.runLater(() -> {
+        Runnable action = () -> {
             String loading = (localization != null)
                     ? localization.get("translating.loading")
                     : "-";
@@ -76,17 +76,33 @@ public final class TranslationProgressOverlay extends StackPane {
             setManaged(true);
             setVisible(true);
             toFront();
-        });
+        };
+
+        if (Platform.isFxApplicationThread()) {
+            action.run();
+        } else {
+            Platform.runLater(action);
+        }
     }
 
     public void update(double value01, String l1, String l2) {
-        Platform.runLater(() -> {
+        Runnable action = () -> {
             double v = Math.max(0, Math.min(1, value01));
             bar.setProgress(v);
             percent.setText((int) Math.round(v * 100) + "%");
             line1.setText(l1 == null ? "" : l1);
             line2.setText(l2 == null ? "" : l2);
-        });
+
+            setManaged(true);
+            setVisible(true);
+            toFront();
+        };
+
+        if (Platform.isFxApplicationThread()) {
+            action.run();
+        } else {
+            Platform.runLater(action);
+        }
     }
 
     public void updateFromProgress(double value01, String packedText) {

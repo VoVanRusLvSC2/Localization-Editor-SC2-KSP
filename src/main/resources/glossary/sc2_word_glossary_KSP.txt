@@ -1,0 +1,760 @@
+Accept;Принять;Annehmen;Aceptar;Aceptar;Accepter;Accetta;수락;Akceptuj;Aceitar;接受;接受
+Apply;Применить;Anwenden;Aplicar;Aplicar;Appliquer;Applica;적용;Zastosuj;Aplicar;应用;套用
+Armor;Броня;Panzerung;Armadura;Armadura;Armure;Armatura;방어력;Pancerz;Armadura;护甲;護甲
+Armored;Бронированный;Gepanzert;Blindado;Blindado;Lourd;Corazzato;중장갑;Opancerzony;Blindado;重甲;重甲
+Attack;Атака;Angriff;Ataque;Ataque;Attaque;Attacco;공격;Atak;Ataque;攻击;攻擊
+Back;Назад;Zurück;Atrás;Atrás;Retour;Indietro;뒤로;Wstecz;Voltar;返回;返回
+Biological;Биологический;Biologisch;Biológico;Biológico;Biologique;Biologico;생체;Biologiczny;Biológico;生物;生物
+Breeding;Рассадник;Brutstätte;Cría;Criadero;Incubation;Allevamento;번식;Rozmnażanie;Criação;孵化;孵化
+Buff;Усиление;Stärkungszauber;Beneficio;Beneficio;Amélioration;Potenziamento;강화;Wzmocnienie;Bônus;增益;增益
+Cancel;Отмена;Abbrechen;Cancelar;Cancelar;Annuler;Annulla;취소;Anuluj;Cancelar;取消;取消
+Cloak;Маскировка;Tarnen;Camuflar;Camuflar;Camoufler;Occultare;은폐;Kamuflaż;Camuflar;隐形;隱形
+Close;Закрыть;Schließen;Cerrar;Cerrar;Fermer;Chiudi;닫기;Zamknij;Fechar;关闭;關閉
+Continue;Продолжить;Fortfahren;Continuar;Continuar;Continuer;Continua;계속;Kontynuuj;Continuar;继续;繼續
+Cooldown;Время восстановления;Abklingzeit;Tiempo de reutilización;Tiempo de recarga;Temps de recharge;Tempo di recupero;재사용 대기시간;Czas odnowienia;Recarga;冷却时间;冷卻時間
+Cost;Стоимость;Kosten;Costo;Costo;Coût;Costo;비용;Koszt;Custo;花费;花費
+Damage;Урон;Schaden;Daño;Daño;Dégâts;Danni;피해;Obrażenia;Dano;伤害;傷害
+Debuff;Ослабление;Schwächungszauber;Perjuicio;Perjuicio;Affaiblissement;Depotenziamento;약화;Osłabienie;Penalidade;减益;減益
+Decline;Отказ;Ablehnen;Rechazar;Rechazar;Refuser;Rifiuta;거절;Odrzuć;Recusar;拒绝;拒絕
+Defense;Защита;Verteidigung;Defensa;Defensa;Défense;Difesa;방어;Obrona;Defesa;防御;防禦
+Detector;Детектор;Detektor;Detector;Detector;Détecteur;Rivelatore;탐지기;Detektor;Detector;反隐形;反隱形
+DPS;УВС;SPS;DPS;DPS;DPS;DPS;초당 피해량;OBS;DPS;秒伤;秒傷
+Energy;Энергия;Energie;Energía;Energía;Énergie;Energia;에너지;Energia;Energia;能量;能量
+Exit;Выход;Beenden;Salir;Salir;Quitter;Esci;종료;Wyjście;Sair;退出;退出
+Flying;Воздушный;Fliegend;Aéreo;Aéreo;Aérien;Aereo;공중;Powietrzny;Aéreo;飞行;飛行
+Ground;Наземный;Boden;Terrestre;Terrestre;Terrestre;Terrestre;지상;Naziemny;Terrestre;地面;地面
+Heal;Исцеление;Heilen;Sanar;Sanar;Soigner;Cura;치유;Leczyć;Curar;治疗;治療
+Health;Здоровье;Gesundheit;Salud;Salud;Santé;Salute;건강;Zdrowie;Saúde;生命值;生命值
+Heroic;Героический;Heroisch;Heroico;Heroico;Héroïque;Eroico;영웅;Bohaterski;Heroico;英雄;英雄
+Hive;Улей;Schwarmstock;Enjambre;Colmena;Ruche;Alveare;군락;Ul;Colmeia;虫巢;蟲巢
+Life;Здоровье;Leben;Vida;Vida;Vie;Vita;체력;Życie;Vida;生命值;生命值
+Light;Легкий;Leicht;Ligero;Ligero;Léger;Leggero;경장갑;Lekki;Leve;轻甲;輕甲
+Load;Загрузить;Laden;Cargar;Cargar;Charger;Carica;불러오기;Wczytaj;Carregar;加载;載入
+Massive;Массивный;Massiv;Masivo;Masivo;Massif;Massiccio;거대;Masywny;Largo;重型;重型
+Mechanical;Механический;Mechanisch;Mecánico;Mecánico;Mécanique;Meccanico;기계;Mechaniczny;Mecânico;机械;機械
+Minerals;Минералы;Mineralien;Minerales;Minerales;Minerai;Minerali;광물;Minerały;Minérios;晶体矿;晶礦
+No;Нет;Nein;No;No;Non;No;아니요;Nie;Não;否;否
+OK;ОК;OK;Aceptar;Aceptar;OK;OK;확인;OK;OK;确定;確定
+Power;Мощность;Energie;Poder;Poder;Puissance;Potenza;전력;Moc;Energia;动力;動力
+Primal;Изначальный;Urzeitlich;Primordial;Primitivo;Primordial;Primordiale;원시;Pierwotny;Primordial;原始;原始
+Queue;Очередь;Warteschlange;Cola;Cola;File d'attente;Coda;대기열;Kolejka;Fila;队列;佇列
+Range;Дальность;Reichweite;Alcance;Alcance;Portée;Portata;사거리;Zasięg;Alcance;射程;射程
+Repair;Ремонт;Reparieren;Reparar;Reparar;Réparer;Ripara;수리;Naprawiać;Reparar;修理;修理
+Restart;Перезапуск;Neustart;Reiniciar;Reiniciar;Redémarrer;Riavvia;재시작;Uruchom ponownie;Reiniciar;重新开始;重新開始
+Reveal;Обнаружение;Aufdecken;Revelar;Revelar;Révéler;Rivelare;탐지;Wykrycie;Revelar;反隐形;反隱形
+Save;Сохранить;Speichern;Guardar;Guardar;Enregistrer;Salva;저장;Zapisz;Salvar;保存;儲存
+Settings;Настройки;Einstellungen;Opciones;Opciones;Paramètres;Impostazioni;설정;Ustawienia;Configurações;设置;設定
+Shields;Щиты;Schilde;Escudos;Escudos;Boucliers;Scudi;보호막;Osłony;Escudos;护盾;護盾
+Slow;Замедление;Verlangsamen;Ralentizar;Ralentizar;Ralentir;Rallentare;감속;Spowolnić;Desacelerar;减速;減速
+Speed;Скорость;Geschwindigkeit;Velocidad;Velocidad;Vitesse;Velocità;속도;Szybkość;Velocidade;速度;速度
+Structure;Строение;Struktur;Estructura;Estructura;Structure;Struttura;구조물;Budowla;Estrutura;建筑;建築
+Stun;Оглушение;Betäuben;Aturdir;Aturdir;Étourdir;Stordire;기절;Ogłuszenie;Atordoamento;击晕;擊暈
+Supply;Припасы;Versorgung;Suministros;Suministros;Ravitaillement;Rifornimento;보급품;Zaopatrzenie;Suprimento;补给;補給
+Target;Цель;Ziel;Objetivo;Objetivo;Cible;Bersaglio;대상;Cel;Alvo;目标;目標
+Training;Обучение;Ausbildung;Entrenamiento;Entrenamiento;Formation;Addestramento;훈련;Szkolenie;Treinamento;训练;訓練
+Unit;Единица;Einheit;Unidad;Unidad;Unité;Unità;유닛;Jednostka;Unidade;单位;單位
+Upgrade;Улучшение;Upgrade;Mejora;Mejora;Amélioration;Miglioramento;업그레이드;Ulepszenie;Mais valia;升级;升級
+Vespene;Веспен;Vespingas;Vespeno;Vespeno;Vespène;Vespene;베스핀;Wespan;Vespeno;瓦斯;瓦斯
+Vision;Обзор;Sicht;Visión;Visión;Vision;Visione;시야;Pole widzenia;Visão;视野;視野
+Yes;Да;Ja;Sí;Sí;Oui;Sì;예;Tak;Sim;是;是
+Attack Speed;Скорость атаки;Angriffsgeschwindigkeit;Velocidad de ataque;Velocidad de ataque;Vitesse d'attaque;Velocità di attacco;공격 속도;Szybkość ataku;Velocidade de ataque;攻击速度;攻擊速度
+Bonus Damage;Дополнительный урон;Bonusschaden;Daño adicional;Daño adicional;Dégâts supplémentaires;Danni bonus;추가 피해;Dodatkowe obrażenia;Dano bônus;额外伤害;額外傷害
+Build Time;Время строительства;Bauzeit;Tiempo de construcción;Tiempo de construcción;Temps de construction;Tempo di costruzione;건설 시간;Czas budowy;Tempo de construção;建造时间;建造時間
+Splash Damage;Урон по области;Flächenschaden;Daño de área;Daño de área;Dégâts de zone;Danni ad area;방사 피해;Obrażenia obszarowe;Dano em área;溅射伤害;擴散傷害
+AB;AB;AB;AB;AB;AB;AB;AB;AB;AB;AB;AB
+Abathur;Абатур;Abathur;Abathur;Abathur;Abathur;Abathur;아바투르;Abatur;Abathur;阿巴瑟;阿巴瑟
+Abduct;Притягивание;Verschleppen;Abducir;Abducción;Enlèvement;Rapimento;납치;Porwanie;Abduzir;劫持;劫持
+Aberration;Аберрация;Scheusal;Aberración;Aberración;Aberration;Aberrazione;변형체;Aberracja;Aberração;畸变体;變異體
+Abort;прерывание;Abbruch;devastación;Abortar;Avorter;Distruzione;중단;Przerwij;Chacina;中断;中斷
+Acc10;Acc10;Acc10;Punt10;Pre10;Acc10;Pre10;Acc10;Przysp10;Prc10;Acc10;加速10
+ACMap;Карта - автоприменение;Verbündete Kommandanten - Karte;Mapa de CA;ACMap;CACarte;Mappa CA;동맹 사령관 지도;SDMapa;ACMap;ACMap;合作任務 - 地圖
+ACPirate;ACPirate;ACPirate;ACPirate;ACPirate;ACPirate;ACPirate;ACPirate;ACPirate;CAPirata;ACPirate;ACPirate
+Activate;Активация;Aktivieren;Activar;Activar;Activer;Attiva;활성화;Aktywuj;Ativar;激活;啟動
+Active;призыватель;aktiv;activo;Activo;actif;attivo;활성화;Aktywny;Ativa;启用;啟動
+AddOns;AddOns;AddOns;AddOns;Complementos;AddOns;AddOns;부속건물;AddOns;Adicionais;附属建筑;附屬建築
+Adept;Адепт;Adept;Adepta;Adepta;Adepte;Adepta;사도;Adept;Adepta;使徒;教士
+Adjutant;Адъютант;Adjutant;Ayudante;Adjutora;Aide de camp;Aiutante;부관;Adiutant;Adjutora;副官;副官
+Adun;Адун;Adun;Adun;Adún;Adun;Adun;아둔;Adun;Adun;Adun;Adun
+Afterburner;Форсаж;Nachbrenner;Postcombustión;Postquemador;Post-combustion;Postbruciatori;재연소 장치;Dopalacz;Pós-combustão;后燃充能;後燃器
+Afterburners;Форсаж;Nachbrenner;Postcombustión;Postquemadores;Post-combustion;Postbruciatori;재연소 장치;Dopalacze;Pós-combustão;后燃充能;後燃器
+Aggressive;Агрессивность;Aggressiv;Agresivo;Agresivo;Agressivité;Aggressività;난폭;Agresywny;Agressivo;好斗本性;侵略性
+Agria;Агрия;Agria;Agria;Agria;Agria;Agria;아그리아;Agria;Agria;阿格瑞亚;阿格利亞
+Aiur;Айур;Aiur;Aiur;Aiur;Aïur;Aiur;아이어;Aiur;Aiur;艾尔;艾爾
+Alacrity;Стремительность;Eifer;Prontitud;Presteza;Empressement;Alacrità;민첩;Zdecydowanie;Alacridade;敏捷;輕快
+Alarak;Аларак;Alarak;Alarak;Alarak;Alarak;Alarak;알라라크;Alarak;Alarak;阿拉纳克;亞拉瑞克
+Alarm;Alarm;Alarm;Alarm;Alarma;Alarm;Alarm;경보;Alarm;Alarme;警报;警報
+Aleksander;Александр;Aleksander;Aleksander;Aleksander;Aleksander;Aleksander;알렉산더;Aleksander;Aleksander;亚历山大号;亞歷克桑德號
+Ammo;Боеприпасы;Munition;Munición;Munición;Munitions;Munizioni;탄약;Amunicja;Munição;弹药;彈藥
+Amon;Амун;Amon;Amon;Amón;Amon;Amon;아몬;Amon;Amon;埃蒙;亞蒙
+Annabelle;Аннабель;Annabelle;Annabelle;Anabela;Annabelle;Annabelle;애너벨;Annabelle;Annabelle;安娜贝利;安娜貝兒
+Annihilator;Аннигилятор;Unbeugsamer;Aniquilador;Aniquilador;Annihilateur;Annientatore;말살자;Anihilator;Aniquilador;歼灭者;殲滅者
+Apocalisk;Апокалиск;Apokalisk;Apocalisco;Apocalisco;Apocalisk;Apocalisca;아포칼리스크;Apokalisk;Apocalisco;末日巨兽;雷神獸
+Apocalypse;Апокалипсис;Apokalypse;Apocalipsis;Apocalipsis;Apocalypse;Apocalisse;파멸;Apokalipsa;Apocalipse;天启;毀天滅地
+Arachnophile;Паучье чутье;Ins Netz gegangen;Aracnofilia;Aracnofilia;Arachnophile;Aracnofilia;거미성애자;Arachnofilia;Aracnófilo;蜘蛛女郎;蜘蛛癖
+Arbiter;Арбитр;Arbiter;Árbitro;Árbitro;Arbitre;Arbiter;중재자;Arbiter;Mediadora;仲裁者;審判者
+Archangel;Архангел;Erzengel;Arcángel;Arcángel;Archange;Archangel;대천사;Archanioł;Arcanjo;大天使;大天使
+Archive;Архив;Archiv;Archivo;Archivo;Archive;Archivio;기록보관소;Archiwum;Arquivo;文献馆;文庫
+Archon;Архонт;Archon;Arconte;Arconte;Archonte;Arconte;집정관;Archont;Arconte;执政官;執政官
+Arcturus;Арктур;Arcturus;Arcturus;Arcturus;Arcturus;Arcturus;아크튜러스;Arcturus;Arcturus;阿克图尔斯;阿克圖洛斯
+ArmorUpgrade;ArmorUpgrade;ArmorUpgrade;ArmorUpgrade;ArmorUpgrade;ArmorUpgrade;ArmorUpgrade;방어구업그레이드;ArmorUpgrade;ArmorUpgrade;护甲升级;ArmorUpgrade
+Armory;Арсенал;Waffenlager;Arsenal;Armería;Armurerie;Armeria;무기고;Zbrojownia;Arsenal;军械库;兵工廠
+Artanis;Артанис;Artanis;Artanis;Artanis;Artanis;Artanis;아르타니스;Artanis;Artanis;阿塔尼斯;亞坦尼斯
+Artifact;Артефакт;Artefakt;Artefacto;Artefacto;Artéfact;Artefatto;유물;Artefakt;Artefato;神器;神器
+Ascendant;Посвященный;Aspirant;Ascendiente;Ascendiente;Aspirant;Ascendente;승천자;Wyniesiony;Ascendente;晋升者;飛升者
+Assimilator;Ассимилятор;Assimilator;Asimilador;Asimilador;Assimilateur;Assimilatore;융화소;Asymilator;Assimilador;吸纳舱;瓦斯處理廠
+Attach;Attach;Attach;Attach;Attach;Attach;Attach;Attach;Attach;Teleportar;Attach;Attach
+Auto;Auto;Auto;Auto;Auto;Auto;Auto;Auto;Auto;Esfaquear;Auto;Auto
+Autocannon;Автоматическая пушка;Automatische Kanonen;Cañón automático;Autocañón;Canons automatiques;Cannone automatico;자동포;Działka automatyczne;Autocanhão;机关炮;自動加農砲
+Autogun;Автопушка;Autokanone;Pistola automática;Autoarma;Fusil automatique;Cannone automatico;자동총;Działko automatyczne;Arma automática;自动机枪;自走砲
+Avenger;Мститель;Vergeltung;Vengador;Venganza funesta;Vengeur;Vendicatore;복수자;Mściciel;Vingador;复仇战士;復仇者
+Avernus;Аверн;Avernus;Avernus;Avernus;Avernus;Avernus;아베르누스;Avernus;Avernus;阿佛纳斯;愛弗諾斯
+Axe;Топор;Axt;Hacha;Hacha;Haches;Ascia;도끼;Topór;Machado;斧;斧頭
+Bag;Рюкзак;Behälter;Bolsa;Bolsa;Sac;Borsa;가방;Torba;Mochila;背包;背包
+Balius;Балий;Balius;Balius;Balio;Balius;Balius;발리우스;Balius;Balius;巴利俄斯;巴流斯
+Baneling;Гиблинг;Berstling;Pesteling;Uetzi;Chancre;Baneling;맹독충;Tępiciel;Tatu-bomba;爆虫;毒爆蟲
+Bang;Бум;Echt ätzend;Bang;Bum;Chancres à tout-va;Bang;맹독 샤워;Bum;Bang;毒爆之海;轟
+Bangling;Гиблинг;Bämmling;Pesteling;Uetzi;Chancrelin;Schiantide;맹독충;Bangling;Clastonídeo;爆虫;毒爆蟲
+Banshee;Банши;Banshee;Átropos;Banshee;Banshee;Banshee;밴시;Banshee;Vudu;女妖;女妖轟炸機
+Barracks;Казармы;Kaserne;Barracón;Cuartel;Caserne;Caserma;병영;Koszary;Quartel;兵营;兵營
+Barrage;Артобстрел;Sperrfeuer;Descarga;Andanada;Barrage;Sbarramento;연발 포격;Ogień zaporowy;Barragem;巨炮乱射;彈幕砲擊
+Barrier;Барьер;Barriere;Barrera;Barrera;Barrière;Barriera protettiva;방어막;Bariera;Barreira;屏障;能量屏障
+Beacon;Маяк;Signal;Baliza;Faro;Balise;Segnalatore;신호소;Znacznik;Sinal;信标;信標
+Behavior;Behavior;Behavior;Behavior;Behavior;Behavior;Behavior;Behavior;Behavior;Comportamento;Behavior;Behavior
+Biomass;Биомасса;Biomasse;Biomasa;Biomasa;Biomasse;Biomassa;생체 물질;Biomateriał;Biomassa;生物质;生物質
+Bite;Укус;Beißen;Mordisco;Mordida;Morsure;Morso;물기;Ugryzienie;Mordida;撕咬;撕咬
+Blackhammer;Черный молот;Nachthammer;Martillo negro;Martillonegro;Le Marteau Noir;Martello nero;검은망치;Czarny Młot;Martelo Negro;黑色战锤;黑鎚巨砲
+Blast;Blast;Blast;Blast;Explosión;Blast;Blast;폭발;Blast;Yamato;Blast;轟擊
+Blaze;Блэйз;Blaze;Vulcano;Blaze;Kramer;Blaze;블레이즈;Pożarsky;Blaze;布雷泽;爆焰
+Blimp;Аэростат;Blimp;Dirigible;Dirigible;Dirigeable;Dirigibile;비행선;Sterowiec;Anúncios no dirigível;宣传艇;飛船
+Blind;Blind;Blind;Blind;Ceguera;Blind;Blind;실명;Blind;Cegueira;Blind;目盲
+Blink;Скачок;Transit;Traslación;Parpadeo;Transfert;Traslazione;점멸;Mignięcie;Translação;闪现;瞬移
+Blitzkrieg;Блицкриг;Rasender Reporter;Blitzkrieg;Guerra relámpago;Flash d'informations;Blitzkrieg;전격 방송 작전;Wojna błyskawiczna;Blitzkrieg;闪电战;閃電戰
+Blizzard;Вьюга;Blizzard;Ventisca;Ventisca helada;Blizzard;Tormenta;눈보라;Zamieć;Nevasca;暴风雪;暴風雪
+Bombardment;Артиллерийский обстрел;Bombardierung;Bombardeo;Bombardeo;Bombardement;Bombardamento;포격;Bombardowanie;Bombardeio;轰炸;轟炸
+Bomber;Бомбардировщик;Bomber;Bombardero;Bombardero;Bombardier;Bombardiere;폭격기;Bombowiec;Bombardeiro;轰炸机;轟炸機
+Boom;Boom;Boom;Boom;Boom;Boom;Boom;Boom;Boom;Bum;Boom;Boom
+Bow;Лук;Bogen;Arco;Arco;Arcs;Arco;활;Łuk;Arco;弓;弓
+Brakk;Бракк;Brakk;Brakk;Brakk;Brakk;Brakk;브라크;Brakk;Brakk;巴拉克;布拉克
+Bralik;Бралик;Bralik;Bralik;Bralik;Bralik;Bralik;브랄릭;Bralik;Bralik;布拉利克;布拉理克
+Breakout;Побег;Ausbruch;La fuga;La fuga;La grande évasion;Evasione;탈옥;Ucieczka;Libertação;营救;越獄
+Bridge;Мостик;Brücke;Puente;Puente;Pont;Ponte;함교;Mostek;Ponte;舰桥;艦橋
+Broodling;Симбионт;Brütling;Cría;Ácaro;Vermine;Progenide;공생충;Pomiot;Parasitoide;巢虫;寄生蟲
+Broodmother;Мать стаи;Brutmutter;Madre de la prole;Madre de colonia;Mère des couvées;Matriarca;무리어미;Matka szczepu;Mãe de Casta;虫母;蟲后
+Brutalisk;Бруталиск;Brutalisk;Brutalisco;Brutalisco;Brutalisk;Brutalisca;브루탈리스크;Brutalisk;Brutalisca;莽兽;殘暴蟲
+Brutalize;Свирепый удар;Brutalisieren;Embrutecer;Brutalizar;Brutaliser;Brutalizzazione;야수 공격;Brutalny cios;Brutalizar;残杀;殘暴爪
+Build;Build;Build;Build;Construir;Build;Build;건설;Build;Construir;孵化;建造
+Bulldozer;Бульдозер;Planierraupe;Topadora;Bulldozer;Bulldozer;Bulldozer;불도저;Buldożer;Bulldozer;推土机;推土機
+Bunker;Бункер;Bunker;Búnker;Búnker;Bunker;Bunker;벙커;Bunkier;Casamata;地堡;碉堡
+Burning;Горение;Brennt;Quemando;En llamas;En feu;Bruciatura;불타는 중;Podpalenie;Em Chamas;燃烧;燃燒中
+Burrow;Закапывание;Eingraben;Enterrar;Enterrar;Enfouir;Rintanamento;잠복;Zagrzeb;Entocar;潜地;遁地
+Burrowed;Закопавшийся;Eingegraben;Enterrado;Enterrado;Enfoui;Rintanata;잠복 상태;Zagrzebana;Entocado;已潜地;遁地
+Bus;Бот;Bus;Bus;Autobús;Bus;Autobus;버스;Autobus;Ônibus;公车;公車
+Cade;Кейд;Cade;Cade;Cade;Cade;Cade;케이드;Cade;Cade;凯德;凱得
+Cage;Клетка;Käfig;Jaula;Jaula;Cage;Gabbia;우리;Klatka;Gaiola;牢笼;籠子
+Calldown;Calldown;Calldown;Calldown;Llamado;Calldown;Calldown;투하;Calldown;Chamada;空投;空投
+Cannibalize;Пожирание трупов;Kannibalismus;Canibalismo;Canibalizar;Cannibaliser;Cannibalizzazione;섭취;Kanibalizm;Canibalizar;野蛮残食;啃食同類
+Cannon;Пушка;Kanone;Cañón;Cañón;Canon;Cannone;포;Działo;Canhão;火炮;加農砲
+Cannonball;Ядрила;Cannonball;Bala;Bala de cañón;La Bombarde;Cannonball;대포알;Kartacz;Bala de Canhão;弹头哥;砲彈
+Carapace;Панцирь;Panzer;Caparazón;Caparazón;Carapace;Carapace;갑피;Karapaks;Carapaça;甲壳;蟲殼
+Carrier;Авианосец;Träger;Portanaves;Portanaves;Porte-nefs;Portastormo;우주모함;Lotniskowiec;Transportadora;航母;航空母艦
+Carrion;Падальщик;Aasjäger;Portador;Carroña;Charognard;Avvoltoio;날벌레;Ścierwiel;Carniceiro;腐肉虫;腐屍獸
+Castanar;Кастанар;Castanar;Castanar;Castanar;Castanar;Castanar;카스타나;Castanar;Castanar;卡斯塔纳;卡司塔那
+Catwalk;Подиум;Laufsteg;Pasarela;Pasarela;Passerelle;Passerella;통로;Pomost;Passarela;猫步;狹道
+Centurion;Центурион;Prätorianer;Centurión;Centurión;Centurion;Centurione;백인대장;Centurion;Centurião;百夫长;百夫長
+Cerberus;Цербер;Zerberus;Cerbero;Cerberus;Cerbère;Cerbero;케르베로스;Cerber;Cerberus;地狱犬;地獄犬
+Chaingun;Пулемет;Chaingun;Ametralladora;Ametralladora de repetición;Mitrailleuse;Mitragliatrice;기관총;Działko łańcuchowe;Metralhadora Automática;重机枪;鏈砲
+Champion;Champion;Champion;Champion;Campeón;Champion;Champion;용사;Champion;Campeão;Champion;英雄
+Channel;Поддержание;Kanal;Canalizar;Canalizar;Canaliser;Incanalare;집중;Kanał;Canal;引导;導引
+CHAR;ЧАР;CHAR;CHAR;CARBONIS;CHAR;CHAR;차;CHAR;CHAR;查尔;查爾
+Charge;Рывок;Sturmangriff;Cargar;Carga;Charge;Carica;돌진;Szarża;Carga;冲锋;衝鋒
+Chest;Грудь;Brust;Pecho;Pecho;Torse;Cassa;가슴;Skrzynia;Peito;胸部;胸部
+Choked;Удушение;Gepackt;Estrangulado;Ahogado;Suffoqué;Soffocato;기절함;Duszenie;Estrangulado;遭扼喉;窒殺
+Choker;Душитель;Choker;Estrangulador;Choker;Suffocateur;Soffocatore;혀감염충;Dusiciel;Estrangulador;扼喉怪;窒殺蟲
+Chomp;Поедание;Kauen;Masticar;Masticar;Mâchouiller;Morso;걸신;Przeżucie;Mastigar;啃噬;嚼咬
+Chronoboost;Искривление времени;Zeitschleife;Aceleración cronos;Cronoimpulso;Poussée temporelle;Accelerazione Temporale;시간 증폭;Zakrzywienie czasoprzestrzeni;Cronobônus;时空提速;超時空加速
+Chronometry;Хронометрия;Chronometrie;Cronometría;Cronometría;Chronométrie;Cronometria;시간 측정;Chronometria;Cronometria;时空理论;時光計量
+Civilian;Мирная жительница;Zivilistin;Civil;Civil;Civil;Civile;민간인;Cywil;Civil;平民;平民
+Classic;Classic;Classic;Classic;Clásico;Classic;Classic;클래식;Classic;Clássica;Classic;傳統配置
+Claws;Когти;Klauen;Garras;Garras;Griffes;Artigli;발톱;Szpony;Garras;利爪;利爪
+Cleansed;Очищено;Gesäubert;Purificado;Limpio;Purifié;Epurato;정화됨;Oczyszczono;Purgado;清洗过的;已淨化
+Cleave;Рассекающий удар;Schlitzen;Rajar;Hendidura;Tailler;Lacerazione;베기;Rozdzieranie;Corte;顺劈斩;劈砍
+Cloaked;Маскировка;Getarnt;Invisible;Camuflada;Camouflée;Occultato;은폐됨;Maskowanie;Camuflada;隐形;已匿蹤
+Clolarion;Клоларион;Clolarion;Clolarion;Clolarion;Clolarion;Clolarion;클로라리온;Clolarion;Clolárion;科罗拉里昂;庫勒瑞安
+Clone;Clone;Clone;Clone;Clonación;Clone;Clone;복제;Clone;Clonar;Clone;分身
+COArmyUnit;COArmyUnit;Armeeeinheit (Co-op;COArmyUnit;COArmyUnit;COArméeUnité;Cooperativa - Armata - Unità;협동전 부대 유닛;KOArmiaJednostka;COUnidadeExército;COArmyUnit;COArmyUnit
+Colarion;Коларион;Colarion;Clolarion;Clolarion;Clolarion;Clolarion;콜라리온;Colarion;Clolárion;科罗拉里昂;庫勒瑞安
+Collect;Подобрать;Aufsammeln;Recoger;Recolectar;Collecter;Raccogli;수집;Zbierz;Coletar;拾取;接載
+Colonist;Колонист;Kolonist;Colono;Colona;Colon;Colono;거주민;Kolonista;Colono;移民;殖民地居民
+Colossus;Колосс;Koloss;Coloso;Coloso;Colosse;Colosso;거신;Kolos;Colosso;巨像;巨像
+Combust;Воспламенение;Verbrennen;Combustión;Combustión;Combustion;Combustione;연소;Spalanie;Combustão;自燃;熾燃
+Commander;Командир;Commander;Comandante;Comandante;Commandant;Comandante;사령관;Dowódca;Comandante;Commander;指揮官
+Confusion;Смятение;Eigenbeschuss;Confusión;Confusión;Confusion;Confusione;혼돈;Zamęt;Confusão;神经错乱;混亂
+Conjoined;Объединение;Verbunden;Unido;Unido;Conjoint;Congiunto;결합됨;Połączone;Associado;结合;連體
+Conjure;Создание;Beschwören;Conjuro;Conjuro;Appeler;Congiura;생성;Wywołanie;Conjurar;招来;召喚
+Conservator;Охранитель;Konservator;Conservador;Conservador;Égide;Conservatore;보전기;Konserwator;Conservador;保护者;保護者
+Console;Консоль;Konsole;Consola;Consola;Console;Console;콘솔;Konsola;Console;控制台;控制台
+Constriction;Заражение;Befall;Bloqueo;Constricción;Constriction;Infestazione;점착;Zator;Constrição;束缚;寄生物
+Consume;Поглотить;Fressen;Consumir;Consumir;Cannibalisme;Consunzione;흡수;Pochłonięcie;Consumir;吞噬;吞噬
+Consumption;Поглощение;Fressen;Consumir;Consumo;Cannibalisme;Consunzione;흡수;Pochłonięcie;Consumo;吞噬;吞噬
+CONVICTION;ЗАКЛЮЧЕННЫЙ;SCHULDSPRUCH;CONVICCIÓN;CONVICCIÓN;CONDAMNATION;PRIGIONIA;확신;SKAZANIEC;CONDENAÇÃO;罪证确凿;信念
+Coop;Coop;Coop;Coop;Coop;Coop;Coop;Coop;Coop;Cooperativo;Coop;Coop
+COOP_ZChar02;COOP_ZChar02;ZChar02 (CO-OP;COOP_ZChar02;COOP_ZChar02;COOP_ZChar02;COOP_ZChar02;COOP_ZChar02;KOOP_ZChar02;COOP_ZChar02;COOP_ZChar02;COOP_ZChar02
+Cooper;Купер;Cooper;Cooper;Cooper;Cooper;Cooper;쿠퍼;Cooper;Cooper;库伯;古柏
+Copy;Copy;Copy;Copy;Copy;Copy;Copy;Copy;Copy;Copy;Copy;Copy
+Corpser;Труповик;Schlupfschabe;Carroñero;Bracónido;Nécropare;Necrofago;송장벌레;Trupiarz;Cadávero;尸体虫;屍獸
+Corruption;Порча;Korrumpierung;Corrupción;Corrupción;Corruption;Corruzione;타락;Skażenie;Corrupção;腐化;腐化
+Corruptor;Губитель;Schänder;Envilecedor;Corruptor;Corrupteur;Corruttore;타락귀;Skaziciel;Corruptor;腐化者;腐化飛蟲
+Corsair;Корсар;Korsar;Corsario;Corsario;Corsaire;Corsaro;해적선;Korsarz;Corsário;海盗船;海盜機
+Cosmetic;Визуальный эффект;Kosmetisch;Adorno;Cosmético;Cosmétique;Ornamentale;외관;Kosmetyk;Cosmético;化妆品;外觀
+CP;CP;CP;CP;CP;CP;CP;CP;CP;CP;CP;CP
+Crawlers;Ползучие стражи;Krabbler;Reptadores;Rastreros;Rampants;Striscianti;촉수;Pełzacze/Wije;Rastejantes;爬虫;爬行蟲
+Create;Create;Create;Create;Create;Create;Create;Create;Create;Criar;Create;Create
+Creeper;Ползун;Zecke;Propagador;Furtivo;Muconaute;Strisciante;땅무지;Pełzacz;Rastejante;掘地虫;爆炸蟲
+Cripple;Увечье;Verkrüppeln;Lisiar;Mutilación;Affaiblissement;Mutilazione;무력화;Okaleczenie;Aleijar;残废;破甲
+Crippled;Повреждение;Verkrüppelt;Lisiado;Mutilado;Affaibli;Paralizzato;무력화;Okaleczenie;Aleijado;残废;破甲
+Critter;Существо;Critter;Criatura;Criatura;Créature;Creatura;중립 동물;Stwór;Bicho;野外生物;小生物
+Crossbow;Арбалет;Armbrust;Ballesta;Ballesta;Arbalètes;Balestra;석궁;Kusza;Besta;十字弓;弩
+Cruiser;Байк;Kreuzer;Crucero;Crucero;Croiseur;Incrociatore;크루저;Motor;Cruzador;轻便摩托车;巡洋艦
+CU;CU;CU;CU;CU;CU;CU;CU;CU;CU;CU;CU
+Cutthroat;С ножом у горла;Halsabschneider;Puñaladas traperas;Cortapescuezos;Traquenard;Relazioni pericolose;비열한 항구;Cios w plecy;Vigaristas;博弈;割喉戰
+Cyclone;Циклон;Zyklon;Ciclón;Ciclón;Cyclone;Cyclone;사이클론;Cyklon;Ciclone;飓风;颶風飛彈車
+Dagger;Кинжал;Dolch;Daga;Daga;Dagues;Pugnale;단검;Sztylet;Adaga;匕首;匕首
+Dakrun;Дакрун;Dakrun;Dakrun;Dakrún;Dakrun;Dakrun;다크룬;Dakrun;Dakrun;达克伦;達克朗
+Darkcoil;Теневая хватка;Dunkler Wirbel;Bobina oscura;Espiral lóbrega;Étourdissement d'ombre;Spira oscura;암흑고리;Mroczny wir;Espiral Negra;黑暗缠绕;暗影纏繞
+Deactivate;Отключить;Deaktivieren;Desactivar;Desactivar;Désactiver;Disattiva;비활성화;Dezaktywuj;Desativar;取消激活;解除
+Decloak;Демаскировка;Enttarnen;Desactivar invisibilidad;Descamuflar;Supprimer Camouflage;Rimuovi occultamento;비은폐;Wyłącz maskowanie;Descamuflar;取消隐形;解除匿蹤
+Defiler;Осквернитель;Vergifter;Corruptor;Profanador;Profanateur;Contaminatore;파멸충;Plugawiec;Poluidor;蝎虫;破壞蠍
+Dehaka;Дехака;Dehaka;Dehaka;Dehaka;Dehaka;Dehaka;데하카;Dehaka;Dehaka;德哈卡;德哈卡
+Deicide;Богоубийство;Götterdämmerung;Asesino de dioses;Deicidio;Déicide;Deicida;신을 쓰러트린 자;Bogobójstwo;Deicídio;决定战;殺神
+Demolition;Уничтожение;Zerstörung;Demolición;Demolición;Démolition;Demolizione efficiente;건물 파괴;Demolka;Demolição;爆破;破壞
+Designate;Обозначить;Designieren;Designar;Designar;Désigner;Designa;지정;Wyznacz;Designar;指派;指定
+Destroyer;Дезинтегратор;Zerstörer;Destructor;Destructor;Destructeur;Distruttore;파멸자;Niszczyciel;Destruidor;毁灭者;毀滅者
+Detonate;Взорвать;Detonieren;Detonar;Detonación;Détonner;Esplosione;폭파;Detonacja;Detonar;引爆;爆炸
+Detonation;Детонация;Detonation;Detonación;Detonación;Détonation;Detonazione;폭발;Detonacja;Detonação;引爆;引爆
+Devastator;Опустошитель;Verwüster;Devastadora;Devastador;Déprédatrice;Devastator;파멸기;Dewastator;Devastador;灭绝者;壞滅者
+Devotion;Преданность;Hingabe;Devoción;Devoción;Dévotion;Devozione;헌신;Oddanie;Devoção;献身;奉獻
+Devour;Пожирание;Verschlingen;Devorar;Devorar;Dévorer;Consunzione;섭취;Pożarcie;Devorar;吞食;吞噬
+Devourer;Пожиратель;Vernichter;Devorador;Devorador;Dévoreur;Divoratore;포식귀;Pożeracz;Devorador;吞噬者;吞噬蟲
+Devouring;Поглощение;Verschlingt;Devorando;Devorando;Dévore;Divorante;뜯어먹는 중;Pochłania;Devorando;吞噬;吞噬中
+Dex10;Dex10;Dex10;Des10;Des10;Dex10;Des10;Dex10;Zręcz10;Des10;Dex10;敏捷10
+Diamondback;Аспид;Kobra;Alacrán;Katari;Crotale;Diamondback;코브라;Grzechotnik;Cascavel;响尾蛇战车;響尾蛇
+Diffusion;Diffusion;Diffusion;Diffusion;Diffusion;Diffusion;Diffusione;확산;Diffusion;Difusão;Diffusion;Diffusion
+Disenchanted;Распыление;Entzaubert;Desencantado;Vacío de esquirlas;Coup double;Disincanto;마력 추출;Kryształowy duet;Desencantado;已分解;連鎖幻滅
+Dismantle;Разобрать;Zerlegen;Desmontar;Desmantelamiento;Démantèlement;Smantella;분해;Demontaż;Desmantelar;拆卸;解除
+Disruptor;Дестабилизатор;Disruptor;Disruptor;Disruptor;Disrupteur;Disgregatore;분열기;Destabilizator;Disruptor;干扰者;裂光球
+Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors;Disruptors
+Distracted;Отвлечение;Abgelenkt;Distraído;Distraído;Distraction;Distratto;혼란;Rozkojarzenie;Distraído;受到干扰;擾亂
+Dive;Пикировать;Sinkflug;Salto en picado;Zambullida;Plongeon;Picchiata;강하;Nurkowanie;Mergulho;俯冲;俯衝
+Division;Разделение;Zersplitterung;División;División;Division;Divisione;분열;Podział;Divisão;分裂;分裂
+Dock;Dock;Dock;Dock;Atraque;Dock;Dock;정박;Dock;Estaleiro;入港;船塢
+Docked;Пристыкован;Angedockt;Acoplado;Atracado;Arrimé;In attracco;정박 중;Zadokowany;Acoplado;已停泊;進港
+DOM;Защитники человечества;VdM;DDH;DdH;Ddh;DU;DOM;OL;DOM;DOM;人類守護組織
+Dominate;Доминирование;Fremdsteuern;Dominar;Dominación;Dominer;Dominazione;지배;Dominacja;Dominar;支配;支配
+Dominated;Доминирование;Fremdgesteuert;Dominado;Dominado;Dominé;Dominazione in corso;지배;Zdominowanie;Dominado;被控制;支配
+Domination;ЗАХВАТ ВЛАСТИ;VORHERRSCHAFT;Dominación;Dominación;Domination;Dominazione;장악;Dominacja;Dominação;绝对统治;重掌蟲權
+Dominion;Доминион;Liga;Dominio;Dominio;Dominion;Dominio;자치령;Dominium;Supremacia;帝国;自治聯盟
+Door;Дверь;Tür;Puerta;Puerta;Porte;Porta;문;Drzwi;Porta;大门;門
+Drag;Притянуть;Heranziehen;Arrastrar;Arrastrar;Traction;Trascinamento;끌기;Przeciągnij;Arrastar;拖拽;拖引
+Dragoon;Драгун;Dragoner;Dragón;Dragún;Dragon;Dragone;용기병;Dragon;Dragoon;龙骑士;龍騎士
+Drone;Рабочий;Drohne;Zángano;Obrero;Ouvrier;Drone;일벌레;Robotnica;Zangão;工蜂;工蟲
+Drop;Drop;Drop;Drop;Inserción;Drop;Drop;기차;Drop;Soltar;Drop;空降
+Dropship;Десантный корабль;Landefrachter;Nave de evacuación;Nave de Transporte;Transport;Nave da sbarco;수송선;Transportowiec;Módulo de transporte;运输船;運輸機
+Dummy;Dummy;Dummy;Dummy;Muñeco;Dummy;Dummy;허수아비;Dummy;Boneco;假人;假人
+Dutch;Голландец;Dutch;Dutch;Holandés;Dutch;Dutch;더치;Dutch;Dutch;怒火;達奇
+Earl;Эрл;Earl;Earl;Earl;Earl;Earl;얼;Earl;Earl;厄尔;厄爾
+Earthbroken;Тотальный раскол;Atomisiert;Rompetierras;Tierra destrozada;Terre brisée;Sconquasso terrestre;대지파괴;Złamana Ziemia;Terra rachada;八字克土;破裂的大地
+Egg;Яйцо;Ei;Huevo;Huevo;Œuf;Uovo;알;Jajo;Ovo;卵;蟲卵
+EMP;ЭМИ;EMP;PEM;PEM;IEM;Scarica elettromagnetica;EMP;EMP;PEM;EMP;電磁脈衝波
+EMPTower;ЭМИ-турель;EMP-Turm;Torreta PEM;EMPTower;Tour IEM;Torre elettromagnetica;EMP 탑;WieżyczkaEMP;Torre PEM;EMP塔;電磁脈衝塔
+En;Эн;En;En;En;En;En;엔;En;En;En;En
+Encased;Заключение;Eingeschlossen;Encerramiento;Apresado;lang rule="gender" word="#object">Emprisonné,Emprisonnée</lang;Intrappolata;둘러싸임;Unieruchomienie;Encapsulado;被包裹;包覆
+Endion;Эндион;Endion;Endion;Endión;Endion;Endion;엔디온;Endion;Endion;艾迪昂星;安迪昂
+Energize;Подзарядка;Energetisieren;Abastecer;Energizar;Dynamisation;Flusso d'Energia;에너지 충전;Energetyzacja;Energizar;充能;注入能量
+Energizer;Заряжатель;Induktor;Vigorizador;Energizador;Dynamiseur;Energizzatore;동력기;Energetyzator;Energizador;激励者;強化者
+Enflamed;Возгорание;In Brand;En llamas;En llamas;Enflammé;In fiamme;불타오름;Podpalenie;Inflamado;点燃;著火
+Engage;В бой;Feindkontakt;Combatir;Enfrentar;Agression;Ingaggio;교전;Natarcie;Iniciar Ataque;寻战;迎戰
+Enrage;Исступление;Wutanfall;Enfurecer;Furia;Enrager;Collera;격분;Wściekłość;Enfurecer;激怒;激怒
+Ensnare;Опутывание;Einfangen;Atrapar;Atrapar;Piège;Intralcio;속박;Usidlenie;Embuste;诱捕;緩速
+Entomophobia;Энтомофобия;Entomophobie;Entomofobia;Entomofobia;Entomophobie;Entomofobia;곤충 혐오;Insektofobia;Entomofobia;昆虫恐惧症;蟲蟲恐懼症
+Eradicator;Искоренитель;Eliminator;Erradicador;Erradicador;Éradicateur;Annientatore;섬멸전차;Eksterminator;Erradicador;根除者;殲滅機
+Essence;Эссенция;Essenz;Esencia;Esencia;Essence;Essenza;정수;Esencja;Essência;精华;原質
+Evasion;Ускользание;Vermeidungstaktik;Evasión;Evasión;Dérobade;Evasione;회피;Unik;Evasão;闪避;閃避攻擊
+Excavator;Экскаватор;Exkavator;Excavadora;Excavadora;Excavateur;Scavatore;굴삭기;Koparka;Escavador;挖掘机;挖掘機
+Execute;Казнь;Ausführen;Ejecutar;Ejecución;Exécution;Esecuzione;처형;Egzekucja;Executar;处决;處決
+Executor;Вершитель;Executor;Ejecutor;Ejecutor;Exécuteur;Esecutore;집행관;Egzekutor;Executor;执行官;執行官
+Exoskeleton;Экзоскелет;Exoskelett;Exoesqueleto;Exoesqueleto;Exosquelette;Esoscheletro;외골격;Egzoszkielet;Exoesqueleto;外骨;外骨骼
+Explode;Взрыв;Explodieren;Explotar;Explotar;Exploser;Esplosione;폭발;Wybuch;Explodir;爆炸;爆炸
+Explosives;Взрывчатка;Sprengladungen;Explosivos;Explosivos;Explosifs;Esplosivi;폭발물;Ładunki wybuchowe;Explosivos;炸药;炸藥
+Extinction;Истребление;Untergang;Extinción;Extinción;Extinction;Estinzione;절멸;Unicestwienie;Extinção;灭绝;滅絕
+Extra;Дополнительно;Extra;Extra;Extra;Extra;Extra;추가;Premia;Extra;额外;額外內容
+Extractor;Экстрактор;Extraktor;Extractor;Extractor;Extracteur;Estrattore;추출장;Ekstraktor;Extrator;萃取房;瓦斯萃取巢
+Factory;Завод;Fabrik;Fábrica;Fábrica;Usine;Fabbrica;군수공장;Fabryka;Fábrica;重工厂;軍工廠
+FactoryTrain;FactoryTrain;FactoryTrain;FactoryTrain;FactoryTrain;FactoryTrain;FactoryTrain;군수공장 훈련;FactoryTrain;Trem de Fábrica;FactoryTrain;軍工廠 - 訓練
+Fear;Страх;Furcht;Miedo;Miedo;Peur;Paura;공포;Strach;Medo;无边恐惧;畏懼
+Feedback;Противодействие;Rückkopplung;Retroalimentación;Retroalimentación;Répercussion;Contrappasso;환류;Sprzężenie zwrotne;Feedback;能量反蚀;潰蝕
+Feederling;Поедатель;Fütterling;Cebaling;Comerezno;Gaveur;Feederling;모이유충;Karmiciel;Comedorzinho;哺养虫;餵食蟲
+Feet;Ступни;Füße;Pies;Pies;Pieds;Piedi;발;Stopy;Pés;脚部;腳部
+Fenix;Феникс;Fenix;Fénix;Fénix;Fénix;Fenix;피닉스;Fenix;Fenix;菲尼克斯;菲尼克斯
+Fighter;Истребитель;Kampfdrohne;Caza;Caza;Chasseur;Caccia;전투기;Myśliwiec;Caça;战斗机;戰機
+Fireball;Огненный шар;Feuerball;Bola de fuego;Bola de fuego;Boule de feu;Palla di Fuoco;화염구;Kula ognia;Bola de Fogo;火球;火球
+Firebat;Огнеметчик;Feuerfresser;Murciélago de fuego;Camazot;Flammeur;Piromane;화염방사병;Wypalacz;Morcego de Fogo;火蝠;火焰兵
+Fist;Кулак;Faust;Puño;Puño;Poing;Pugno;주먹;Pięść;Punho;拳击;拳套
+Flag;Флаг;Flagge;Bandera;Indicador;Drapeau;Bandiera;깃발;Flaga;Bandeira;旗帜;旗標
+Flamecannon;Огненная пушка;Flammenkanone;Cañón de llamas;Pirocañón;Canon lance-flammes;Cannone incendiario;화염포;Działo ogniste;Canhão de Chamas;火焰炮;烈焰火砲
+Flamethrower;Огнемет;Flammenwerfer;Lanzallamas;Lanzallamas;Lance-flammes;Lanciafiamme;화염방사기;Miotacz ognia;Lança-chamas;火焰喷射器;火焰噴射器
+Flare;Сигнальная ракета;Leuchtrakete;Bengala;Bengala;Fusée éclairante;Bengala;섬광탄;Flara;Sinalizador;照明弹;照明彈
+Flashlight;Фонарь;Taschenlampe;Linterna;Linterna;Torche;Torcia elettrica;손전등;Latarka;Holofote;手电筒;手電筒
+Flashpoint;Эпицентр;Rückblenden;Punto crítico;Punto crítico;Réminiscences;Punto di flashback;기억의 흔적;Punkt krytyczny;Ponto Crítico;闪点行动;喚醒記憶
+Flight;Полет;Fliegen;Caza;Vuelo;Fuite;Volo;비행;Lot;Voo;飞行;飛行
+Floating;парящая;Fliegende;Plataforma;Floating;plate-forme;Piattaforma;부유;Lewitująca;Plataforma;Floating;Floating
+Flurry;Шквал ударов;Schlaghagel;Ráfaga;Ráfaga;Rafale;Turbine;난타;Poryw;Ímpeto;狂风阵阵;亂舞
+Fly;Полет;Fliegen;Volar;Volar;Voler;Vola;비행;Lot;Voar;飞行;飛行
+Foliage;Растительность;Bodendetails;Vegetación;Follaje;Feuillage;Fogliame;초목;Roślinność;Folhagem;植被;植物叢
+Frenzied;Бешенство;Rasend;Frenético;Frenético;Frénétique;Frenesia;광란;Szał;Frenéticos;狂暴;狂怒
+Frenzy;Бешенство;Raserei;Frenesí;Frenesí;Frénésie;Frenesia;광란;Szał;Frenesi;狂暴;狂怒
+Frozen;Заморозка;Gefroren;Congelado;Congelado;Gelé;Congelato;얼어붙음;Zamarznięty;Congelado;冻结的;被凍結
+Full;Full;Full;Full;completa;Full;Full;획득;Full;Total;全满;全滿
+Fury;Ярость;Raserei;Furia;Furia;Fureur;Furia;격노;Amok;Fúria;狂怒;兇猛
+Gas;Газ;Gas;Gas;Gas;Gaz;Gas;가스;Gaz;Gás;瓦斯;瓦斯
+Gate;Ворота;Tor;Puerta;Compuerta;Porte;Cancello;관문;Brama;Portal;大门;閘門
+Gateway;Врата;Warpknoten;Acceso;Portal;Portail;Portale dimensionale;관문;Brama;Portal;传送门;傳送門
+Gather;Добывать;Abbauen;Recolectar;Recolectar;Récolter;Raccolta;채취;Gromadź;Extrair;采集;採集
+General;Общее;Allgemein;General;General;Géneral;Generale;일반;Ogólne;General;常规;一般
+Generator;Генератор;Generator;Generador;Generador;Générateur;Generatore;발전기;Generator;Gerador;发电机;發電機
+Ghost;Призрак;Ghost;Fantasma;Fantasma;Fantôme;Fantasma;유령;Duch;Fantasma;幽灵;幽靈特務
+Giddyup;По коням;Hü-hott;Arre;Arre;Hue;Amarcord;이럇;Do akcji;Hora da Ação;驾;衝啊
+Gift;Подарок;Geschenk;Regalo;Obsequio;Cadeau;Dono;선물;Prezent;Presente;神秘礼物;禮物
+Gigablossom;Мегацвет;Gigablüte;Árbol gigante;Gigaflor;Gigapousse;Gigafioritura;거대한 꽃;Gigarozkwit;Gigabroto;巨型食人花;巨妖花
+Glacius;Гласиус;Glacius;Glacius;Glacius;Glacius;Glacius;글라시우스;Glacius;Glacius;格拉修斯;葛拉西斯
+Glevig;Глевиг;Glevig;Glevig;Glevig;Glevig;Glevig;글레빅;Glevig;Glevig;格里维格;葛雷維格
+Goliath;Голиаф;Goliath;Goliat;Goliat;Goliath;Goliath;골리앗;Goliat;Golias;歌利亚武装机器人;巨人
+Grab;Grab;Grab;Grab;Captura;Grab;Grab;움켜잡기;Grab;Agarrão;抓握;擒攫
+Grapple;Кошка;Greifhaken;Enganchar;Aferrar;Grappin;Rampino;갈고리;Chwytak;Gancho;抓钩;鉤爪
+Grenade;Граната;Granate;Granada;Granada;Grenade;Granata;수류탄;Rzuć granat;Granada;手榴弹;手榴彈
+Grenades;Гранаты;Granaten;Granadas;Granadas;Grenades;Granate;수류탄;Granaty;Granadas;手榴弹;手榴彈
+Grenadier;Гренадер;Grenadier;Granadero;Granadero;Grenadier;Granatiere;유탄병;Grenadier;Granadeiro;掷弹兵;擲彈兵
+Griffin;Грифон;Griffin;Grifo;Grifonte;Griffon;Griffin;그리핀;Gryf;Griffin;狮鹫号;獅鷲艦
+Griffon;Грифон;Greif;Grifo;Grifo;Griffon;Griffon;그리핀;Gryf;Grifo;狮鹫;獅鷲戰機
+Grow;Вырасти;Wachsen;Crecer;Crecer;Grandir;Crescita;성장;Rozrost;Crescer;成长;成長
+Guardian;Страж;Wächter;Guardián;Guardián;Gardien;Guardiano;수호군주;Strażnik;Guardião;守护者;守護者
+Gun;Оружие;Gewehr;Pistola;Arma;Armes à feu;Arma da fuoco;총;Broń;Arma;枪械;槍械
+Hack;Взломать;Hacken;Hackear;Piratear;Pirater;Violazione;해킹;Łamanie zabezpieczeń;Hack;入侵;駭入
+Hacked;Взломано;Gehackt;Hackeado;Pirateado;Piraté;Hack subito;해킹됨;Zabezpieczenia złamane;Hackeado;被侵入;受到入侵
+Hall;Холл;Hall;Hall;Hall;Hall;Hall;홀;Hall;Hall;豪尔;郝兒
+Hands;Руки;Hände;Manos;Manos;Mains;Mani;손;Ręce;Mãos;手部;手部
+Hangar;Hangar;Hangar;Hangar;Hangar;Hangar;Hangar;격납고;Hangar;Hangar;机库;機棚
+Hanson;Хэнсон;Hanson;Hanson;Hanson;Hanson;Hanson;핸슨;Hanson;Hanson;汉森;韓森
+Harmless;Безобидный;Harmlos;Inofensivo;Inofensivo;Inoffensif;Inoffensivo;해롭지 않음;Niegroźne;Inofensivo;无害;無害
+Haven;Гавань;Haven;Haven;Sanctuaris;Havre;Haven;헤이븐;Haven;Abrigus;海文;海文
+Havoc;Разрушитель;Aggressor;Caos;Caótico;Carnage;Atomizzatore;교란기;Chaotyk;Devastação;浩劫;浩劫者
+Haymaker;Ошеломляющий удар;Kinnhaken;Segar;Puñetazo;Uppercut magistral;Falciatore;강한 타격;Nokaut;Apagão;强力一击;狂力掃擊
+Head;Голова;Kopf;Cabeza;Cabeza;Mains;Testa;머리;Głowa;Cabeça;头部;頭部
+Headbutt;Удар головой;Kopfstoß;Cabezazo;Cabezazo;Coup de tête;Testata;박치기;Uderzenie głową;Cabeçada;头撞;頭錘
+Helios;Гелиос;Helios;Helios;Crucero de Batalla estrellado;Hélios;Helios;헬리오스;Helios;Cruzador de batalha destroçado;赫里奥斯号;赫利奧司
+Hellbat;Геллитрон;Kampfhellion;Murciélago infernal;Murciélago infernal;Nettoyeur;Hellbat;화염기갑병;Helbat;Morcego Infernal;恶蝠;戰狼
+Hellion;Геллион;Hellion;Erebion;Demonio;Tourmenteur;Hellion;화염차;Helion;Endiabrado;恶火;惡狼
+HellionSiege;Осадный «Геллион;Hellion - Belagerungsmodus;Erebion de asedio;Asedio de Demonio;Tourmenteur de siège;Hellion d'assedio;전투 화염차;Helion w trybie oblężniczym;CercoEndiabrado;攻城恶火战车;攻城型惡狼
+HERC;МАРС;HERK;HERC;HERC;HERC;HERC;HERC;HERK;HERC;赫克;海克力士
+Hercules;Геркулес;Herkules;Hércules;Hércules;Hercule;Hercules;헤라클레스;Herkules;Hércules;大力神;海克力士
+Hill;Хилл;Hill;Hill;Hill;Hill;Hill;힐;Hill;Hill;希尔;希爾
+Horn;Рог;Horn;Aguijón;Cuerno;Corne;Corno;뿔;Migbłystalny róg;Chifre;虫角;尖角
+Horner;Хорнер;Horner;Horner;Horner;Matt Horner;Horner;호너;Horner;Horner;霍纳;霍納
+Hostbusters;Трудно бить бога;Den Wirt prellen;Cazahuéspedes;La peste del huésped;Chancres d'hôtes;Ospite sgradito;숙주 파괴자;Niósł, niósł i nie doniósł;Os Caça-hospedeiros;专业驱魔;宿體剋星
+HotSBioAcids;HotS Биокислоты;HotS - Biosäuren;HotSBioAcids;HotSBioAcids;Bio-acides HotS;Bioacidi HotS;군단의 심장 생체 산;HotS - Biokwasy;HotSBioAcids;HotS生物酸;蟲族之心 - 生化酸液
+House;Дом;Haus;Casa;Hogar;Maison;Casa;주택;Dom;Casa;屋;房子
+Hunger;Hunger;Hunger;Hunger;Hunger;Hunger;Hunger;Hunger;Hunger;Fome;Hunger;Hunger
+Hunter;Охотник;Jägerling;Cazador;Cazador;Chasseur;Cacciatore;사냥꾼;Łowca;Caçador;猎杀虫;獵殺蟲
+Hunterling;Ловец;Hunterling;Cazaling;Hunterezno;Hunterling;Furia;왕저글링;Łowca;Servo Caçador;猎杀体;追獵蟲
+Hustle;Суета;Stoßen;Apresurar;Apurar;Bousculer;Trambusto;밀치기;Popychanie;Agitação;急速;催敢
+Hut;Барак;Hütte;Caseta;Caseta;Habitation;Abitazione;막사;Kontener mieszkalny;Abrigo;小屋;民宅
+Hybrid;Гибрид;Hybrid;Híbrido;Híbrido;Hybride;Ibrido;혼종;Hybryda;Híbrido;混合体;混源體
+HybridC;ГибридC;HybridC;Híbrido C;HíbridoC;Hybride C;Ibrido C;혼종C;HybrydaC;HíbridoC;混合体C;混源體 C
+HybridD;ГибридD;HybridD;Híbrido D;HíbridoD;Hybride D;Ibrido D;혼종D;HybrydaD;HíbridoD;混合体D;混源體 D
+Hydralisk;Гидралиск;Hydralisk;Hidralisco;Hidralisco;Hydralisk;Idralisca;히드라리스크;Hydralisk;Hidralisca;刺蛇;刺蛇
+Hyperactive;Гиперактивность;Alles Gute kommt von oben;Hiperactivo;Hiperactividad;Hyperactif;Hyperattività;누가 호출하셨소;Hyperaktywny;Hiperativo;休伯请安;火大利昂號
+Hyperfluxor;Гиперфлюксор;Hyperfluxor;Hiperfluxor;Hiperfluxor;Hyper-distributeur;Hyperfluxor;초유동 축전기;Hiperfluksor;Hiperfluxor;超能存储器;強力屈曲裝置
+Hyperion;Гиперион;Hyperion;Hyperion;Hiperión;Hypérion;Hyperion;히페리온;Hyperion;Hipérion;休伯利安号;海伯利昂號
+Hyperjump;Гиперпрыжок;Hypersprung;Hipersalto;Hipersalto;Hyper-saut;Ipersalto;초공간 도약;Skok Nadprzestrzenny;Hipersalto;超时空跳跃;超時空躍傳
+Immobilized;Обездвиживание;Bewegungsunfähig;Inmovilización;Inmovilizado;Immobilisation;Immobilizzato;이동 불가;Unieruchomienie;Imobilizado;被定身;定身
+Immortal;Бессмертный;Unsterblicher;Inmortal;Inmortal;Immortel;Immortale;불멸자;Nieśmiertelny;Imortal;不朽者;不朽者
+Impact;Impact;Impact;Impact;Impact;Impact;Impact;Impact;Impact;Suicida;Impact;Impact
+Impale;Пронзание;Aufspießen;Empalar;Empalar;Empaler;Impalamento;꿰뚫기;Przebicie;Empalar;钉刺;刺穿
+Impaler;Пронзатель;Urpfähler;Empalador;Empalador;Empaleur;Trafiggitore;관통 촉수;Przebijacz;Empalador;穿刺者;刺獸
+Implosion;Внутренний взрыв;Implosion;Implosión;Implosión;Implosion;Implosione;내파;Implozja;Implosão;内爆;內部炸裂
+Infest;Заразить;Verseuchen;Infestar;Infestar;Contaminer;Infestazione;감염;Infekuj;Infestar;感染;感染
+Infestation;Заражение;Verseuchung;Infestación;Infestación;Contamination;Infestazione;감염;Infekcja;Infestação;感染;感染
+Infested;Зараженная поверхность;VERSEUCHT;Infestado;INFESTADO;Contaminé;INFESTAZIONE;감염;PLAGA;Infestado;感染危机;大感染
+Infestor;Заразитель;Verseucher;Infestador;Infestador;Infestateur;Infestatore;감염충;Infektor;Infestador;感染者;感染蟲
+Infiltrator;Лазутчик;Infiltrator;Infiltrador;Infiltrador;Infitré;Infiltratore;잠입자;Infiltrator;Infiltrador;渗透者;滲透者
+Insanity;Безумие;Wahnsinn;Locura;Demencia;Démence;Follia;광기;Obłęd;Insanidade;癫狂;瘋狂
+Inspiration;Воодушевление;Inspiration;Inspiración;Inspiración;Inspiration;Ispirazione;감화;Natchnienie;Inspiração;鼓舞人心;士氣大振
+Inspire;Воодушевление;Inspirieren;Inspirar;Inspiración;Inspiration;Ispirazione;격려;Natchnienie;Inspirar;激励;激勵
+Instigator;Велит;Inquisitor;Instigador;Instigador;Instigateur;Istigatore;선동자;Inicjator;Instigador;鼓舞者;煽動者
+Interceptor;Перехватчик;Interceptor;Interceptor;Interceptor;Intercepteur;Intercettore;요격기;Przechwytywacz;Interceptor;拦截机;攔截機
+Interceptors;Перехватчики;Interceptoren;Interceptores;Interceptores;Intercepteurs;Intercettori;요격기;Przechwytywacze;Interceptores;拦截机;攔截機
+Interdictors;Бомбардировщики;Interdiktoren;Interdictores;Interdictores;Interdicteurs;Interdittori;금제기;Interdyktory;Interditores;强击机;干擾機
+Invulnerable;Неуязвим;Unverwundbar;Invulnerable;Invulnerable;Invulnérable;Invulnerabile;무적;Niewrażliwość;Invulnerável;无敌;無敵
+iPistolAd;iPistolAd;iPistolAd;Anuncio de iPistola;iPistolAd;Pub iFlingue;Pubblicità iPistol;iPistol 광고;ReklamaiPistoletu;iPistolAd;i橘子手枪 广告;iPistol_廣告
+Irradiate;Облучение;Bestrahlen;Irradiar;Irradiar;Irradier;Irradiazione;방사선;Napromieniowanie;Irradiar;辐照;輻射
+Irradiated;Облучение;Bestrahlt;Irradiado;Irradiado;Irradié;Irradiata;방사선 노출;Napromieniowanie;Irradiado;被辐照;受輻射照射
+IsPlayer2;IsPlayer2;Ist Spieler 2;IsPlayer2;IsPlayer2;Est le joueur 2;è giocatore 2;IsPlayer2;JestGraczem2;IsPlayer2;是玩家2;為玩家2
+Izsha;Изша;Izsha;Izsha;Izsha;Izsha;Izsha;이즈샤;Isza;Izsha;伊兹莎;伊茲夏
+JonnyRivers;Джонни Риверс;Jonny Rivers;Jonny Rivers;JonnyRivers;Jonny Rivers;Jonny Rivers;조니 리버스;JonnyRivers;JonnyRivers;强尼·里维斯;強尼‧李維斯
+Jump;Прыжок;Warpsprung;Salto;Saltar;Saut;Salto corto;도약;Skocz;Saltar;折跃;傳送
+Kaboomer;Подрывник;Kaboomer;Pulverizador;Kaboomer;Kaboumeur;Deflagratore;폭독충;Wybuchowiec;Cabumador;炸弹怪;爆酸蟲
+Kachinsky;Качински;Kachinsky;Kachinsky;Kachinsky;Kachinsky;Kachinsky;카친스키;Kachinsky;Kachinsky;卡琴斯基;卡臣斯基
+Kaldalis;Калдалис;Kaldalis;Kaldalis;Kaldalis;Kaldalis;Kaldalis;칼달리스;Kaldalis;Kaldalis;卡尔达利斯;卡達利斯
+KALDIR;КАЛДИР;KALDIR;KALDIR;KALDIR;KALDIR;KALDIR;칼디르;KALDIR;KALDIR;卡亚迪尔;卡迪爾
+Karass;Карасс;Karass;Karass;Karass;Karass;Karass;카라스;Karass;Karass;卡拉斯;卡拉斯
+Karax;КАРАКС;Karax;Karax;Karax;Karax;Karax;카락스;Karax;Karax;凯拉克斯;凱拉克
+Kerrigan;Керриган;Kerrigan;Kerrigan;Kerrigan;Kerrigan;Kerrigan;케리건;Kerrigan;Kerrigan;凯瑞甘;凱莉根
+KerriganNova;Керриган - взрыв;Kerrigan - Nova;KerriganNova;KerriganNova;KerriganNova;KerriganNova;케리건 회오리;KerriganRozbłysk;KerriganNova;KerriganNova;凱莉根新星
+Keystone;Ключ;Schlüsselstein;Piedra;Piedra;Clé;Stele Ancestrale;중추석;Ogniwo;Pedra Angular;钥石;星鑰石
+Kilysa;Килиса;Kilysa;Kilysa;Ki'lysa;Kilysa;Kilysa;킬리사;Kilysa;Kilysa;克里莎;綺莉紗
+Klein;Кляйн;Klein;Klein;Klein;Klein;Klein;클라인;Klein;Klein;克莱因;克萊
+Knockback;Knockback;Knockback;Knockback;Repulsión;Knockback;Knockback;밀치기;Knockback;Repulsão;Knockback;擊退
+Knockdown;Сбивание с ног;Niederschlag;Derribar;Derribar;Renverser;Abbattimento;넘어뜨리기;Powalenie;Golpe;昏迷;擊倒
+KORHAL;КОРХАЛ;KORHAL;KORHAL;KORHAL;KORHAL;KORHAL;코랄;KORHAL;KORHAL;克哈;克哈
+Kraith;Крейт;Kraith;Kraith;Kraith;Kraith;Kraith;크레이스;Kraith;Kraith;凯雷斯;克雷斯
+Lances;Lances;Lances;Lances;Lances;Lances;Lances;Lances;Lances;Térmicas;Lances;Lances
+Land;Посадка;Landen;Aterrizar;Aterrizar;Atterrir;Atterra;착륙;Lądowanie;Pousar;着陆;降落
+Larva;Личинка;Larve;Larva;Larva;Larve;Larva;애벌레;Larwa;Larva;幼虫;幼生蟲后
+LarvaTrain;LarvaTrain;LarvaTrain;LarvaTrain;LarvaTrain;LarvaTrain;LarvaTrain;애벌레 훈련;LarvaTrain;Trem de Larva;LarvaTrain;幼蟲 - 訓練
+Lasarra;Ласарра;Lasarra;Lasarra;Lasarra;Lasarra;Lasarra;라사라;Lasarra;Lasarra;拉瑟拉;菈莎拉
+Laser;Laser;Laser;Laser;Ataque;Laser;Laser;레이저;Laser;Ataque;Laser;雷射
+Lasers;Лазеры;Laser;Láseres;Láseres;Lasers;Laser;레이저;Lasery;Lasers;激光;雷射
+Launch;Launch;Launch;Launch;Lanzar;Launch;Launch;출격;Launch;Lançar;发射;起飛
+LavaUnit;Лава;Lavaeinheit;Unidad de lava;LavaUnilt;Unité de lave;Lava - Unità;용암유닛;LawaJednostka;LavaUnit;LavaUnit;熔岩單位
+Leap;Прыжок;Anspringen;Salto;Salto;Bond;Balzo;도약;Skok;Salto;跳跃;躍擊
+Leaping;Прыжок;Springt an;Saltando;Ataque de salto;Bondit;Balzo;도약;Skok;Pulando;跳跃;躍擊
+Leech;Пиявка;Egel;Absorción;Sanguijuela;Sangsue;Sanguisuga;거머리;Pijawka;Parasita;吸血虫;血蛭
+Legionnaire;Легионер;Legionär;Legionario;Legionario;Légionnaire;Legionario;군단병;Legionista;Legionário;军团士兵;軍團士兵
+Legs;Ноги;Beine;Piernas;Piernas;Jambes;Gambe;다리;Nogi;Pernas;腿部;腿部
+Leviathan;Левиафан;Leviathan;Leviatán;Leviatán;Léviathan;Leviatano;거대괴수;Lewiatan;Leviatã;利维坦;利維坦
+Liberator;Освободитель;Falke;Liberador;Libertador;Croiseur;Liberatore;해방선;Liberator;Libertador;解放者;解放者
+Lightning;Lightning;Lightning;Lightning;Lightning;Lightning;Lightning;Lightning;Lightning;Raio;Lightning;Lightning
+LM;LM;LM;LM;LM;LM;LM;LM;LM;LM;LM;LM
+Lockdown;Замыкание;Stopper;Cierre;Aislamiento;Verrou;Interferenza;잠금;Blokada;Neutralização;锁定;癱瘓
+Locked;Недоступно;Gesperrt;Bloqueado;Bloqueado;Verrouillée;Non disponibile;잠김;Zablokowano;Bloqueado;已锁定;未解鎖
+Lockwell;Локвелл;Lockwell;Lockwell;Lockwell;Lockwell;Lockwell;록웰;Lockwell;Lockwell;洛克维尔;羅克韋爾
+Locust;Саранчид;Schrecke;Langosta;Langosta;Nuisible;Locusta;식충;Szarańcza;Gafanhoto;蝗虫;蝗蟲
+Loki;Локи;Loki;Loki;Loki;Loki;Loki;로키;Loki;Loki;火神号;洛奇
+Longshot;Дальнострел;Langstreckenmunition;Francotiradora;Mira láser;Longue portée;Attacco a distanza;장거리 사격;Daleki strzał;Tiro Longo;长程射击;長程壓制
+Lurker;Скрытень;Schleicher;Merodeador;Acechador;Rôdeur;Criptolisca;가시지옥;Czyhacz;Furtivo;潜伏者;遁地獸
+Maar;Маар;Maar;Maar;Maar;Maar;Maar;마르;Maar;Maar;玛尔;瑪爾
+Mace;Булава;Streitkolben;Maza;Maza;Masses;Mazza;둔기;Obuch;Maça;锤;錘
+Maelstrom;Темный вихрь;Mahlstrom;Vorágine;Maelstrom;Maelström;Maelstrom;혼돈의 폭풍;Malstrom;Turbilhão;灵能漩涡;混沌風暴
+Maggot;Личинка;Made;Lombriz;Gusano;Asticot;Verme;구더기;Gnida;Verme;蛆;蛆
+Malwarfare;Вирусная война;Elektronische Kriegsführung;Guerra de malware;Ciberguerra;Guerre cybernétique;Guerra informatica;잘못된 전쟁;Cyfrowa wojna;Guerrilha Tecnológica;净网行动;惡意程式
+Manipulator;Манипулятор;Manipulator;Manipulador;Manipulador;Manipulateur;Manipolatore;조작기;Manipulator;Manipulador;操纵者;操控者
+Marauder;Мародер;Marodeur;Persecutor;Merodeador;Maraudeur;Devastatore;불곰;Maruder;Demolidor;劫掠者;掠奪者
+Marker;Marker;Marker;Marker;Marker;Marker;Marker;Marker;Marker;Marcador;Marker;Marker
+Master;Master;Master;Master;Master;Master;Master;일류;Master;Master;Master;Master
+Mastery;Специалист;Meisterung;Maestría;Maestría;Maîtrise;Maestria;마스터;Mistrzostwo;Maestria;战役大师;大師
+Mechanism;Механизм;Mechanismus;Mecanismo;Mecanismo;Mécanisme;Congegno;기계부;Mechanizm;Mecanismo;机关;天星鎖
+Medic;Медик;Sanitäter;Médico;Médica;Médic;Medico;의무관;Sanitariuszka;Médico;医疗兵;醫護兵
+Medivac;Медэвак;Medivac;Medevac;Evamed;Médivac;Navetta medica;의료선;Prom medyczny;Ambunave;医疗运输机;醫療艇
+Medkit;Аптечка;Medikit;Kit médico;Botiquín;Médi-kit;Kit medico;구급 상자;Zestaw medyczny;Kits Médicos;医疗包;醫療包
+Megalith;Мегалит;Megalith;Megalito;Megalito;Mégalithe;Megalite;메가리스;Megalit;Megalito;麦加利斯;碩像儀
+Meinhoff;Майнхофф;Meinhoff;Meinhoff;Meinhoff;Meinhoff;Meinhoff;마인호프;Meinhoff;Meinhoff;梅茵霍夫;曼霍夫
+Melee;Ближний бой;Nahkampf;Cuerpo a cuerpo;Melé;Mêlée;Mischia;근접;Walka w zwarciu;Corpo a corpo;近战;近戰
+Mend;Излечение;Heilen;Curar;Remendar;Guérison;Rimarginazione;치유;Leczenie;Restaurar;愈合;療癒
+Mindblast;Взрыв мозга;Hirnexplosion;Explosión mental;Estallido mental;Éruption mentale;Esplosione mentale;정신 폭발;Wybuch Umysłu;Explosão mental;心灵爆破;心靈震爆
+Mine;Mine;Mine;Mine;Mine;Mine;Mine;Mine;Mine;Viúva;Mine;Mine
+MinedCraft;Все, что плохо лежит;Ohne Moos nix los;MinaCraft;Nave minada;Ces terres minées;Miniere spaziali;마인 크래프트;Znalezione nie kradzione;Minecraft;采矿争霸;晶礦爭霸
+Miner;Шахтер;Schürfer;Minero;Minero;Mineur;Minatore;광부;Górnik;Mineiro;矿工;礦工
+Mines;Мины;Minen;Minas;Minas;Mines;Mine;지뢰;Miny;Minas;地雷;地雷
+Minesweeper;Сапер;Gute Minen zum bösen Spiel;Buscaminas;Buscaminas;Démineurs;Bombarolo;대박;Saper;Campo minado;扫雷专家;掃雷者
+Mirage;Мираж;Mirage;Espejismo;Espejismo;Mirage;Miraggio;신기루;Miraż;Miragem;幻影战机;幻影戰機
+Missile;Missile;Missile;Missile;Misil;Missile;Missile;투사체;Missile;Tatu-bomba;Missile;飛彈
+Mitosaurus;Митозавр;Mitosaurus;Mitosauro;Mitosaurio;Mitosaure;Mitosauro;미토사우르스;Mitozaur;Mitossauro;毒裂兽;分裂獸
+Mitoscarab;Митоскарабей;Mitoskarabäus;Mitoescarabajo;Mitoescarabajo;Mitoscarabée;Mitoscarabeo;분열갑충;Mitoskarabeusz;Mitoescaravelho;毒裂兽;分裂獸
+Modify;Modify;Modify;Modify;Modify;Modify;Modify;Modify;Modify;Modificar;Modify;Modify
+Mohandar;Моэндар;Mohandar;Mohandar;Mohandar;Mohandar;Mohandar;모한다르;Mohandar;Mohandar;莫汉达尔;莫翰達
+Mojo;Моджо;Mojo;Mojo;Mojo;Mojo;Mojo;모조;Mojo;Mojo;摩约;摩裘
+Monitor;Монитор;Monitor;Monitor;Monitor;Moniteur;Monitor;모니터;Monitor;Monitor;显示器;監視器
+Monlyth;Монлит;Monlyth;Monlyth;Monlito;Monlyth;Monlyth;몬리스;Monlyth;Monlyth;蒙莱斯;蒙利斯
+Monolith;Монолит;Monolith;Monolito;Monolito;Monolithe;Monolito;돌기둥;Monolit;Monolito;莫诺里斯;石碑
+Morph;Morph;Metamorphose;Mutar;Transformar;Morph;Mutazione;변태;Morph;Transmutar;变异;變形
+Morphling;Активная мутация;Megamorphose;Hora de mutar;Tranformezno;Morphalou;Mutoide;변태충;Przekształciciel;Transmutídeo;变形虫;變形入門
+Morphology;Мутология;Megamorphose;Mutarología;Morfología;Morphologie;Morfologia;변태학 개론;Przekształciciel;Morfologia;变异大师;變形學
+Mothership;Материнский корабль;Mutterschiff;Nave nodriza;Nave nodriza;Vaisseau mère;Nave madre;모선;Statek-matka;Nave-mãe;母舰;聖母艦
+Move;Двигаться;Bewegen;Mover;Mover;Déplacer;Muovi;이동;Ruch;Deslocar;移动;移動
+MULE;МУЛ;M.U.L.E;MULA;EMUL;MULE;MULE;지게로봇;MUŁ;MULE;矿骡;礦騾
+Murvar;Мурвар;Murvar;Murvar;Murvar;Murvar;Murvar;멀바르;Murvar;Murvar;穆尔瓦;莫瓦
+Mutalisk;Муталиск;Mutalisk;Mutalisco;Mutalisco;Mutalisk;Mutalisca;뮤탈리스크;Mutalisk;Mutalisca;异龙;飛螳
+Mutator;Mutator;Mutator;Mutator;Mutator;Mutator;Mutator;Mutator;Mutator;Mutador;Mutator;Mutator
+Naktul;Нактул;Naktul;Naktul;Naktul;Naktul;Naktul;나크툴;Naktul;Naktul;纳可图尔;娜克圖
+Napalm;Напалм;Napalm;Napalm;Napalm;Napalm;Napalm;네이팜;Napalm;Napalm;凝固汽油弹;燒夷彈
+Narud;Наруд;Narud;Narud;Narud;Narud;Narud;나루드;Narud;Narud;纳鲁德;那魯
+NE;СВ;Nordosten;NE;NE;NE;NE;북동쪽;PnW;NE;NE;東北
+Neck;Шея;Hals;Cuello;Cuello;Cou;Collo;목;Szyja;Pescoço;颈部;頸部
+New;New;New;New;New;New;New;New;New;Novo;New;New
+NexusBuild;NexusBuild;NexusBuild;NexusBuild;NexusBuild;NexusBuild;NexusBuild;연결체 건설;NexusBuild;ConstruirNexus;NexusBuild;建造星核
+Niadra;Ниадра;Niadra;Niadra;Niadra;Niadra;Niadra;니아드라;Niadra;Niadra;尼雅德拉;妮雅德拉
+Nova;Нова;Nova;Nova;Nova;Nova;Nova;노바;Nova;Nova;诺娃;諾娃
+Noxious;Токсилиск;Toxilisk;Tóxica;Nocivo;Toxique;Atrax;독성;Truciciel;Tóxica;瘴毒兽;沼獸
+Nuke;Ядерный удар;Nuklearrakete;Bomba nuclear;Misil nuclear;Bombe nucléaire;Bomba;핵;Atomówka;Arma Nuclear;聚变打击;核彈攻擊
+Nux;Накс;Nux;Obús;Nux;Nux;Nux;넉스;Nux;Nux;纳克斯;納克斯
+NW;СЗ;Nordwesten;NO;NO;NO;NO;북서쪽;PnZ;NW;NW;西北
+Obelisk;Обелиск;Obelisk;Obelisco;Obelisco;Obélisque;Obelisco;방첨탑;Obelisk;Obelisco;方尖碑;晶碑
+Obliterate;Obliterate;Obliterate;Obliterate;Obliterar;Obliterate;Obliterate;초음파;Obliterate;Obliterar;摧毁;消滅
+Observer;Наблюдатель;Beobachter;Observador;Observador;Observateur;Osservatore;관측선;Obserwator;Vigia;侦测器;觀察者
+Odin;Один;Odin;Odín;Odín;Odin;Odin;오딘;Odyn;Odin;奥丁;奧丁
+Old;Устаревший;Alt;Viejo;Antiguo;Ancien;Vecchio;예전;Stare;Velho;旧;舊
+Omegalisk;Омегалиск;Omegalisk;Omegalisco;Omegalisco;Omégalisk;Omegalisca;오메가리스크;Omegalisk;Omegalisca;王兽;末日獸
+Omnipotence;Беспредельная мощь;Omnipotenz;Omnipotencia;Omnipotencia;Omnipotence;Onnipotenza;전능;Wszechmoc;Onipotência;天降神力;無限之力
+Omnislash;Omnislash;Omnislash;Omnislash;Omnitajo;Omnislash;Omnislash;다중 베기;Omnislash;Talho Supremo;Omnislash;瞬連斬
+Oracle;Оракул;Orakel;Oráculo;Oráculo;Oracle;Oracolo;예언자;Wyrocznia;Oráculo;先知;先知艦
+Outbreak;Эпидемия;Epidemie;Estallido;La epidemia;Infestation;Epidemia;재앙;Epidemia;A infestação;大爆发;暴走
+Outpatient;Врачи прилетели;Stippvisite;Cuidados intensivos;Paciente ambulatorio;Médecin de campagne;Dica trentatré;외래 환자;Terrański pacjent;Paciente externo;门诊;門診時間
+Outrunner;Остаться в живых;Einen Schritt voraus;Velocista;Fuga energética;Fuite en avant;Velocista;이 구역의 빠른 발은 나야;Poza zasięgiem;Vanguardeiro;飞毛腿;先行者
+Overcharge;Перегрузка;Überladen;Sobrecarga;Sobrecarga;Saturation;Sovraccarico;과충전;Przeciążenie;Sobrecarga;超载;超載
+Overcharged;Перегрузка;Überladen;Sobrecargado;Sobrecargado;En surcharge;Sovraccarico;과충전;Przeciążenie;Sobrecarregado;超载;超載中
+Overload;Перегрузка;Überlastung;Sobrecarga;Sobrecarga;Surcharge;Scompenso;과부하;Przeciążenie;Sobrecarga;过载;超載
+Overlord;Надзиратель;Overlord;Superamo;Amo Supremo;Dominant;Sorvegliante;대군주;Nadrządca;Suserano;王虫;王蟲
+Overmind;Сверхразум;Overmind;Supermente;Mente Suprema;Maître-esprit;Unica Mente;초월체;Nadświadomość;Supermente;主宰;主宰
+Overpowered;Сверхсила;Übermächtig;Aumento de poder;Rebosante;Surpuissance;Dominazione;초강화;Przesilenie Mocy;Sobrecarregado;超强能量;力量加身
+Overseer;Владыка;Overseer;Supervisor;Vigía supremo;Vigilant;Custode;감시군주;Nadzorca;Supervigia;眼虫;監察王蟲
+Overwhelmed;Ошеломление;Überwältigt;Abrumada;Abrumado;Déferlement;Travolto;압도;Obezwładnienie;Sobrepujado;承受无边的怒火;兇猛強襲
+Parasite;Паразиты;Parasit;Parásito;Parásito;Parasite;Parassita;기생충;Pasożyt;Parasita;寄生虫;寄生
+Parent;Parent;Ursprung;Principal;Principal;Parent;Origine;부모;Nadrzędny;Pai;父级;父項
+Park;Припарковать;Parken;Aparcar;Parque;Garer;Parcheggia;주차;Parkuj;Estacionar;停靠;停放
+Parked;Припарковано;Geparkt;Aparcado;Estacionada;Garé;In parcheggio;정차됨;Zaparkowany;Estacionado;已停泊;已停放
+Particle;Particle;Particle;Particle;Particle;Particle;Particle;Particle;Particle;Particle;Particle;Particle
+Passive;Пассивный;Passiv;Pasivo;Pasivo;Passif;Passivo;수동;Pasywny;Passivo;被动;被動狀態
+Payload;Груз;Ladung;Carga;Carga;Convoi;Carico;화물;Ładunek;Carga;运载车辆;運載單位
+Peck;Клевок;Picken;Pico;Picotazo;Coup de bec;Becco;쪼기;Dziób;Bicada;啄击;啄擊
+Persistent;Persistent;Persistent;Persistent;Persistent;Persistent;Persistent;Persistent;Persistent;Persistente;Persistent;Persistent
+PersistTerm;PersistTerm;PersistTerm;PersistTerm;PersistTerm;PersistTerm;Termine permanente;PersistTerm;StałyWarunek;PersistTerm;PersistTerm;永恆之約
+Phoenix;Феникс;Phönix;Fénix;Fénix;Phénix;Fenice;불사조;Feniks;Fênix;凤凰;鳳凰戰機
+Pickup;Подобрать;Aufsammeln;Recoger;Recoger;Ramasser;Raccolta;획득;Znajdźka;Coletar;拾取;拾取
+Placeholder;Заглушка;Platzhalter;Objeto provisional;Placeholder;Provisoire;Temporaneo;자리 표시자;Element zastępczy;Marcador;占位符;預留位置
+Plague;Чума;Seuche;Peste;Plaga;Peste;Contagio;역병;Zaraza;Peste;瘟疫横行;瘟疫
+Planet;планета;Planet;planeta;Planeta;planète;pianeta;행성;planeta;Planeta;行星;行星
+PLANETFALL;ШТУРМ КОРХАЛА;INVASION;EL DESEMBARCO;COLAPSO PLANETARIO;DÉBARQUEMENT;SBARCO PLANETARIO;행성 침공;DESANT;CHEGADA;天降虫海;兵臨城下
+Platform;платформа;Plattform;flotante;Platform;flottante;mobile;정거장;platforma;Flutuante;Platform;Platform
+Podium;Подиум;Podium;Podio;Podio;Podium;Podio;연단;Podium;Pódio;演讲台;講台
+Polearm;Алебарда;Stangenwaffe;Arma de asta;Arma de asta;Armes d'hast;Arma in asta;장창;Kij;Arma de haste;长柄武器;長柄武器
+Popup6;Всплывающее окно 6;Popup6;Emergente6;Ventana emergente 6;Popup6;Comparsa 6;팝업6;Okienko6;Popup6;弹上6;彈射6
+Portrait;Портрет;Porträt;Retrato;Retrato;Portrait;Ritratto;초상화;Portret;Retrato;头像;頭像
+Potion;Зелье;Trank;Poción;Poción;Potion;Pozione;물약;Eliksir;Poção;药剂;藥水
+Pounce;Наскок;Springen;Acometida;Abalanzarse;Bondir;Travolgimento;덮치기;Odbij;Golpear;猛扑;猛撲
+Pounced;Наскок;Angesprungen;Atacado;Abalanzado;Bondi;Balzato;덮쳐짐;Naskoczenie;Golpeado;突袭;被抓住
+Predator;Хищник;Predator;Depredador;Depredador;Prédateur;Predator;약탈자;Drapieżca;Predador;掠食者;獵殺者
+Premonition;Предчувствие;Vorahnung;Premonición;Premonición;Prémonition;Premonizione;예감;Przewidywanie;Premonição;预兆;預感
+Preserver;Хранитель;Bewahrer;Conservador;Preservador;Conservateur;Conservatore;계승자;Sukcesor;Preservador;保护者;守護者
+Primalgor;Перволгор;Urgor;Primalgor;Primigalgor;Primorgaure;Primalgor;프라이말고르;Prymalgor;Primevalgor;原始猛兽;原生巨獸
+Primeling;Перволинг;Urling;Primaling;Primigezno;Primorlin;Primoride;원시충;Prymaling;Primevídeo;原始异虫;原生蟲
+Prisoner;Заключенный;Gefangener;Prisionero;Prisionero;Prisonnier;Prigioniero;죄수;Więzień;Prisioneiro;囚犯;囚犯
+Probe;Зонд;Sonde;Sonda;Sonda;Sonde;Sonda;탐사정;Próbnik;Sonda;探机;探測機
+Probius;Пробиус;Probius;Sondius;Sondius;EDN-OS;Probius;프로비우스;Probiusz;Probius;普罗比斯;普羅比斯
+Prologue;Prologue;Prologue;Prólogo;Prologue;Prologue;Prologo;프롤로그;Prologue;Prologue;Prologue;Prologue
+Propagate;Распространение;Duplizieren;Propagar;Propagar;Propagation;Propagazione;번식;Krzewienie;Propagar;同化;惡性繁殖
+Propagator;Распространитель;Duplikator;Propagador;Propagador;Propagateur;Propagatore;번식자;Krzewiciel;Propagador;同化体;惡性殖體
+Protector;Защитник;Beschützer;Protector;Protector;Protecteur;Protettore;보호;Obrońca;Protetor;守护者;護衛者
+Psi10;Psi10;Psi10;Psi10;Psi10;Psi10;Psi10;Psi10;Psi10;Psi10;灵能10;幽能10
+Psionic;Psionic;Psionic;Psionic;Psionic;Psionic;Psionic;Psionic;Psionic;Definir;Psionic;Psionic
+PStory01;PStory01;PStory01;PStory01;PStory01;PStory01;PStory01;P이야기 01;POpowieść01;PStory01;PStory01;PStory01
+Pteragantua;Птерогантюа;Pteragantua;Pteragantua;Pteragantua;Ptéragantua;Pterogantua;테라간투아;Pteragantua;Pteragântua;八爪巨蜉;翼鯨獸
+Pulse;Пульс;Impuls;Pulso;Pulso;Impulsion;Impulso psionico;파동;Impuls;Pulso;脉冲;脈衝
+Purification;Ликвидация;Läuterung;Purificación;Purificación;Élimination;Purificazione;정화;Oczyszczenie;Purificação;净化;淨化
+Purifier;Воздаятель;Purifier;Purificador;Purificador;Le Purificateur;Purificatrice;정화 모선;Czyściciel;Purificador;净化号;淨化者
+Purify;Воздаяние;Läutern;Purificar;Purificar;Purification;Epurazione;정화;Oczyść;Purificar;净化;淨化
+Pygalisk;Пигалиск;Pygalisk;Pigalisco;Cerdalisco;Porcalisk;Pigalisca;피갈리스크;Pygalisk;Pigalisca;幼雷兽;派加獸
+Quatro;Кватро;Quatro;Quatro;Quatro;Quatro;Quarto Potere;쿼트로;Quatro;Quatro;第四级;多重強化
+Queen;Королева;Königin;Reina;Reina;Reine;Regina;여왕;Królowa;Rainha;后虫;后蟲
+Quillgor;Иглобраз;Quillgor;Quillgor;Quillgor;Huregore;Quillgor;퀼고르;Kolcorożec;Espinhoide;钢背兽;劍毛獸
+Radar;Радар;Radar;Radar;Radar;Radar;Radar;레이더;Radar;Radar;雷达;雷達
+Railgun;Электромагнитная пушка;Railgun;Cañón de riel;Cañón de riel;Canon électrique;Cannone elettrico;레일건;Działo kinetyczne;Rifle Magnético;磁轨炮;磁軌砲
+Raise;Raise;Raise;Raise;Levantar;Raise;Raise;올림;Raise;Elevar;Raise;升起
+Rally;Сбор;Sammeln;Reunir;Reunión;Rassemblement;Raduno;집결;Zbiórka;Reagrupamento;集结;集結
+RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;RallyNydus;蠕蟲集結點
+Rampage;Неистовство;Wutanfall;Devastación;Arrasar;Saccage;Distruzione;광란;Demolka;Chacina;暴怒;狂暴攻擊
+Raptor;Раптор;Raptor;Raptor;Rapaz;Raptor;Raptor;랩터;Drapieżca;Raptor;腾跃虫;迅猛蟲
+Rattlesnake;Гадюка;Rattlesnake;Serpiente;Serpiente de cascabel;Fer-de-Lance;Rattlesnake;방울뱀;Grzechotnik;Cascavel;响尾蛇;響尾蛇
+Ravage;Сокрушить;Verheeren;Asolar;Devastar;Ravage;Devastazione;강습;Spustoszenie;Devastar;破坏;嗜血凌虐
+Ravager;Разоритель;Verheerer;Asolador;Devastador;Saccageur;Laceratore;궤멸충;Pustoszyciel;Devastador;破坏者;劫毀蟲
+Ravasaur;Равазавр;Ravasaurier;Ravasauro;Ravasaurio;Démolisk;Ravasauro;라바사우르스;Rawazaur;Ravassauro;掠食龙;暴掠龍
+Raven;Ворон;Raven;Cuervo;Cuervo;Corbeau;Raven;밤까마귀;Kruk;Corvo;铁鸦;渡鴉
+Raynor;Рейнор;Raynor;Raynor;Raynor;Raynor;Raynor;레이너;Raynor;Raynor;雷诺;雷諾
+Raynor_COOP;Raynor_COOP;Raynor - Co-op;Raynor_COOP;Raynor_COOP;Raynor COOP;Raynor_COOP;Raynor_COOP;Raynor_WSPÓŁPRACA;Raynor_COOP;Raynor_COOP;Raynor_COOP
+Razorwire;Колючая проволока;Stacheldraht;Alambre de espino;Alambre de cuchillas;Fil tranchant;Filo spinato;가시철선;Sieć kolczasta;Arame laminado;剃刀金属网;金屬網
+RB;RB;RB;RB;RB;RB;RB;RB;RB;RB;RB;RB
+Read;Считать;Lesen;Leer;Leer;Lire;Lettura;읽기;Czytaj;Ler;读取;已讀取
+Reanimate;Оживление;Wiederbeleben;Reanimar;Reanimación;Réanimer;Rianimazione;부활;Ożywienie;Reanimar;复活;活化
+Reaper;Головорез;Rächer;Segador;Yum-Kimil;Faucheur;Mietitore;사신;Żniwiarz;Exterminador;收割者;死神
+Reaver;Опустошитель;Räuber;Conceptor;Hostigador;Mégalithe;Trilobita;파괴자;Rozrywacz;Aniquiloide;掠夺者;掠殺者
+Reborn;Reborn;Reborn;Reborn;Renacido;Reborn;Reborn;재조립;Reborn;Renascido;Reborn;重生
+Rebuild;Ремонт;Wiederaufbau;Reconstruir;Reconstruir;Reconstruire;Ricostruzione;재조립;Odbuduj;Reconstruir;重建;重建
+Recall;Телепортация;Rückruf;Llamar;Repliegue;Rappel;Richiamo;소환;Przywołanie;Chamado;召回;召回
+Reclamation;Возвращение;Kontrolle übernehmen;Reconquista;Recuperación;Réquisition;Rivendicazione;교화;Przejęcie;Recuperação;回收;取回控制
+Refinery;Перерабатывающий завод;Raffinerie;Refinería;Refinería;Raffinerie;Raffineria;정제소;Rafineria;Refinaria;精炼厂;精煉廠
+Regenerating;Регенерация;Regeneriert;Regenerando;Regenerando;Récupération;Rigenerazione;재생 중;Regeneracja;Regenerando;再生;再生中
+Regeneration;Регенерация;Regeneration;Regeneración;Regeneración;Récupération;Rigenerazione;재생;Regeneracja;Regeneração;恢复;再生
+Reigel;Райгель;Reigel;Reigel;Reigel;Reigel;Reigel;라이글;Reigel;Reigel;Reigel;萊葛
+Release;Отпустить;Freilassen;Liberar;Liberar;Libérer;Liberazione;지배 해제;Wypuść;Liberar;释放;釋放奴隸
+Relentless;Неудержимость;Erbarmungslos;Implacable;Implacable;Ténacité;Implacabile;불굴;Nieustępliwość;Implacável;无情;奮戰不懈
+Relic;Реликвия;Relikt;Reliquia;Reliquia;Relique;Reliquia;유물;Relikt;Relíquia;圣物;聖物
+RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot;RemoveAllDot
+Rendezvous;Встреча;Rendezvous;Punto de encuentro;Encuentro;Rendez-vous;Punto d'incontro;약속 지점;Rendez-vous;Ponto de encontro;集合点;會合點
+Renewal;Обновление;Erneuerung;Renovación;Renovación;Renouveau;Rinnovamento;회복;Odnowa;Renovação;回春术;修復組織
+Repairing;Ремонт;Reparatur;Reparando;En reparación;En réparation;In riparazione;수리;Naprawa;Consertando;正在修理;修復
+Repel;Противостояние;Rückstoß;Repeler;Repeler;Repousser;Respingi;격퇴;Odparcie;Repelir;反击;震退
+Replicate;Репликация;Replizieren;Replicar;Replicar;Réplication;Replica;복제;Replikacja;Replicar;复制;複製
+Research;Research;Research;Research;Investigación;Research;Research;연구;Research;Pesquisa;研发;研發
+Resistor;Отразитель;Resistor;Protector;Resistor;Conducteur;Oppressore;저항자;Rezystor;Resistor;抵抗者;阻礙者
+Resourceful;Запасливость;Materialschlacht;Un tipo con recursos;Recursos a granel;Plein de ressources;Pieno di risorse;자원 먹고 갈래;Zasobność;Ardiloso;资源丰富;資源滿檔
+Restore;Восстановить;Schilde wiederaufladen;Restaurar;Restaurar;Restaurer;Ripristina;회복;Odnawianie;Restaurar;恢复;充能
+Resurgence;Возрождение;Wiederkehr;Resurgimiento;Resurgimiento;Résurgence;Rinascita;회생;Odrodzenie;Ressurgência;复苏;復甦
+Retreat;Retreat;Retreat;Retreat;Retirada;Retreat;Retreat;후퇴;Retreat;Retirada;撤退;撤退
+Revanscar;Пояс Ревана;Revanscar;Revanscar;Revanscar;Revanscar;Revanscar;레반스카;Revanskar;Revanscar;复仇之痕;雷文斯卡
+Revealed;Местоположение обнаружено;Aufgedeckt;Revelado;Revelado;Révélé;Rivelato;드러남;Ujawniono;Revelado;现形;現形
+Revealer;Обнаружитель;Aufdecker;Revelador;Revelador;Révélateur;Rivelatore;드러내기;Ujawniacz;Revelador;开图器;顯示器
+Revelation;Откровение;Enthüllung;Revelación;Revelación;Révélation;Rivelazione;계시;Ujawnienie;Revelação;探照灯;天啟
+Revitalizer;Целитель;Vitalstimulator;Revitalizador;Revitalizador;Vivificateur;Rivitalizzatore;재충전기;Regenerator;Revitalizador;恢复器;復原器
+Revitalizing;Восстановление;Wird revitalisiert;Revitalizando;Revitalizante;Vivification;Rivitalizzazione in corso;회복 중;Regenerowanie;Revitalizando;正在恢复;復原中
+Revive;Оживить;Wiederbelebung;Revivir;Revivir;Ranimer;Rianimazione;부활;Ożywienie;Ressuscitar;复活;復活
+Rifle;Винтовка;Gewehr;Rifle;Rifle;Fusil;Fucile;소총;Karabin;Rifle;步枪;步槍
+Ring;Кольцо;Ring;Anillo;Anillo;Anneau;Anello;반지;Pierścień;Anel;戒指;手指
+Roach;Таракан;Schabe;Cucaracha;Cucaracha;Cafard;Blatta;바퀴;Karakan;Barata;蟑螂;蟑螂
+Roachling;Труплинг;Schabling;Cría de cucaracha;Cucarachita;Cancrelat;Blattide;애바퀴;Karakaniec;Baratídeo;小蟑螂;小蟑螂
+Rocks;Скалы;Felsen;Rocas;Rocas;Rochers;Rocce;바위;Skały;Rochas;岩石;岩石
+Rohana;Рохана;Rohana;Rohana;Rohana;Rohana;Rohana;로하나;Rohana;Rohana;洛哈娜;洛哈娜
+Root;Окопаться;Verwurzeln;Arraigar;Arraigar;Enraciner;Radica;뿌리 박기;Zakorzeń;Enraizar;扎根;扎根
+Rooted;Закопавшийся;Verwurzelt;Arraigado;Arraigado;Enraciné;Radicato;뿌리 고정;Zakorzeniony;Enraizada;已扎根;已扎根
+Run;Бег;Laufen;Correr;Correr;Courir;Corsa;실행;Bieg;Correr;跑;跑
+Rupture;Разрыв;Überdruck;Deflagración;Ruptura;Décomposition;Rottura;파열;Wzmocniona membrana;Ruptura;毒囊爆裂;爆裂
+Ryloth;Рилот;Ryloth;Ryloth;Ryloth;Ryloth;Ryloth;라일로스;Ryloth;Ryloth;瑞罗斯;瑞蘿絲
+Sacrifice;Жертвоприношение;Opfern;Sacrificar;Sacrificio;Sacrifice;Sacrificio;제물;Ofiarowanie;Sacrifício;献祭;犧牲
+Safeguard;Боевая защита;Stabilisator-Medipacks;Salvaguarda;Salvaguarda;Protection;Protezione;보호기;Ochrona;Salvaguarda;护卫;減傷防護
+Salvage;Мародерство;Wiederverwertung;Reciclar;Reciclar;Recyclage;Riciclaggio;회수;Złomowanie;Recuperar;回收;回收
+Salvation;Избавление;Erlösung;Salvación;Salvación;Le salut;Salvezza;구원;Wybawienie;Salvação;救赎之战;救贖
+Sandbags;Мешки с песком;Sandsäcke;Sacos de arena;Sacos de arena;Sacs de sable;Sacchi di sabbia;모래 부대;Worki z piaskiem;Sacos de areia;沙袋;沙袋
+Scantipede;Многоножка;Scantipede;Miriópodo;Escanópodo;Scantipède;Scantipede;스캔티피드;Niewielonoga;Escantípoda;异尾蝎;蜈蚣蠍
+Scarab;Скарабей;Scarab;Escarabajo;Escarabajo;Scarabée;Scarabeo;갑충탄;Skarabeusz;Escaravelho;金甲虫;聖甲蟲
+Scarabs;Скарабеи;Scarabs;Alfazaques;Escarabajos;Scarabées;Scarabei;갑충탄;Skarabeusze;Escaravelhos;金甲虫;聖甲蟲
+Scared;Испуг;Verängstigt;Atemorizado;Asustado;Effrayé;Paura;겁에 질림;Przerażenie;Assustado;害怕;受到驚嚇
+Scientist2;Ученый №2;Wissenschaftler 2;Científico 2;Científica 2;Scientifique 2;Scienziato 2;박사2;Naukowiec 2;Scientist2;科学家乙;科學家2
+Scourge;Слепень;Terror;Hostigador;Azote;Fléau;Flagello;갈귀;Zmora;Flagelo;爆蚊;自殺蟲
+Scout;Разведчик;Scout;Explorador;Explorador;Éclaireur;Esploratore;정찰기;Zwiadowca;Nave batedora;侦察机;斥候
+Scrap;Металлолом;Schrott;Chatarra;Chatarra;Débris;Rottami;고철;Złom;Sucata;废料;大型廢棄物
+Scraper;Сборщик;Rematerialisierer;Mineralista;Acaparador;Ferrailleur;Rottamatore;파쇄기;Złomiarz;Sucateiro;资源搜刮;採集者
+Scroll;Свиток;Schriftrolle;Pergamino;Pergamino;Parchemin;Pergamena;두루마리;Zwój;Pergaminho;卷轴;卷軸
+SCV;КСМ;WBF;VCE;VCE;VCS;SCV;건설로봇;ERK;VCE;SCV;太空工程車
+Search;Поиск;Suchen;Buscar;Buscar;Rechercher;Ricerca;검색;Szukaj;Busca;搜索;搜尋
+Searching;Поиск;Sucht;Buscando;Buscando;Recherche en cours;Ricerca in corso;검색 중;Wyszukiwanie;Buscando;正在搜索;搜索中
+Searchlight;Searchlight;Searchlight;Searchlight;Reflector dirigido;Searchlight;Searchlight;탐조등;Searchlight;Holofote;探照灯;探照燈
+Selendis;Селендис;Selendis;Selendis;Selendis;Sélendis;Selendis;셀렌디스;Selendis;Selendis;赛兰迪丝;席倫蒂絲
+SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive;SelfRevive
+Sentinel;Дозорный;Vollstrecker;Vigilante;Vigía;Veilleur;Incursore;파수병;Strażnik;Atalaia;警戒者;哨兵
+Sentry;Часовой;Protektor;Centinela;Centinela;Sentinelle;Sentinella;파수기;Wartownik;Sentinela;机械哨兵;哨衛
+Separation;Разделение;Teilung;Separación;Separación;Séparation;Separazione;분리;Separacja;Separação;分裂;幽能分身
+Serdath;Сердат;Serdath;Serdath;Serdath;Serdath;Serdath;세르다스;Serdath;Serdath;塞达斯;瑟達斯
+Servitor;Дрон;Servitor;Servitor;Servidor;Serviteur;Servitore;수행로봇;Serwitor;Servidor;仆从机;機械侍從
+Servitors;Дроны;Servitoren;Servitores;Servidores;Serviteurs;Servitori;수행로봇;Serwitory;Servidores;仆从机;機械侍從
+Set;Set;Set;Set;Set;Set;Set;Set;Set;Psiônico;Set;Set
+Shade;Тень;Schatten;Sombra;Sombra;Silhouette;Ombra;그림자;Cień;Vulto;阴影;幽影
+Shadowbox;Черный ящик;Shadowbox;Shadowbox;Practicar con la sombra;Ombre portée;Teca;그림자 상자;Shadowbox;Prática;阴影盒;陰影盒
+Shakuras;Шакурас;Shakuras;Shakuras;Shakuras;Shakuras;Shakuras;샤쿠라스;Shakuras;Shakuras;萨古拉斯;夏庫拉斯
+Shell;Панцирь;Symbiotischer Panzer;Caparazón;Caparazón;Carapace;Guscio;껍질;Skorupa;Carapaça;甲壳;護罩
+Shield;Щит;Schild;Escudos;Escudo;Bouclier;Scudo;방패;Tarcza;Escudo;盾;盾
+Shift;Shift;Verschiebung;Cambio;Mayúscula;Transfert;Distorsione;전환;Zmiana;Deslocamento;变换;位移
+Shirt;Рубашка;Hemd;Camisa;Camisa;Chemise;Maglia;셔츠;Koszula;Camisa;衬衫;襯衣
+Shockwave;Ударная волна;Schockwelle;Onda de choque;Onda de impacto;Onde de choc;Onda d'Urto;충격파;Fala uderzeniowa;Onda de choque;冲击波;衝擊波
+Shoulders;Плечи;Schultern;Hombros;Hombros;Épaules;Spalle;어깨;Ramiona;Ombros;肩部;肩部
+Shredder;Shredder;Schredder;Triturador;Destructor;Déchiqueteur;Trituratore;분쇄기;Rozrywacz;Retalhador;切割机;淨化者
+Shutout;Без шансов, Загара;14-Minuten-Ei;Con un par;Derrota;Victoire écrasante;Blocco;닥치고 처치;Pogrom;Tiroteio;关门歇业;直搗蟲巢
+Shuttle;Челнок;Shuttle;Lanzadera;Transbordador;Navette;Navetta;왕복선;Wahadłowiec;Ônibus espacial;穿梭机;穿梭機
+Siege;Siege;Siege;Siege;Asedio;Siege;Siege;공성;Siege;Cerco;攻城模式;攻城模式
+SiegeMode;SiegeMode;SiegeMode;SiegeMode;SiegeMode;SiegeMode;SiegeMode;공성 모드;SiegeMode;ModoDeCerco;SiegeMode;攻城模式
+SiegeTurret;Осадная пушка;Belagerungsgeschütz;Torreta de asedio;SiegeTurret;Tourelle de siège;Torretta d'assedio;공성 포탑;Wieżyczka oblężnicza;TorreDeCerco;攻城炮台;攻城砲台
+Signifier;Знак;Vorbote;Significante;Significante;Signifère;Marchiatore;표식;Znaczący;Significante;指示者;傳訊者
+Singularity;Сингулярность;Singularität;Singularidad;Singularidad;Singularité;Singolarità;특이점;Osobliwość;Singularidade;奇点;能量異點
+Sirius;Сириус;Sirius;Sirius;Sirius;Sirius;Sirius;시리우스;Syriusz;Sirius;天狼星;天狼星
+Skylord;Небесный повелитель;Himmelsschrecken;Señor de los cielos;Skylord;Monarque;Signore Celeste;하늘군주;Władca Przestworzy;Senhor Celeste;天霸;空中霸王
+Skytalon;Звездный коготь;Stellarklinge;Señor de los cielos;Skytalon;Busard;Artiglio dei Cieli;하늘발톱;Podniebny szpon;Garraérea;天爪;天空之爪
+Slam;Сильный удар;Schmetterschlag;Embate;Golpe;Frapper;Schianto;강타;Walnięcie;Bordoada;裂地;猛擊
+Slayer;Палач;Henker;Exterminador;Exterminador;Tueur;Carnefice;학살자;Pogromca;Exterminador;杀戮者;屠敵者
+Slayn;Слейн;Slayn;Slayn;Slayn;Slayn;Slayn;슬레인;Slayn;Slayn;斯雷恩;史雷因
+Slimed;Скован слизью;Beschleimt;Moqueado;Babeado;Recouvert de bave;Muco intralciante;점액;Śluz;Enlameado;被粘性物覆盖;被黏液覆蓋
+Slivan;Зилван;Slivan;Slivan;Slivan;Slivan;Slivan;슬리반;Sylwan;Slivan;斯利凡;絲莉芬
+Slowed;Замедление;Verlangsamt;Ralentizado;Ralentizado;Ralenti;Rallentato;속도 감소;Spowolnienie;Desacelerado;减速;速度降低
+Small;Small;Small;Small;Pequeño;Small;Small;작음;Small;Pequeno;Small;小
+SMX3;SMX3;SMX3;SMX3;SMX3;SMX3;SMX3;SMX3;SMX3;SMX3;SMX3;SMX3
+Snare;Сковать;Verlangsamen;Freno;Trampa;Piège;Intrappolamento;감속;Usidlenie;Armadilha;诱捕;陷阱
+Snipe;Снайперский выстрел;Scharfschütze;Disparo de precisión;Francotirar;Tir de précision;Tiro di precisione;저격;Strzał Snajperski;Tiro de Precisão;狙杀;狙擊
+SOA;SOA;SOA;SOA;LDA;SOA;SOA;SOA;SOA;SOA;SOA;亞頓之矛
+SOAAlarak;КА - Аларак;SdA - Alarak;Alarak (Lanza de Adun;LDA - Alarak;LdA - Alarak;LdA - Alarak;SOA 알라라크;WAAlarak;SOA - Alarak;SOAAlarak;亞頓之矛 - 亞拉瑞克
+SOACloak;КА - маскировка;SdA - Tarnung;Invisibilidad (Lanza de Adun;LDA - Camuflaje;LdA - Camouflage;LdA - Occultamento;SOA 은폐;WAMaskowanie;SOA - Camuflar;SOACloak;亞頓之矛 - 匿蹤
+SOAEnergize;КА - подзарядка;SdA - Energetisieren;Abastecer (Lanza de Adun;LDA - Energizar;LdA - Dynamiser;LdA - Flusso d'Energia;SOA 에너지 충전;WAEnergetyzacja;SOA - Energizar;SOAEnergize;亞頓之矛 - 注入能量
+SOAEnergy;КА - энергия;SdA - Energie;Energía (Lanza de Adun;LDA - Energía;LdA - Énergie;LdA - Energia;SOA 에너지;WAEnergia;SOA - Energia;SOAEnergy;亞頓之矛 - 能量
+SOANYI;КА - не реализовано;SdA - NYI;SOANYI;SOANYI;SOANYI;LdA - ND;SOA NYI;WANiedostępne;SOANYI;SOANYI;亞頓之矛 - NYI
+SOAQuatro;КА - квадро;SdA - Quatro;Quatro (Lanza de Adun;LDA - Quatro;LdA - Quatro;LdA - Quarto Potere;SOA 쿼트로;WAQuatro;SOA - Quatro;SOAQuatro;亞頓之矛 - 多重強化
+SOARadar;КА - радар;SdA - Radar;Radar (Lanza de Adun;LDA - Radar;LdA - Radar;LdA - Radar;SOA 레이더;WARadar;SOA - Radar;SOARadar;亞頓之矛 - 雷達
+SOARecall;КА - телепортация;SdA - Rückruf;Llamar (Lanza de Adun;LDA - Repliegue;LdA - Rappel;LdA - Richiamo;SOA 소환;WAPrzywołanie;SOA - Chamado;SOARecall;亞頓之矛 - 召喚
+SOAStarfall;КА - звездопад;SdA - Sternenregen;Estrella fugaz (Lanza de Adun;LDA - Lluvia de estrellas;LdA - Pluie d'étoiles;LdA - Pioggia di Stelle;SOA 별똥별;WASpadające gwiazdy;SOA - Chuva Estelar;SOAStarfall;亞頓之矛 - 星殞
+SOASummon;SOASummon;SOASummon;SOASummon;SOASummon;SOASummon;SOASummon;SOASummon;SOASummon;SOAConvocar;SOASummon;SOASummon
+SOASupply;КА - припасы;SdA - Versorgung;Suministros (Lanza de Adun;LDA - Suministro;LdA - Ravitaillement;LdA - Rifornimenti;SOA 보급품;WAZaopatrzenie;SOA - Suprimento;SOASupply;亞頓之矛 - 補給
+SOAVortex;КА - воронка;SdA - Vortex;Vórtice (Lanza de Adun;LDA - Vórtice;LdA - Vortex;LdA - Vortice;SOA 소용돌이;WAWir;SOA - Vórtice;SOAVortex;亞頓之矛 - 漩渦
+Solitaire;Пасьянс;Das muss reichen;Solitario;Solitario;Solitaires;Solitario;허리띠 졸라매고;Pasjans;Paciência;轻松一刻;玩牌時間
+Zergling;Зерглинг;Zergling;Zergling;Zerguezno;Zergling;Zergling;저글링;Zergling;Zergnídeo;跳虫;異化蟲
+зерглинга;Зерглинг;Zergling;Zergling;Zerguezno;Zergling;Zergling;저글링;Zergling;Zergnídeo;跳虫;異化蟲
+гидралиска;Гидралиск;Hydralisk;Hidralisco;Hidralisco;Hydralisk;Idralisca;히드라리스크;Hydralisk;Hidralisca;刺蛇;刺蛇
+мутаиска;Муталиск;Mutalisk;Mutalisco;Mutalisco;Mutalisk;Mutalisca;뮤탈리스크;Mutalisk;Mutalisca;异龙;飛螳
+таракана;Таракан;Roach;Roach;Cucaracha;Roach;Blatta;바퀴;Karakan;Barata;蟑螂;蟑螂F
+Cavern;Пещера;Höhle;Caverna;Caverna;Caverne;Caverna;동굴;Pieczara;Caverna;洞穴;洞穴
+Spire;Шпиль;Sporekolonie;Aguja;Pináculo;Aiguille;Guglia;둥지탑;Iglica;Pináculo;尖塔;尖塔
+гидралисков;Гидралиск;Hydralisk;Hidralisco;Hidralisco;Hydralisk;Idralisca;히드라리스크;Hydralisk;Hidralisca;刺蛇;刺蛇
+изначальных;Изначальный;Urzeitlich;Primordial;Primitivo;Primordial;Primordiale;원시;Pierwotny;Primordial;原始;原始
+пещера;Пещера;Höhle;Caverna;Caverna;Caverne;Caverna;동굴;Pieczara;Caverna;洞穴;洞穴
+шпиль;Шпиль;Spire;Aguja;Pináculo;Aiguille;Guglia;둥지탑;Iglica;Pináculo;尖塔;尖塔
+Unburrow;выкапывание;Ausgraben;Desenterrar;Desenterrar;Déterrer;Emersione;잠복 해제;Wygrzeb;Desentocar;出地;鑽出
+Cocoon;кокон;Kokon;Capullo;Capullo;Cocon;Bozzolo;고치;Kokon;Casulo;虫茧;蟲蛹
+Cocoon;кокона;Kokon;Capullo;Capullo;Cocon;Bozzolo;고치;Kokon;Casulo;虫茧;蟲蛹
+Primal;изначального;Urzeitlich;Primordial;Primitivo;Primordial;Primordiale;원시;Pierwotny;Primordial;原始;原始
+Drone;рабочего;Drohne;Zángano;Obrero;Drone;Drone;일벌레;Robotnica;Zangão;工蜂;工蟲
+Battlecruiser;Крейсер;Schwerer Kreuzer;Crucero de batalla;Crucero de batalla;Cuirassé;Incrociatore;전투순양함;Krążownik;Cruzador de Batalha;战列巡航舰;戰巡艦
+Blightbringer;Моровик;Pestbringer;Marchitador;Portapeste;Contaminateur;Portapiaga;역병전파자;Nosiciel plagi;Pestífero;疾疫传播体;禍蟲
+Holoprojector;Голопроектор;Holoprojektor;Holoproyector;Holoproyector;Projecteur holographique;Proiettore olografico;홀로그램 투사기;Holoprojektor;Projetor Holográfico;全息影像投射仪;全像投影裝置
+Spectre;Фантом;Phantom;Ánima;Espectro;Spectre;Spettro;악령;Widmo;Aparição;幽魂;幽魂
+Spotter;Наводчик;Spotter;Oteador;Spotter;Guetteur;Aguzzino;부식군주;Wypatrywacz;Observador;监控体;監視蟲
+Stalker;Сталкер;Hetzer;Acechador;Persecutor;Traqueur;Persecutore;추적자;Tropiciel;Tormento;追猎者;追獵者
+Stargate;Звездные врата;Raumportal;Portal estelar;Portal estelar;Porte spatiale;Portale stellare;우주관문;Gwiezdne wrota;Portal Intergaláctico;星门;星際之門
+Starport;Космопорт;Raumhafen;Puerto estelar;Puerto estelar;Spatioport;Spazioporto;우주공항;Port gwiezdny;Estaleiro sideral;星港;星際港
+Stetmann;Стетманн;Stetmann;Stetmann;Stetmann;Stetmann;Stetmann;스텟먼;Stetmann;Stetmann;斯台特曼;斯特曼
+Supplicant;Приверженец;Helot;Suplicante;Adorador;Disciple;Supplice;광신자;Suplikant;Suplicante;死徒;侍奴
+Swarmling;Сворлинг;Schwarmling;Cría del Enjambre;Hordezno;Teigne;Swarmling;군단충;Rojoskoczek;Enxamídeo;虫群生物;胚胎蟲
+Symbiote;Симбионт;Symbiont;Simbionte;Simbionte;Symbiote;Simbionte;공생체;Symbiont;Simbionte;共生激素;共生體
+Talandar;Таландар;Talandar;Talandar;Talandar;Talandar;Talandar;탈란다르;Talandar;Talandar;塔兰达尔;塔蘭達
+Taldarin;Талдарин;Taldarin;Taldarin;Taldarin;Taldarin;Taldarin;탈다린;Taldarin;Taldarin;塔尔达林;塔德林
+Talis;Талис;Talis;Talis;Talis;Talis;Talis;탈리스;Talis;Talis;塔里斯;泰莉絲
+Tassadar;Тассадар;Tassadar;Tassadar;Tassadar;Tassadar;Tassadar;태사다르;Tassadar;Tassadar;塔萨达尔;塔薩達
+Tempest;«Ураган»;Tempest;Tempestad;Tempestad;Tempête;Tempesta;폭풍함;Orkan;Tempesto;风暴战舰;暴風艦
+Templar;Тамплиер;Templer;Templario;Templario;Templier;Templare;기사단;Templariusz;Templário;圣堂武士;聖堂武士
+Thor;Тор;Thor;Thor;Thor;Thor;Thor;토르;Thor;Thor;雷神;雷神
+Tornado;Торнадо;Tornado;Tornado;Tornado repulsor;Tornade;Tornado;회오리;Tornado;Tornado;龙卷风;龍捲風
+Trooper;Штурмовик;Soldat;Agente;Soldado;Soldat;Soldato;부대원;Żołnierz;Soldado;士兵;步兵
+Tychus;Тайкус;Tychus;Tychus;Tychus;Tychus;Tychus;타이커스;Tychus;Tychus;泰凯斯;泰科斯
+Tyrannozor;Тиранозор;Tyrannozor;Tiranozor;Tiranozor;Tyralisk;Tyrannozor;티라노조르;Tyranozor;Tiranozoide;暴龙兽;暴虐獸
+Ultralisk;Ультралиск;Ultralisk;Ultralisco;Ultralisco;Ultralisk;Ultralisca;울트라리스크;Ultralisk;Mammuthus;雷兽;雷獸
+Ursadon;Урсадон;Ursadon;Ursadon;Ursadón;Ursadon;Ursadon;우르사돈;Ursadon;Ursadon;熊齿兽;厄薩獸
+Valkyrie;Валькирия;Walküre;Valkiria;Valkiria;Valkyrie;Valkyrie;발키리;Walkiria;Valquíria;女武神;女武神
+Vanguard;Ревнитель;Todgeweihter;Vanguardia;Vanguardia;Pénitent;Pretoriano;선봉대;Awangardier;Vanguarda;先锋;先驅者
+Vega;Вега;Vega;Vega;Vega;Véga;Vega;베가;Vega;Vega;维嘉;維嘉
+Viking;Викинг;Viking;Vikingo;Vikingo;Viking;Viking;바이킹;Wiking;Viking;维京;維京戰機
+Virophage;Вирофаг;Virophage;Virófago;Virófaga;Virophage;Virofago;바이로파지;Wirofag;Virófago;噬毒体;噬病毒
+Vorazun;Воразун;Vorazun;Vorazun;Vorazún;Vorazun;Vorazun;보라준;Vorazun;Vorazun;沃拉尊;芙菈森
+Vulture;«Стервятник»;Adler;Buitre;Buitre;Vautour;Vulture;시체매;Sęp;Abutre;秃鹫;禿鷹
+Warbringer;Вестник Войны;Warbringer;Belisario;Marcial;Porteguerre;Polemos;전쟁인도자;Podżegacz;Armipotente;战争使者;戰爭使者
+Warfield;Ворфилд;Warfield;Warfield;Campoguerra;Warfield;Warfield;워필드;Warfield;Warfield;沃菲尔德;沃菲爾
+Warhawk;«Боевой ястреб»;Warhawk;Halcón de guerra;Halcón negro;Faucon de guerre;Warhawk;전투매;Jastrząb;Águia de Combate;战鹰;戰鷹
+Warhound;Боевой пес;Kriegshund;Demoledor;Can de guerra;Chien de guerre;Mastino da guerra;투견;Ogar;Cão de Guerra;战狼;戰犬
+Wraith;Мираж;Raumjäger;Espectro;Ánima;Ombre;Wraith;망령;Zjawa;Espectro;怨灵;亡靈戰機
+Wrathwalker;Странник гнева;Zornbringer;Caminante de cólera;Trotafuria;Tégénaire;Ciclope;분노수호자;Wędrowiec otchłani;Furiante;天罚行者;怒行者
+Xanthos;«Ксанф»;Xanthos;Xanthos;Janto;Xanthos;Xanthos;크산토스;Ksantos;Xanto;赞托斯;桑托斯
+Zagara;Загара;Zagara;Zagara;Zagara;Zagara;Zagara;자가라;Zagara;Zagara;扎加拉;札迦拉
+Zealot;Зилот;Berserker;Fanático;Zelot;Zélote;Zelota;광전사;Zelota;Fanáticus;狂热者;狂戰士
+Zeratul;Зератул;Zeratul;Zeratul;Zeratul;Zeratul;Zeratul;제라툴;Zeratul;Zeratul;泽拉图;澤拉圖
+Zurvan;Зурван;Zurvan;Zurvan;Zurvan;Zurvan;Zurvan;주르반;Zurvan;Zurvan;祖尔温;祖爾文
+Zweihaka;Цвайхака;Zweihaka;Zweihaka;Zweihaka;Zweihaka;Duhaka;즈바이하카;Dwahaka;Zweihaka;泽哈卡;椎哈卡

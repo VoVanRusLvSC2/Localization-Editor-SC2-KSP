@@ -1,18 +1,20 @@
 package lv.lenc;
 
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
-
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public final class TranslateCancelSaveButton extends StackPane {
 
@@ -31,6 +33,13 @@ public final class TranslateCancelSaveButton extends StackPane {
     private Consumer<Throwable> errorHandler = Throwable::printStackTrace;
 
     private volatile Thread runningThread;
+    private static final ExecutorService TRANSLATE_EXECUTOR = Executors.newSingleThreadExecutor(r -> {
+        Thread t = new Thread(r, "translate-worker");
+        t.setDaemon(true);
+        // OPTIMIZED: Normal priority for equal translation speed across all languages
+        // t.setPriority(Thread.MAX_PRIORITY);  // Removed: use normal priority
+        return t;
+    });
 
     // защита от старых completion
     private final AtomicLong runIdGen = new AtomicLong(0);
@@ -58,7 +67,7 @@ public final class TranslateCancelSaveButton extends StackPane {
         StackPane.setAlignment(button, Pos.CENTER_RIGHT);
         setMaxWidth(Double.MAX_VALUE);
 
-        state.addListener((obs, oldS, newS) -> applyText(newS));
+        state.addListener(this::onStateChanged);
         applyText(State.TRANSLATE);
         state.set(State.TRANSLATE);
 
@@ -75,14 +84,27 @@ public final class TranslateCancelSaveButton extends StackPane {
     public static CompletableFuture<Void> runAsync(Runnable work, Consumer<Thread> onThread) {
         return CompletableFuture.runAsync(() -> {
             Thread t = Thread.currentThread();
+            // OPTIMIZED: No priority boosting - equal treatment for all language translations
             onThread.accept(t);
             work.run();
-        });
+        }, TRANSLATE_EXECUTOR);
 
     }
-
+    private void onStateChanged(javafx.beans.value.ObservableValue<? extends State> obs, State oldS, State newS) {
+        applyText(newS);
+    }
     public void refreshText() {
         applyText(state.get());
+    }
+
+    public void resetToTranslateState() {
+        cancelRequested.set(false);
+        activeRunId = runIdGen.incrementAndGet();
+        if (Platform.isFxApplicationThread()) {
+            state.set(State.TRANSLATE);
+        } else {
+            Platform.runLater(() -> state.set(State.TRANSLATE));
+        }
     }
 
     public void setTranslateStarter(Supplier<CompletableFuture<?>> starter) {
@@ -182,13 +204,15 @@ public final class TranslateCancelSaveButton extends StackPane {
     }
 
     private void save() {
+        boolean saved = false;
         try {
             saveAction.run();
+            saved = true;
         } catch (Throwable t) {
             errorHandler.accept(t);
-        } finally {
-            state.set(State.TRANSLATE);
         }
+
+        state.set(saved ? State.TRANSLATE : State.SAVE);
     }
 
     private void cancel() {

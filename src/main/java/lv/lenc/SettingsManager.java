@@ -1,5 +1,7 @@
 package lv.lenc;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 
@@ -19,6 +21,12 @@ public class SettingsManager {
     public static final boolean DEFAULT_TABLE_LIGHTING = true;
     public static final boolean DEFAULT_SHIMMERS = true;
     public static final boolean DEFAULT_BACKGROUND_BLUR = true;
+
+    public static final String TRANSLATION_CACHE_PERSIST_KEY = "translation.cache.persistent";
+    public static final boolean DEFAULT_TRANSLATION_CACHE_PERSIST = false;
+
+    public static final String USE_GPU_DOCKER_KEY = "use.gpu.docker";
+    public static final boolean DEFAULT_USE_GPU_DOCKER = false;
 
     public static void saveLanguage(String langCode) {
         saveProperty(LANGUAGE_KEY, langCode);
@@ -62,6 +70,23 @@ public class SettingsManager {
         Properties props = loadAllProperties();
         return Boolean.parseBoolean(props.getProperty(key, Boolean.toString(defaultValue)));
     }
+
+    public static boolean loadTranslationCachePersistence() {
+        return loadCheckboxState(TRANSLATION_CACHE_PERSIST_KEY, DEFAULT_TRANSLATION_CACHE_PERSIST);
+    }
+
+    public static void saveTranslationCachePersistence(boolean enabled) {
+        saveProperty(TRANSLATION_CACHE_PERSIST_KEY, Boolean.toString(enabled));
+    }
+
+    public static boolean loadUseGpuDocker() {
+        return loadCheckboxState(USE_GPU_DOCKER_KEY, DEFAULT_USE_GPU_DOCKER);
+    }
+
+    public static void saveUseGpuDocker(boolean enabled) {
+        saveProperty(USE_GPU_DOCKER_KEY, Boolean.toString(enabled));
+    }
+
     private static Properties loadAllProperties() {
         Properties props = new Properties();
         try (FileInputStream in = new FileInputStream(SETTINGS_FILE)) {

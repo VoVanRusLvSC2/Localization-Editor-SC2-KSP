@@ -1,5 +1,8 @@
 package lv.lenc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
@@ -14,11 +17,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderImage;
+import javafx.scene.layout.BorderRepeat;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SettingBox {
 
@@ -41,6 +49,8 @@ public class SettingBox {
     private static LabeledCheckRow tableLightCheckBox;
     private static LabeledCheckRow shimmerRow;
     private static LabeledCheckRow backgroundLightCheckBox;
+    private static LabeledCheckRow translationCachePersistRow;
+    private static LabeledCheckRow useGpuDockerRow;
 
     // --- overlay instance (kept between openings) ---
     private static StackPane overlayRoot;     // full-screen dim layer
@@ -400,7 +410,7 @@ public class SettingBox {
 
         uiDEFAUTBUTTON = new CustomAlternativeButton(
                 localization.get("setting.box.ui.defaut"),
-                0.6, 0.8, 170.0, 54, 14
+                0.6, 0.8, 156.0, 50, 13
         );
         uiDEFAUTBUTTON.setOnAction(e -> {
             background.setFlashAlpha(SettingsManager.DEFAULT_FLASH_ALPHA);
@@ -418,7 +428,7 @@ public class SettingBox {
 
         saveButton = new CustomAlternativeButton(
                 localization.get("button.save"),
-                0.6, 0.8, 170.0, 54, 14
+                0.6, 0.8, 156.0, 50, 13
         );
         saveButton.setOnAction(e -> {
             SettingsManager.saveAllSettings(
@@ -429,7 +439,17 @@ public class SettingBox {
                     shimmerRow.getCheckBox().isSelected(),
                     backgroundLightCheckBox.getCheckBox().isSelected()
             );
+            SettingsManager.saveTranslationCachePersistence(
+                    translationCachePersistRow.getCheckBox().isSelected()
+            );
+            SettingsManager.saveUseGpuDocker(
+                    useGpuDockerRow.getCheckBox().isSelected()
+            );
         });
+
+        HBox defaultSaveRow = new HBox(UiScaleHelper.scaleX(8), uiDEFAUTBUTTON, saveButton);
+        defaultSaveRow.setAlignment(Pos.CENTER);
+        VBox.setMargin(defaultSaveRow, new Insets(UiScaleHelper.scaleY(-9), 0, 0, 0));
 
         VBox uiBox = new VBox(
                 UiScaleHelper.scaleY(10),
@@ -440,8 +460,7 @@ public class SettingBox {
                 backgroundLightCheckBox,
                 tableLightCheckBox,
                 shimmerRow,
-                uiDEFAUTBUTTON,
-                saveButton
+                defaultSaveRow
         );
         uiBox.setAlignment(Pos.TOP_CENTER);
         Pane uiView = new StackPane(uiBox);
@@ -453,6 +472,31 @@ public class SettingBox {
         VBox.setMargin(otherDescrption, new Insets(0, 0, UiScaleHelper.scaleY(10), 0));
         otherDescrption.setWrapText(true);
         otherDescrption.setPrefSize(UiScaleHelper.scaleX(260), UiScaleHelper.scaleY(100));
+
+        translationCachePersistRow = new LabeledCheckRow(
+                localization.get("setting.box.other.translationCachePersist"),
+                SettingsManager.loadTranslationCachePersistence()
+        );
+        translationCachePersistRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
+            TranslationService.setPersistentCacheEnabled(newVal);
+            if (!newVal) {
+                TranslationService.clearTranslationCache();
+            }
+        });
+
+        useGpuDockerRow = new LabeledCheckRow(
+                localization.get("setting.box.other.useGpuDocker"),
+                SettingsManager.loadUseGpuDocker()
+        );
+        useGpuDockerRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
+            TranslationService.setGpuDockerEnabled(newVal);
+        });
+
+        CustomAlternativeButton clearCacheButton = new CustomAlternativeButton(
+                localization.get("setting.box.other.clearCache"),
+                0.6, 0.8, 200.0, 45.0, 13.0
+        );
+        clearCacheButton.setOnAction(e -> TranslationService.clearTranslationCache());
 
         discordURL = new CustomAlternativeButton(
                 localization.get("setting.box.other.join"),
@@ -466,7 +510,7 @@ public class SettingBox {
             }
         });
 
-        VBox otherBox = new VBox(10, otherDescrption, discordURL);
+        VBox otherBox = new VBox(10, otherDescrption, translationCachePersistRow, useGpuDockerRow, clearCacheButton, discordURL);
         otherBox.setAlignment(Pos.TOP_CENTER);
         Pane otherView = new StackPane(otherBox);
 
@@ -630,6 +674,8 @@ public class SettingBox {
         if (tableLightCheckBox != null) tableLightCheckBox.setLabel(localization.get("setting.box.ui.tableLight"));
         if (shimmerRow != null) shimmerRow.setLabel(localization.get("setting.box.ui.shimmers"));
         if (backgroundLightCheckBox != null) backgroundLightCheckBox.setLabel(localization.get("setting.box.ui.backgroundBlur"));
+        if (translationCachePersistRow != null) translationCachePersistRow.setLabel(localization.get("setting.box.other.translationCachePersist"));
+        if (useGpuDockerRow != null) useGpuDockerRow.setLabel(localization.get("setting.box.other.useGpuDocker"));
 
         if (menuButtons != null) {
             String[] keys = {

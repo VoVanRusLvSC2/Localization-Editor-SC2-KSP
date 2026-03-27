@@ -7,6 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ShimmerStrip extends StackPane {
+    private final ImageView shimmer;
+    private final PauseTransition revealPause;
+    private final SequentialTransition sequence;
+    private boolean animationEnabled = true;
 
     public enum Direction {
         HORIZONTAL,
@@ -63,7 +67,7 @@ public class ShimmerStrip extends StackPane {
         Image shimmerImg = new Image(shimmerPath); // Horizontal or vertical
 
 
-        ImageView shimmer = new ImageView(recolorShimmer(shimmerImg));
+        shimmer = new ImageView(recolorShimmer(shimmerImg));
         shimmer.setFitWidth(width);
         shimmer.setFitHeight(height);
         shimmer.setVisible(false);
@@ -79,8 +83,12 @@ public class ShimmerStrip extends StackPane {
         shimmer.getParent().applyCss();
         shimmer.getParent().layout();
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(shimmerDelay));
-        pause.setOnFinished(e -> shimmer.setVisible(true));
+        revealPause = new PauseTransition(Duration.seconds(shimmerDelay));
+        revealPause.setOnFinished(e -> {
+            if (animationEnabled) {
+                shimmer.setVisible(true);
+            }
+        });
 
         TranslateTransition move = new TranslateTransition(Duration.seconds(durationSeconds), shimmer);
 
@@ -98,9 +106,26 @@ public class ShimmerStrip extends StackPane {
 
         move.setInterpolator(Interpolator.LINEAR);
 
-        SequentialTransition seq = new SequentialTransition(shimmer, pause, move);
-        seq.setCycleCount(Animation.INDEFINITE);
-        seq.play();
+        sequence = new SequentialTransition(shimmer, revealPause, move);
+        sequence.setCycleCount(Animation.INDEFINITE);
+        sequence.play();
+    }
+
+    public void setAnimationEnabled(boolean enabled) {
+        if (animationEnabled == enabled) {
+            return;
+        }
+
+        animationEnabled = enabled;
+        if (enabled) {
+            if (sequence.getCurrentTime().greaterThanOrEqualTo(revealPause.getDuration())) {
+                shimmer.setVisible(true);
+            }
+            sequence.play();
+        } else {
+            sequence.pause();
+            shimmer.setVisible(false);
+        }
     }
 
     private Image recolorShimmer(Image src) {

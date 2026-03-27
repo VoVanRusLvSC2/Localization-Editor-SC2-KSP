@@ -1,73 +1,346 @@
 // TranslationService.java
 package lv.lenc;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.Normalizer;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+
+import org.jsoup.parser.Parser;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
-import org.jsoup.Jsoup;
-import org.jsoup.parser.Parser;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.Normalizer;
-import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
-
 public final class TranslationService {
 
 
-    public static final String BASE_URL = "http://127.0.0.1:5000/";
+    public static final String DEFAULT_BASE_URL = "http://127.0.0.1:5000/";
+    public static final String GPU_FALLBACK_BASE_URL = "http://127.0.0.1:5001/";
+    public static volatile String BASE_URL = DEFAULT_BASE_URL;
     public static final String SEP = "\n";
+    private static final int BATCH_MAX_ITEMS = 200;
+    private static final int BATCH_MAX_CHARS = 30_000;
+    private static final int GPU_BATCH_MAX_ITEMS = 260;
+    private static final int GPU_BATCH_MAX_CHARS = 45_000;
+    private static final int TRANSLATION_CACHE_LIMIT = 20_000;
     // We no longer send tags. Additionally protect "geometric" symbols (progress bars).
     private static final Pattern GEOM_RUN = Pattern.compile("[\\u2580-\\u259F\\u25A0-\\u25FF]+");
     private static final AtomicReference<Call<?>> inFlight = new AtomicReference<>();
-//    private static final Retrofit RT = new Retrofit.Builder()
-//            .baseUrl(BASE_URL)
-//            .client(OK)
-//            .addConverterFactory(
-//                    GsonConverterFactory.create(new GsonBuilder().setLenient().create())
-//            )
-//            .build();
+    private static final AtomicInteger PERFORMANCE_MODE_LEASES = new AtomicInteger();
+    private static final OkHttpClient HTTP = buildTranslationClient();
+    private static final OkHttpClient HEALTH_HTTP = new OkHttpClient.Builder()
+            .connectTimeout(Duration.ofSeconds(2))
+            .readTimeout(Duration.ofSeconds(4))
+            .writeTimeout(Duration.ofSeconds(4))
+            .callTimeout(Duration.ofSeconds(5))
+            .retryOnConnectionFailure(true)
+            .build();
 
-    public static final LibreTranslateApi api; // = RT.create(LibreTranslateApi.class);
+    public static volatile LibreTranslateApi api;
+    private static volatile Process managedLtProcess;
+    private static volatile boolean managedLtGpu;
+    private static volatile boolean activeEndpointGpu;
+    private static volatile String cachedPythonExecutable;
+    private static final long CAPABILITY_CACHE_TTL_MS = 180_000L;
+    private static volatile long capabilityCacheTs;
+    private static volatile boolean cachedNvidiaGpu;
+    private static volatile boolean cachedDockerUsable;
+    private static volatile boolean cachedLocalPythonCuda;
+    private static volatile boolean shutdownRequested;
+    private static final Object CACHE_IO_LOCK = new Object();
+    private static volatile boolean persistentCacheLoaded;
+    private static volatile boolean shutdownHookInstalled;
+    private static volatile boolean persistentCacheEnabled = false; // default: do not persist on disk (as requested)
+    private static volatile boolean useGpuDocker = false; // default: avoid docker-induced deadlock by default
+    private static volatile boolean gpuDockerStartupFailed;
+    private static final Map<String, String> TRANSLATION_CACHE =
+            Collections.synchronizedMap(new LinkedHashMap<>(256, 0.75f, true) {
+                @Override
+                protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+                    return size() > TRANSLATION_CACHE_LIMIT;
+                }
+            });
 
     static {
-        // 1) Configure Dispatcher
-        Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequests(1);
-        dispatcher.setMaxRequestsPerHost(1);
+        api = createApi(BASE_URL);
+        refreshActiveEndpoint();
 
-        // 2) Build OkHttpClient with required timeouts
-        OkHttpClient http = new OkHttpClient.Builder()
+        // respect settings persistence flag from saved settings
+        try {
+            persistentCacheEnabled = SettingsManager.loadTranslationCachePersistence();
+        } catch (Exception ignored) {
+            persistentCacheEnabled = true;
+        }
+
+        // respect GPU Docker mode flag from settings
+        try {
+            useGpuDocker = SettingsManager.loadUseGpuDocker();
+        } catch (Exception ignored) {
+            useGpuDocker = false;
+        }
+
+        ensurePersistentCacheLoaded();
+        installCacheShutdownHook();
+    }
+
+    private static OkHttpClient buildTranslationClient() {
+        Dispatcher dispatcher = new Dispatcher();
+        // OPTIMIZED: Increased parallelism for faster translations (was 1 request at a time)
+        dispatcher.setMaxRequests(16);          // 16 concurrent requests total
+        dispatcher.setMaxRequestsPerHost(8);    // 8 requests per host
+
+        return new OkHttpClient.Builder()
                 .dispatcher(dispatcher)
                 .connectTimeout(Duration.ofSeconds(5))
                 .readTimeout(Duration.ofSeconds(180))
                 .writeTimeout(Duration.ofSeconds(120))
                 .callTimeout(Duration.ofSeconds(150))
                 .retryOnConnectionFailure(true)
-                //.protocols(Collections.singletonList(Protocol.HTTP_1_1)) // 
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
                                 .header("Accept", "application/json")
                                 .build()))
                 .build();
+    }
 
-        // 2) Build OkHttpClient with required timeouts
+    private static LibreTranslateApi createApi(String baseUrl) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(normalizeBaseUrl(baseUrl))
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(http)   // <- 
+                .client(HTTP)
+                .build();
+        return retrofit.create(LibreTranslateApi.class);
+    }
+
+    private static String normalizeBaseUrl(String baseUrl) {
+        if (baseUrl == null || baseUrl.isBlank()) {
+            return DEFAULT_BASE_URL;
+        }
+
+        String normalized = baseUrl.trim();
+        if (!normalized.endsWith("/")) {
+            normalized = normalized + "/";
+        }
+        return normalized;
+    }
+
+    private static boolean isGpuBaseUrl(String baseUrl) {
+        return normalizeBaseUrl(baseUrl).equals(normalizeBaseUrl(GPU_FALLBACK_BASE_URL));
+    }
+
+    public static boolean isGpuActive() {
+        return activeEndpointGpu;
+    }
+
+    public static synchronized void configureStartupLanguages(java.util.Collection<String> languageCodes) {
+        // Language preloading is intentionally disabled.
+        // The app only starts the server early; models are loaded on first real request.
+    }
+
+    private static boolean inferGpuForEndpoint(String baseUrl) {
+        String normalized = normalizeBaseUrl(baseUrl);
+        if (isGpuBaseUrl(normalized)) {
+            return true;
+        }
+        if (!normalized.equals(normalizeBaseUrl(DEFAULT_BASE_URL))) {
+            return false;
+        }
+        Process process = managedLtProcess;
+        return managedLtGpu && process != null && process.isAlive();
+    }
+
+    private static int effectiveBatchMaxItems() {
+        return isGpuActive() ? GPU_BATCH_MAX_ITEMS : BATCH_MAX_ITEMS;
+    }
+
+    private static int effectiveBatchMaxChars() {
+        return isGpuActive() ? GPU_BATCH_MAX_CHARS : BATCH_MAX_CHARS;
+    }
+
+    private static int effectiveConcurrency() {
+        int cores = Runtime.getRuntime().availableProcessors();
+        return Math.max(2, Math.min(64, cores * 2));
+    }
+
+    private static List<String> translatePreservingTagsBatchedSequential(
+            LibreTranslateApi api,
+            List<String> texts,
+            String source,
+            String target,
+            java.util.function.BooleanSupplier stop,
+            ProgressListener progress
+    ) throws IOException, InterruptedException {
+        // Sequential mode for small jobs and fallback.
+        DedupedTexts deduped = dedupeTexts(texts);
+        List<String> uniqueTexts = deduped.uniqueTexts;
+
+        int maxItems = effectiveBatchMaxItems();
+        int maxChars = effectiveBatchMaxChars();
+        List<List<String>> parts = chunksByChars(uniqueTexts, maxItems, maxChars);
+
+        List<String> uniqueOut = new ArrayList<>(uniqueTexts.size());
+        int batchNo = 0;
+        int total = parts.size();
+
+        for (List<String> part : parts) {
+            batchNo++;
+            long t0 = System.currentTimeMillis();
+
+            IOException last = null;
+            for (int attempt = 1; attempt <= 3; attempt++) {
+                if (stop != null && stop.getAsBoolean()) return expandDeduped(uniqueOut, deduped, texts.size());
+
+                try {
+                    List<String> translated = translatePreservingTags(api, part, source, target);
+                    uniqueOut.addAll(translated);
+                    long took = System.currentTimeMillis() - t0;
+                    AppLog.info("[LT] preserveTags.batch " + batchNo + " OK in " + took + "ms");
+                    break;
+                } catch (IOException e) {
+                    last = e;
+                    long sleep = Math.min(700L * (1L << (attempt - 1)), 5_000L);
+                    refreshActiveEndpoint();
+                    Thread.sleep(sleep);
+                    if (stop != null && stop.getAsBoolean()) return expandDeduped(uniqueOut, deduped, texts.size());
+                    if (attempt == 3) throw last;
+                }
+            }
+
+            if (progress != null) {
+                progress.onProgress(batchNo / (double) total, "batch " + batchNo + "/" + total);
+            }
+        }
+
+        if (progress != null) {
+            progress.onProgress(1.0, "done");
+        }
+
+        return expandDeduped(uniqueOut, deduped, texts.size());
+    }
+
+    private static List<String> endpointCandidates() {
+        LinkedHashSet<String> urls = new LinkedHashSet<>();
+
+        String sys = System.getProperty("lt.baseUrl");
+        if (sys != null && !sys.isBlank()) {
+            urls.add(normalizeBaseUrl(sys));
+        }
+
+        String env = System.getenv("LT_BASE_URL");
+        if (env != null && !env.isBlank()) {
+            urls.add(normalizeBaseUrl(env));
+        }
+
+        urls.add(GPU_FALLBACK_BASE_URL);
+        urls.add(normalizeBaseUrl(BASE_URL));
+        urls.add(DEFAULT_BASE_URL);
+        return new ArrayList<>(urls);
+    }
+
+    private static boolean probeBaseUrl(String baseUrl) {
+        String normalized = normalizeBaseUrl(baseUrl);
+        Request request = new Request.Builder()
+                .url(normalized + "languages")
+                .get()
                 .build();
 
-        // 4) Create API instance
-        api = retrofit.create(LibreTranslateApi.class);
+        try (okhttp3.Response response = HEALTH_HTTP.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                return false;
+            }
 
+            return response.body() != null && !response.body().string().isBlank();
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    private static void activateEndpoint(String baseUrl) {
+        String normalized = normalizeBaseUrl(baseUrl);
+        boolean gpu = inferGpuForEndpoint(normalized);
+        activeEndpointGpu = gpu;
+        if (!normalized.equals(BASE_URL)) {
+            BASE_URL = normalized;
+            api = createApi(BASE_URL);
+            AppLog.info("[LT] active endpoint switched to " + BASE_URL
+                    + " (" + (gpu ? "GPU" : "CPU") + ")");
+        }
+    }
+
+    private static boolean waitForSpecificEndpoint(String baseUrl, int attempts, long sleepMs) throws InterruptedException {
+        String normalized = normalizeBaseUrl(baseUrl);
+        for (int i = 0; i < attempts; i++) {
+            if (probeBaseUrl(normalized)) {
+                activateEndpoint(normalized);
+                return true;
+            }
+            Thread.sleep(sleepMs);
+        }
+        return false;
+    }
+
+    public static synchronized boolean refreshActiveEndpoint() {
+        for (String candidate : endpointCandidates()) {
+            if (!probeBaseUrl(candidate)) {
+                continue;
+            }
+
+            activateEndpoint(candidate);
+            return true;
+        }
+        return false;
+    }
+
+    public static LibreTranslateApi requireApi() throws IOException {
+        // Hot path: translation batches may call this many times in parallel.
+        // Avoid a blocking /languages probe on every request and only refresh the
+        // endpoint when we have no API instance yet. Real request failures already
+        // trigger refreshActiveEndpoint() and retries in the batch executors.
+        LibreTranslateApi current = api;
+        if (current != null) {
+            return current;
+        }
+
+        synchronized (TranslationService.class) {
+            current = api;
+            if (current != null) {
+                return current;
+            }
+            if (refreshActiveEndpoint()) {
+                return api;
+            }
+        }
+
+        throw new IOException("LibreTranslate is not reachable on " + endpointCandidates());
     }
     private static void splitTextByGeomAndQueue(
             String text,
@@ -145,20 +418,6 @@ public final class TranslationService {
         abstract void consumeTranslated(ListIterator<String> it);
         abstract String result();
     }
-    private static final Pattern EMPTY_SC_PAIR =
-            Pattern.compile("(?i)<(s|c)\\b([^>]*)></\\1>");
-    private static final Pattern N_PAIR =
-            Pattern.compile("(?i)<n\\b([^>]*)></n>");
-
-    private static String normalizeCustomTags(String html) {
-        // <s ...></s>  
-        html = EMPTY_SC_PAIR.matcher(html).replaceAll("<$1$2>");
-        // <n ...></n> -> <n .../>   (
-        html = N_PAIR.matcher(html).replaceAll("<n$1/>");
-        return html;
-    }
-    // Simple case – not HTML
-// Simple case: plain text without HTML tags.
     private static class PlainPlan extends RebuildPlan {
         private final TagFreezer.Frozen frozen;
         private String translated;
@@ -196,7 +455,7 @@ public final class TranslationService {
         s = Normalizer.normalize(s, Normalizer.Form.NFKC);
 
         // 2) remove invisible/control characters only
-        //    (DO NOT touch Block Elements U+2580–259F and Geometric Shapes U+25A0–25FF!)
+        //    (DO NOT touch Block Elements U+2580Äā‚¬ā€259F and Geometric Shapes U+25A0Äā‚¬ā€25FF!)
         s = s.replace('\u00A0', ' ')
                 .replaceAll("[\\u0000-\\u001F\\u007F\\u200B-\\u200F\\u2028\\u2029\\u2060\\uFEFF]", "");
 
@@ -215,26 +474,26 @@ public final class TranslationService {
         // ensure single space AFTER (if followed by letter/digit/quote)
         s = s.replaceAll("([,:;!?])(?!\\s|$)", "$1 ");
         // remove spaces after opening brackets/quotes and before closing ones
-        s = s.replaceAll("([\\(\\[\\{«])\\s+", "$1")
-                .replaceAll("\\s+([\\)\\]\\}»])", "$1");
+        s = s.replaceAll("([\\(\\[\\{Ä€Ā«])\\s+", "$1")
+                .replaceAll("\\s+([\\)\\]\\}Ä€Ā»])", "$1");
         return s;
     }
-    // --- ADD near sanitizeVisible ---
-    private static String extractVisibleText(String s) {
-        if (s == null || s.isEmpty()) return "";
-        // Jsoup parses fragment and returns visible text without tags,
-        // with entities resolved and whitespace normalized.
-        String text = Jsoup.parseBodyFragment(s).text();
-        // Pass through sanitizeVisible: normalization, invisible chars, spacing.
-        return sanitizeVisible(text);
-    }
-
     // Pass through sanitizeVisible: normalization, invisible chars, spacing.
     private static class PrepResult {
         final List<String> toTranslate;
         final List<RebuildPlan> plans;
         PrepResult(List<String> toTranslate, List<RebuildPlan> plans) {
             this.toTranslate = toTranslate; this.plans = plans;
+        }
+    }
+
+    private static class DedupedTexts {
+        final List<String> uniqueTexts;
+        final int[] mapToUnique;
+
+        DedupedTexts(List<String> uniqueTexts, int[] mapToUnique) {
+            this.uniqueTexts = uniqueTexts;
+            this.mapToUnique = mapToUnique;
         }
     }
     // Token: <...> (any tag, including self-closing). No parsing, just extract.
@@ -327,7 +586,7 @@ public final class TranslationService {
             }
         }
 
-        System.out.println("[LT] prepare: inputs=" + inputs.size() +
+        AppLog.info("[LT] prepare: inputs=" + inputs.size() +
                 " htmlItems=" + htmlCnt + " plainItems=" + plainCnt +
                 " toTranslate=" + toTranslate.size());
 
@@ -461,13 +720,6 @@ public final class TranslationService {
      * Main method: translate list of strings while preserving HTML tags,
      * translating only text nodes inside.
      */
-    private static final int BATCH_MAX_ITEMS = 120;
-
-    private static final int BATCH_MAX_CHARS = 18_000;
-    /**
-     * Main method: translate list of strings while preserving HTML tags,
-     * translating only text nodes inside.
-     */
     public static List<String> translatePreservingTags(
             LibreTranslateApi api,
             List<String> inputs,
@@ -476,46 +728,92 @@ public final class TranslationService {
     ) throws IOException {
 
         long t0 = System.currentTimeMillis();
-        System.out.println("[LT] translatePreservingTags start: items=" + inputs.size() +
+        AppLog.info("[LT] translatePreservingTags start: items=" + inputs.size() +
                 " chars=" + sumChars(inputs) + " " + source + "->" + target);
 
         // 
         PrepResult prep = prepareForTranslation(inputs);
-        System.out.println("[LT] prepared: toTranslate=" + prep.toTranslate.size() +
+        AppLog.info("[LT] prepared: toTranslate=" + prep.toTranslate.size() +
                 " plans=" + prep.plans.size());
 
         if (prep.toTranslate.isEmpty()) {
-            System.out.println("[LT] nothing to translate, return input as-is");
+            AppLog.info("[LT] nothing to translate, return input as-is");
             return new ArrayList<>(inputs);
         }
 
-        // 
-        Map<String, Object> body = new HashMap<>();
-        body.put("q", prep.toTranslate);
-        body.put("source", source);
-        body.put("target", target);
-        body.put("format", "text"); // 
+        List<String> translatedPrepared = new ArrayList<>(Collections.nCopies(prep.toTranslate.size(), null));
+        List<String> uncachedInputs = new ArrayList<>();
+        List<Integer> uncachedIndexes = new ArrayList<>();
 
-        var resp = executeTrackedResponse(api.translateAny(body));
-        int code = (resp != null ? resp.code() : -1);
-        if (!resp.isSuccessful() || resp.body() == null) {
-            String err = resp.errorBody() != null ? resp.errorBody().string() : "null";
-            throw new IOException("[LT] HTTP " + code + ": " + err);
+        for (int i = 0; i < prep.toTranslate.size(); i++) {
+            String preparedText = prep.toTranslate.get(i);
+            String cached = cacheLookup(source, target, preparedText);
+            if (cached != null) {
+                translatedPrepared.set(i, cached);
+            } else {
+                uncachedIndexes.add(i);
+                uncachedInputs.add(preparedText);
+            }
         }
 
+        if (!uncachedInputs.isEmpty()) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("q", uncachedInputs);
+            body.put("source", source);
+            body.put("target", target);
+            body.put("format", "text");
 
-        List<String> tr = extractTranslations(resp.body(), prep.toTranslate.size());
-        System.out.println("[LT] got " + tr.size() + " translations for " + prep.toTranslate.size());
+            LibreTranslateApi effectiveApi = requireApi();
+            var resp = executeTrackedResponse(effectiveApi.translateAny(body));
+            int code = (resp != null ? resp.code() : -1);
+            if (resp == null || !resp.isSuccessful() || resp.body() == null) {
+                String err = (resp != null && resp.errorBody() != null) ? resp.errorBody().string() : "null";
+                throw new IOException("[LT] HTTP " + code + ": " + err);
+            }
 
-        if (tr.size() != prep.toTranslate.size()) {
-            System.out.println("[LT] raw: " + resp.body()); // debug hint
-            throw new IllegalStateException("[LT] MISMATCH: in=" + prep.toTranslate.size() + " out=" + tr.size());
+            List<String> uncachedTranslated = extractTranslations(resp.body(), uncachedInputs.size());
+            AppLog.info("[LT] got " + uncachedTranslated.size() + " fresh translations for " + uncachedInputs.size()
+                    + " uncached items (" + (prep.toTranslate.size() - uncachedInputs.size()) + " cache hits)");
+
+            if (uncachedTranslated.size() != uncachedInputs.size()) {
+                AppLog.info("[LT] raw: " + resp.body());
+                throw new IllegalStateException("[LT] MISMATCH: in=" + uncachedInputs.size() + " out=" + uncachedTranslated.size());
+            }
+
+            for (int i = 0; i < uncachedIndexes.size(); i++) {
+                int originalIndex = uncachedIndexes.get(i);
+                String preparedText = prep.toTranslate.get(originalIndex);
+                String translatedText = uncachedTranslated.get(i);
+                translatedPrepared.set(originalIndex, translatedText);
+                cacheStore(source, target, preparedText, translatedText);
+            }
+            AppLog.info("[LT] translation cache size now: " + TRANSLATION_CACHE.size());
+        } else {
+            AppLog.info("[LT] cache hit for all " + prep.toTranslate.size() + " prepared items");
         }
 
-        List<String> out = rebuildFromTranslations(tr, prep.plans);
+        List<String> out = rebuildFromTranslations(translatedPrepared, prep.plans);
         long took = System.currentTimeMillis() - t0;
-        System.out.println("[LT] translatePreservingTags done in " + took + "ms");
+        AppLog.info("[LT] translatePreservingTags done in " + took + "ms");
         return out;
+    }
+
+    private static String cacheKey(String source, String target, String text) {
+        return normalizeCachePart(source) + '\u0001' + normalizeCachePart(target) + '\u0001' + (text == null ? "" : text);
+    }
+
+    private static String normalizeCachePart(String value) {
+        return value == null ? "" : value.trim().toLowerCase();
+    }
+
+    private static String cacheLookup(String source, String target, String text) {
+        ensurePersistentCacheLoaded();
+        return TRANSLATION_CACHE.get(cacheKey(source, target, text));
+    }
+
+    private static void cacheStore(String source, String target, String text, String translated) {
+        ensurePersistentCacheLoaded();
+        TRANSLATION_CACHE.put(cacheKey(source, target, text), translated);
     }
 
     private static <T> retrofit2.Response<T> executeTrackedResponse(Call<T> call) throws IOException {
@@ -537,14 +835,22 @@ public final class TranslationService {
 
         if (texts == null || texts.isEmpty()) return Collections.emptyList();
 
+        DedupedTexts deduped = dedupeTexts(texts);
+        List<String> uniqueTexts = deduped.uniqueTexts;
+
         long tAll0 = System.currentTimeMillis();
-        System.out.println("[LT] preserveTags.BATCH start: items=" + texts.size() +
-                " chars=" + sumChars(texts) + " " + source + "->" + target);
+        AppLog.info("[LT] preserveTags.BATCH start: items=" + texts.size() +
+                " unique=" + uniqueTexts.size() +
+                " chars=" + sumChars(uniqueTexts) + " " + source + "->" + target);
 
-        List<List<String>> parts = chunksByChars(texts, BATCH_MAX_ITEMS, BATCH_MAX_CHARS);
-        System.out.println("[LT] preserveTags.batching: parts=" + parts.size());
+        int maxItems = effectiveBatchMaxItems();
+        int maxChars = effectiveBatchMaxChars();
+        List<List<String>> parts = chunksByChars(uniqueTexts, maxItems, maxChars);
+        AppLog.info("[LT] preserveTags.batching: parts=" + parts.size()
+                + " profile=" + (isGpuActive() ? "GPU" : "CPU")
+                + " maxItems=" + maxItems + " maxChars=" + maxChars);
 
-        List<String> out = new ArrayList<>(texts.size());
+        List<String> uniqueOut = new ArrayList<>(uniqueTexts.size());
         int batchNo = 0;
 
         for (List<String> part : parts) {
@@ -553,27 +859,24 @@ public final class TranslationService {
 
             IOException last = null;
             for (int attempt = 1; attempt <= 3; attempt++) {
+                if (stop != null && stop.getAsBoolean()) return expandDeduped(uniqueOut, deduped, texts.size());
+
                 try {
-                    System.out.println("[LT] preserveTags.batch " + batchNo + "/" + parts.size() +
+                    AppLog.info("[LT] preserveTags.batch " + batchNo + "/" + parts.size() +
                             " attempt " + attempt + "/3 items=" + part.size() +
                             " chars=" + sumChars(part));
 
-                    // IMPORTANT: call non-batched version
                     List<String> translated = translatePreservingTags(api, part, source, target);
+                    uniqueOut.addAll(translated);
 
-                    out.addAll(translated);
                     long took = System.currentTimeMillis() - t0;
-                    System.out.println("[LT] preserveTags.batch " + batchNo + " OK in " + took + "ms");
+                    AppLog.info("[LT] preserveTags.batch " + batchNo + " OK in " + took + "ms");
                     break;
                 } catch (IOException e) {
                     last = e;
                     long sleep = Math.min(700L * (1L << (attempt - 1)), 5_000L);
-
-                    if (stop != null && stop.getAsBoolean()) {
-                        return out;
-                    }
-
-                    System.out.println("[LT] preserveTags.batch " + batchNo +
+                    refreshActiveEndpoint();
+                    AppLog.info("[LT] preserveTags.batch " + batchNo +
                             " failed (" + e.getClass().getSimpleName() + "): " + e.getMessage() +
                             " -> retry in " + sleep + "ms");
 
@@ -581,7 +884,7 @@ public final class TranslationService {
                         Thread.sleep(sleep);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();
-                        return out;
+                        return expandDeduped(uniqueOut, deduped, texts.size());
                     }
 
                     if (attempt == 3) throw last;
@@ -590,8 +893,8 @@ public final class TranslationService {
         }
 
         long tAll = System.currentTimeMillis() - tAll0;
-        System.out.println("[LT] preserveTags.BATCH done in " + tAll + "ms total");
-        return out;
+        AppLog.info("[LT] preserveTags.BATCH done in " + tAll + "ms total");
+        return expandDeduped(uniqueOut, deduped, texts.size());
     }
     public static List<String> translatePreservingTagsBatched(
             LibreTranslateApi api,
@@ -604,63 +907,146 @@ public final class TranslationService {
 
         if (texts == null || texts.isEmpty()) return Collections.emptyList();
 
+        DedupedTexts deduped = dedupeTexts(texts);
+        List<String> uniqueTexts = deduped.uniqueTexts;
+
         long tAll0 = System.currentTimeMillis();
-        System.out.println("[LT] preserveTags.BATCH+PROGRESS start: items=" + texts.size() +
-                " chars=" + sumChars(texts) + " " + source + "->" + target);
+        AppLog.info("[LT] preserveTags.BATCH+PROGRESS start: items=" + texts.size() +
+                " unique=" + uniqueTexts.size() +
+                " chars=" + sumChars(uniqueTexts) + " " + source + "->" + target);
 
-        List<List<String>> parts = chunksByChars(texts, BATCH_MAX_ITEMS, BATCH_MAX_CHARS);
-        System.out.println("[LT] preserveTags.batching: parts=" + parts.size());
+        int maxItems = effectiveBatchMaxItems();
+        int maxChars = effectiveBatchMaxChars();
+        List<List<String>> parts = chunksByChars(uniqueTexts, maxItems, maxChars);
+        AppLog.info("[LT] preserveTags.batching: parts=" + parts.size()
+                + " profile=" + (isGpuActive() ? "GPU" : "CPU")
+                + " maxItems=" + maxItems + " maxChars=" + maxChars);
 
-        List<String> out = new ArrayList<>(texts.size());
         int total = parts.size();
-        int batchNo = 0;
 
-        for (List<String> part : parts) {
-            if (stop != null && stop.getAsBoolean()) return out;
+        if (total <= 1) {
+            // fallback to sequential for tiny jobs
+            return translatePreservingTagsBatchedSequential(api, texts, source, target, stop, progress);
+        }
 
-            batchNo++;
-            long t0 = System.currentTimeMillis();
+        int concurrency = effectiveConcurrency();
+        ExecutorService executor = Executors.newFixedThreadPool(concurrency);
+        ExecutorCompletionService<PartResult> completion = new ExecutorCompletionService<>(executor);
 
-            if (progress != null) {
-                double frac = (batchNo - 1) / (double) total;
-                progress.onProgress(frac, "batch " + (batchNo - 1) + "/" + total);
-            }
+        for (int i = 0; i < total; i++) {
+            final int batchIndex = i;
+            final List<String> part = parts.get(i);
 
-            IOException last = null;
-            for (int attempt = 1; attempt <= 3; attempt++) {
-                if (stop != null && stop.getAsBoolean()) return out;
+            completion.submit(() -> {
+                int attempt = 1;
+                while (true) {
+                    if (stop != null && stop.getAsBoolean()) {
+                        throw new InterruptedException("cancelled");
+                    }
 
-                try {
-                    System.out.println("[LT] preserveTags.batch " + batchNo + "/" + total +
-                            " attempt " + attempt + "/3 items=" + part.size() +
-                            " chars=" + sumChars(part));
+                    try {
+                        AppLog.info("[LT] preserveTags.batch " + (batchIndex + 1) + "/" + total +
+                                " attempt " + attempt + "/3 items=" + part.size() +
+                                " chars=" + sumChars(part));
 
-                    // 
-                    List<String> translated = translatePreservingTags(api, part, source, target);
-                    out.addAll(translated);
-
-                    long took = System.currentTimeMillis() - t0;
-                    System.out.println("[LT] preserveTags.batch " + batchNo + " OK in " + took + "ms");
-                    break;
-                } catch (IOException e) {
-                    last = e;
-                    long sleep = Math.min(700L * (1L << (attempt - 1)), 5_000L);
-                    System.out.println("[LT] preserveTags.batch " + batchNo +
-                            " failed (" + e.getClass().getSimpleName() + "): " + e.getMessage() +
-                            " -> retry in " + sleep + "ms");
-                    Thread.sleep(sleep);
-                    if (attempt == 3) throw last;
+                        List<String> translated = translatePreservingTags(api, part, source, target);
+                        AppLog.info("[LT] preserveTags.batch " + (batchIndex + 1) + " OK");
+                        return new PartResult(batchIndex, translated);
+                    } catch (IOException e) {
+                        if (attempt >= 3) {
+                            throw e;
+                        }
+                        long sleep = Math.min(700L * (1L << (attempt - 1)), 5_000L);
+                        refreshActiveEndpoint();
+                        AppLog.info("[LT] preserveTags.batch " + (batchIndex + 1) +
+                                " failed (" + e.getClass().getSimpleName() + "): " + e.getMessage() +
+                                " -> retry in " + sleep + "ms");
+                        Thread.sleep(sleep);
+                        attempt++;
+                    }
                 }
-            }
+            });
+        }
 
-            if (progress != null) {
-                double frac = batchNo / (double) total;
-                progress.onProgress(frac, "batch " + batchNo + "/" + total);
+        executor.shutdown();
+
+        @SuppressWarnings("unchecked")
+        List<String>[] results = new List[total];
+        int finished = 0;
+        while (finished < total) {
+            Future<PartResult> future = completion.take();
+            try {
+                PartResult r = future.get();
+                results[r.batchIndex] = r.translated;
+                finished++;
+
+                if (progress != null) {
+                    progress.onProgress(finished / (double) total,
+                            "batch " + finished + "/" + total + " (concurrency=" + concurrency + ")");
+                }
+            } catch (java.util.concurrent.ExecutionException e) {
+                Throwable cause = e.getCause();
+                if (cause instanceof IOException) {
+                    throw (IOException) cause;
+                } else if (cause instanceof InterruptedException) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } else if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                } else {
+                    throw new IOException(cause);
+                }
             }
         }
 
+        List<String> uniqueOut = new ArrayList<>(uniqueTexts.size());
+        for (int i = 0; i < total; i++) {
+            if (results[i] != null) uniqueOut.addAll(results[i]);
+        }
+
+        if (progress != null) {
+            progress.onProgress(1.0, "done");
+        }
+
         long tAll = System.currentTimeMillis() - tAll0;
-        System.out.println("[LT] preserveTags.BATCH+PROGRESS done in " + tAll + "ms total");
+        AppLog.info("[LT] preserveTags.BATCH+PROGRESS done in " + tAll + "ms total");
+        return expandDeduped(uniqueOut, deduped, texts.size());
+    }
+
+    private static class PartResult {
+        final int batchIndex;
+        final List<String> translated;
+
+        PartResult(int batchIndex, List<String> translated) {
+            this.batchIndex = batchIndex;
+            this.translated = translated;
+        }
+    }
+
+    private static DedupedTexts dedupeTexts(List<String> texts) {
+        Map<String, Integer> firstIndex = new LinkedHashMap<>();
+        List<String> unique = new ArrayList<>();
+        int[] mapToUnique = new int[texts.size()];
+
+        for (int i = 0; i < texts.size(); i++) {
+            String text = texts.get(i);
+            Integer idx = firstIndex.get(text);
+            if (idx == null) {
+                idx = unique.size();
+                firstIndex.put(text, idx);
+                unique.add(text);
+            }
+            mapToUnique[i] = idx;
+        }
+        return new DedupedTexts(unique, mapToUnique);
+    }
+
+    private static List<String> expandDeduped(List<String> uniqueOut, DedupedTexts deduped, int originalSize) {
+        List<String> out = new ArrayList<>(originalSize);
+        for (int i = 0; i < originalSize; i++) {
+            int idx = deduped.mapToUnique[i];
+            out.add(idx < uniqueOut.size() ? uniqueOut.get(idx) : null);
+        }
         return out;
     }
 
@@ -691,27 +1077,151 @@ public final class TranslationService {
 
     // ===== startup and health check =====
     public static boolean isLtAlive() {
-        try (java.net.Socket s = new java.net.Socket()) {
-            s.connect(new java.net.InetSocketAddress("127.0.0.1", 5000), 800);
-            return true;
-        } catch (Exception ignored) {
-            return false;
-        }
+        return refreshActiveEndpoint();
     }
 
     public static void waitLtReady(int attempts, long sleepMs) throws InterruptedException {
         for (int i = 0; i < attempts; i++) {
-            if (isLtAlive()) return;
+            if (refreshActiveEndpoint()) return;
             Thread.sleep(sleepMs);
         }
-        throw new RuntimeException("LibreTranslate did not start on 127.0.0.1:5000");
+        throw new RuntimeException("LibreTranslate did not become ready on " + endpointCandidates());
+    }
+
+    public static synchronized boolean ensureServerAvailable() {
+        if (shutdownRequested || Thread.currentThread().isInterrupted()) {
+            return false;
+        }
+        String gpuBase = normalizeBaseUrl(GPU_FALLBACK_BASE_URL);
+        String cpuBase = normalizeBaseUrl(DEFAULT_BASE_URL);
+
+        // Fast path: if endpoint is already alive on known ports, skip heavy capability checks/restarts.
+        if (probeBaseUrl(gpuBase)) {
+            activateEndpoint(gpuBase);
+            return true;
+        }
+        if (probeBaseUrl(cpuBase)) {
+            Process process = managedLtProcess;
+            if (process != null && process.isAlive()) {
+                activateEndpoint(cpuBase);
+                return true;
+            }
+        }
+
+        refreshCapabilityCache(false);
+        boolean nvidiaPresent = hasNvidiaGpu();
+        boolean localPythonCuda = nvidiaPresent && isLocalPythonCudaAvailable();
+        boolean dockerUsable = isDockerUsable();
+        AppLog.info("[LT] ensureServerAvailable: nvidia=" + nvidiaPresent
+                + ", localPythonCuda=" + localPythonCuda
+                + ", docker=" + dockerUsable
+                + ", python=" + pythonExecutable());
+
+        if (probeBaseUrl(cpuBase)) {
+            Process process = managedLtProcess;
+            boolean managedGpuReady = managedLtGpu && process != null && process.isAlive();
+
+            // Reuse already running endpoint when:
+            // - GPU is not available/preferred, or
+            // - managed local GPU process is already alive on 5000.
+            if (!nvidiaPresent || !localPythonCuda || managedGpuReady) {
+                activateEndpoint(cpuBase);
+                AppLog.info("[LT] server already running on " + cpuBase + ", reusing existing");
+                return true;
+            }
+        }
+
+        if (nvidiaPresent) {
+            if (useGpuDocker && dockerUsable && !gpuDockerStartupFailed) {
+                try {
+                    AppLog.info("[LT] NVIDIA GPU detected, trying GPU LibreTranslate at " + gpuBase);
+                    startGpuDockerProcess();
+                    if (waitForSpecificEndpoint(gpuBase, 40, 1_500L)) {
+                        return true;
+                    }
+                    // if server is not reachable after starting, mark failure
+                    gpuDockerStartupFailed = true;
+                } catch (IOException ex) {
+                    gpuDockerStartupFailed = true;
+                    AppLog.warn("[LT] GPU startup failed, will fall back if CPU is reachable: " + ex.getMessage());
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    return false;
+                }
+            } else if (useGpuDocker && dockerUsable) {
+                AppLog.info("[LT] GPU Docker is known to be unavailable or previously failed; skipping GPU container startup.");
+            } else if (!useGpuDocker) {
+                AppLog.info("[LT] GPU Docker mode is disabled by settings; skipping container startup.");
+            } else {
+                AppLog.warn("[LT] NVIDIA GPU detected, but Docker is unavailable. GPU LibreTranslate is not started.");
+            }
+
+            if (localPythonCuda) {
+                try {
+                    AppLog.info("[LT] CUDA is available locally. Restarting LibreTranslate on " + cpuBase + " in GPU mode.");
+                    restartLocalPythonGpuProcessOn5000();
+                    if (waitForSpecificEndpoint(cpuBase, 40, 1_000L)) {
+                        AppLog.info("[LT] local LibreTranslate is now running on " + cpuBase + " (GPU)");
+                        return true;
+                    }
+                } catch (IOException ex) {
+                    AppLog.warn("[LT] local GPU restart on " + cpuBase + " failed: " + ex.getMessage());
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    return false;
+                }
+            } else {
+                AppLog.warn("[LT] NVIDIA GPU detected, but local Python LibreTranslate cannot use CUDA.");
+            }
+        }
+
+        if (probeBaseUrl(cpuBase)) {
+            activateEndpoint(cpuBase);
+            if (nvidiaPresent) {
+                AppLog.warn("[LT] GPU endpoint " + gpuBase + " is not reachable. Falling back to CPU on " + cpuBase);
+            }
+            return true;
+        }
+
+        try {
+            startLtProcess();
+            waitLtReady(80, 1_500L);
+            return refreshActiveEndpoint();
+        } catch (Exception ex) {
+            if (ex instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            AppLog.error("[LT] unable to start or reconnect LibreTranslate: " + ex.getMessage());
+            return false;
+        }
     }
 
     public static Process startLtProcess() throws IOException {
+        // OPTIMIZED: Check if server is already running before killing competing processes
+        if (probeBaseUrl("http://127.0.0.1:5000/") || probeBaseUrl("http://127.0.0.1:5001/")) {
+            AppLog.info("[LT] LibreTranslate already running, skipping restart");
+            return managedLtProcess;
+        }
+        
+        stopCompetingLibreTranslateProcesses(Set.of(5000, 5001));
 
-        // 1) LibreTranslate CLI из PATH
+        if (hasNvidiaGpu() && useGpuDocker && isDockerUsable() && !gpuDockerStartupFailed) {
+            try {
+                AppLog.info("[LT] trying docker GPU container");
+                return startGpuDockerProcess();
+            } catch (IOException ex) {
+                gpuDockerStartupFailed = true;
+                AppLog.warn("[LT] docker GPU container start failed, trying CPU fallbacks: " + ex.getMessage());
+            }
+        } else if (hasNvidiaGpu() && useGpuDocker && isDockerUsable()) {
+            AppLog.info("[LT] skipping docker GPU container due previous nonrecoverable failure.");
+        } else if (!useGpuDocker) {
+            AppLog.info("[LT] GPU Docker mode is disabled by settings; use CPU or local process.");
+        }
+
+        // 1) LibreTranslate CLI Å ĆøÅ Ā· PATH
         if (isOnPath("libretranslate")) {
-            System.out.println("[LT] trying libretranslate CLI");
+            AppLog.info("[LT] trying libretranslate CLI");
             return new ProcessBuilder(
                     "libretranslate",
                     "--host", "127.0.0.1",
@@ -721,10 +1231,10 @@ public final class TranslationService {
                     .start();
         }
 
-        // 2) local exe рядом с программой
+        // 2) local exe Åā‚¬ÅĀøÅ Ā´Å Ā¾Å Ā¼ ÅĀ Å Ć¦Åā‚¬Å Ā¾Å Ā³Åā‚¬Å Ā°Å Ā¼Å Ā¼Å Ā¾Å Ā¹
         File localExe = new File("libretranslate.exe");
         if (localExe.exists()) {
-            System.out.println("[LT] trying local libretranslate.exe");
+            AppLog.info("[LT] trying local libretranslate.exe");
             return new ProcessBuilder(
                     localExe.getAbsolutePath(),
                     "--host", "127.0.0.1",
@@ -734,24 +1244,18 @@ public final class TranslationService {
                     .start();
         }
 
-        // 3) Python module
-        if (isOnPath("python")) {
-            System.out.println("[LT] trying python -m libretranslate");
-            return new ProcessBuilder(
-                    "python", "-m", "libretranslate",
-                    "--host", "127.0.0.1",
-                    "--port", "5000"
-            )
-                    .inheritIO()
-                    .start();
+        try {
+            return startLocalPythonLibreTranslateProcess();
+        } catch (IOException ex) {
+            AppLog.warn("[LT] local python LibreTranslate start failed: " + ex.getMessage());
         }
 
-        // 4) Docker только в самом конце
+        // 4) Docker Åā€Å Ā¾Å Ā»ÅĀÅ Å—Å Ā¾ Å Ā² ÅĀÅ Ā°Å Ā¼Å Ā¾Å Ā¼ Å Å—Å Ā¾Å Ā½Åā€ Å Āµ
         if (isDockerUsable()) {
-            System.out.println("[LT] trying docker");
+            AppLog.info("[LT] trying docker CPU container");
             return new ProcessBuilder(
                     "docker", "run", "--rm",
-                    "-p", "5000:5000",
+                    "-p", "127.0.0.1:5000:5000",
                     "libretranslate/libretranslate"
             )
                     .inheritIO()
@@ -771,8 +1275,13 @@ public final class TranslationService {
         }
     }
     private static boolean isDockerUsable() {
+        refreshCapabilityCache(false);
+        return cachedDockerUsable;
+    }
+
+    private static boolean isDockerUsableRaw() {
         try {
-            Process p = new ProcessBuilder("python", "your_script.py")
+            Process p = new ProcessBuilder("docker", "version")
                     .redirectOutput(ProcessBuilder.Redirect.DISCARD)
                     .redirectError(ProcessBuilder.Redirect.DISCARD)
                     .start();
@@ -780,6 +1289,477 @@ public final class TranslationService {
             return p.waitFor() == 0;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    private static Process startGpuDockerProcess() throws IOException {
+        stopCompetingLibreTranslateProcesses(Set.of(5001));
+
+        // OPTIMIZED: Docker GPU with maximum resource allocation and async processing
+        Process process = new ProcessBuilder(
+                "docker", "run", "--rm",
+                "--gpus", "all",
+                "--memory", "8g",              // OPTIMIZED: Allocate 8GB RAM
+                "--cpus", "4.0",               // OPTIMIZED: 4 CPU cores
+                "--shm-size", "2g",            // OPTIMIZED: Shared memory for GPU
+                "-p", "127.0.0.1:5001:5000",
+                "-e", "LIBRETRANSLATE_PORT=5000",
+                "-e", "LIBRETRANSLATE_THREADS=8",
+                "-e", "CUDA_DEVICE_ORDER=PCI_BUS_ID",
+                "-e", "CUDA_LAUNCH_BLOCKING=0",
+                "libretranslate/libretranslate:latest-cuda"
+        )
+                .inheritIO()
+                .start();
+        managedLtProcess = process;
+        managedLtGpu = true;
+        tryRaiseProcessPriority(process, "High");
+        return process;
+    }
+
+    private static Process startLocalPythonLibreTranslateProcess() throws IOException {
+        File runtimeRoot = getPersistentArgosRuntimeRoot();
+        File configDir = new File(runtimeRoot, "config");
+        File dataDir = new File(runtimeRoot, "data");
+        File cacheDir = new File(runtimeRoot, "cache");
+        File packagesDir = new File(runtimeRoot, "packages");
+
+        configDir.mkdirs();
+        dataDir.mkdirs();
+        cacheDir.mkdirs();
+        packagesDir.mkdirs();
+
+        boolean requestCuda = hasNvidiaGpu() && isLocalPythonCudaAvailable();
+        if (hasNvidiaGpu() && !requestCuda) {
+            AppLog.warn("[LT] NVIDIA detected, but local Python LibreTranslate has no CUDA support. Starting in CPU mode.");
+        }
+
+        AppLog.info("[LT] trying local python LibreTranslate on 127.0.0.1:5000"
+                + " (" + (requestCuda ? "GPU" : "CPU") + ")");
+        AppLog.info("[LT] Argos runtime: " + runtimeRoot.getAbsolutePath());
+
+        stopCompetingLibreTranslateProcesses(Set.of(5000));
+
+        ProcessBuilder pb = new ProcessBuilder(
+                pythonExecutable(),
+                "-m", "libretranslate.main",
+                "--host", "127.0.0.1",
+                "--port", "5000",
+                "--disable-web-ui"
+        );
+
+        Map<String, String> env = pb.environment();
+        env.put("XDG_CONFIG_HOME", configDir.getAbsolutePath());
+        env.put("XDG_DATA_HOME", dataDir.getAbsolutePath());
+        env.put("XDG_CACHE_HOME", cacheDir.getAbsolutePath());
+        env.put("ARGOS_PACKAGES_DIR", packagesDir.getAbsolutePath());
+        env.put("ARGOS_DEVICE_TYPE", requestCuda ? "cuda" : "cpu");
+        env.putIfAbsent("PYTHONUTF8", "1");
+        env.putIfAbsent("PYTHONUNBUFFERED", "1");
+
+        // OPTIMIZED: Use all CPU cores for LibreTranslate, more for GPU
+        int threads = Runtime.getRuntime().availableProcessors();
+        if (requestCuda) {
+            threads = Math.max(threads * 2, 16);
+        }
+        env.putIfAbsent("OMP_NUM_THREADS", String.valueOf(threads));
+        env.putIfAbsent("OPENBLAS_NUM_THREADS", String.valueOf(threads));
+        env.putIfAbsent("MKL_NUM_THREADS", String.valueOf(threads));
+        env.putIfAbsent("NUMEXPR_NUM_THREADS", String.valueOf(threads));
+        
+        // GPU optimization flags for NVIDIA CUDA
+        if (requestCuda) {
+            env.putIfAbsent("CUDA_DEVICE_ORDER", "PCI_BUS_ID");
+            env.putIfAbsent("CUDA_LAUNCH_BLOCKING", "0");  // Async GPU execution
+            env.putIfAbsent("TF_FORCE_GPU_ALLOW_GROWTH", "true");  // Avoid OOM
+        }
+
+        Process process = pb.inheritIO().start();
+        managedLtProcess = process;
+        managedLtGpu = requestCuda;
+        tryRaiseProcessPriority(process, "High");
+        return process;
+    }
+
+    public static void requestTranslationPerformanceMode() {
+        if (PERFORMANCE_MODE_LEASES.incrementAndGet() == 1) {
+            long currentPid = ProcessHandle.current().pid();
+            // Maximize CPU for preparation/dedup/glossary + translation IPC,
+            // even if the UI becomes less responsive while a translation is running.
+            tryRaiseProcessPriorityByPid(currentPid, "High", "APP");
+        }
+
+        Process ltProcess = managedLtProcess;
+        if (ltProcess != null && ltProcess.isAlive()) {
+            tryRaiseProcessPriority(ltProcess, "High");
+        }
+    }
+
+    public static void restoreTranslationPerformanceMode() {
+        int leases = PERFORMANCE_MODE_LEASES.updateAndGet(current -> Math.max(0, current - 1));
+        if (leases == 0) {
+            long currentPid = ProcessHandle.current().pid();
+            tryRaiseProcessPriorityByPid(currentPid, "High", "APP");
+        }
+    }
+
+    public static void shutdown() {
+        shutdownRequested = true;
+        cancelInFlight();
+        stopManagedLtProcess();
+        savePersistentTranslationCache();
+    }
+
+    private static File getPersistentArgosRuntimeRoot() {
+        String localAppData = System.getenv("LOCALAPPDATA");
+        if (localAppData != null && !localAppData.isBlank()) {
+            return new File(localAppData, "LocalizationEditorSC2KSP\\argos-runtime");
+        }
+        return new File(System.getProperty("user.home"), ".localization-editor-argos-runtime");
+    }
+
+    private static Path getPersistentTranslationCachePath() {
+        File runtimeRoot = getPersistentArgosRuntimeRoot();
+        runtimeRoot.mkdirs();
+        return runtimeRoot.toPath().resolve("translation-cache.xml");
+    }
+
+    private static void restartLocalPythonGpuProcessOn5000() throws IOException {
+        // OPTIMIZED: Reuse already running GPU process instead of restarting
+        Process process = managedLtProcess;
+        if (process != null && process.isAlive() && managedLtGpu) {
+            AppLog.info("[LT] GPU process already running on 127.0.0.1:5000, reusing existing");
+            return;
+        }
+        
+        // Process is not running or is CPU mode - restart with GPU
+        stopManagedLtProcess();
+        stopCompetingLibreTranslateProcesses(Set.of(5000, 5001));
+        startLocalPythonLibreTranslateProcess();
+    }
+
+    private static void stopManagedLtProcess() {
+        Process process = managedLtProcess;
+        managedLtProcess = null;
+        managedLtGpu = false;
+        if (process == null) {
+            return;
+        }
+        destroyProcess(process.toHandle(), "[LT] stopped managed LibreTranslate process");
+    }
+
+    private static void stopCompetingLibreTranslateOn5000() {
+        stopCompetingLibreTranslateProcesses(Set.of(5000));
+    }
+
+    private static void stopCompetingLibreTranslateProcesses(Set<Integer> ports) {
+        long currentPid = ProcessHandle.current().pid();
+        ProcessHandle.allProcesses()
+                .filter(handle -> handle.pid() != currentPid)
+                .filter(handle -> handle.isAlive())
+                .filter(handle -> looksLikeLibreTranslateProcess(handle, ports))
+                .forEach(handle -> destroyProcess(handle,
+                        "[LT] stopped stale LibreTranslate process (pid=" + handle.pid() + ")"));
+    }
+
+    private static boolean looksLikeLibreTranslate5000Process(ProcessHandle handle) {
+        return looksLikeLibreTranslateProcess(handle, Set.of(5000));
+    }
+
+    private static boolean looksLikeLibreTranslateProcess(ProcessHandle handle, Set<Integer> ports) {
+        ProcessHandle.Info info = handle.info();
+        String command = info.command().orElse("").toLowerCase();
+        String commandLine = info.commandLine().orElse("").toLowerCase();
+        if (!command.contains("python") && !command.contains("libretranslate")) {
+            return false;
+        }
+        boolean portMatched = ports == null || ports.isEmpty();
+        if (!portMatched) {
+            for (Integer port : ports) {
+                if (port != null && commandLine.contains(String.valueOf(port))) {
+                    portMatched = true;
+                    break;
+                }
+            }
+        }
+        if (!portMatched) {
+            return false;
+        }
+        return commandLine.contains("libretranslate.main")
+                || commandLine.contains("libretranslate.exe")
+                || commandLine.contains(" libretranslate ");
+    }
+
+    private static void destroyProcess(ProcessHandle handle, String successLog) {
+        try {
+            handle.destroy();
+            try {
+                handle.onExit().get(java.time.Duration.ofSeconds(5).toMillis(), java.util.concurrent.TimeUnit.MILLISECONDS);
+            } catch (Exception ignored) {
+                if (handle.isAlive()) {
+                    handle.destroyForcibly();
+                }
+            }
+            AppLog.info(successLog);
+        } catch (Exception ex) {
+            AppLog.warn("[LT] failed to stop stale LibreTranslate process: " + ex.getMessage());
+        }
+    }
+
+    private static boolean probeLocalPythonCudaSupport() {
+        if (probeLocalPythonCuda(
+                "import ctranslate2; print('1' if ctranslate2.get_cuda_device_count() > 0 else '0')")) {
+            return true;
+        }
+        try {
+            return probeLocalPythonCuda(
+                    "import torch; print('1' if torch.cuda.is_available() else '0')");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static boolean isLocalPythonCudaAvailable() {
+        refreshCapabilityCache(false);
+        return cachedLocalPythonCuda;
+    }
+
+    private static boolean probeLocalPythonCuda(String command) {
+        try {
+            Process p = new ProcessBuilder(pythonExecutable(), "-c", command)
+                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .start();
+            byte[] out = p.getInputStream().readAllBytes();
+            if (p.waitFor() != 0) {
+                return false;
+            }
+            return new String(out).trim().equals("1");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static boolean probeNvidiaGpu() {
+        if (probeNvidiaSmi("nvidia-smi")) {
+            return true;
+        }
+        return probeNvidiaSmi("C:\\Windows\\System32\\nvidia-smi.exe");
+    }
+
+    private static boolean hasNvidiaGpu() {
+        refreshCapabilityCache(false);
+        return cachedNvidiaGpu;
+    }
+
+    private static boolean shouldRefreshCapabilityCache(long now, boolean force) {
+        if (force) {
+            return true;
+        }
+        return capabilityCacheTs <= 0 || (now - capabilityCacheTs) >= CAPABILITY_CACHE_TTL_MS;
+    }
+
+    private static void refreshCapabilityCache(boolean force) {
+        long now = System.currentTimeMillis();
+        synchronized (TranslationService.class) {
+            if (!shouldRefreshCapabilityCache(now, force)) {
+                return;
+            }
+        }
+
+        // Heavy probes are executed outside synchronized block.
+        boolean nvidia = probeNvidiaGpu();
+        boolean docker = isDockerUsableRaw();
+        boolean localCuda = nvidia && probeLocalPythonCudaSupport();
+
+        synchronized (TranslationService.class) {
+            long now2 = System.currentTimeMillis();
+            if (!shouldRefreshCapabilityCache(now2, force)) {
+                return;
+            }
+            cachedNvidiaGpu = nvidia;
+            cachedDockerUsable = docker;
+            cachedLocalPythonCuda = localCuda;
+            capabilityCacheTs = now2;
+        }
+    }
+
+    private static boolean probeNvidiaSmi(String executable) {
+        try {
+            Process p = new ProcessBuilder(executable, "-L")
+                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
+                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .start();
+            return p.waitFor() == 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static synchronized String pythonExecutable() {
+        if (cachedPythonExecutable != null && !cachedPythonExecutable.isBlank()) {
+            return cachedPythonExecutable;
+        }
+
+        String envPython = System.getenv("LT_PYTHON");
+        if (envPython != null && !envPython.isBlank() && new File(envPython).exists()) {
+            cachedPythonExecutable = envPython;
+            return cachedPythonExecutable;
+        }
+
+        String localAppData = System.getenv("LOCALAPPDATA");
+        if (localAppData != null && !localAppData.isBlank()) {
+            File pythonRoot = new File(localAppData, "Programs\\Python");
+            File[] dirs = pythonRoot.listFiles(File::isDirectory);
+            if (dirs != null && dirs.length > 0) {
+                Arrays.sort(dirs, (a, b) -> b.getName().compareToIgnoreCase(a.getName()));
+                for (File dir : dirs) {
+                    File exe = new File(dir, "python.exe");
+                    if (exe.exists()) {
+                        cachedPythonExecutable = exe.getAbsolutePath();
+                        AppLog.info("[LT] selected python executable: " + cachedPythonExecutable);
+                        return cachedPythonExecutable;
+                    }
+                }
+            }
+        }
+
+        cachedPythonExecutable = "python";
+        return cachedPythonExecutable;
+    }
+
+    public static boolean isPersistentCacheEnabled() {
+        return persistentCacheEnabled;
+    }
+
+    public static void setPersistentCacheEnabled(boolean enabled) {
+        persistentCacheEnabled = enabled;
+    }
+
+    public static boolean isGpuDockerEnabled() {
+        return useGpuDocker;
+    }
+
+    public static void setGpuDockerEnabled(boolean enabled) {
+        useGpuDocker = enabled;
+        if (!enabled) {
+            gpuDockerStartupFailed = true;
+        }
+    }
+
+    public static void clearTranslationCache() {
+        synchronized (TRANSLATION_CACHE) {
+            TRANSLATION_CACHE.clear();
+        }
+        Path path = getPersistentTranslationCachePath();
+        try {
+            Files.deleteIfExists(path);
+            AppLog.info("[LT] translation cache cleared");
+        } catch (Exception ex) {
+            AppLog.warn("[LT] failed to delete translation cache file: " + ex.getMessage());
+        }
+        persistentCacheLoaded = false;
+    }
+
+    private static void ensurePersistentCacheLoaded() {
+        if (!persistentCacheEnabled) {
+            // Keep runtime cache only; avoid loading disk persistence.
+            persistentCacheLoaded = true;
+            return;
+        }
+
+        if (persistentCacheLoaded) {
+            return;
+        }
+        synchronized (CACHE_IO_LOCK) {
+            if (persistentCacheLoaded) {
+                return;
+            }
+
+            Path path = getPersistentTranslationCachePath();
+            if (Files.isRegularFile(path)) {
+                Properties props = new Properties();
+                try (InputStream in = Files.newInputStream(path)) {
+                    props.loadFromXML(in);
+                    for (String key : props.stringPropertyNames()) {
+                        TRANSLATION_CACHE.put(key, props.getProperty(key));
+                    }
+                    AppLog.info("[LT] persistent translation cache loaded: " + props.size() + " entries");
+                } catch (Exception ex) {
+                    AppLog.warn("[LT] failed to load persistent translation cache: " + ex.getMessage());
+                }
+            }
+            persistentCacheLoaded = true;
+        }
+    }
+
+    private static void installCacheShutdownHook() {
+        if (shutdownHookInstalled) {
+            return;
+        }
+        synchronized (CACHE_IO_LOCK) {
+            if (shutdownHookInstalled) {
+                return;
+            }
+            Runtime.getRuntime().addShutdownHook(new Thread(
+                    TranslationService::savePersistentTranslationCache,
+                    "lt-cache-shutdown-save"
+            ));
+            shutdownHookInstalled = true;
+        }
+    }
+
+    private static void savePersistentTranslationCache() {
+        if (!persistentCacheEnabled) {
+            AppLog.info("[LT] persistent translation cache saving is disabled");
+            return;
+        }
+
+        ensurePersistentCacheLoaded();
+        synchronized (CACHE_IO_LOCK) {
+            try {
+                Path path = getPersistentTranslationCachePath();
+                Properties props = new Properties();
+                synchronized (TRANSLATION_CACHE) {
+                    for (Map.Entry<String, String> entry : TRANSLATION_CACHE.entrySet()) {
+                        props.setProperty(entry.getKey(), entry.getValue());
+                    }
+                }
+                try (OutputStream out = Files.newOutputStream(path)) {
+                    props.storeToXML(out, "Localization Editor translation cache", "UTF-8");
+                }
+                AppLog.info("[LT] persistent translation cache saved: " + props.size() + " entries");
+            } catch (Exception ex) {
+                AppLog.warn("[LT] failed to save persistent translation cache: " + ex.getMessage());
+            }
+        }
+    }
+
+    private static void tryRaiseProcessPriority(Process process, String priorityClass) {
+        if (process == null) {
+            return;
+        }
+        long pid = process.pid();
+        if (pid <= 0) {
+            return;
+        }
+        tryRaiseProcessPriorityByPid(pid, priorityClass, "LT");
+    }
+
+    private static void tryRaiseProcessPriorityByPid(long pid, String priorityClass, String label) {
+        if (pid <= 0) {
+            return;
+        }
+        String ps = "$p=Get-Process -Id " + pid
+                + " -ErrorAction SilentlyContinue; "
+                + "if($p){$p.PriorityClass='" + priorityClass + "'}";
+        try {
+            new ProcessBuilder("powershell", "-NoProfile", "-Command", ps)
+                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
+                    .redirectError(ProcessBuilder.Redirect.DISCARD)
+                    .start();
+            AppLog.info("[LT] process priority requested (" + label + "): " + priorityClass + " (pid=" + pid + ")");
+        } catch (Exception ex) {
+            AppLog.warn("[LT] failed to raise process priority: " + ex.getMessage());
         }
     }
     static List<String> translateBatch(
@@ -795,13 +1775,13 @@ public final class TranslationService {
 
 
         TranslateRequest translateRequest = new TranslateRequest(String.join(SEP, texts), source, target);
-        Call<TranslateResponse> call = api.translate(translateRequest);
+        Call<TranslateResponse> call = requireApi().translate(translateRequest);
         //   call.timeout().timeout(600, java.util.concurrent.TimeUnit.SECONDS);
         TranslateResponse resp = executeTracked(call);
         if (resp == null || resp.getTranslatedText() == null) {
             throw new IOException("Empty translation response");
         }
-        System.out.println(translateRequest + "->" + resp);
+        AppLog.info(translateRequest + "->" + resp);
 
 
         List<String> translated = Arrays.asList(resp.getTranslatedText().split(SEP));
@@ -813,7 +1793,7 @@ public final class TranslationService {
                     "sent: " + (String.join(SEP, texts)) +
                             "\n received: " + resp.getTranslatedText());
         }
-//        System.out.println(texts.size() + "
+//        AppLog.info(texts.size() + "
         return translated;
 //        Response<List<String>> resp = api.translate(body).execute();
 //        if (!resp.isSuccessful() || resp.body() == null) {
@@ -827,20 +1807,8 @@ public final class TranslationService {
         // single run, hardcoded EN -> RU
         List<String> out = translateBatch(TranslationService.api, texts, "en", "ru");
         long ms = (System.nanoTime() - t0) / 1_000_000L;
-        System.out.println("EN->RU: batch=" + texts.size() + " took " + ms + " ms");
+        AppLog.info("EN->RU: batch=" + texts.size() + " took " + ms + " ms");
         return out;
-    }
-
-    private static int countOccurrences(String text, String delimiter) {
-        if (text == null || delimiter == null || delimiter.isEmpty()) return 0;
-        int count = 0, from = 0;
-        while (true) {
-            int idx = text.indexOf(delimiter, from);
-            if (idx < 0) break;
-            count++;
-            from = idx + delimiter.length();
-        }
-        return count;
     }
 
     static <T> List<List<T>> chunks(List<T> src, int size) {
@@ -867,23 +1835,13 @@ public final class TranslationService {
         return n;
     }
 
-    private static String preview(String s, int max) {
-        if (s == null) return "null";
-        s = s.replace("\n", "\\n");
-        return s.length() <= max ? s : (s.substring(0, max - 1) + "…");
-    }
-
-    private static <T> List<T> previewList(List<T> list, int limit) {
-        if (list == null) return Collections.emptyList();
-        int n = Math.min(list.size(), limit);
-        return new ArrayList<>(list.subList(0, n));
-    }
     public static void saveTranslated(File originalFile, String targetLang, String translatedText) throws IOException {
         File out = FileUtil.resolveTargetFile(originalFile, targetLang);
-        System.out.println("[SAVE] from: " + originalFile.getAbsolutePath());
-        System.out.println("[SAVE] to  : " + out.getAbsolutePath());
+        AppLog.info("[SAVE] from: " + originalFile.getAbsolutePath());
+        AppLog.info("[SAVE] to  : " + out.getAbsolutePath());
         FileUtil.writeUtf8Atomic(out, translatedText);
-        System.out.println("[SAVE] done");
+        AppLog.info("[SAVE] done");
     }
 
 }
+

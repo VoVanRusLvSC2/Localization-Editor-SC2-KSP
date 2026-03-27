@@ -18,7 +18,7 @@ https://github.com/vlencmanissc-dotcom/Localization-Editor-SC2-KSP/releases
 Run the installer:
 
 ```
-LocalizationEditor-Setup-1.0.1.exe
+LocalizationEditor-Setup-1.1.exe
 ```
 
 After installation, launch the editor normally.
@@ -50,11 +50,13 @@ After installation:
 
 ### 3. Start LibreTranslate
 
-Open the `docker` folder and run:
+Open `Release ZIP/docker` and run:
 
 ```
 start-libretranslate.bat
 ```
+
+The batch file starts LibreTranslate for you through Docker Compose.
 
 This will start LibreTranslate at:
 
@@ -73,31 +75,7 @@ On the first start Docker will download:
 
 LibreTranslate will also download the required language models during the first start.
 
-You can verify that the models are downloading by checking the container logs:
-
-```bash
-docker logs libretranslate
-```
-
-You should see messages similar to:
-
-```
-Updating language models
-Downloading English -> Russian ...
-Downloading English -> German ...
-Downloading English -> French ...
-Downloading English -> Spanish ...
-Downloading English -> Italian ...
-Downloading English -> Korean ...
-Downloading English -> Polish ...
-Downloading English -> Portuguese ...
-```
-
-When the server is ready, the logs will contain a line like:
-
-```
-Listening at: http://[::]:5000
-```
+The first start can take a few minutes. That is normal.
 
 Only these languages are loaded:
 
@@ -128,6 +106,37 @@ If LibreTranslate is not running, auto-translation will not work.
 
 Use this method if you do not want to use Docker
 or if you want to run LibreTranslate manually.
+
+### Optional: Start LibreTranslate with Docker from the command line
+
+Use this if you want Docker, but prefer command-line commands instead of the batch file.
+
+From the project root directory, run:
+
+```bash
+cd "Release ZIP/docker"
+docker compose -f docker-compose.yml up -d
+```
+
+To view the startup logs:
+
+```bash
+docker compose -f docker-compose.yml logs -f libretranslate
+```
+
+When the server is ready, the logs will contain a line like:
+
+```
+Listening at: http://[::]:5000
+```
+
+To stop the container later:
+
+```bash
+docker compose -f docker-compose.yml down
+```
+
+---
 
 ### 1. Java (JDK 17+)
 

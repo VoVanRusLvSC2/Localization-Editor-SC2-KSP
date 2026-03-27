@@ -281,20 +281,14 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
                                                String fileText) {
         try {
             if (openedFile == null || projectRoot == null) return false;
-
-            File targetDir = new File(projectRoot,
-                    targetUiLang + ".SC2Data" + File.separator + "LocalizedData");
-
-            if (!targetDir.exists() && !targetDir.mkdirs()) return false;
-
-            File out = new File(targetDir, openedFile.getName());
-            java.nio.file.Files.writeString(out.toPath(), fileText);
-            System.out.println("[SAVE] OK -> " + out.getAbsolutePath());
+            File out = resolveTargetFile(openedFile, targetUiLang);
+            writeUtf8Atomic(out, fileText);
+            AppLog.info("[SAVE] OK -> " + out.getAbsolutePath());
             return true;
 
         } catch (Exception e) {
-            System.err.println("[SAVE] failed: " + e.getMessage());
-            e.printStackTrace();
+            AppLog.error("[SAVE] failed: " + e.getMessage());
+            AppLog.exception(e);
             return false;
         }
     }

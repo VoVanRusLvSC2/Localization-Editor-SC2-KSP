@@ -36,3 +36,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Local app/runtime files ###
+.lh/
+settings.properties
+LanguageDetected/
+/Localization Standard.zip
+/Release ZIP/*.zip
