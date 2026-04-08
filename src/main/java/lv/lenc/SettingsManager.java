@@ -2,6 +2,7 @@ package lv.lenc;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
 
 
@@ -22,11 +23,29 @@ public class SettingsManager {
     public static final boolean DEFAULT_SHIMMERS = true;
     public static final boolean DEFAULT_BACKGROUND_BLUR = true;
 
+    public static final String BASE_GLOSSARY_KEY = "glossary.base";
+    public static final boolean DEFAULT_BASE_GLOSSARY = true;
+    public static final String UNITS_GLOSSARY_KEY = "glossary.units";
+    public static final boolean DEFAULT_UNITS_GLOSSARY = false;
+    public static final String WEAPONS_GLOSSARY_KEY = "glossary.weapons";
+    public static final boolean DEFAULT_WEAPONS_GLOSSARY = false;
+    public static final String ABILITIES_GLOSSARY_KEY = "glossary.abilities";
+    public static final boolean DEFAULT_ABILITIES_GLOSSARY = false;
+    private static final String GLOSSARY_TOGGLES_VERSION_KEY = "glossary.toggles.version";
+    private static final String GLOSSARY_TOGGLES_VERSION = "2";
+
     public static final String TRANSLATION_CACHE_PERSIST_KEY = "translation.cache.persistent";
     public static final boolean DEFAULT_TRANSLATION_CACHE_PERSIST = false;
 
     public static final String USE_GPU_DOCKER_KEY = "use.gpu.docker";
     public static final boolean DEFAULT_USE_GPU_DOCKER = false;
+    public static final String GOOGLE_TRANSLATE_API_KEY_KEY = "google.translate.api.key";
+    public static final String GEMINI_API_KEY_KEY = "gemini.api.key";
+    public static final String SILICONFLOW_API_KEY_KEY = "siliconflow.api.key";
+    public static final String SILICONFLOW_MODEL_KEY = "siliconflow.model";
+    public static final String DEEPL_API_KEY_KEY = "deepl.api.key";
+    public static final String TRANSLATION_BACKEND_KEY = "translation.backend";
+    public static final String DEFAULT_TRANSLATION_BACKEND = "LIBRE_TRANSLATE";
 
     public static void saveLanguage(String langCode) {
         saveProperty(LANGUAGE_KEY, langCode);
@@ -68,6 +87,7 @@ public class SettingsManager {
 
     public static boolean loadCheckboxState(String key, boolean defaultValue) {
         Properties props = loadAllProperties();
+        migrateGlossaryToggleDefaultsIfNeeded(props);
         return Boolean.parseBoolean(props.getProperty(key, Boolean.toString(defaultValue)));
     }
 
@@ -85,6 +105,126 @@ public class SettingsManager {
 
     public static void saveUseGpuDocker(boolean enabled) {
         saveProperty(USE_GPU_DOCKER_KEY, Boolean.toString(enabled));
+    }
+
+    public static String loadTranslationBackendName() {
+        Properties props = loadAllProperties();
+        return normalizeTranslationBackendName(props.getProperty(TRANSLATION_BACKEND_KEY));
+    }
+
+    public static void saveTranslationBackendName(String backendName) {
+        saveProperty(TRANSLATION_BACKEND_KEY, normalizeTranslationBackendName(backendName));
+    }
+
+    public static String loadGoogleTranslateApiKey() {
+        String envValue = trimToNull(System.getenv("GOOGLE_TRANSLATE_API_KEY"));
+        if (envValue != null) {
+            return envValue;
+        }
+
+        envValue = trimToNull(System.getenv("GOOGLE_API_KEY"));
+        if (envValue != null) {
+            return envValue;
+        }
+
+        Properties props = loadAllProperties();
+        return trimToNull(props.getProperty(GOOGLE_TRANSLATE_API_KEY_KEY));
+    }
+
+    public static void saveGoogleTranslateApiKey(String apiKey) {
+        Properties props = loadAllProperties();
+        String normalized = trimToNull(apiKey);
+        if (normalized == null) {
+            props.remove(GOOGLE_TRANSLATE_API_KEY_KEY);
+        } else {
+            props.setProperty(GOOGLE_TRANSLATE_API_KEY_KEY, normalized);
+        }
+        try (FileOutputStream out = new FileOutputStream(SETTINGS_FILE)) {
+            props.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String loadGeminiApiKey() {
+        String envValue = trimToNull(System.getenv("GEMINI_API_KEY"));
+        if (envValue != null) {
+            return envValue;
+        }
+        Properties props = loadAllProperties();
+        return trimToNull(props.getProperty(GEMINI_API_KEY_KEY));
+    }
+
+    public static void saveGeminiApiKey(String apiKey) {
+        Properties props = loadAllProperties();
+        String normalized = trimToNull(apiKey);
+        if (normalized == null) {
+            props.remove(GEMINI_API_KEY_KEY);
+        } else {
+            props.setProperty(GEMINI_API_KEY_KEY, normalized);
+        }
+        try (FileOutputStream out = new FileOutputStream(SETTINGS_FILE)) {
+            props.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String loadSiliconFlowApiKey() {
+        String envValue = trimToNull(System.getenv("SILICONFLOW_API_KEY"));
+        if (envValue != null) {
+            return envValue;
+        }
+        Properties props = loadAllProperties();
+        return trimToNull(props.getProperty(SILICONFLOW_API_KEY_KEY));
+    }
+
+    public static void saveSiliconFlowApiKey(String apiKey) {
+        Properties props = loadAllProperties();
+        String normalized = trimToNull(apiKey);
+        if (normalized == null) {
+            props.remove(SILICONFLOW_API_KEY_KEY);
+        } else {
+            props.setProperty(SILICONFLOW_API_KEY_KEY, normalized);
+        }
+        try (FileOutputStream out = new FileOutputStream(SETTINGS_FILE)) {
+            props.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String loadSiliconFlowModel() {
+        String envValue = trimToNull(System.getenv("SILICONFLOW_MODEL"));
+        if (envValue != null) {
+            return envValue;
+        }
+        Properties props = loadAllProperties();
+        return trimToNull(props.getProperty(SILICONFLOW_MODEL_KEY));
+    }
+
+    public static String loadDeepLApiKey() {
+        String envValue = trimToNull(System.getenv("DEEPL_API_KEY"));
+        if (envValue != null) {
+            return envValue;
+        }
+        Properties props = loadAllProperties();
+        return trimToNull(props.getProperty(DEEPL_API_KEY_KEY));
+    }
+
+    public static void saveDeepLApiKey(String apiKey) {
+        Properties props = loadAllProperties();
+        String normalized = trimToNull(apiKey);
+        if (normalized == null) {
+            props.remove(DEEPL_API_KEY_KEY);
+        } else {
+            props.setProperty(DEEPL_API_KEY_KEY, normalized);
+        }
+        try (FileOutputStream out = new FileOutputStream(SETTINGS_FILE)) {
+            props.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Properties loadAllProperties() {
@@ -145,6 +285,44 @@ public class SettingsManager {
     public static void saveProperty(String key, String value) {
         Properties props = loadAllProperties();
         props.setProperty(key, value);
+        try (FileOutputStream out = new FileOutputStream(SETTINGS_FILE)) {
+            props.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String trimToNull(String value) {
+        if (value == null) {
+            return null;
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private static String normalizeTranslationBackendName(String backendName) {
+        String normalized = trimToNull(backendName);
+        if (normalized == null) {
+            return DEFAULT_TRANSLATION_BACKEND;
+        }
+        return normalized.toUpperCase(Locale.ROOT);
+    }
+
+    private static void migrateGlossaryToggleDefaultsIfNeeded(Properties props) {
+        if (props == null) {
+            return;
+        }
+        String version = props.getProperty(GLOSSARY_TOGGLES_VERSION_KEY);
+        if (GLOSSARY_TOGGLES_VERSION.equals(version)) {
+            return;
+        }
+
+        props.setProperty(BASE_GLOSSARY_KEY, Boolean.toString(DEFAULT_BASE_GLOSSARY));
+        props.setProperty(UNITS_GLOSSARY_KEY, Boolean.toString(DEFAULT_UNITS_GLOSSARY));
+        props.setProperty(WEAPONS_GLOSSARY_KEY, Boolean.toString(DEFAULT_WEAPONS_GLOSSARY));
+        props.setProperty(ABILITIES_GLOSSARY_KEY, Boolean.toString(DEFAULT_ABILITIES_GLOSSARY));
+        props.setProperty(GLOSSARY_TOGGLES_VERSION_KEY, GLOSSARY_TOGGLES_VERSION);
+
         try (FileOutputStream out = new FileOutputStream(SETTINGS_FILE)) {
             props.store(out, null);
         } catch (IOException e) {

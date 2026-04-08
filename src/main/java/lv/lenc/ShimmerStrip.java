@@ -128,6 +128,13 @@ public class ShimmerStrip extends StackPane {
         }
     }
 
+    public void restartFromStart() {
+        animationEnabled = true;
+        shimmer.setVisible(false);
+        sequence.stop();
+        sequence.playFromStart();
+    }
+
     private Image recolorShimmer(Image src) {
         int w = (int) src.getWidth();
         int h = (int) src.getHeight();

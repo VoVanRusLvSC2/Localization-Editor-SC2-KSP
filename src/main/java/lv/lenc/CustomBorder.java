@@ -180,6 +180,61 @@ public class CustomBorder extends StackPane {
         return scan1 != null && scan1.isVisible();
     }
 
+    public void setFrameEffectsVisible(boolean visible) {
+        if (bgH != null) bgH.setVisible(visible);
+        if (bgF != null) bgF.setVisible(visible);
+    }
+
+    public boolean isFrameEffectsVisible() {
+        return bgF != null && bgF.isVisible();
+    }
+
+    public void fadeInFrameEffects(Duration duration, boolean visible) {
+        if (!visible) {
+            setFrameEffectsVisible(false);
+            return;
+        }
+        setFrameEffectsVisible(true);
+        if (bgH != null) {
+            bgH.setOpacity(0.0);
+            FadeTransition fade = new FadeTransition(duration, bgH);
+            fade.setFromValue(0.0);
+            fade.setToValue(1.0);
+            fade.play();
+        }
+        if (bgF != null) {
+            bgF.setOpacity(0.0);
+            FadeTransition fade = new FadeTransition(duration, bgF);
+            fade.setFromValue(0.0);
+            fade.setToValue(1.0);
+            fade.play();
+        }
+    }
+
+    public void fadeInTableLighting(Duration duration, boolean visible) {
+        if (!visible) {
+            setTableLightingVisible(false);
+            return;
+        }
+        setTableLightingVisible(true);
+        for (ImageView scan : List.of(scan1, scan2, scan3)) {
+            if (scan == null) continue;
+            scan.setOpacity(0.0);
+            FadeTransition fade = new FadeTransition(duration, scan);
+            fade.setFromValue(0.0);
+            fade.setToValue(0.25);
+            fade.play();
+        }
+    }
+
+    public void restartAnimationsFromStart() {
+        for (Animation animation : animations) {
+            if (animation == null) continue;
+            animation.stop();
+            animation.playFromStart();
+        }
+    }
+
     public void applyTableFocusEdgeDecorations(boolean expanded) {
         lS.setTranslateX(UiScaleHelper.scaleX(expanded ? 48 : 142));
         lSR.setTranslateX(-UiScaleHelper.scaleX(expanded ? 36 : 140));

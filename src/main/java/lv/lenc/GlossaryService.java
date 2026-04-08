@@ -1,13 +1,16 @@
 package lv.lenc;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.Normalizer;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +34,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
+import okhttp3.OkHttpClient;
 /**
  * Exact-match glossary for SC2 localization.
  *
@@ -56,6 +60,7 @@ import javafx.concurrent.Task;
  */
 public final class GlossaryService {
 
+    private static final String WORD_GLOSSARY_FILE = "sc2_word_glossary_KSP.txt";
 
     public enum Category {
         UNIT, BUTTON, ABILITY
@@ -80,7 +85,9 @@ public final class GlossaryService {
     private static final Pattern BROKEN_SC2_TERM_TOKEN = Pattern.compile(
             "(?iu)(?:__\\s*)?SC2\\s*[_\\- ]*TERM\\s*[_\\- ]*(\\d+)\\s*(?:__)?"
     );
-    private static final Pattern WORD_PATTERN = Pattern.compile("(?iu)\\p{L}[\\p{L}\\p{N}_'’-]*");
+    private static final Pattern WORD_PATTERN = Pattern.compile("(?iu)\\p{L}[\\p{L}\\p{N}_'-]*");
+    private static final int GEMINI_AI_INFLECTION_MAX_ITEMS = 24;
+    private static final int GEMINI_AI_INFLECTION_MAX_CHARS = 4500;
 
     public GlossaryService() {
     }
@@ -496,7 +503,7 @@ public final class GlossaryService {
 
     /**
      * Removes trailing English comments:
-     * "Заку'Дас - лёгкий мост /// Zhakul'Das Light Bridge" -> "Заку'Дас - лёгкий мост"
+     * "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ĀÄā€Ā¬Ä€Ć†Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā'Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä†ā€ Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā - Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹ Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā /// Zhakul'Das Light Bridge" -> "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ĀÄā€Ā¬Ä€Ć†Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā'Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä†ā€ Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā - Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹ Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā"
      */
     public static String cleanGlossaryText(String s) {
         if (s == null) return null;
@@ -590,29 +597,7 @@ public final class GlossaryService {
         if (isBlank(w)) {
             return "";
         }
-
-        String lower = w.toLowerCase(Locale.ROOT);
-
-        // Generic normalization for all supported languages
-        lower = removeCommonPossessiveSuffixes(lang, lower);
-        String singular = normalizePluralLikeForm(lang, lower);
-        if (!isBlank(singular)) {
-            lower = singular;
-        }
-
-        // Russian-specific adjective / noun normalization
-        if ("ruru".equals(lang)) {
-            String adj = normalizeRussianAdjective(lower);
-            if (!adj.equals(lower)) {
-                return adj;
-            }
-            String noun = normalizeRussianNoun(lower);
-            if (!noun.equals(lower)) {
-                return noun;
-            }
-        }
-
-        return lower;
+        return RussianGlossaryInflector.normalizeWordForLookup(lang, w);
     }
 
     private static String removeCommonPossessiveSuffixes(String lang, String w) {
@@ -660,7 +645,7 @@ public final class GlossaryService {
                 return w;
 
             case "ptbr":
-                if (w.endsWith("ões") && w.length() > 5) return w.substring(0, w.length() - 3) + "ão";
+                if (w.endsWith("Ć„ā€ Äā‚¬Ė›Ć„ĀÄā€Ā¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµes") && w.length() > 5) return w.substring(0, w.length() - 3) + "Ć„ā€ Äā‚¬Ė›Ć„ĀÄā€Ā¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā£o";
                 if (w.endsWith("ais") && w.length() > 5) return w.substring(0, w.length() - 3) + "al";
                 if (w.endsWith("eis") && w.length() > 5) return w.substring(0, w.length() - 3) + "el";
                 if (w.endsWith("is") && w.length() > 4) return w.substring(0, w.length() - 2) + "il";
@@ -690,25 +675,25 @@ public final class GlossaryService {
 
     private static String normalizeRussianAdjective(String w) {
         String[] suffixes = {
-                "ыми", "ими", "ого", "его", "ему", "ому",
-                "ая", "яя", "ое", "ее", "ые", "ие",
-                "ой", "ей", "ую", "юю", "ых", "их",
-                "ым", "им", "ом", "ем", "ый", "ий"
+                "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā",
+                "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†Ćø", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†Ćø", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ",
+                "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ä¼Ā£Ā¼", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ä¼Ā£Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ä¼Ā£Ā¼", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¦", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¦",
+                "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹", "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹"
         };
 
         for (String suffix : suffixes) {
             if (w.length() > suffix.length() + 2 && w.endsWith(suffix)) {
                 String stem = w.substring(0, w.length() - suffix.length());
 
-                if (suffix.equals("яя") || suffix.equals("ее") || suffix.equals("ие")
-                        || suffix.equals("его") || suffix.equals("ему")
-                        || suffix.equals("ей") || suffix.equals("их")
-                        || suffix.equals("ими") || suffix.equals("им")
-                        || suffix.equals("ем") || suffix.equals("ий")) {
-                    return stem + "ий";
+                if (suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†Ćø") || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ") || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ")
+                        || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾") || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā")
+                        || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹") || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¦")
+                        || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø") || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼")
+                        || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼") || suffix.equals("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹")) {
+                    return stem + "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹";
                 }
 
-                return stem + "ый";
+                return stem + "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¹";
             }
         }
 
@@ -720,15 +705,15 @@ public final class GlossaryService {
             return w;
         }
 
-        if (w.endsWith("ами") || w.endsWith("ями")) {
+        if (w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø")) {
             return w.substring(0, w.length() - 3);
         }
-        if (w.endsWith("ов") || w.endsWith("ев") || w.endsWith("ом") || w.endsWith("ем")
-                || w.endsWith("ах") || w.endsWith("ях")) {
+        if (w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā²") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā²") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼")
+                || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¦") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¦")) {
             return w.substring(0, w.length() - 2);
         }
-        if (w.endsWith("а") || w.endsWith("я") || w.endsWith("у") || w.endsWith("ю")
-                || w.endsWith("ы") || w.endsWith("и") || w.endsWith("е") || w.endsWith("о")) {
+        if (w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā€ Ä†Ćø") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ä¼Ā£Ā¼")
+                || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Āµ") || w.endsWith("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾")) {
             return w.substring(0, w.length() - 1);
         }
 
@@ -752,7 +737,7 @@ public final class GlossaryService {
 
     private static boolean isEdgePunctuation(char ch) {
         return Character.isWhitespace(ch)
-                || ",.;:!?()[]{}<>«»„“”'\\\"".indexOf(ch) >= 0;
+                || ",.;:!?()[]{}<>Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā«Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā€ Äā‚¬Ā '\\\"".indexOf(ch) >= 0;
     }
 
     private static String stripBom(String s) {
@@ -849,7 +834,7 @@ public final class GlossaryService {
     public void loadGlossariesAsync(List<Path> files) {
         glossaryLoading.set(true);
         glossaryReady.set(false);
-        glossaryStatus.set("Загрузка глоссариев...");
+        glossaryStatus.set("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ĀÄā€Ā¬Ä€Ć†Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā° Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā²...");
 
         Task<Void> task = new Task<>() {
             @Override
@@ -883,14 +868,14 @@ public final class GlossaryService {
         task.setOnSucceeded(e -> {
             glossaryLoading.set(false);
             glossaryReady.set(true);
-            glossaryStatus.set("Глоссарии загружены");
+            glossaryStatus.set("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¶Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹");
             AppLog.info("[Glossary] success, loading=" + glossaryLoading.get() + ", ready=" + glossaryReady.get());
         });
 
         task.setOnFailed(e -> {
             glossaryLoading.set(false);
             glossaryReady.set(false);
-            glossaryStatus.set("Ошибка загрузки глоссариев");
+            glossaryStatus.set("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā±Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā° Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā²");
             if (task.getException() != null) {
                 task.getException().printStackTrace();
             }
@@ -1060,29 +1045,29 @@ public final class GlossaryService {
         }
 
         String lang = normalizeLang(sourceLang);
-        String direct = normalizeText(cleaned).replace('ё', 'е');
+        String direct = normalizeText(cleaned).replace("\u0451", "\u0435");
         if (!isBlank(direct)) {
             out.add(direct);
         }
 
         String normalized = normalizeSourceTermForLookup(lang, cleaned);
         if (!isBlank(normalized)) {
-            out.add(normalized.replace('ё', 'е'));
+            out.add(normalized.replace("\u0451", "\u0435"));
         }
 
         String plain = stripEdgePunctuation(cleaned);
         if (!isBlank(plain)) {
-            String lower = normalizeText(plain).replace('ё', 'е');
+            String lower = normalizeText(plain).replace("\u0451", "\u0435");
             if (!isBlank(lower)) {
                 out.add(lower);
             }
 
             if ("ruru".equals(lang)) {
-                String noun = normalizeRussianNoun(lower);
+                String noun = RussianGlossaryInflector.normalizeRussianNounForLookup(lower);
                 if (!isBlank(noun)) {
                     out.add(noun);
                 }
-                String adj = normalizeRussianAdjective(lower);
+                String adj = RussianGlossaryInflector.normalizeRussianAdjectiveForLookup(lower);
                 if (!isBlank(adj)) {
                     out.add(adj);
                 }
@@ -1180,7 +1165,7 @@ public final class GlossaryService {
                 continue;
             }
 
-            String plain = token.replaceAll("^[\\p{Punct}«»„“”]+|[\\p{Punct}«»„“”]+$", "");
+            String plain = token.replaceAll("^[\\p{Punct}Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā«Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā€ Äā‚¬Ā ]+|[\\p{Punct}Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā«Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ė›Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā€ Äā‚¬Ā ]+$", "");
             if (isBlank(plain) || !looksLikeReusableWord(plain)) {
                 out.append(token);
                 continue;
@@ -1212,11 +1197,11 @@ public final class GlossaryService {
      * 2. For untranslated words, send them individually to MT
      * 3. Return fully translated phrase
      * 
-     * Example: "Отменить кокон зерглинга" (ru) -> "en"
-     * - "Отменить" -> "Cancel" (glossary)
-     * - "кокон" -> MT translation (not in glossary)
-     * - "зерглинга" -> "zergling" (glossary)
-     * Result: "Cancel [mt_translation_of_кокон] zergling"
+     * Example: "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½ Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°" (ru) -> "en"
+     * - "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¼Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā" -> "Cancel" (glossary)
+     * - "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½" -> MT translation (not in glossary)
+     * - "Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°" -> "zergling" (glossary)
+     * Result: "Cancel [mt_translation_of_Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½] zergling"
      */
     public String composePhraseWithMtFallback(String sourceLang, String sourceText, String targetLang) {
         if (isBlank(sourceLang) || isBlank(sourceText) || isBlank(targetLang)) {
@@ -1363,13 +1348,26 @@ public final class GlossaryService {
     public void loadGlossariesAsyncFromResources() {
         glossaryLoading.set(true);
         glossaryReady.set(false);
-        glossaryStatus.set("Загрузка глоссариев...");
+        glossaryStatus.set("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ĀÄā€Ā¬Ä€Ć†Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā° Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā²...");
 
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 clear();
-                loadTxtFromResource("/glossary/sc2_word_glossary_KSP.txt");
+                if (SettingsManager.loadCheckboxState(SettingsManager.BASE_GLOSSARY_KEY, SettingsManager.DEFAULT_BASE_GLOSSARY)) {
+                    if (!loadTxtGlossaryFromExternalIfPresent(WORD_GLOSSARY_FILE)) {
+                        loadTxtFromResource("/glossary/" + WORD_GLOSSARY_FILE);
+                    }
+                }
+                if (SettingsManager.loadCheckboxState(SettingsManager.UNITS_GLOSSARY_KEY, SettingsManager.DEFAULT_UNITS_GLOSSARY)) {
+                    loadAdditionalGlossaryFile("Addition_UnitNames_Detailed_KSP.txt");
+                }
+                if (SettingsManager.loadCheckboxState(SettingsManager.WEAPONS_GLOSSARY_KEY, SettingsManager.DEFAULT_WEAPONS_GLOSSARY)) {
+                    loadAdditionalGlossaryFile("Addition_Weapons_Detailed_KSP.txt");
+                }
+                if (SettingsManager.loadCheckboxState(SettingsManager.ABILITIES_GLOSSARY_KEY, SettingsManager.DEFAULT_ABILITIES_GLOSSARY)) {
+                    loadAdditionalGlossaryFile("Addition_Abilities_Detailed_KSP.txt");
+                }
                 return null;
             }
         };
@@ -1377,13 +1375,13 @@ public final class GlossaryService {
         task.setOnSucceeded(e -> {
             glossaryLoading.set(false);
             glossaryReady.set(true);
-            glossaryStatus.set("Глоссарии загружены");
+            glossaryStatus.set("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¶Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā½Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā‚¬ĀÄ€Ā¬Ć„ā‚¬Ä€Ā¹");
         });
 
         task.setOnFailed(e -> {
             glossaryLoading.set(false);
             glossaryReady.set(false);
-            glossaryStatus.set("Ошибка загрузки глоссариев");
+            glossaryStatus.set("Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬ā€Ć„ĀÄā€Ā¬Ć…ā€”Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā±Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā° Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā·Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ć„ā€ Äā‚¬Ā¦Ć„ĀÄā€Ā¬Äā‚¬ĀÆĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†Ćø Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā³Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā¾Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā°Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€ĀÄ†ā€˛Ä€ĀĆ„ĀÄā€Ā¬Ä€ĀĆ„ā‚¬Ä€Ā¬Ć„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā‚¬Ā Ć„ā€ Ä†ĆøĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€ĀµĆ„ā€ Äā‚¬Ā¦Ć„ā‚¬Ä€Ā Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā²");
             if (task.getException() != null) {
                 task.getException().printStackTrace();
             }
@@ -1393,6 +1391,68 @@ public final class GlossaryService {
         thread.setDaemon(true);
         thread.start();
     }
+
+    private void loadAdditionalGlossaryFile(String fileName) {
+        if (!loadTxtGlossaryFromExternalIfPresent(fileName)) {
+            loadTxtFromResource("/glossary/" + fileName);
+        }
+    }
+
+    private boolean loadTxtGlossaryFromExternalIfPresent(String fileName) {
+        Path dir = resolveExternalGlossaryDir();
+        if (dir == null || fileName == null || fileName.isBlank()) {
+            return false;
+        }
+
+        Path file = dir.resolve(fileName);
+        if (!Files.isRegularFile(file)) {
+            return false;
+        }
+
+        try (InputStream is = new FileInputStream(file.toFile())) {
+            if (isWordGlossaryFile(fileName)) {
+                loadWordGlossaryFromStream(is, file.toAbsolutePath().toString());
+            } else {
+                loadTxtGlossaryFromStream(is, file.toAbsolutePath().toString());
+            }
+            AppLog.info("[Glossary] Loaded external glossary: " + file.toAbsolutePath());
+            return true;
+        } catch (Exception ex) {
+            AppLog.warn("[Glossary] Failed to load external glossary " + file.toAbsolutePath() + ": " + ex.getMessage());
+            return false;
+        }
+    }
+
+    private static Path resolveExternalGlossaryDir() {
+        String configured = System.getProperty("glossary.dir");
+        if (configured != null && !configured.isBlank()) {
+            Path p = Path.of(configured.trim());
+            if (Files.isDirectory(p)) {
+                return p;
+            }
+        }
+
+        try {
+            Path appLocation = Path.of(Objects.requireNonNull(
+                    GlossaryService.class.getProtectionDomain().getCodeSource().getLocation().toURI()));
+            Path appDir = Files.isDirectory(appLocation) ? appLocation : appLocation.getParent();
+            if (appDir != null) {
+                Path glossaryInApp = appDir.resolve("glossary");
+                if (Files.isDirectory(glossaryInApp)) {
+                    return glossaryInApp;
+                }
+            }
+        } catch (URISyntaxException | RuntimeException ignored) {
+            // fallback below
+        }
+
+        Path cwdGlossary = Path.of(System.getProperty("user.dir", "."), "glossary");
+        if (Files.isDirectory(cwdGlossary)) {
+            return cwdGlossary;
+        }
+        return null;
+    }
+
     private static final class TxtLookupKey {
         final String sourceLang;
         final String normalizedSource;
@@ -1641,53 +1701,425 @@ public final class GlossaryService {
 
         return new FrozenTerms(out, tokenToTarget);
     }
+
+    public Map<String, String> collectTermHints(Category category,
+                                                String sourceLang,
+                                                String targetLang,
+                                                String text,
+                                                int limit) {
+        if (limit <= 0 || isBlank(sourceLang) || isBlank(targetLang) || isBlank(text)) {
+            return Collections.emptyMap();
+        }
+
+        LinkedHashMap<String, String> hints = new LinkedHashMap<>();
+        String src = normalizeLang(sourceLang);
+        String trg = normalizeLang(targetLang);
+
+        List<TermLookupKey> buckets = new ArrayList<>();
+        if (category != null) {
+            buckets.add(new TermLookupKey(category, src, trg));
+        } else {
+            buckets.add(new TermLookupKey(Category.UNIT, src, trg));
+            buckets.add(new TermLookupKey(Category.BUTTON, src, trg));
+            buckets.add(new TermLookupKey(Category.ABILITY, src, trg));
+        }
+
+        for (TermLookupKey key : buckets) {
+            List<TermEntry> terms = termIndex.getOrDefault(key, Collections.emptyList());
+            for (TermEntry term : terms) {
+                if (hints.size() >= limit) {
+                    return hints;
+                }
+                if (isBlank(term.sourceText) || isBlank(term.targetText)) {
+                    continue;
+                }
+                if (!containsWholeWordUnicode(text, term.sourceText)) {
+                    continue;
+                }
+                hints.putIfAbsent(term.sourceText, term.targetText);
+            }
+        }
+
+        appendWordGlossaryHintsFromText(hints, sourceLang, targetLang, text, limit);
+        return hints;
+    }
+
+    private void appendWordGlossaryHintsFromText(Map<String, String> out,
+                                                 String sourceLang,
+                                                 String targetLang,
+                                                 String text,
+                                                 int limit) {
+        if (out == null || limit <= 0 || isBlank(text)) {
+            return;
+        }
+
+        List<String> words = new ArrayList<>();
+        Matcher matcher = WORD_PATTERN.matcher(text);
+        while (matcher.find()) {
+            String word = matcher.group();
+            if (!isBlank(word)) {
+                words.add(word);
+            }
+        }
+
+        // Detect glossary hits directly from text tokens.
+        for (String word : words) {
+            if (out.size() >= limit) {
+                return;
+            }
+            String hit = findWordMatch(sourceLang, word, targetLang);
+            if (!isBlank(hit)) {
+                out.putIfAbsent(word, hit);
+            }
+        }
+
+        // Also check short n-grams (2-3 words), because many SC2 terms are multi-word.
+        int n = words.size();
+        for (int size = 3; size >= 2; size--) {
+            if (out.size() >= limit) {
+                return;
+            }
+            if (n < size) {
+                continue;
+            }
+            for (int i = 0; i <= n - size; i++) {
+                if (out.size() >= limit) {
+                    return;
+                }
+                String phrase = String.join(" ", words.subList(i, i + size));
+                String hit = findWordMatch(sourceLang, phrase, targetLang);
+                if (!isBlank(hit)) {
+                    out.putIfAbsent(phrase, hit);
+                }
+            }
+        }
+    }
+
     public String unfreezeTerms(String text, FrozenTerms frozen) {
+        return unfreezeTerms(text, frozen, null);
+    }
+
+    public String unfreezeTerms(String text, FrozenTerms frozen, String targetLang) {
         if (isBlank(text)) {
-            return text;
+            if (frozen != null && frozen.preparedText() != null && !frozen.preparedText().isBlank()) {
+                text = frozen.preparedText();
+            } else {
+                return text;
+            }
         }
 
         String out = text;
         if (frozen != null && !frozen.tokenToTarget().isEmpty()) {
-            for (Map.Entry<String, String> e : frozen.tokenToTarget().entrySet()) {
-                out = out.replace(e.getKey(), e.getValue());
-            }
+            out = recoverBrokenGlossaryTokens(out, frozen);
+            out = restoreTokenSpacingFromTemplate(out, frozen);
 
-            Matcher matcher = BROKEN_SC2_TERM_TOKEN.matcher(out);
-            StringBuffer sb = new StringBuffer();
-            while (matcher.find()) {
-                String token = "__SC2_TERM_" + matcher.group(1) + "__";
-                String replacement = frozen.tokenToTarget().getOrDefault(token, "");
-                matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
+            boolean useRussianInflection = "ruru".equals(normalizeLang(targetLang));
+            for (Map.Entry<String, String> e : frozen.tokenToTarget().entrySet()) {
+                out = replaceGlossaryToken(out, e.getKey(), e.getValue(), useRussianInflection);
             }
-            matcher.appendTail(sb);
-            out = sb.toString();
+        }
+        return out;
+    }
+
+    public List<String> unfreezeTermsBatch(List<String> texts,
+                                           List<FrozenTerms> frozens,
+                                           String targetLang) {
+        if (texts == null || texts.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        // Some MT outputs glue word boundaries around glossary substitutions,
-        // e.g. "취소CocoonZergling". Restore only the most obvious missing spaces.
-        return recoverMissingWordSpaces(out);
+        int n = texts.size();
+        List<String> stage = new ArrayList<>(n);
+        List<Map<String, String>> tokenMaps = new ArrayList<>(n);
+        List<Integer> tokenIndexes = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String text = texts.get(i);
+            FrozenTerms frozen = (frozens != null && i < frozens.size()) ? frozens.get(i) : null;
+            String prepared = text;
+            Map<String, String> map = Collections.emptyMap();
+            if (frozen != null && frozen.tokenToTarget() != null && !frozen.tokenToTarget().isEmpty()) {
+                prepared = recoverBrokenGlossaryTokens(prepared, frozen);
+                prepared = restoreTokenSpacingFromTemplate(prepared, frozen);
+                map = frozen.tokenToTarget();
+                tokenIndexes.add(i);
+            }
+            stage.add(prepared);
+            tokenMaps.add(map);
+        }
+
+        TranslationService.TranslationBackend backend = TranslationService.getSelectedBackend();
+        boolean allowAiPlaceholderInflection = TranslationService.backendSupportsGlossaryInflectionHints()
+                && shouldUseAiPlaceholderInflection(backend, stage, tokenIndexes);
+        if (allowAiPlaceholderInflection && !tokenIndexes.isEmpty()) {
+            List<String> aiInputTexts = new ArrayList<>(tokenIndexes.size());
+            List<Map<String, String>> aiInputMaps = new ArrayList<>(tokenIndexes.size());
+            for (Integer idx : tokenIndexes) {
+                aiInputTexts.add(stage.get(idx));
+                aiInputMaps.add(tokenMaps.get(idx));
+            }
+
+            List<String> aiResolved = tryResolvePlaceholdersWithAi(aiInputTexts, aiInputMaps, targetLang);
+            if (aiResolved != null && aiResolved.size() == aiInputTexts.size()) {
+                List<String> merged = new ArrayList<>(stage);
+                boolean allAccepted = true;
+                for (int k = 0; k < tokenIndexes.size(); k++) {
+                    int idx = tokenIndexes.get(k);
+                    String candidate = aiResolved.get(k);
+                    String original = stage.get(idx);
+                    if (isAcceptableAiUnfreeze(candidate, original, tokenMaps.get(idx))) {
+                        merged.set(idx, candidate);
+                    } else {
+                        allAccepted = false;
+                        break;
+                    }
+                }
+                if (allAccepted) {
+                    return merged;
+                }
+            }
+        }
+
+        List<String> out = new ArrayList<>(n);
+        boolean useRussianInflection = "ruru".equals(normalizeLang(targetLang));
+        for (int i = 0; i < n; i++) {
+            String value = stage.get(i);
+            Map<String, String> map = tokenMaps.get(i);
+            if (map == null || map.isEmpty()) {
+                out.add(value);
+                continue;
+            }
+
+            // Some providers can return blank for token-only text.
+            // Fall back to the original prepared text so tokens can still be restored.
+            if (isBlank(value)) {
+                FrozenTerms frozen = (frozens != null && i < frozens.size()) ? frozens.get(i) : null;
+                if (frozen != null && !isBlank(frozen.preparedText())) {
+                    value = frozen.preparedText();
+                    value = recoverBrokenGlossaryTokens(value, frozen);
+                    value = restoreTokenSpacingFromTemplate(value, frozen);
+                }
+            }
+
+            String resolved = value;
+            for (Map.Entry<String, String> e : map.entrySet()) {
+                resolved = replaceGlossaryToken(resolved, e.getKey(), e.getValue(), useRussianInflection);
+            }
+            out.add(resolved);
+        }
+        return out;
     }
-    private static String recoverMissingWordSpaces(String text) {
-        if (isBlank(text)) {
+
+    private static boolean isAcceptableAiUnfreeze(String candidate,
+                                                  String originalWithTokens,
+                                                  Map<String, String> tokenMap) {
+        if (candidate == null || candidate.isBlank()) {
+            return false;
+        }
+        if (tokenMap == null || tokenMap.isEmpty()) {
+            return true;
+        }
+        for (String token : tokenMap.keySet()) {
+            if (token == null || token.isBlank()) continue;
+            if (candidate.contains(token)) {
+                return false;
+            }
+        }
+        String normalizedOriginal = normalizeWhitespaceForCheck(originalWithTokens);
+        String normalizedCandidate = normalizeWhitespaceForCheck(candidate);
+        if (normalizedOriginal.isBlank()) {
+            return true;
+        }
+        // If candidate became dramatically shorter, treat as suspicious AI output.
+        return normalizedCandidate.length() >= Math.max(1, normalizedOriginal.length() / 3);
+    }
+
+    private static String normalizeWhitespaceForCheck(String s) {
+        if (s == null) return "";
+        return s.replaceAll("\\s+", " ").trim();
+    }
+
+    private static boolean shouldUseAiPlaceholderInflection(TranslationService.TranslationBackend backend,
+                                                            List<String> stage,
+                                                            List<Integer> tokenIndexes) {
+        if (tokenIndexes == null || tokenIndexes.isEmpty()) {
+            return false;
+        }
+        if (backend != TranslationService.TranslationBackend.GEMINI) {
+            return true;
+        }
+        if (tokenIndexes.size() > GEMINI_AI_INFLECTION_MAX_ITEMS) {
+            AppLog.info("[Glossary] Skip AI placeholder inflection for Gemini: items="
+                    + tokenIndexes.size() + " > " + GEMINI_AI_INFLECTION_MAX_ITEMS);
+            return false;
+        }
+
+        int totalChars = 0;
+        for (Integer idx : tokenIndexes) {
+            if (idx == null || stage == null || idx < 0 || idx >= stage.size()) {
+                continue;
+            }
+            String value = stage.get(idx);
+            if (value != null) {
+                totalChars += value.length();
+                if (totalChars > GEMINI_AI_INFLECTION_MAX_CHARS) {
+                    AppLog.info("[Glossary] Skip AI placeholder inflection for Gemini: chars="
+                            + totalChars + " > " + GEMINI_AI_INFLECTION_MAX_CHARS);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static List<String> tryResolvePlaceholdersWithAi(List<String> textsWithTokens,
+                                                             List<Map<String, String>> tokenMaps,
+                                                             String targetLang) {
+        if (textsWithTokens == null || textsWithTokens.isEmpty() || tokenMaps == null || tokenMaps.isEmpty()) {
+            return null;
+        }
+
+        boolean hasAnyTokens = false;
+        for (Map<String, String> map : tokenMaps) {
+            if (map != null && !map.isEmpty()) {
+                hasAnyTokens = true;
+                break;
+            }
+        }
+        if (!hasAnyTokens) {
+            return null;
+        }
+
+        OkHttpClient http = TranslationService.sharedHttpClient().newBuilder()
+                .connectTimeout(Duration.ofSeconds(4))
+                .readTimeout(Duration.ofSeconds(10))
+                .writeTimeout(Duration.ofSeconds(10))
+                .callTimeout(Duration.ofSeconds(12))
+                .build();
+
+        TranslationService.TranslationBackend backend = TranslationService.getSelectedBackend();
+
+        if (backend == TranslationService.TranslationBackend.GEMINI) {
+            try {
+                if (GeminiTranslationProvider.isConfigured()) {
+                    return GeminiTranslationProvider.inflectGlossaryPlaceholders(textsWithTokens, tokenMaps, targetLang, http);
+                }
+            } catch (IOException ex) {
+                AppLog.warn("[Glossary] AI inflection via Gemini failed: " + ex.getMessage());
+            }
+            return null;
+        }
+
+        if (backend == TranslationService.TranslationBackend.SILICONFLOW) {
+            try {
+                if (SiliconFlowTranslationProvider.isConfigured()) {
+                    return SiliconFlowTranslationProvider.inflectGlossaryPlaceholders(textsWithTokens, tokenMaps, targetLang, http);
+                }
+            } catch (IOException ex) {
+                AppLog.warn("[Glossary] AI inflection via SiliconFlow failed: " + ex.getMessage());
+            }
+            return null;
+        }
+
+        return null;
+    }
+
+    private static String replaceGlossaryToken(String text,
+                                               String token,
+                                               String baseTerm,
+                                               boolean useRussianInflection) {
+        return RussianGlossaryInflector.replaceGlossaryToken(
+                text,
+                token,
+                baseTerm,
+                useRussianInflection
+        );
+    }
+
+    private static String recoverBrokenGlossaryTokens(String text, FrozenTerms frozen) {
+        if (isBlank(text) || frozen == null || frozen.tokenToTarget().isEmpty()) {
+            return text;
+        }
+
+        Matcher matcher = BROKEN_SC2_TERM_TOKEN.matcher(text);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String token = "__SC2_TERM_" + matcher.group(1) + "__";
+            String replacement = frozen.tokenToTarget().containsKey(token) ? token : matcher.group();
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
+    private static String restoreTokenSpacingFromTemplate(String text, FrozenTerms frozen) {
+        if (isBlank(text) || frozen == null || frozen.tokenToTarget().isEmpty()) {
+            return text;
+        }
+
+        String template = frozen.preparedText();
+        if (isBlank(template)) {
             return text;
         }
 
         String out = text;
+        int templateSearchFrom = 0;
+        int outSearchFrom = 0;
 
-        // Restore boundary between CJK/Hangul/Cyrillic and Latin/digits.
-        out = out.replaceAll("(?<=[\\u0400-\\u04FF\\u3040-\\u30FF\\u4E00-\\u9FFF\\uAC00-\\uD7AF])(?=[A-Za-z0-9])", " ");
-        out = out.replaceAll("(?<=[A-Za-z0-9])(?=[\\u0400-\\u04FF\\u3040-\\u30FF\\u4E00-\\u9FFF\\uAC00-\\uD7AF])", " ");
+        for (String token : frozen.tokenToTarget().keySet()) {
+            int templatePos = template.indexOf(token, templateSearchFrom);
+            if (templatePos < 0) {
+                continue;
+            }
 
-        // Restore boundary for glued CamelCase glossary words, e.g. CocoonZergling.
-        out = out.replaceAll("(?<=[a-z])(?=[A-Z][a-z])", " ");
+            int outPos = out.indexOf(token, outSearchFrom);
+            if (outPos < 0) {
+                templateSearchFrom = templatePos + token.length();
+                continue;
+            }
+
+            if (hasWhitespaceBefore(template, templatePos) && outPos > 0 && !Character.isWhitespace(out.charAt(outPos - 1))) {
+                out = out.substring(0, outPos) + " " + out.substring(outPos);
+                outPos++;
+            }
+
+            int tokenEnd = outPos + token.length();
+            if (hasWhitespaceAfter(template, templatePos + token.length(), template.length())
+                    && tokenEnd < out.length()
+                    && !Character.isWhitespace(out.charAt(tokenEnd))) {
+                out = out.substring(0, tokenEnd) + " " + out.substring(tokenEnd);
+                tokenEnd++;
+            }
+
+            templateSearchFrom = templatePos + token.length();
+            outSearchFrom = tokenEnd;
+        }
 
         return out;
+    }
+
+    private static boolean hasWhitespaceBefore(String text, int index) {
+        return index > 0 && Character.isWhitespace(text.charAt(index - 1));
+    }
+
+    private static boolean hasWhitespaceAfter(String text, int index, int length) {
+        return index < length && Character.isWhitespace(text.charAt(index));
     }
     private static String replaceWholeWordUnicode(String input, String needle, String replacement) {
         String pattern = "(?iu)(?<![\\p{L}\\p{N}])"
                 + java.util.regex.Pattern.quote(needle)
                 + "(?![\\p{L}\\p{N}])";
         return input.replaceAll(pattern, java.util.regex.Matcher.quoteReplacement(replacement));
+    }
+
+    private static boolean containsWholeWordUnicode(String input, String needle) {
+        if (isBlank(input) || isBlank(needle)) {
+            return false;
+        }
+        String pattern = "(?iu)(?<![\\p{L}\\p{N}])"
+                + Pattern.quote(needle)
+                + "(?![\\p{L}\\p{N}])";
+        return Pattern.compile(pattern).matcher(input).find();
     }
 
     private FreezeWordResult freezeWordsByGlossary(String sourceLang,
@@ -1894,7 +2326,7 @@ public final class GlossaryService {
         Set<String> out = new LinkedHashSet<>();
         if (isBlank(text)) return out;
 
-        String[] parts = text.split("[\\s\\-_/.,:;!?()\\[\\]{}\"'«»]+");
+        String[] parts = text.split("[\\s\\-_/.,:;!?()\\[\\]{}\"'Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā«Ć„ā€ Äā‚¬Ė›Ć„ĀÄā‚¬ĀÄ€Ā¬Ä†ā€˛Äā€Ā¬Ć„ā‚¬Ä€Ā»]+");
         for (String p : parts) {
             String t = p == null ? "" : p.trim();
             if (t.length() >= 2) {

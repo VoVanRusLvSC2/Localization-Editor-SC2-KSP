@@ -1,7 +1,6 @@
 package lv.lenc;
 
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
@@ -92,21 +91,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
 
         Platform.runLater(() -> {
             Node listView = lookup(".list-view");
-            String borderColor = isGreen
-                    ? "linear-gradient(from 0% 0% to 100% 100%, #BFFFD0, #00D94A)"
-                    : "linear-gradient(from 0% 0% to 100% 100%, #FFF1A8, #E6B800)";
-            String backgroundColor = "#001000";
-            if (listView instanceof Region region) {
-                region.setStyle(
-                        "-fx-background-color: " + backgroundColor + ";" +
-                                "-fx-border-color: " + borderColor + ";" +
-                                "-fx-font-size: " + dropdownFontSize + "px;" +
-                                "-fx-border-width: " + UiScaleHelper.scaleX(2) + "px;" +
-                                "-fx-border-radius: " + borderRadius + "px;" +
-                                "-fx-background-radius: " + borderRadius + "px;" +
-                                "-fx-padding: " + UiScaleHelper.scaleY(1) + "px;"
-                );
-            }
+            applyPopupListStyle(listView);
         });
 
         Platform.runLater(() -> {
@@ -120,6 +105,28 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         hoverProperty().addListener((obs, wasHover, isHover) -> applyControlStyle(isHover, isPressed()));
         pressedProperty().addListener((obs, wasPressed, isPressed) -> applyControlStyle(isHover(), isPressed));
         showingProperty().addListener((obs, wasShowing, isShowing) -> applyControlStyle(isHover(), isPressed()));
+    }
+
+    private void applyPopupListStyle(Node listView) {
+        if (!(listView instanceof Region region)) {
+            return;
+        }
+
+        boolean popupGreenTheme = isGreen;
+        String borderColor = popupGreenTheme
+                ? "limegreen"
+                : "linear-gradient(from 0% 0% to 100% 100%, #FFF1A8, #E6B800)";
+        String backgroundColor = popupGreenTheme ? "#001000" : "#201400";
+
+        region.setStyle(
+                "-fx-background-color: " + backgroundColor + ";" +
+                        "-fx-border-color: " + borderColor + ";" +
+                        "-fx-font-size: " + dropdownFontSize + "px;" +
+                        "-fx-border-width: " + UiScaleHelper.scaleX(2) + "px;" +
+                        "-fx-border-radius: " + borderRadius + "px;" +
+                        "-fx-background-radius: " + borderRadius + "px;" +
+                        "-fx-padding: " + UiScaleHelper.scaleY(1) + "px;"
+        );
     }
 
     private void applyControlStyle(boolean hover, boolean pressed) {
@@ -152,9 +159,10 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         setStyle(
                 "-fx-background-color: transparent; " +
                         "-fx-background-image: url('" + texturePath + baseTexture + "'), url('" + texturePath + arrowTexture + "'); " +
-                        "-fx-background-size: stretch, " + UiScaleHelper.scaleY(16) + "px " + UiScaleHelper.scaleY(16) + "px; " +
+                        "-fx-background-size: 100% 100%, " + UiScaleHelper.scaleY(16) + "px " + UiScaleHelper.scaleY(16) + "px; " +
                         "-fx-background-repeat: no-repeat, no-repeat; " +
-                        "-fx-background-position: center, right " + arrowRight + "px center; " +
+                        "-fx-background-position: center center, right " + arrowRight + "px center; " +
+                        "-fx-background-insets: 0, 0; " +
                         "-fx-opacity: 1.0; " +
                         "-fx-padding: " + paddingTop + " 0 0 " + paddingLeft + "; " +
                         "-fx-alignment: center; " +
@@ -219,6 +227,8 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
             return;
         }
 
+        boolean popupGreenTheme = isGreen;
+
         String baseStyle =
                 "-fx-background-radius: " + cellRadius + "px;" +
                         "-fx-border-radius: " + cellRadius + "px;" +
@@ -237,8 +247,8 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
 
         if (cell.isSelected()) {
             cell.setStyle(
-                    "-fx-border-color: " + (isGreen ? "darkgreen" : "#d6b100") + ";" +
-                            "-fx-background-color: " + (isGreen ? "rgba(30, 80, 40, 0.6);" : "rgba(120, 90, 20, 0.6);") +
+                    "-fx-border-color: " + (popupGreenTheme ? "darkgreen" : "#d6b100") + ";" +
+                            "-fx-background-color: " + (popupGreenTheme ? "rgba(30, 80, 40, 0.6);" : "rgba(120, 90, 20, 0.6);") +
                             baseStyle +
                             "-fx-text-fill: " + textGradSelected() + ";"
             );
@@ -246,12 +256,10 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         }
 
         String background = cell.isHover()
-                ? (isGreen ? "rgba(30, 80, 40, 0.2);" : "rgba(160, 110, 30, 0.3);")
-                : (isGreen ? "#001000;" : "#201400;");
+                ? (popupGreenTheme ? "rgba(38, 96, 52, 0.32);" : "rgba(160, 110, 30, 0.3);")
+                : (popupGreenTheme ? "#001000;" : "#201400;");
         String textFill = cell.isHover()
-                ? (isGreen
-                ? "linear-gradient(from 0% 0% to 100% 100%, yellow, red)"
-                : "linear-gradient(from 0% 0% to 100% 100%, yellow, gold)")
+                ? textGradHover()
                 : textGradNormal();
 
         cell.setStyle(
@@ -292,10 +300,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
                 show();
                 hide();
                 Node listView = lookup(".list-view");
-                if (listView instanceof Region region) {
-                    region.setPadding(new Insets(0));
-                    region.setStyle("-fx-background-color: transparent;-fx-border-width: 0;");
-                }
+                applyPopupListStyle(listView);
             });
         });
         showingProperty().addListener((obs, wasShowing, isNowShowing) -> {

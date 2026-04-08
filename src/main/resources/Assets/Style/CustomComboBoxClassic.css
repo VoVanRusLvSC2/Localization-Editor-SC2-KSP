@@ -103,17 +103,40 @@
     -fx-opacity: 0.85;
 }
 
+/* ----------------------------
+   AI backend combo accent
+   ---------------------------- */
+.classic-combo.ai-backend-combo {
+    -fx-effect: dropshadow(gaussian, rgba(0,255,180,0.10), 8, 0.22, 0, 0);
+    /* Keep texture border clean: avoid overlay border that can look shifted on narrow widths */
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.classic-combo.ai-backend-combo > .list-cell {
+    -fx-font-size: 14px;
+}
+
+.classic-combo.ai-backend-combo:disabled {
+    -fx-opacity: 0.72;
+    -fx-border-color: transparent;
+}
+
 /* ---------------------------------------------------------
    Popup (dropdown) — +30% scale (padding, radius, border)
    --------------------------------------------------------- */
 .combo-box-popup > .list-view {
-    -fx-background-color: transparent;
+    -fx-background-color: rgba(0, 18, 10, 0.96);
     -fx-background-insets: 0;
+    -fx-border-color: rgba(95, 255, 205, 0.55);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
 
     /* was: padding 1 */
     -fx-padding: 2;
-
-    -fx-border-width: 0;
 }
 
 .combo-box-popup > .list-view > .virtual-flow {
@@ -121,8 +144,8 @@
     -fx-background-insets: 0;
 
     /* was: border 2 */
-    -fx-border-width: 3;
-    -fx-border-color: rgba(255, 220, 120, 0.65);
+    -fx-border-width: 2;
+    -fx-border-color: rgba(95, 255, 205, 0.45);
 
     /* was: radius 8 */
     -fx-background-radius: 10;

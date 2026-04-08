@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,10 +29,11 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class SettingBox {
-    private static final double SETTINGS_WINDOW_SCALE = 1.25;
+    private static final double SETTINGS_WINDOW_SCALE = 1.375;
 
     private static double sv(double fullHdValue) {
         return fullHdValue * SETTINGS_WINDOW_SCALE;
@@ -58,6 +60,8 @@ public class SettingBox {
         if (row == null) return;
 
         row.getLabel().setFont(Font.font("Arial Black", sy(17)));
+        row.getLabel().setAlignment(Pos.CENTER_LEFT);
+        row.getLabel().setTextAlignment(TextAlignment.LEFT);
         row.getCheckBox().setStyle("-fx-font-size: " + sy(18) + "px;");
         row.getCheckBox().setTranslateY(sy(1.5));
         row.setSpacing(sx(10));
@@ -72,10 +76,17 @@ public class SettingBox {
     private static GlowingLabel uilabelFLASH;
     private static GlowingLabel uilabelPOINT;
     private static GlowingLabel uilabelGRIDE;
+    private static GlowingLabel controlsLabel;
+    private static GlowingLabel googleApiKeyLabel;
+    private static GlowingLabel geminiApiKeyLabel;
+    private static GlowingLabel siliconFlowApiKeyLabel;
+    private static GlowingLabel deepLApiKeyLabel;
     private static GlowingLabel otherDescrption;
 
     private static CustomAlternativeButton uiDEFAUTBUTTON;
     private static CustomAlternativeButton saveButton;
+    private static CustomAlternativeButton saveApiKeysButton;
+    private static CustomAlternativeButton apiGuideButton;
     private static CustomAlternativeButton discordURL;
     private static CustomAlternativeButton clearCacheButton;
 
@@ -100,6 +111,20 @@ public class SettingBox {
     private static LabeledCheckRow backgroundLightCheckBox;
     private static LabeledCheckRow translationCachePersistRow;
     private static LabeledCheckRow useGpuDockerRow;
+    private static LabeledCheckRow baseGlossaryRow;
+    private static LabeledCheckRow unitsGlossaryRow;
+    private static LabeledCheckRow weaponsGlossaryRow;
+    private static LabeledCheckRow abilitiesGlossaryRow;
+    private static GlowingLabel dictionariesLabel;
+    private static ApiHintIcon dictionariesHintIcon;
+    private static TextField googleApiKeyField;
+    private static TextField geminiApiKeyField;
+    private static TextField siliconFlowApiKeyField;
+    private static TextField deepLApiKeyField;
+    private static ApiHintIcon googleApiKeyHintIcon;
+    private static ApiHintIcon geminiApiKeyHintIcon;
+    private static ApiHintIcon siliconFlowApiKeyHintIcon;
+    private static ApiHintIcon deepLApiKeyHintIcon;
 
     // --- overlay instance (kept between openings) ---
     private static StackPane overlayRoot;     // full-screen dim layer
@@ -107,6 +132,22 @@ public class SettingBox {
     private static Pane windowContent;        // actual settings window (your old root)
 
     private SettingBox() {}
+
+    private static void persistApiKeys() {
+        if (googleApiKeyField == null) {
+            return;
+        }
+        SettingsManager.saveGoogleTranslateApiKey(googleApiKeyField.getText());
+        if (geminiApiKeyField != null) {
+            SettingsManager.saveGeminiApiKey(geminiApiKeyField.getText());
+        }
+        if (siliconFlowApiKeyField != null) {
+            SettingsManager.saveSiliconFlowApiKey(siliconFlowApiKeyField.getText());
+        }
+        if (deepLApiKeyField != null) {
+            SettingsManager.saveDeepLApiKey(deepLApiKeyField.getText());
+        }
+    }
 
     private static final class LanguageOption {
         final String code;
@@ -130,6 +171,33 @@ public class SettingBox {
             if (opt.nativeName.equals(nativeName)) return opt.code;
         }
         return "en";
+    }
+
+    private static void tuneApiKeyField(TextField field, String promptText) {
+        if (field == null) return;
+        field.setPromptText(promptText);
+        field.setPrefWidth(sx(228));
+        field.setMaxWidth(sx(228));
+        field.setStyle(
+                "-fx-background-color: rgba(4, 16, 16, 0.95);"
+                        + "-fx-text-fill: #9fffe7;"
+                        + "-fx-prompt-text-fill: rgba(159,255,231,0.45);"
+                        + "-fx-highlight-fill: rgba(0,255,170,0.35);"
+                        + "-fx-highlight-text-fill: white;"
+                        + "-fx-border-color: rgba(0, 255, 170, 0.45);"
+                        + "-fx-border-width: 1;"
+                        + "-fx-background-radius: 6;"
+                        + "-fx-border-radius: 6;"
+                        + "-fx-font-size: " + sy(14) + "px;"
+        );
+    }
+
+    private static HBox createApiFieldRow(TextField field, Node hintIcon) {
+        HBox row = new HBox(sx(6), field, hintIcon);
+        row.setAlignment(Pos.CENTER);
+        row.setPrefWidth(sx(286));
+        row.setMaxWidth(sx(286));
+        return row;
     }
 
     /**
@@ -353,11 +421,12 @@ public class SettingBox {
 
         // Left panel with buttons
         VBox buttonBox = new VBox(sy(20));
+        final double leftMenuTopPadding = sy(14);
         buttonBox.setPadding(new Insets(
-                sy(20),
+                leftMenuTopPadding,
                 sx(10),
-                sy(20),
-                sx(20)
+                sy(10),
+                sx(13)
         ));
 
         Region lefthighlightRegion = new Region();
@@ -516,6 +585,7 @@ public class SettingBox {
             SettingsManager.saveUseGpuDocker(
                     useGpuDockerRow.getCheckBox().isSelected()
             );
+            persistApiKeys();
         });
 
         HBox defaultSaveRow = new HBox(sx(8), uiDEFAUTBUTTON, saveButton);
@@ -572,13 +642,126 @@ public class SettingBox {
         useGpuDockerRow.setMaxWidth(sx(286));
         translationCachePersistRow.setAlignment(Pos.CENTER_LEFT);
         useGpuDockerRow.setAlignment(Pos.CENTER_LEFT);
+        double apiHintIconSize = sy(48); // 3x bigger than previous 16px icon
+        double apiHintTooltipFont = sy(12);
+
+        googleApiKeyLabel = new GlowingLabel(localization.get("setting.box.other.googleApiKey"));
+        tuneSettingLabel(googleApiKeyLabel, 15);
+        googleApiKeyLabel.setWrapText(true);
+        googleApiKeyLabel.setPrefWidth(sx(286));
+
+        googleApiKeyField = new TextField(SettingsManager.loadGoogleTranslateApiKey());
+        tuneApiKeyField(googleApiKeyField, localization.get("setting.box.other.googleApiKeyPrompt"));
+        googleApiKeyField.setOnAction(e -> persistApiKeys());
+        googleApiKeyField.focusedProperty().addListener((obs, oldVal, focused) -> {
+            if (!focused) {
+                persistApiKeys();
+            }
+        });
+        googleApiKeyHintIcon = new ApiHintIcon(
+                localization.get("setting.box.other.googleApiKeyHint"),
+                apiHintIconSize,
+                apiHintTooltipFont
+        );
+        HBox googleApiKeyRow = createApiFieldRow(googleApiKeyField, googleApiKeyHintIcon);
+
+        geminiApiKeyLabel = new GlowingLabel(localization.get("setting.box.other.geminiApiKey"));
+        tuneSettingLabel(geminiApiKeyLabel, 15);
+        geminiApiKeyLabel.setWrapText(true);
+        geminiApiKeyLabel.setPrefWidth(sx(286));
+
+        geminiApiKeyField = new TextField(SettingsManager.loadGeminiApiKey());
+        tuneApiKeyField(geminiApiKeyField, localization.get("setting.box.other.geminiApiKeyPrompt"));
+        geminiApiKeyField.setOnAction(e -> persistApiKeys());
+        geminiApiKeyField.focusedProperty().addListener((obs, oldVal, focused) -> {
+            if (!focused) {
+                persistApiKeys();
+            }
+        });
+        geminiApiKeyHintIcon = new ApiHintIcon(
+                localization.get("setting.box.other.geminiApiKeyHint"),
+                apiHintIconSize,
+                apiHintTooltipFont
+        );
+        HBox geminiApiKeyRow = createApiFieldRow(geminiApiKeyField, geminiApiKeyHintIcon);
+
+        siliconFlowApiKeyLabel = new GlowingLabel(localization.get("setting.box.other.siliconflowApiKey"));
+        tuneSettingLabel(siliconFlowApiKeyLabel, 15);
+        siliconFlowApiKeyLabel.setWrapText(true);
+        siliconFlowApiKeyLabel.setPrefWidth(sx(286));
+
+        siliconFlowApiKeyField = new TextField(SettingsManager.loadSiliconFlowApiKey());
+        tuneApiKeyField(siliconFlowApiKeyField, localization.get("setting.box.other.siliconflowApiKeyPrompt"));
+        siliconFlowApiKeyField.setOnAction(e -> persistApiKeys());
+        siliconFlowApiKeyField.focusedProperty().addListener((obs, oldVal, focused) -> {
+            if (!focused) {
+                persistApiKeys();
+            }
+        });
+        siliconFlowApiKeyHintIcon = new ApiHintIcon(
+                localization.get("setting.box.other.siliconflowApiKeyHint"),
+                apiHintIconSize,
+                apiHintTooltipFont
+        );
+        HBox siliconFlowApiKeyRow = createApiFieldRow(siliconFlowApiKeyField, siliconFlowApiKeyHintIcon);
+
+        deepLApiKeyLabel = new GlowingLabel(localization.get("setting.box.other.deeplApiKey"));
+        tuneSettingLabel(deepLApiKeyLabel, 15);
+        deepLApiKeyLabel.setWrapText(true);
+        deepLApiKeyLabel.setPrefWidth(sx(286));
+
+        deepLApiKeyField = new TextField(SettingsManager.loadDeepLApiKey());
+        tuneApiKeyField(deepLApiKeyField, localization.get("setting.box.other.deeplApiKeyPrompt"));
+        deepLApiKeyField.setOnAction(e -> persistApiKeys());
+        deepLApiKeyField.focusedProperty().addListener((obs, oldVal, focused) -> {
+            if (!focused) {
+                persistApiKeys();
+            }
+        });
+        deepLApiKeyHintIcon = new ApiHintIcon(
+                localization.get("setting.box.other.deeplApiKeyHint"),
+                apiHintIconSize,
+                apiHintTooltipFont
+        );
+        HBox deepLApiKeyRow = createApiFieldRow(deepLApiKeyField, deepLApiKeyHintIcon);
+
+        saveApiKeysButton = new CustomAlternativeButton(
+                localization.get("button.save"),
+                0.6, 0.8, sv(186.0), sv(48.0), sv(13.0)
+        );
+        saveApiKeysButton.setOnAction(e -> persistApiKeys());
+
+        HBox saveApiKeysWrap = new HBox(saveApiKeysButton);
+        saveApiKeysWrap.setAlignment(Pos.CENTER);
+
+        apiGuideButton = new CustomAlternativeButton(
+                localization.get("setting.box.api.guide"),
+                0.6, 0.8, sv(286.0), sv(46.0), sv(13.0)
+        );
+        apiGuideButton.setOnAction(e -> {
+            try {
+                java.awt.Desktop.getDesktop().browse(new java.net.URI(
+                        "https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/blob/main/README_TRANSLATE.txt"
+                ));
+            } catch (Exception ex) {
+                AppLog.exception(ex);
+            }
+        });
+        HBox apiGuideWrap = new HBox(apiGuideButton);
+        apiGuideWrap.setAlignment(Pos.CENTER);
+        VBox.setMargin(apiGuideWrap, new Insets(sy(2), 0, 0, 0));
 
         HBox clearCacheWrap = new HBox(clearCacheButton);
         clearCacheWrap.setAlignment(Pos.CENTER);
         VBox.setMargin(clearCacheWrap, new Insets(sy(14), 0, sy(6), 0));
 
+        controlsLabel = new GlowingLabel(localization.get("setting.box.controls"));
+        tuneSettingLabel(controlsLabel, 17);
+        VBox.setMargin(controlsLabel, new Insets(0, 0, sy(10), 0));
+
         VBox controlsBox = new VBox(
                 sy(14),
+                controlsLabel,
                 translationCachePersistRow,
                 useGpuDockerRow,
                 clearCacheWrap
@@ -586,6 +769,113 @@ public class SettingBox {
         controlsBox.setAlignment(Pos.TOP_CENTER);
         controlsBox.setPadding(new Insets(sy(18), sx(10), sy(12), sx(10)));
         Pane controlsView = new StackPane(controlsBox);
+
+        // -------------------------
+        // Dictionaries Panel
+        // -------------------------
+        dictionariesLabel = new GlowingLabel(localization.get("setting.box.dictionaries"));
+        tuneSettingLabel(dictionariesLabel, 28);
+        dictionariesLabel.setAlignment(Pos.CENTER_LEFT);
+        dictionariesLabel.setTextAlignment(TextAlignment.LEFT);
+        dictionariesLabel.setMaxWidth(Region.USE_PREF_SIZE);
+        dictionariesLabel.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        VBox.setMargin(dictionariesLabel, new Insets(0, 0, sy(10), 0));
+
+        String dictHintText = localization.get("setting.box.dictionaries.hint");
+        dictionariesHintIcon = new ApiHintIcon(dictHintText, sy(62), sy(15));
+        dictionariesHintIcon.setTranslateY(-sy(1));
+
+        HBox dictTitleRow = new HBox(sx(3), dictionariesLabel, dictionariesHintIcon);
+        dictTitleRow.setAlignment(Pos.CENTER_LEFT);
+        dictTitleRow.setPrefWidth(sx(286));
+        dictTitleRow.setMaxWidth(sx(286));
+
+        baseGlossaryRow = new LabeledCheckRow(
+                localization.get("setting.box.dictionaries.baseGlossary"),
+                SettingsManager.loadCheckboxState(SettingsManager.BASE_GLOSSARY_KEY, SettingsManager.DEFAULT_BASE_GLOSSARY)
+        );
+        tuneSettingCheckRow(baseGlossaryRow);
+        baseGlossaryRow.setPrefWidth(sx(286));
+        baseGlossaryRow.setMaxWidth(sx(286));
+        baseGlossaryRow.setAlignment(Pos.CENTER_LEFT);
+
+        unitsGlossaryRow = new LabeledCheckRow(
+                localization.get("setting.box.dictionaries.unitsDictionary"),
+                SettingsManager.loadCheckboxState(SettingsManager.UNITS_GLOSSARY_KEY, SettingsManager.DEFAULT_UNITS_GLOSSARY)
+        );
+        tuneSettingCheckRow(unitsGlossaryRow);
+        unitsGlossaryRow.setPrefWidth(sx(286));
+        unitsGlossaryRow.setMaxWidth(sx(286));
+        unitsGlossaryRow.setAlignment(Pos.CENTER_LEFT);
+
+        weaponsGlossaryRow = new LabeledCheckRow(
+                localization.get("setting.box.dictionaries.weaponsDictionary"),
+                SettingsManager.loadCheckboxState(SettingsManager.WEAPONS_GLOSSARY_KEY, SettingsManager.DEFAULT_WEAPONS_GLOSSARY)
+        );
+        tuneSettingCheckRow(weaponsGlossaryRow);
+        weaponsGlossaryRow.setPrefWidth(sx(286));
+        weaponsGlossaryRow.setMaxWidth(sx(286));
+        weaponsGlossaryRow.setAlignment(Pos.CENTER_LEFT);
+
+        abilitiesGlossaryRow = new LabeledCheckRow(
+                localization.get("setting.box.dictionaries.abilitiesDictionary"),
+                SettingsManager.loadCheckboxState(SettingsManager.ABILITIES_GLOSSARY_KEY, SettingsManager.DEFAULT_ABILITIES_GLOSSARY)
+        );
+        tuneSettingCheckRow(abilitiesGlossaryRow);
+        abilitiesGlossaryRow.setPrefWidth(sx(286));
+        abilitiesGlossaryRow.setMaxWidth(sx(286));
+        abilitiesGlossaryRow.setAlignment(Pos.CENTER_LEFT);
+
+        baseGlossaryRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
+            SettingsManager.saveProperty(SettingsManager.BASE_GLOSSARY_KEY, Boolean.toString(newVal));
+            main.getGlossaryService().loadGlossariesAsyncFromResources();
+        });
+        unitsGlossaryRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
+            SettingsManager.saveProperty(SettingsManager.UNITS_GLOSSARY_KEY, Boolean.toString(newVal));
+            main.getGlossaryService().loadGlossariesAsyncFromResources();
+        });
+        weaponsGlossaryRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
+            SettingsManager.saveProperty(SettingsManager.WEAPONS_GLOSSARY_KEY, Boolean.toString(newVal));
+            main.getGlossaryService().loadGlossariesAsyncFromResources();
+        });
+        abilitiesGlossaryRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> {
+            SettingsManager.saveProperty(SettingsManager.ABILITIES_GLOSSARY_KEY, Boolean.toString(newVal));
+            main.getGlossaryService().loadGlossariesAsyncFromResources();
+        });
+
+        VBox dictionariesBox = new VBox(
+                sy(10),
+                dictTitleRow,
+                baseGlossaryRow,
+                unitsGlossaryRow,
+                weaponsGlossaryRow,
+                abilitiesGlossaryRow
+        );
+        dictionariesBox.setAlignment(Pos.TOP_LEFT);
+        dictionariesBox.setFillWidth(true);
+        dictionariesBox.setPadding(new Insets(sy(18), sx(10), sy(12), sx(10)));
+        Pane dictionariesView = new StackPane(dictionariesBox);
+
+        // -------------------------
+        // API Panel (Google key)
+        // -------------------------
+        VBox apiBox = new VBox(
+                sy(8),
+                googleApiKeyLabel,
+                googleApiKeyRow,
+                geminiApiKeyLabel,
+                geminiApiKeyRow,
+                siliconFlowApiKeyLabel,
+                siliconFlowApiKeyRow,
+                deepLApiKeyLabel,
+                deepLApiKeyRow,
+                apiGuideWrap,
+                saveApiKeysWrap
+        );
+        apiBox.setAlignment(Pos.TOP_CENTER);
+        apiBox.setPadding(new Insets(sy(10), sx(10), sy(12), sx(10)));
+        apiBox.setTranslateY(-sy(8));
+        Pane apiView = new StackPane(apiBox);
 
         // -------------------------
         // Other Panel (Discord only)
@@ -616,16 +906,20 @@ public class SettingBox {
         Map<Integer, Pane> viewMap = new HashMap<>();
         viewMap.put(0, languageView);
         viewMap.put(1, uiView);
+        viewMap.put(2, dictionariesView);
         viewMap.put(3, controlsView);
-        viewMap.put(4, otherView);
+        viewMap.put(4, apiView);
+        viewMap.put(5, otherView);
 
         // Configure right panel
         languageView.setVisible(false);
         uiView.setVisible(false);
+        dictionariesView.setVisible(false);
         controlsView.setVisible(false);
+        apiView.setVisible(false);
         otherView.setVisible(false);
 
-        StackPane rightPanel = new StackPane(languageView, uiView, controlsView, otherView);
+        StackPane rightPanel = new StackPane(languageView, uiView, dictionariesView, controlsView, apiView, otherView);
         rightPanel.setMinSize(sx(316), sy(470));
         rightPanel.setMaxSize(sx(316), sy(470));
         rightPanel.setPrefSize(sx(316), sy(470));
@@ -637,17 +931,20 @@ public class SettingBox {
         String[] keys = {
                 localization.get("setting.box.language"),
                 localization.get("setting.box.ui"),
-                localization.get("setting.box.audio"),
+                localization.get("setting.box.dictionaries"),
                 localization.get("setting.box.controls"),
+                localization.get("setting.box.api"),
                 localization.get("setting.box.other"),
         };
 
         languageView.setMinSize(sx(306), sy(470));
         uiView.setMinSize(sx(306), sy(470));
+        dictionariesView.setMinSize(sx(306), sy(470));
         controlsView.setMinSize(sx(306), sy(470));
+        apiView.setMinSize(sx(306), sy(470));
         otherView.setMinSize(sx(306), sy(470));
 
-        menuButtons = new CustomLanguageButton[5];
+        menuButtons = new CustomLanguageButton[6];
 
         for (int i = 0; i < keys.length; i++) {
             String key = keys[i];
@@ -667,7 +964,7 @@ public class SettingBox {
                 int buttonIndex = buttonBox.getChildren().indexOf(button);
                 double buttonHeight = button.getHeight();
                 double spacing = sy(20);
-                double paddingTop = sy(20);
+                double paddingTop = leftMenuTopPadding;
 
                 double centerY = paddingTop
                         + buttonIndex * (buttonHeight + spacing)
@@ -713,7 +1010,7 @@ public class SettingBox {
             });
 
             if (index == 2) {
-                menuButtons[i].disable(true);
+                // Dictionaries tab is active (previously Audio was disabled here)
             }
 
             buttonBox.getChildren().add(menuButtons[i]);
@@ -723,7 +1020,7 @@ public class SettingBox {
         HBox contentLayout = new HBox(0, leftPanel, rightPanel);
         contentLayout.setAlignment(Pos.TOP_LEFT);
         contentLayout.setPadding(new Insets(
-                sy(20),
+                sy(12),
                 sx(6),
                 sy(20),
                 sx(8)
@@ -765,8 +1062,17 @@ public class SettingBox {
         if (uilabelGRIDE != null) uilabelGRIDE.setText(localization.get("setting.box.ui.gride"));
         if (uiDEFAUTBUTTON != null) uiDEFAUTBUTTON.setText(localization.get("setting.box.ui.defaut"));
         if (saveButton != null) saveButton.setText(localization.get("button.save"));
+        if (saveApiKeysButton != null) saveApiKeysButton.setText(localization.get("button.save"));
+        if (apiGuideButton != null) apiGuideButton.setText(localization.get("setting.box.api.guide"));
+        if (controlsLabel != null) controlsLabel.setText(localization.get("setting.box.controls"));
         if (otherDescrption != null) otherDescrption.setText(localization.get("setting.box.other.description"));
         if (discordURL != null) discordURL.setText(localization.get("setting.box.other.join"));
+        if (dictionariesLabel != null) dictionariesLabel.setText(localization.get("setting.box.dictionaries"));
+        if (baseGlossaryRow != null) baseGlossaryRow.setLabel(localization.get("setting.box.dictionaries.baseGlossary"));
+        if (unitsGlossaryRow != null) unitsGlossaryRow.setLabel(localization.get("setting.box.dictionaries.unitsDictionary"));
+        if (weaponsGlossaryRow != null) weaponsGlossaryRow.setLabel(localization.get("setting.box.dictionaries.weaponsDictionary"));
+        if (abilitiesGlossaryRow != null) abilitiesGlossaryRow.setLabel(localization.get("setting.box.dictionaries.abilitiesDictionary"));
+        if (dictionariesHintIcon != null) dictionariesHintIcon.setHintText(localization.get("setting.box.dictionaries.hint"));
 
         if (tableView != null) {
             tableView.updatePlaceholderText(localization.get("table.placeholder"));
@@ -777,14 +1083,27 @@ public class SettingBox {
         if (backgroundLightCheckBox != null) backgroundLightCheckBox.setLabel(localization.get("setting.box.ui.backgroundBlur"));
         if (translationCachePersistRow != null) translationCachePersistRow.setLabel(localization.get("setting.box.other.translationCachePersist"));
         if (useGpuDockerRow != null) useGpuDockerRow.setLabel(localization.get("setting.box.other.useGpuDocker"));
+        if (googleApiKeyLabel != null) googleApiKeyLabel.setText(localization.get("setting.box.other.googleApiKey"));
+        if (googleApiKeyField != null) googleApiKeyField.setPromptText(localization.get("setting.box.other.googleApiKeyPrompt"));
+        if (googleApiKeyHintIcon != null) googleApiKeyHintIcon.setHintText(localization.get("setting.box.other.googleApiKeyHint"));
+        if (geminiApiKeyLabel != null) geminiApiKeyLabel.setText(localization.get("setting.box.other.geminiApiKey"));
+        if (geminiApiKeyField != null) geminiApiKeyField.setPromptText(localization.get("setting.box.other.geminiApiKeyPrompt"));
+        if (geminiApiKeyHintIcon != null) geminiApiKeyHintIcon.setHintText(localization.get("setting.box.other.geminiApiKeyHint"));
+        if (siliconFlowApiKeyLabel != null) siliconFlowApiKeyLabel.setText(localization.get("setting.box.other.siliconflowApiKey"));
+        if (siliconFlowApiKeyField != null) siliconFlowApiKeyField.setPromptText(localization.get("setting.box.other.siliconflowApiKeyPrompt"));
+        if (siliconFlowApiKeyHintIcon != null) siliconFlowApiKeyHintIcon.setHintText(localization.get("setting.box.other.siliconflowApiKeyHint"));
+        if (deepLApiKeyLabel != null) deepLApiKeyLabel.setText(localization.get("setting.box.other.deeplApiKey"));
+        if (deepLApiKeyField != null) deepLApiKeyField.setPromptText(localization.get("setting.box.other.deeplApiKeyPrompt"));
+        if (deepLApiKeyHintIcon != null) deepLApiKeyHintIcon.setHintText(localization.get("setting.box.other.deeplApiKeyHint"));
         if (clearCacheButton != null) clearCacheButton.setText(localization.get("setting.box.other.clearCache"));
 
         if (menuButtons != null) {
             String[] keys = {
                     localization.get("setting.box.language"),
                     localization.get("setting.box.ui"),
-                    localization.get("setting.box.audio"),
+                    localization.get("setting.box.dictionaries"),
                     localization.get("setting.box.controls"),
+                    localization.get("setting.box.api"),
                     localization.get("setting.box.other")
             };
             for (int i = 0; i < menuButtons.length; i++) {

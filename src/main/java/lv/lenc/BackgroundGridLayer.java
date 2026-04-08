@@ -307,4 +307,15 @@ public class BackgroundGridLayer extends Pane {
             strip.setAnimationEnabled(enabled);
         }
     }
+
+    public void restartAnimationsFromStart() {
+        for (Animation animation : animations) {
+            if (animation == null) continue;
+            animation.stop();
+            animation.playFromStart();
+        }
+        for (ShimmerStrip strip : shimmerStrips) {
+            strip.restartFromStart();
+        }
+    }
 }

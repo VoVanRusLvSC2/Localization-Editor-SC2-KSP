@@ -18,6 +18,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -29,6 +30,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -49,6 +51,7 @@ public final class KeyFilterWindow {
     private static final GaussianBlur BLUR = new GaussianBlur(0);
     private static Node blurredTarget;
     private static StackPane overlayRoot;
+    private static StackPane overlayHost;
     private static StackPane holder;
     private static Pane panelRoot;
     private static TreeView<NodeData> tree;
@@ -60,9 +63,30 @@ public final class KeyFilterWindow {
 
     private static final Map<String, TextArea> editors = new LinkedHashMap<>();
     private static final Map<String, TextFlow> editorPreviews = new LinkedHashMap<>();
+    private static double editorValueHeight = -1.0;
     private static final List<String> EDIT_LANGS = List.of(
             "ruRU", "deDE", "enUS", "esMX", "esES", "frFR", "itIT", "plPL", "ptBR", "koKR", "zhCN", "zhTW"
     );
+
+    private static final class MarkupToken {
+        final int start;
+        final int endExclusive;
+        final String raw;
+        final char openChar;
+        final char closeChar;
+        final boolean closing;
+        final boolean selfClosing;
+
+        MarkupToken(int start, int endExclusive, String raw, char openChar, char closeChar, boolean closing, boolean selfClosing) {
+            this.start = start;
+            this.endExclusive = endExclusive;
+            this.raw = raw;
+            this.openChar = openChar;
+            this.closeChar = closeChar;
+            this.closing = closing;
+            this.selfClosing = selfClosing;
+        }
+    }
 
     private static final class NodeData {
         final String title;
@@ -90,16 +114,16 @@ public final class KeyFilterWindow {
     public static void show(StackPane appRoot, CustomTableView table, LocalizationManager localization, String selectedKey) {
         if (appRoot == null || table == null) return;
 
-        if (overlayRoot == null) {
-            overlayRoot = buildOverlay(appRoot);
-            appRoot.getChildren().add(overlayRoot);
-        }
+        ensureOverlayAttached(appRoot);
 
         holder.getChildren().clear();
         panelRoot = buildPanel(appRoot, table, localization, selectedKey);
         holder.getChildren().add(panelRoot);
 
-        blurredTarget = (!appRoot.getChildren().isEmpty()) ? appRoot.getChildren().get(0) : appRoot;
+        blurredTarget = appRoot.getChildren().stream()
+                .filter(node -> node != overlayRoot)
+                .findFirst()
+                .orElse(appRoot);
         if (blurredTarget.getEffect() == null) {
             BLUR.setRadius(0);
             blurredTarget.setEffect(BLUR);
@@ -189,8 +213,7 @@ public final class KeyFilterWindow {
         overlay.setMouseTransparent(true);
         overlay.setFocusTraversable(true);
         overlay.setViewOrder(-10_000);
-        overlay.prefWidthProperty().bind(appRoot.widthProperty());
-        overlay.prefHeightProperty().bind(appRoot.heightProperty());
+        bindOverlayToHost(overlay, appRoot);
 
         dim.setOnMouseClicked(e -> e.consume());
         overlay.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
@@ -200,6 +223,30 @@ public final class KeyFilterWindow {
             }
         });
         return overlay;
+    }
+
+    private static void ensureOverlayAttached(StackPane appRoot) {
+        if (overlayRoot == null) {
+            overlayRoot = buildOverlay(appRoot);
+            overlayHost = appRoot;
+            appRoot.getChildren().add(overlayRoot);
+            return;
+        }
+        if (overlayHost != appRoot) {
+            if (overlayHost != null) {
+                overlayHost.getChildren().remove(overlayRoot);
+            }
+            bindOverlayToHost(overlayRoot, appRoot);
+            appRoot.getChildren().add(overlayRoot);
+            overlayHost = appRoot;
+        }
+    }
+
+    private static void bindOverlayToHost(StackPane overlay, StackPane appRoot) {
+        overlay.prefWidthProperty().unbind();
+        overlay.prefHeightProperty().unbind();
+        overlay.prefWidthProperty().bind(appRoot.widthProperty());
+        overlay.prefHeightProperty().bind(appRoot.heightProperty());
     }
 
     private static void playOpen(Pane panel) {
@@ -234,6 +281,9 @@ public final class KeyFilterWindow {
         fullscreen = false;
         editorFocused = false;
         selectedKey = initialKey;
+        if (editorValueHeight <= 0) {
+            editorValueHeight = UiScaleHelper.scaleY(102);
+        }
 
         double rootW = appRoot.getWidth() > 1 ? appRoot.getWidth() : UiScaleHelper.SCREEN_WIDTH;
         double rootH = appRoot.getHeight() > 1 ? appRoot.getHeight() : UiScaleHelper.SCREEN_HEIGHT;
@@ -311,7 +361,13 @@ public final class KeyFilterWindow {
         ScrollPane editorScroll = new ScrollPane(editorPane);
         editorScroll.getStyleClass().add("key-filter-editors-scroll");
         editorScroll.setFitToWidth(true);
-        editorScroll.setFitToHeight(true);
+        editorScroll.setFitToHeight(false);
+        editorScroll.setPannable(false);
+        editorScroll.addEventFilter(ScrollEvent.SCROLL, e -> {
+            if (redirectScrollToEditor(editorScroll, e)) {
+                e.consume();
+            }
+        });
         VBox.setVgrow(editorScroll, Priority.ALWAYS);
 
         SplitPane split = new SplitPane(treePane, editorScroll);
@@ -361,14 +417,14 @@ public final class KeyFilterWindow {
 
         CustomAlternativeButton saveAllButton = new CustomAlternativeButton(
                 localize(localization, "keyfilter.saveAll", "Save all", "Save all"),
-                0.6, 0.8, 220, 64, 15
+                0.6, 0.8, 250, 70, 15
         );
         styleFilterButton(saveAllButton);
         saveAllButton.setOnAction(e -> saveCurrentEditorToRow(table));
 
         CustomAlternativeButton showInTableButton = new CustomAlternativeButton(
                 localize(localization, "keyfilter.showInTable", "Show in table", "Show in table"),
-                0.6, 0.8, 276, 64, 15
+                0.6, 0.8, 300, 70, 15
         );
         styleFilterButton(showInTableButton);
         showInTableButton.setOnAction(e -> showSelectedInTable(table));
@@ -453,6 +509,11 @@ public final class KeyFilterWindow {
         closeTopButton.setLayoutX(baseWidth - buttonSize - UiScaleHelper.scaleX(10));
         closeTopButton.setLayoutY(UiScaleHelper.scaleY(10));
 
+        final double minPopupW = UiScaleHelper.scaleX(900);
+        final double minPopupH = UiScaleHelper.scaleY(560);
+        final double[] windowedWidth = new double[] { baseWidth };
+        final double[] windowedHeight = new double[] { baseHeight };
+
         BorderPane panelLayout = new BorderPane();
         panelLayout.getStyleClass().add("key-filter-panel");
         panelLayout.setPrefSize(baseWidth, baseHeight);
@@ -475,6 +536,7 @@ public final class KeyFilterWindow {
         rootPane.setMaxSize(baseWidth, baseHeight);
         rootPane.getChildren().addAll(frame, orangeOutline, panelLayout, closeTopButton);
         closeTopButton.getStyleClass().add("key-filter-close");
+
         rootPane.layoutBoundsProperty().addListener((obs, oldVal, b) -> {
             closeTopButton.setLayoutX(b.getWidth() - closeTopButton.getWidth() + UiScaleHelper.scaleX(2));
             closeTopButton.setLayoutY(-UiScaleHelper.scaleY(3));
@@ -482,12 +544,14 @@ public final class KeyFilterWindow {
 
         fullscreenButton.setOnAction(e -> {
             fullscreen = !fullscreen;
+            double maxPopupW = Math.max(minPopupW, appRoot.getWidth() - UiScaleHelper.scaleX(16));
+            double maxPopupH = Math.max(minPopupH, appRoot.getHeight() - UiScaleHelper.scaleY(16));
             double targetW = fullscreen
-                    ? Math.max(UiScaleHelper.scaleX(900), appRoot.getWidth() - UiScaleHelper.scaleX(16))
-                    : baseWidth;
+                    ? maxPopupW
+                    : clamp(windowedWidth[0], minPopupW, maxPopupW);
             double targetH = fullscreen
-                    ? Math.max(UiScaleHelper.scaleY(560), appRoot.getHeight() - UiScaleHelper.scaleY(16))
-                    : baseHeight;
+                    ? maxPopupH
+                    : clamp(windowedHeight[0], minPopupH, maxPopupH);
             animatePopupSize(rootPane, frame, orangeOutline, panelLayout, targetW, targetH);
             fullscreenButton.setText(localize(
                     localization,
@@ -499,15 +563,15 @@ public final class KeyFilterWindow {
 
         appRoot.widthProperty().addListener((obs, oldVal, newVal) -> {
             if (fullscreen) {
-                double targetW = Math.max(UiScaleHelper.scaleX(900), appRoot.getWidth() - UiScaleHelper.scaleX(16));
-                double targetH = Math.max(UiScaleHelper.scaleY(560), appRoot.getHeight() - UiScaleHelper.scaleY(16));
+                double targetW = Math.max(minPopupW, appRoot.getWidth() - UiScaleHelper.scaleX(16));
+                double targetH = Math.max(minPopupH, appRoot.getHeight() - UiScaleHelper.scaleY(16));
                 applyPopupSize(rootPane, frame, orangeOutline, panelLayout, targetW, targetH);
             }
         });
         appRoot.heightProperty().addListener((obs, oldVal, newVal) -> {
             if (fullscreen) {
-                double targetW = Math.max(UiScaleHelper.scaleX(900), appRoot.getWidth() - UiScaleHelper.scaleX(16));
-                double targetH = Math.max(UiScaleHelper.scaleY(560), appRoot.getHeight() - UiScaleHelper.scaleY(16));
+                double targetW = Math.max(minPopupW, appRoot.getWidth() - UiScaleHelper.scaleX(16));
+                double targetH = Math.max(minPopupH, appRoot.getHeight() - UiScaleHelper.scaleY(16));
                 applyPopupSize(rootPane, frame, orangeOutline, panelLayout, targetW, targetH);
             }
         });
@@ -643,19 +707,19 @@ public final class KeyFilterWindow {
         previewScroll.getStyleClass().add("key-filter-preview-scroll");
         previewScroll.setFitToWidth(true);
         previewScroll.setFitToHeight(true);
+        previewScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        previewScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         previewScroll.setPannable(false);
         previewScroll.setFocusTraversable(false);
         previewScroll.setMouseTransparent(true);
+        previewScroll.setVisible(false);
+        previewScroll.setManaged(false);
 
         TextArea area = new TextArea();
         area.getStyleClass().add("key-filter-edit-area");
-        area.getStyleClass().add("key-filter-edit-overlay");
-        // Keep editor interactive (caret/selection), but render visible text via preview layer only.
-        area.setStyle("-fx-text-fill: transparent; -fx-prompt-text-fill: transparent;");
         area.setWrapText(true);
-        area.setPrefRowCount(8);
         area.setMinHeight(UiScaleHelper.scaleY(96));
-        area.setPrefHeight(UiScaleHelper.scaleY(102));
+        area.setPrefHeight(editorValueHeight);
         area.setPromptText("Text for " + lang);
         editors.put(lang, area);
 
@@ -667,6 +731,13 @@ public final class KeyFilterWindow {
 
         area.scrollTopProperty().addListener((obs, oldVal, newVal) ->
                 syncPreviewScroll(area, previewScroll, previewFlow)
+        );
+
+        area.focusedProperty().addListener((obs, wasFocused, isFocused) ->
+                updateXmlHighlightMode(area, previewScroll, previewFlow, area.getText())
+        );
+        area.selectedTextProperty().addListener((obs, oldSel, newSel) ->
+                updateXmlHighlightMode(area, previewScroll, previewFlow, area.getText())
         );
 
         previewScroll.viewportBoundsProperty().addListener((obs, oldB, newB) -> {
@@ -682,13 +753,84 @@ public final class KeyFilterWindow {
             syncPreviewScroll(area, previewScroll, previewFlow);
         });
 
-        StackPane editStack = new StackPane(area, previewScroll);
+        Label resizeGrip = new Label("///");
+        resizeGrip.getStyleClass().add("key-filter-resize-grip");
+        resizeGrip.setCursor(Cursor.SE_RESIZE);
+        resizeGrip.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        resizeGrip.setPickOnBounds(true);
+        resizeGrip.setFocusTraversable(false);
+
+        StackPane editStack = new StackPane(area, previewScroll, resizeGrip);
         StackPane.setAlignment(area, Pos.TOP_LEFT);
         StackPane.setAlignment(previewScroll, Pos.TOP_LEFT);
+        StackPane.setAlignment(resizeGrip, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(resizeGrip, new Insets(0, UiScaleHelper.scaleX(5), UiScaleHelper.scaleY(5), 0));
         area.setPadding(Insets.EMPTY);
         editStack.getStyleClass().add("key-filter-edit-stack");
+        editStack.setMinHeight(UiScaleHelper.scaleY(96));
+        editStack.setPrefHeight(editorValueHeight);
+        final double[] dragStartY = new double[1];
+        final double[] dragStartH = new double[1];
+        final boolean[] valueResizeActive = new boolean[1];
+        final double resizeBandY = UiScaleHelper.scaleY(18);
+        final double resizeBandX = UiScaleHelper.scaleX(34);
 
-        VBox box = new VBox(UiScaleHelper.scaleY(3), label, editStack);
+        editStack.setOnMouseMoved(e -> {
+            boolean nearBottomRight =
+                    e.getX() >= Math.max(0, editStack.getWidth() - resizeBandX) &&
+                    e.getY() >= Math.max(0, editStack.getHeight() - resizeBandY);
+            editStack.setCursor(nearBottomRight ? Cursor.SE_RESIZE : Cursor.TEXT);
+        });
+        editStack.setOnMousePressed(e -> {
+            boolean nearBottomRight =
+                    e.getX() >= Math.max(0, editStack.getWidth() - resizeBandX) &&
+                    e.getY() >= Math.max(0, editStack.getHeight() - resizeBandY);
+            if (!nearBottomRight) {
+                valueResizeActive[0] = false;
+                return;
+            }
+            valueResizeActive[0] = true;
+            dragStartY[0] = e.getScreenY();
+            dragStartH[0] = editorValueHeight;
+            e.consume();
+        });
+        editStack.setOnMouseDragged(e -> {
+            if (!valueResizeActive[0]) return;
+            double dy = e.getScreenY() - dragStartY[0];
+            double next = clamp(
+                    dragStartH[0] + dy,
+                    UiScaleHelper.scaleY(90),
+                    UiScaleHelper.scaleY(520)
+            );
+            editorValueHeight = next;
+            applyEditorValueHeight();
+            e.consume();
+        });
+        editStack.setOnMouseReleased(e -> valueResizeActive[0] = false);
+        resizeGrip.setOnMousePressed(e -> {
+            valueResizeActive[0] = true;
+            dragStartY[0] = e.getScreenY();
+            dragStartH[0] = editorValueHeight;
+            e.consume();
+        });
+        resizeGrip.setOnMouseDragged(e -> {
+            if (!valueResizeActive[0]) return;
+            double dy = e.getScreenY() - dragStartY[0];
+            double next = clamp(
+                    dragStartH[0] + dy,
+                    UiScaleHelper.scaleY(90),
+                    UiScaleHelper.scaleY(520)
+            );
+            editorValueHeight = next;
+            applyEditorValueHeight();
+            e.consume();
+        });
+        resizeGrip.setOnMouseReleased(e -> {
+            valueResizeActive[0] = false;
+            e.consume();
+        });
+
+        VBox box = new VBox(UiScaleHelper.scaleY(1), label, editStack);
         box.getStyleClass().add("key-filter-edit-block");
         return box;
     }
@@ -702,8 +844,10 @@ public final class KeyFilterWindow {
         if (area == null || previewScroll == null || previewFlow == null) {
             return;
         }
-        boolean hasTags = containsXmlTag(text);
-        if (hasTags) {
+        int selLen = area.getSelection() == null ? 0 : area.getSelection().getLength();
+        boolean hasSelection = selLen > 0;
+        boolean showOverlay = containsRichMarkup(text) && !hasSelection && !area.isFocused();
+        if (showOverlay) {
             if (!area.getStyleClass().contains("key-filter-edit-overlay")) {
                 area.getStyleClass().add("key-filter-edit-overlay");
             }
@@ -711,31 +855,16 @@ public final class KeyFilterWindow {
             previewScroll.setManaged(true);
         } else {
             area.getStyleClass().remove("key-filter-edit-overlay");
-            previewFlow.getChildren().clear();
             previewScroll.setVisible(false);
             previewScroll.setManaged(false);
         }
     }
 
-    private static boolean containsXmlTag(String text) {
+    static boolean containsRichMarkup(String text) {
         if (text == null || text.isBlank()) {
             return false;
         }
-        int open = text.indexOf('<');
-        while (open >= 0) {
-            int close = text.indexOf('>', open + 1);
-            if (close < 0) {
-                return false;
-            }
-            if (close > open + 1) {
-                char c = text.charAt(open + 1);
-                if (Character.isLetter(c) || c == '/' || c == '!' || c == '?') {
-                    return true;
-                }
-            }
-            open = text.indexOf('<', close + 1);
-        }
-        return false;
+        return findNextMarkupToken(text, 0) != null;
     }
 
     private static void syncPreviewScroll(TextArea area, ScrollPane previewScroll, TextFlow previewFlow) {
@@ -746,6 +875,75 @@ public final class KeyFilterWindow {
         double max = Math.max(1.0, contentH - viewportH);
         double value = area.getScrollTop() / max;
         previewScroll.setVvalue(Math.max(0.0, Math.min(1.0, value)));
+    }
+
+    private static boolean redirectScrollToEditor(ScrollPane editorScroll, ScrollEvent event) {
+        if (event == null || Math.abs(event.getDeltaY()) < 0.01) {
+            return false;
+        }
+        Node target = event.getPickResult() == null ? null : event.getPickResult().getIntersectedNode();
+        TextArea area = findEditorArea(target);
+        if (area == null) {
+            return false;
+        }
+        if (!area.isFocused()) {
+            return scrollEditorList(editorScroll, event.getDeltaY());
+        }
+        if (scrollEditorTextArea(area, event.getDeltaY())) {
+            return true;
+        }
+        return scrollEditorList(editorScroll, event.getDeltaY());
+    }
+
+    private static TextArea findEditorArea(Node node) {
+        Node current = node;
+        while (current != null) {
+            if (current instanceof TextArea area) {
+                return area;
+            }
+            if (current instanceof StackPane stack && stack.getStyleClass().contains("key-filter-edit-stack")) {
+                for (Node child : stack.getChildren()) {
+                    if (child instanceof TextArea area) {
+                        return area;
+                    }
+                }
+            }
+            current = current.getParent();
+        }
+        return null;
+    }
+
+    private static boolean scrollEditorTextArea(TextArea area, double deltaY) {
+        if (area == null || Math.abs(deltaY) < 0.01) {
+            return false;
+        }
+        double before = area.getScrollTop();
+        area.setScrollTop(Math.max(0.0, before - deltaY));
+        return Math.abs(area.getScrollTop() - before) > 0.5;
+    }
+
+    private static boolean scrollEditorList(ScrollPane editorScroll, double deltaY) {
+        if (editorScroll == null || Math.abs(deltaY) < 0.01) {
+            return false;
+        }
+        Node content = editorScroll.getContent();
+        if (content == null) {
+            return false;
+        }
+
+        double viewportH = editorScroll.getViewportBounds().getHeight();
+        double contentH = content.getLayoutBounds().getHeight();
+        double max = Math.max(0.0, contentH - viewportH);
+        if (max <= 0.5) {
+            return false;
+        }
+
+        double before = editorScroll.getVvalue();
+        double beforePx = before * max;
+        double nextPx = clamp(beforePx - deltaY, 0.0, max);
+        double next = nextPx / max;
+        editorScroll.setVvalue(next);
+        return Math.abs(editorScroll.getVvalue() - before) > 0.0001;
     }
 
     private static void renderXmlSyntax(TextFlow flow, String raw) {
@@ -764,8 +962,8 @@ public final class KeyFilterWindow {
         int pos = 0;
         int openTagDepth = 0;
         while (pos < text.length()) {
-            int open = text.indexOf('<', pos);
-            if (open < 0) {
+            MarkupToken token = findNextMarkupToken(text, pos);
+            if (token == null) {
                 appendColoredText(
                         flow,
                         text.substring(pos),
@@ -775,62 +973,31 @@ public final class KeyFilterWindow {
                 break;
             }
 
-            if (open > pos) {
+            if (token.start > pos) {
                 appendColoredText(
                         flow,
-                        text.substring(pos, open),
+                        text.substring(pos, token.start),
                         openTagDepth > 0 ? taggedInnerColor : normalColor,
                         false
                 );
             }
 
-            int close = text.indexOf('>', open);
-            if (close < 0) {
-                appendColoredText(
-                        flow,
-                        text.substring(open),
-                        openTagDepth > 0 ? taggedInnerColor : normalColor,
-                        false
-                );
-                break;
-            }
-
-            String tag = text.substring(open, close + 1);
-            boolean closing = isClosingTagToken(tag);
-            boolean selfClosing = isSelfClosingTagToken(tag);
-            if (closing && openTagDepth > 0) {
+            if (token.closing && openTagDepth > 0) {
                 openTagDepth--;
             }
-            appendTagSyntax(flow, tag, tagNameColor, attrColor, valueColor);
-            if (!closing && !selfClosing) {
+            appendTagSyntax(flow, token.raw, token.openChar, token.closeChar, tagNameColor, attrColor, valueColor);
+            if (!token.closing && !token.selfClosing) {
                 openTagDepth++;
             }
-            pos = close + 1;
+            pos = token.endExclusive;
         }
-    }
-
-    private static boolean isClosingTagToken(String tag) {
-        if (tag == null) return false;
-        int i = 0;
-        while (i < tag.length() && Character.isWhitespace(tag.charAt(i))) i++;
-        if (i >= tag.length() || tag.charAt(i) != '<') return false;
-        i++;
-        while (i < tag.length() && Character.isWhitespace(tag.charAt(i))) i++;
-        return i < tag.length() && tag.charAt(i) == '/';
-    }
-
-    private static boolean isSelfClosingTagToken(String tag) {
-        if (tag == null || tag.isEmpty()) return false;
-        int gt = tag.lastIndexOf('>');
-        if (gt < 0) return false;
-        int i = gt - 1;
-        while (i >= 0 && Character.isWhitespace(tag.charAt(i))) i--;
-        return i >= 0 && tag.charAt(i) == '/';
     }
 
     private static void appendTagSyntax(
             TextFlow flow,
             String tag,
+            char openChar,
+            char closeChar,
             String tagNameColor,
             String attrColor,
             String valueColor
@@ -838,8 +1005,8 @@ public final class KeyFilterWindow {
         if (tag == null || tag.isEmpty()) return;
 
         int i = 0;
-        if (tag.charAt(i) == '<') {
-            appendColoredText(flow, "<", tagNameColor, true);
+        if (tag.charAt(i) == openChar) {
+            appendColoredText(flow, String.valueOf(openChar), tagNameColor, true);
             i++;
         }
 
@@ -857,8 +1024,8 @@ public final class KeyFilterWindow {
         while (i < tag.length()) {
             char ch = tag.charAt(i);
 
-            if (ch == '>') {
-                appendColoredText(flow, ">", tagNameColor, true);
+            if (ch == closeChar) {
+                appendColoredText(flow, String.valueOf(closeChar), tagNameColor, true);
                 i++;
                 continue;
             }
@@ -895,6 +1062,122 @@ public final class KeyFilterWindow {
         return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':' || ch == '-' || ch == '.';
     }
 
+    private static MarkupToken findNextMarkupToken(String text, int fromIndex) {
+        if (text == null || text.isEmpty()) {
+            return null;
+        }
+        int start = Math.max(0, fromIndex);
+        for (int i = start; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            if (ch != '<' && ch != '[') {
+                continue;
+            }
+            if (i > 0 && text.charAt(i - 1) == '\\') {
+                continue;
+            }
+            MarkupToken token = parseMarkupToken(text, i);
+            if (token != null) {
+                return token;
+            }
+        }
+        return null;
+    }
+
+    private static MarkupToken parseMarkupToken(String text, int start) {
+        if (text == null || start < 0 || start >= text.length()) {
+            return null;
+        }
+
+        char openChar = text.charAt(start);
+        char closeChar;
+        if (openChar == '<') {
+            closeChar = '>';
+        } else if (openChar == '[') {
+            closeChar = ']';
+        } else {
+            return null;
+        }
+
+        int end = findMarkupTokenEnd(text, start, closeChar);
+        if (end < 0) {
+            return null;
+        }
+
+        String raw = text.substring(start, end + 1);
+        int i = 1;
+        while (i < raw.length() - 1 && Character.isWhitespace(raw.charAt(i))) {
+            i++;
+        }
+        if (i >= raw.length() - 1) {
+            return null;
+        }
+
+        boolean closing = false;
+        if (raw.charAt(i) == '/') {
+            closing = true;
+            i++;
+            while (i < raw.length() - 1 && Character.isWhitespace(raw.charAt(i))) {
+                i++;
+            }
+        }
+        if (i >= raw.length() - 1) {
+            return null;
+        }
+
+        char head = raw.charAt(i);
+        if (!(Character.isLetter(head) || head == '!' || head == '?')) {
+            return null;
+        }
+
+        int nameStart = i;
+        i++;
+        while (i < raw.length() - 1 && isTagNameChar(raw.charAt(i))) {
+            i++;
+        }
+        if (i == nameStart) {
+            return null;
+        }
+
+        boolean declaration = head == '!' || head == '?';
+        boolean selfClosing = declaration || isSelfClosingMarkupToken(raw, closeChar);
+        return new MarkupToken(start, end + 1, raw, openChar, closeChar, closing, selfClosing);
+    }
+
+    private static int findMarkupTokenEnd(String text, int start, char closeChar) {
+        boolean inSingleQuote = false;
+        boolean inDoubleQuote = false;
+        for (int i = start + 1; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            if (ch == '\'' && !inDoubleQuote) {
+                inSingleQuote = !inSingleQuote;
+                continue;
+            }
+            if (ch == '"' && !inSingleQuote) {
+                inDoubleQuote = !inDoubleQuote;
+                continue;
+            }
+            if (ch == closeChar && !inSingleQuote && !inDoubleQuote) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean isSelfClosingMarkupToken(String tag, char closeChar) {
+        if (tag == null || tag.isEmpty()) {
+            return false;
+        }
+        int close = tag.lastIndexOf(closeChar);
+        if (close < 0) {
+            return false;
+        }
+        int i = close - 1;
+        while (i >= 0 && Character.isWhitespace(tag.charAt(i))) {
+            i--;
+        }
+        return i >= 0 && tag.charAt(i) == '/';
+    }
+
     private static boolean isAttrNameChar(char ch) {
         return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':' || ch == '-' || ch == '.';
     }
@@ -904,7 +1187,7 @@ public final class KeyFilterWindow {
         Text node = new Text(chunk);
         node.setFill(javafx.scene.paint.Color.web(color));
         node.setUnderline(underline);
-        node.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+        node.setStyle("-fx-font-family: \"Segoe UI\", \"Arial\", sans-serif; -fx-font-weight: bold; -fx-font-size: 16px;");
         flow.getChildren().add(node);
     }
 
@@ -922,6 +1205,18 @@ public final class KeyFilterWindow {
 
     private static void setEditorsEnabled(boolean enabled) {
         for (TextArea area : editors.values()) area.setDisable(!enabled);
+    }
+
+    private static void applyEditorValueHeight() {
+        for (TextArea area : editors.values()) {
+            area.setPrefHeight(editorValueHeight);
+            area.setMinHeight(UiScaleHelper.scaleY(96));
+            Node parent = area.getParent();
+            if (parent instanceof StackPane stack) {
+                stack.setPrefHeight(editorValueHeight);
+                stack.setMinHeight(UiScaleHelper.scaleY(96));
+            }
+        }
     }
 
     private static void saveCurrentEditorToRow(CustomTableView table) {
@@ -1023,10 +1318,33 @@ public final class KeyFilterWindow {
 
     private static LocalizationData findRow(CustomTableView table, String key) {
         if (table == null || key == null) return null;
+        String target = normalizeKeyForLookup(key);
         return table.getItems().stream()
-                .filter(r -> Objects.equals(r.getKey(), key))
-                .findFirst()
+                .filter(Objects::nonNull)
+                .filter(r -> Objects.equals(normalizeKeyForLookup(r.getKey()), target))
+                // If duplicate keys exist, prefer the row that actually has text.
+                .max(java.util.Comparator.comparingInt(KeyFilterWindow::filledLangCount))
                 .orElse(null);
+    }
+
+    private static String normalizeKeyForLookup(String key) {
+        if (key == null) return "";
+        String normalized = key.replace('\\', '/').trim();
+        normalized = normalized.replaceAll("\\s*/\\s*", "/");
+        normalized = normalized.replaceAll("/+", "/");
+        return normalized;
+    }
+
+    private static int filledLangCount(LocalizationData row) {
+        if (row == null) return 0;
+        int count = 0;
+        for (String lang : EDIT_LANGS) {
+            String value = row.getByLang(lang);
+            if (value != null && !value.isBlank()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private static void setByLang(LocalizationData row, String lang, String value) {

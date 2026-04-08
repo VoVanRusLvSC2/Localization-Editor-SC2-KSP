@@ -166,7 +166,7 @@ public final class TranslateCancelSaveButton extends StackPane {
             running = translateStarter.get();
             if (running == null) {
                 if (activeRunId == runId) {
-                    state.set(State.TRANSLATE);
+                    state.set(State.CANCEL);
                 }
                 errorHandler.accept(new IllegalStateException("Translate starter returned null future"));
                 return;
@@ -183,7 +183,7 @@ public final class TranslateCancelSaveButton extends StackPane {
                 }
 
                 if (ex != null) {
-                    state.set(State.TRANSLATE);
+                    state.set(State.CANCEL);
                     errorHandler.accept(ex);
                     return;
                 }
@@ -193,7 +193,7 @@ public final class TranslateCancelSaveButton extends StackPane {
 
         } catch (Throwable t) {
             if (activeRunId == runId) {
-                state.set(State.TRANSLATE);
+                state.set(State.CANCEL);
             }
             errorHandler.accept(t);
         }

@@ -37,6 +37,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -62,6 +63,7 @@ public class CustomTableView extends TableView<LocalizationData> {
     private boolean tableFocusMode = false;
     private boolean currentSingleMode = false;
     private boolean baseWidthsCaptured = false;
+    private double currentRowHeight = UiScaleHelper.scaleY(52);
 
     private boolean lastLoadWasMulti = false;
     private final java.util.Set<String> loadedUiLanguages = new java.util.HashSet<>();
@@ -170,6 +172,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         countColumn.setReorderable(false);
         keyColumn.setReorderable(false);
         this.setEditable(true);
+        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         // OPTIMIZED: Enable in-place cell editing with proper TextField support
         for (TableColumn<LocalizationData, String> langColumn : editableColumns) {
@@ -200,9 +203,24 @@ public class CustomTableView extends TableView<LocalizationData> {
         enableHeaderColumnSelectionHighlighting();
         Label placeholderLabel = new Label(this.localization.get("table.placeholder"));
         this.setPlaceholder(placeholderLabel);
-        this.setFixedCellSize(UiScaleHelper.scaleY(52));
+        this.setFixedCellSize(currentRowHeight);
         // edit
         applyCustomCellStyleToAllColumns();
+        this.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (!event.isControlDown()) {
+                return;
+            }
+            double delta = event.getDeltaY();
+            if (Math.abs(delta) < 0.01) {
+                return;
+            }
+            double step = UiScaleHelper.scaleY(8);
+            double next = currentRowHeight + (delta > 0 ? step : -step);
+            currentRowHeight = Math.max(UiScaleHelper.scaleY(42), Math.min(UiScaleHelper.scaleY(220), next));
+            setFixedCellSize(currentRowHeight);
+            refresh();
+            event.consume();
+        });
         removeScrollCorner();
         captureBaseColumnWidths();
         setViewportSize(width, height);
@@ -389,20 +407,21 @@ public class CustomTableView extends TableView<LocalizationData> {
             if ("key".equalsIgnoreCase(name)) {
                 col.setMinWidth(baseKeyMinW);
                 col.setPrefWidth((singleMode || fillAvailableWidth) ? keyWidth : baseKeyPrefW);
-                col.setMaxWidth((singleMode || fillAvailableWidth) ? keyWidth : UiScaleHelper.scaleX(4000));
+                // Keep key column resizable by user in any mode.
+                col.setMaxWidth(UiScaleHelper.scaleX(4000));
                 continue;
             }
 
             if (SUPPORTED_LANGS.contains(name)) {
                 //
                 if (col.isVisible() && singleMode) {
-                    col.setMinWidth(stretchedLangWidth);
+                    col.setMinWidth(baseLangMinW);
                     col.setPrefWidth(stretchedLangWidth);
-                    col.setMaxWidth(stretchedLangWidth);
+                    col.setMaxWidth(baseLangMaxW);
                 } else if (col.isVisible() && fillAvailableWidth) {
-                    col.setMinWidth(stretchedLangWidth);
+                    col.setMinWidth(baseLangMinW);
                     col.setPrefWidth(stretchedLangWidth);
-                    col.setMaxWidth(stretchedLangWidth);
+                    col.setMaxWidth(baseLangMaxW);
                 } else {
                     //
                     col.setMinWidth(baseLangMinW);
@@ -521,6 +540,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                 private boolean isEditing = false;
 
                 {
+                    setWrapText(true);
                     //
                     this.setOnMouseEntered(event -> {
                         isHovered = true;
@@ -663,18 +683,8 @@ public class CustomTableView extends TableView<LocalizationData> {
                     }
 
                     String preview = value
-                            .replace("\r\n", "  ")
-                            .replace('\n', ' ')
-                            .replace('\r', ' ')
-                            .replace('\t', ' ')
-                            .trim();
-
-                    preview = preview.replaceAll(" {2,}", " ");
-
-                    int maxPreviewLength = 190;
-                    if (preview.length() > maxPreviewLength) {
-                        preview = preview.substring(0, maxPreviewLength - 3).trim() + "...";
-                    }
+                            .replace("\r\n", "\n")
+                            .replace('\r', '\n');
 
                     return preview;
                 }
@@ -688,92 +698,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                 }
 
                 private String fitPreviewToCell(String preview) {
-                    if (preview == null || preview.isBlank()) {
-                        return preview;
-                    }
-
-                    double availableWidth = getPreviewAvailableWidth();
-                    if (availableWidth <= UiScaleHelper.scaleX(40)) {
-                        return preview;
-                    }
-
-                    Font previewFont = getPreviewFont();
-                    double maxHeight = getPreviewMaxHeight(previewFont);
-
-                    if (fitsWithinPreview(preview, availableWidth, maxHeight, previewFont)) {
-                        return preview;
-                    }
-
-                    int low = 0;
-                    int high = preview.length();
-                    String best = "...";
-                    while (low <= high) {
-                        int mid = (low + high) >>> 1;
-                        String candidate = buildEllipsizedPreview(preview, mid);
-                        if (fitsWithinPreview(candidate, availableWidth, maxHeight, previewFont)) {
-                            best = candidate;
-                            low = mid + 1;
-                        } else {
-                            high = mid - 1;
-                        }
-                    }
-
-                    return best;
-                }
-
-                private double getPreviewAvailableWidth() {
-                    double horizontalPadding = UiScaleHelper.scaleX(18);
-                    double cellWidth = getWidth();
-                    if (cellWidth <= 1 && getTableColumn() != null) {
-                        cellWidth = getTableColumn().getWidth();
-                    }
-                    return Math.max(UiScaleHelper.scaleX(60), cellWidth - horizontalPadding);
-                }
-
-                private Font getPreviewFont() {
-                    Font baseFont = getFont() == null ? Font.getDefault() : getFont();
-                    return Font.font(baseFont.getFamily(), FontWeight.BOLD, baseFont.getSize());
-                }
-
-                private double getPreviewMaxHeight(Font previewFont) {
-                    Text sample = new Text("Ag");
-                    sample.setFont(previewFont);
-                    double lineHeight = sample.getLayoutBounds().getHeight();
-                    double lineSpacing = UiScaleHelper.scaleY(1.5);
-                    return (lineHeight * 2) + lineSpacing + UiScaleHelper.scaleY(3);
-                }
-
-                private boolean fitsWithinPreview(String value, double width, double maxHeight, Font previewFont) {
-                    Text measure = new Text(value);
-                    measure.setFont(previewFont);
-                    measure.setWrappingWidth(width);
-                    return measure.getLayoutBounds().getHeight() <= maxHeight;
-                }
-
-                private String buildEllipsizedPreview(String preview, int maxChars) {
-                    if (preview == null || preview.isEmpty()) {
-                        return preview;
-                    }
-                    if (maxChars >= preview.length()) {
-                        return preview;
-                    }
-                    if (maxChars <= 3) {
-                        return "...";
-                    }
-
-                    int cut = findPreviewBreak(preview, maxChars);
-                    return preview.substring(0, cut).trim() + "...";
-                }
-
-                private int findPreviewBreak(String preview, int maxChars) {
-                    int minIndex = Math.max(1, maxChars - 24);
-                    for (int i = maxChars; i >= minIndex; i--) {
-                        char ch = preview.charAt(i - 1);
-                        if (Character.isWhitespace(ch) || ch == '>' || ch == '<' || ch == '/' || ch == '"' || ch == '\'') {
-                            return i;
-                        }
-                    }
-                    return maxChars;
+                    return preview;
                 }
 
                 private Node buildXmlPreviewGraphic(String raw) {
@@ -784,7 +709,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                     wrapper.setPickOnBounds(false);
                     wrapper.setMinHeight(0);
 
-                    double maxPreviewHeight = UiScaleHelper.scaleY(32);
+                    double maxPreviewHeight = Math.max(UiScaleHelper.scaleY(32), getFixedCellSize() - UiScaleHelper.scaleY(18));
                     double horizontalPadding = UiScaleHelper.scaleX(18);
 
                     wrapper.prefWidthProperty().bind(widthProperty().subtract(horizontalPadding));
@@ -1491,10 +1416,16 @@ public class CustomTableView extends TableView<LocalizationData> {
             final String targetUiFinal = targetUi;
             final int targetIndexFinal = targetIndex;
             final int uiOrdinalFinal = targetIndex + 1;
+            // Glossary is always applied before MT via stable term tokens.
+            // Prompt hints are additionally sent only to providers that support instruction prompts.
+            final boolean aiHintMode = TranslationService.backendSupportsGlossaryInflectionHints();
 
             java.util.List<LocalizationData> rowsToTranslate = new java.util.ArrayList<>();
             java.util.List<String> textsToTranslate = new java.util.ArrayList<>();
             java.util.List<GlossaryService.FrozenTerms> frozenForRows = new java.util.ArrayList<>();
+            java.util.Map<String, String> batchGlossaryHints = aiHintMode
+                    ? new java.util.LinkedHashMap<>()
+                    : java.util.Collections.emptyMap();
 
             for (LocalizationData row : allRows) {
                 if (stop.getAsBoolean()) return;
@@ -1505,26 +1436,19 @@ public class CustomTableView extends TableView<LocalizationData> {
 
                 GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
-                // 1. exact/text glossary
-                String glossaryHit = glossaryService.findBestMatch(
-                        row.getKey(),
-                        sourceUi,
-                        sourceText,
-                        targetUi
-                );
-
-                if (glossaryHit != null && !glossaryHit.isBlank()) {
-                    setValueByLang(row, targetUi, glossaryHit);
-                    continue;
-                }
-
-                // 2. term freeze before MT
                 GlossaryService.FrozenTerms frozen = glossaryService.freezeTerms(
                         category,
                         sourceUi,
                         targetUi,
                         sourceText
                 );
+                if (aiHintMode) {
+                    mergeGlossaryHintsLimited(
+                            batchGlossaryHints,
+                            glossaryService.collectTermHints(category, sourceUi, targetUi, sourceText, 12),
+                            60
+                    );
+                }
 
                 rowsToTranslate.add(row);
                 textsToTranslate.add(frozen.preparedText());
@@ -1536,6 +1460,9 @@ public class CustomTableView extends TableView<LocalizationData> {
             }
 
             try {
+                if (aiHintMode) {
+                    lv.lenc.TranslationService.setRuntimeGlossaryHints(batchGlossaryHints);
+                }
                 java.util.List<String> out = lv.lenc.TranslationService.translatePreservingTagsBatched(
                         api,
                         textsToTranslate,
@@ -1552,12 +1479,19 @@ public class CustomTableView extends TableView<LocalizationData> {
                 );
 
                 int count = Math.min(rowsToTranslate.size(), out.size());
-                for (int i = 0; i < count; i++) {
-                    String translated = out.get(i);
-                    if (translated == null || translated.isBlank()) continue;
-
-                    translated = glossaryService.unfreezeTerms(translated, frozenForRows.get(i));
-                    setValueByLang(rowsToTranslate.get(i), targetUi, translated);
+                if (count > 0) {
+                    List<String> translatedSlice = new ArrayList<>(count);
+                    List<GlossaryService.FrozenTerms> frozenSlice = new ArrayList<>(count);
+                    for (int i = 0; i < count; i++) {
+                        translatedSlice.add(out.get(i));
+                        frozenSlice.add(frozenForRows.get(i));
+                    }
+                    List<String> resolved = glossaryService.unfreezeTermsBatch(translatedSlice, frozenSlice, targetUi);
+                    for (int i = 0; i < count; i++) {
+                        String translated = resolved.get(i);
+                        if (translated == null || translated.isBlank()) continue;
+                        setValueByLang(rowsToTranslate.get(i), targetUi, translated);
+                    }
                 }
 
             } catch (IOException | InterruptedException ex) {
@@ -1568,6 +1502,10 @@ public class CustomTableView extends TableView<LocalizationData> {
                 AppLog.error("[LT] translate failed for " + targetUi + ": " + ex.getMessage());
                 AppLog.exception(ex);
                 throw new RuntimeException(ex);
+            } finally {
+                if (aiHintMode) {
+                    lv.lenc.TranslationService.clearRuntimeGlossaryHints();
+                }
             }
         }
 
@@ -1584,6 +1522,36 @@ public class CustomTableView extends TableView<LocalizationData> {
         int idx = trimmed.toLowerCase(Locale.ROOT).indexOf("batch");
         if (idx >= 0) return trimmed.substring(idx).trim();
         return trimmed;
+    }
+
+    private static Map<String, String> collectHintsForIndexes(List<Map<String, String>> rowHints,
+                                                              List<Integer> indexes,
+                                                              int limit) {
+        if (rowHints == null || indexes == null || indexes.isEmpty() || limit <= 0) {
+            return java.util.Collections.emptyMap();
+        }
+        Map<String, String> out = new LinkedHashMap<>();
+        for (Integer idx : indexes) {
+            if (idx == null || idx < 0 || idx >= rowHints.size()) continue;
+            mergeGlossaryHintsLimited(out, rowHints.get(idx), limit);
+            if (out.size() >= limit) break;
+        }
+        return out;
+    }
+
+    private static void mergeGlossaryHintsLimited(Map<String, String> target,
+                                                  Map<String, String> incoming,
+                                                  int limit) {
+        if (target == null || incoming == null || incoming.isEmpty() || limit <= 0) {
+            return;
+        }
+        for (Map.Entry<String, String> e : incoming.entrySet()) {
+            if (target.size() >= limit) break;
+            String src = e.getKey();
+            String trg = e.getValue();
+            if (src == null || src.isBlank() || trg == null || trg.isBlank()) continue;
+            target.putIfAbsent(src, trg);
+        }
     }
 
     // (ui-code: "enUS", "ruRU"...)
@@ -1631,6 +1599,10 @@ public class CustomTableView extends TableView<LocalizationData> {
         List<String> textsToTranslate = new ArrayList<>();
         List<GlossaryService.FrozenTerms> frozenForRows = new ArrayList<>();
         List<String> actualSourceUis = new ArrayList<>();
+        List<Map<String, String>> rowGlossaryHints = new ArrayList<>();
+        // Glossary is always applied before MT by injecting known terms into outgoing text.
+        // Prompt hints are additionally sent only to providers that support instruction prompts.
+        final boolean aiHintMode = TranslationService.backendSupportsGlossaryInflectionHints();
 
         for (LocalizationData row : allRows) {
             if (stop.getAsBoolean()) return;
@@ -1650,41 +1622,21 @@ public class CustomTableView extends TableView<LocalizationData> {
 
             GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
-            String glossaryHit = glossaryService.findBestMatch(
-                    row.getKey(),
-                    actualSourceUi,
-                    sourceText,
-                    targetUi
-            );
-
-            if (glossaryHit != null && !glossaryHit.isBlank()) {
-                setValueByLang(row, targetUi, glossaryHit);
-                continue;
-            }
-
-//            String templatedHit = glossaryService.tryTemplateCompose(
-//                    category,
-//                    actualSourceUi,
-//                    targetUi,
-//                    sourceText
-//            );
-//
-//            if (templatedHit != null && !templatedHit.isBlank()) {
-//                setValueByLang(row, targetUi, templatedHit);
-//                continue;
-//            }
-
             GlossaryService.FrozenTerms frozen = glossaryService.freezeTerms(
                     category,
                     actualSourceUi,
                     targetUi,
                     sourceText
             );
+            Map<String, String> hintsForRow = aiHintMode
+                    ? glossaryService.collectTermHints(category, actualSourceUi, targetUi, sourceText, 12)
+                    : java.util.Collections.emptyMap();
 
             rowsToTranslate.add(row);
             textsToTranslate.add(frozen.preparedText());
             frozenForRows.add(frozen);
             actualSourceUis.add(actualSourceUi);
+            rowGlossaryHints.add(hintsForRow);
         }
 
         if (textsToTranslate.isEmpty()) {
@@ -1716,9 +1668,21 @@ public class CustomTableView extends TableView<LocalizationData> {
                 for (Integer idx : indexes) {
                     batchTexts.add(textsToTranslate.get(idx));
                 }
+                Map<String, String> groupGlossaryHints = aiHintMode
+                        ? collectHintsForIndexes(rowGlossaryHints, indexes, 60)
+                        : java.util.Collections.emptyMap();
 
-                Map<String, List<String>> byIso =
-                        TranslationService.translateAll(batchTexts, sourceIso, List.of(targetIso));
+                Map<String, List<String>> byIso;
+                if (aiHintMode) {
+                    TranslationService.setRuntimeGlossaryHints(groupGlossaryHints);
+                }
+                try {
+                    byIso = TranslationService.translateAll(batchTexts, sourceIso, List.of(targetIso));
+                } finally {
+                    if (aiHintMode) {
+                        TranslationService.clearRuntimeGlossaryHints();
+                    }
+                }
 
                 if (stop.getAsBoolean()) return;
 
@@ -1726,13 +1690,23 @@ public class CustomTableView extends TableView<LocalizationData> {
                 if (translated == null) continue;
 
                 int count = Math.min(indexes.size(), translated.size());
-                for (int j = 0; j < count; j++) {
-                    int originalIndex = indexes.get(j);
-                    String outText = translated.get(j);
-                    if (outText == null || outText.isBlank()) continue;
-
-                    outText = glossaryService.unfreezeTerms(outText, frozenForRows.get(originalIndex));
-                    setValueByLang(rowsToTranslate.get(originalIndex), targetUi, outText);
+                if (count > 0) {
+                    List<String> translatedSlice = new ArrayList<>(count);
+                    List<GlossaryService.FrozenTerms> frozenSlice = new ArrayList<>(count);
+                    List<Integer> originalIndexes = new ArrayList<>(count);
+                    for (int j = 0; j < count; j++) {
+                        int originalIndex = indexes.get(j);
+                        originalIndexes.add(originalIndex);
+                        translatedSlice.add(translated.get(j));
+                        frozenSlice.add(frozenForRows.get(originalIndex));
+                    }
+                    List<String> resolved = glossaryService.unfreezeTermsBatch(translatedSlice, frozenSlice, targetUi);
+                    for (int j = 0; j < count; j++) {
+                        String outText = resolved.get(j);
+                        if (outText == null || outText.isBlank()) continue;
+                        int originalIndex = originalIndexes.get(j);
+                        setValueByLang(rowsToTranslate.get(originalIndex), targetUi, outText);
+                    }
                 }
             }
 
@@ -1768,6 +1742,10 @@ public class CustomTableView extends TableView<LocalizationData> {
         List<String> textsToTranslate = new ArrayList<>();
         List<GlossaryService.FrozenTerms> frozenForRows = new ArrayList<>();
         List<String> actualSourceUis = new ArrayList<>();
+        List<Map<String, String>> rowGlossaryHints = new ArrayList<>();
+        // Glossary is always applied before MT by injecting known terms into outgoing text.
+        // Prompt hints are additionally sent only to providers that support instruction prompts.
+        final boolean aiHintMode = TranslationService.backendSupportsGlossaryInflectionHints();
 
         for (LocalizationData row : allRows) {
             if (stop.getAsBoolean()) return;
@@ -1786,41 +1764,21 @@ public class CustomTableView extends TableView<LocalizationData> {
 
             GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
-            String glossaryHit = glossaryService.findBestMatch(
-                    row.getKey(),
-                    actualSourceUi,
-                    sourceText,
-                    targetUi
-            );
-
-            if (glossaryHit != null && !glossaryHit.isBlank()) {
-                setValueByLang(row, targetUi, glossaryHit);
-                continue;
-            }
-
-//            String templatedHit = glossaryService.tryTemplateCompose(
-//                    category,
-//                    actualSourceUi,
-//                    targetUi,
-//                    sourceText
-//            );
-//
-//            if (templatedHit != null && !templatedHit.isBlank()) {
-//                setValueByLang(row, targetUi, templatedHit);
-//                continue;
-//            }
-
             GlossaryService.FrozenTerms frozen = glossaryService.freezeTerms(
                     category,
                     actualSourceUi,
                     targetUi,
                     sourceText
             );
+            Map<String, String> hintsForRow = aiHintMode
+                    ? glossaryService.collectTermHints(category, actualSourceUi, targetUi, sourceText, 12)
+                    : java.util.Collections.emptyMap();
 
             rowsToTranslate.add(row);
             textsToTranslate.add(frozen.preparedText());
             frozenForRows.add(frozen);
             actualSourceUis.add(actualSourceUi);
+            rowGlossaryHints.add(hintsForRow);
         }
 
         if (textsToTranslate.isEmpty()) {
@@ -1862,34 +1820,57 @@ public class CustomTableView extends TableView<LocalizationData> {
                 for (Integer idx : indexes) {
                     batchTexts.add(textsToTranslate.get(idx));
                 }
+                Map<String, String> groupGlossaryHints = aiHintMode
+                        ? collectHintsForIndexes(rowGlossaryHints, indexes, 60)
+                        : java.util.Collections.emptyMap();
 
-                List<String> out = lv.lenc.TranslationService.translatePreservingTagsBatched(
-                        api,
-                        batchTexts,
-                        sourceIso,
-                        targetIso,
-                        stop,
-                        (frac, msg) -> {
-                            if (progress == null) return;
-                            String line1 = sourceUiFinal + " -> " + targetUiFinal;
-                            String line2 = (msg == null ? "" : msg);
-                            double weighted = totalWorkItems <= 0
-                                    ? frac
-                                    : (groupDoneBefore + frac * groupSize) / (double) totalWorkItems;
-                            progress.onProgress(Math.min(0.999, weighted), line1 + "||" + line2);
-                        }
-                );
+                List<String> out;
+                if (aiHintMode) {
+                    lv.lenc.TranslationService.setRuntimeGlossaryHints(groupGlossaryHints);
+                }
+                try {
+                    out = lv.lenc.TranslationService.translatePreservingTagsBatched(
+                            api,
+                            batchTexts,
+                            sourceIso,
+                            targetIso,
+                            stop,
+                            (frac, msg) -> {
+                                if (progress == null) return;
+                                String line1 = sourceUiFinal + " -> " + targetUiFinal;
+                                String line2 = (msg == null ? "" : msg);
+                                double weighted = totalWorkItems <= 0
+                                        ? frac
+                                        : (groupDoneBefore + frac * groupSize) / (double) totalWorkItems;
+                                progress.onProgress(Math.min(0.999, weighted), line1 + "||" + line2);
+                            }
+                    );
+                } finally {
+                    if (aiHintMode) {
+                        lv.lenc.TranslationService.clearRuntimeGlossaryHints();
+                    }
+                }
 
                 if (stop.getAsBoolean()) return;
 
                 int count = Math.min(indexes.size(), out.size());
-                for (int j = 0; j < count; j++) {
-                    int originalIndex = indexes.get(j);
-                    String translated = out.get(j);
-                    if (translated == null || translated.isBlank()) continue;
-
-                    translated = glossaryService.unfreezeTerms(translated, frozenForRows.get(originalIndex));
-                    setValueByLang(rowsToTranslate.get(originalIndex), targetUi, translated);
+                if (count > 0) {
+                    List<String> translatedSlice = new ArrayList<>(count);
+                    List<GlossaryService.FrozenTerms> frozenSlice = new ArrayList<>(count);
+                    List<Integer> originalIndexes = new ArrayList<>(count);
+                    for (int j = 0; j < count; j++) {
+                        int originalIndex = indexes.get(j);
+                        originalIndexes.add(originalIndex);
+                        translatedSlice.add(out.get(j));
+                        frozenSlice.add(frozenForRows.get(originalIndex));
+                    }
+                    List<String> resolved = glossaryService.unfreezeTermsBatch(translatedSlice, frozenSlice, targetUi);
+                    for (int j = 0; j < count; j++) {
+                        String translated = resolved.get(j);
+                        if (translated == null || translated.isBlank()) continue;
+                        int originalIndex = originalIndexes.get(j);
+                        setValueByLang(rowsToTranslate.get(originalIndex), targetUi, translated);
+                    }
                 }
 
                 doneItems[0] += groupSize;
@@ -2081,6 +2062,17 @@ public class CustomTableView extends TableView<LocalizationData> {
         setItems(FXCollections.observableArrayList(keyFilterBaseItems));
         keyFilterBaseItems.clear();
         activeKeyPrefixFilter = null;
+        refresh();
+    }
+
+    public void clearLoadedData() {
+        lastLoadWasMulti = false;
+        loadedUiLanguages.clear();
+        currentSourceUi = null;
+        keyFilterBaseItems.clear();
+        activeKeyPrefixFilter = null;
+        getSelectionModel().clearSelection();
+        setItems(FXCollections.observableArrayList());
         refresh();
     }
 

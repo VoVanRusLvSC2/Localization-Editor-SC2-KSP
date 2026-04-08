@@ -6,11 +6,13 @@ import java.util.Optional;
 
 public final class LocalizationProjectContext {
 
-    private File openedFile;   // file selected by the user (GameStrings.txt)
+    private File openedFile;   // extracted/loaded file used by the table
     private File projectRoot;  // folder containing xxXX.SC2Data directories
+    private File sourceInput;  // original user-selected input (.txt / folder / .SC2Map)
+    private String archiveRelativePath; // relative path inside LocalizedData for archive sessions
 
     public boolean isReady() {
-        return openedFile != null && projectRoot != null;
+        return openedFile != null;
     }
 
     public File getOpenedFile() {
@@ -21,42 +23,95 @@ public final class LocalizationProjectContext {
         return projectRoot;
     }
 
+    public File getSourceInput() {
+        return sourceInput;
+    }
+
+    public String getArchiveRelativePath() {
+        return archiveRelativePath;
+    }
+
     public boolean open(File fileSelected, CustomTableView tableView) {
         if (fileSelected == null || !fileSelected.exists()) return false;
+        File loadTarget = FileUtil.resolveLoadInput(fileSelected);
+        if (loadTarget == null || !loadTarget.exists()) return false;
+        return open(fileSelected, loadTarget, null, null, tableView);
+    }
 
-        boolean loaded = FileUtil.loadSelectedFile2(fileSelected, tableView);
+    public boolean open(File sourceInput,
+                        File loadTarget,
+                        String archiveRelativePath,
+                        String preferredMainLanguage,
+                        CustomTableView tableView) {
+        if (loadTarget == null || !loadTarget.exists()) return false;
+
+        boolean loaded;
+        File effectiveOpenedFile = loadTarget;
+        if (sourceInput != null && FileUtil.isArchiveInput(sourceInput) && archiveRelativePath != null && !archiveRelativePath.isBlank()) {
+            var archiveLangFiles = FileUtil.resolveArchiveLanguageFiles(sourceInput, archiveRelativePath, preferredMainLanguage);
+            if (!archiveLangFiles.isEmpty()) {
+                tableView.loadLanguagesToTable(archiveLangFiles);
+                loaded = !tableView.getItems().isEmpty();
+                String preferred = preferredMainLanguage == null ? "" : preferredMainLanguage.trim();
+                if (!preferred.isBlank() && archiveLangFiles.containsKey(preferred)) {
+                    effectiveOpenedFile = archiveLangFiles.get(preferred);
+                } else {
+                    effectiveOpenedFile = archiveLangFiles.values().iterator().next();
+                }
+            } else {
+                loaded = FileUtil.loadSelectedFile2(loadTarget, tableView);
+            }
+        } else {
+            loaded = FileUtil.loadSelectedFile2(loadTarget, tableView);
+        }
+        if (!loaded) {
+            // Fallback parser path for archives/custom txt structures.
+            FileUtil.loadSelectedFile(loadTarget, tableView);
+            loaded = !tableView.getItems().isEmpty();
+        }
         if (!loaded) {
             clear();
             return false;
         }
 
-        openedFile = fileSelected;
-        projectRoot = findProjectRootFromFile(fileSelected).orElse(null);
+        openedFile = effectiveOpenedFile;
+        this.sourceInput = sourceInput != null ? sourceInput : loadTarget;
+        this.archiveRelativePath = archiveRelativePath != null && !archiveRelativePath.isBlank()
+                ? archiveRelativePath.replace('\\', '/')
+                : FileUtil.deriveLocalizedRelativePath(effectiveOpenedFile);
+        projectRoot = findProjectRootFromFile(effectiveOpenedFile).orElse(null);
 
-        // File loaded successfully — open succeeded
         return true;
     }
 
     public void clear() {
         openedFile = null;
         projectRoot = null;
+        sourceInput = null;
+        archiveRelativePath = null;
     }
-
 
     public boolean saveTarget(CustomTableView tableView, String targetUiLang) {
         if (openedFile == null) return false;
         if (targetUiLang == null || targetUiLang.isBlank()) return false;
 
         String fileText = tableView.buildFileTextForLang(targetUiLang);
-        return FileUtil.saveToTargetLanguage(openedFile, projectRoot, targetUiLang, fileText);
+        return FileUtil.saveToTargetLanguage(
+                openedFile,
+                projectRoot,
+                sourceInput,
+                archiveRelativePath,
+                targetUiLang,
+                fileText
+        );
     }
+
     public boolean saveAllTargets(CustomTableView tableView) {
         if (openedFile == null) return false;
 
-        // get languages directly from table columns (excluding N and key)
         List<String> langs = tableView.getColumns().stream()
                 .map(c -> c.getText())
-                .filter(t -> t != null && t.matches("[a-z]{2}[A-Z]{2}")) // ruRU, enUS, zhCN...
+                .filter(t -> t != null && t.matches("[a-z]{2}[A-Z]{2}"))
                 .toList();
 
         boolean ok = true;
@@ -65,14 +120,11 @@ public final class LocalizationProjectContext {
         }
         return ok;
     }
-    // ===== Helper methods =====
+
     private Optional<File> findProjectRootFromFile(File file) {
-        // search upward: .../<lang>.SC2Data/LocalizedData/<file>
-        // projectRoot = folder containing <lang>.SC2Data
-        File p = file.getParentFile(); // LocalizedData
+        File p = file.getParentFile();
         while (p != null) {
-            File name = p.getName() != null ? p : null;
-            if (name != null && p.getName().endsWith(".SC2Data")) {
+            if (p.getName() != null && p.getName().endsWith(".SC2Data")) {
                 return Optional.ofNullable(p.getParentFile());
             }
             p = p.getParentFile();

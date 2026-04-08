@@ -12,20 +12,28 @@ public class AppLauncher {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
                 AppLog.error("[APP] Uncaught exception in thread " + thread.getName(), throwable));
 
-        // Prefer hardware acceleration so the app is more likely to run on discrete GPU.
+        // Prefer hardware acceleration, but keep software fallback on machines with unstable GPU drivers.
         System.setProperty("prism.order", "d3d,sw");
-        System.setProperty("prism.forceGPU", "true");
         System.setProperty("prism.verbose", "false");
-        System.setProperty("sun.java2d.d3d", "true");
-        System.setProperty("sun.java2d.opengl", "true");
         System.setProperty("sun.java2d.noddraw", "false");
         System.setProperty("javafx.animation.fullspeed", "true");
+        if (isForceGpuRequested()) {
+            System.setProperty("prism.forceGPU", "true");
+            System.setProperty("sun.java2d.d3d", "true");
+            System.setProperty("sun.java2d.opengl", "true");
+            AppLog.info("[GPU] LE_FORCE_GPU=true, forcing hardware pipeline");
+        }
 
         // On Windows, request "High Performance" GPU profile for java/javaw executables.
         // This writes per-user preference and does not require admin rights.
         configureWindowsHighPerformanceGpuPreference();
 
         Main.main(args);
+    }
+
+    private static boolean isForceGpuRequested() {
+        String value = System.getenv("LE_FORCE_GPU");
+        return value != null && Boolean.parseBoolean(value.trim());
     }
 
     private static void configureWindowsHighPerformanceGpuPreference() {

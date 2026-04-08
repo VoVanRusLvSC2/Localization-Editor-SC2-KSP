@@ -8,6 +8,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 
 public final class TranslationProgressOverlay extends StackPane {
 
@@ -33,7 +34,7 @@ public final class TranslationProgressOverlay extends StackPane {
             }
         });
 
-        VBox content = new VBox(8, title, line1, line2, percent, bar);
+        VBox content = new VBox(UiScaleHelper.scaleY(8), title, line1, line2, percent, bar);
         content.setAlignment(Pos.CENTER);
 
         VBox inner = new VBox(content);
@@ -52,7 +53,7 @@ public final class TranslationProgressOverlay extends StackPane {
         frame.setMaxHeight(UiScaleHelper.scaleY(190));
 
         StackPane.setAlignment(frame, Pos.TOP_CENTER);
-        StackPane.setMargin(frame, new Insets(80, 0, 0, 0));
+        StackPane.setMargin(frame, new Insets(UiScaleHelper.scaleY(80), 0, 0, 0));
 
         getChildren().add(frame);
 
@@ -61,6 +62,16 @@ public final class TranslationProgressOverlay extends StackPane {
         line2.getStyleClass().add("nova-line2");
         percent.getStyleClass().add("nova-percent");
         bar.getStyleClass().add("translation-progress-bar");
+
+        line1.setWrapText(true);
+        line2.setWrapText(true);
+        line1.setTextAlignment(TextAlignment.CENTER);
+        line2.setTextAlignment(TextAlignment.CENTER);
+        line1.setAlignment(Pos.CENTER);
+        line2.setAlignment(Pos.CENTER);
+        line1.setMaxWidth(UiScaleHelper.scaleX(470));
+        line2.setMaxWidth(UiScaleHelper.scaleX(470));
+
         bar.setMaxWidth(Double.MAX_VALUE);
         bar.prefWidthProperty().bind(frame.widthProperty().multiply(0.90));
     }

@@ -9,6 +9,7 @@ public class FileSelectableImpl implements FileSelectable {
         this.fileTitleLabel = fileTitleLabel;
     }
 
+    @Override
     public void onSelect(File file) {
         fileTitleLabel.setText(file.getName());
     }
