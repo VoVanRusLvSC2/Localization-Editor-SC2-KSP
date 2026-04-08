@@ -49,7 +49,10 @@
 }
 .table-view .table-cell.col-key {
     -fx-text-fill: #e7b98a;
-    -fx-font-size: 1.1em;
+    -fx-font-size: 1em;
+}
+.table-view .table-cell.col-n {
+    -fx-padding: 0.18em 0.22em;
 }
 /*.table-view .table-cell.col-key .text {
     -fx-fill: #fff5e6;
@@ -58,7 +61,7 @@
     -fx-effect: dropshadow(gaussian, #cc5c28, 8, 0.15, 0, 0);
 } */
 .table-view .table-cell.col-n .text {
-    -fx-font-size: 1.6em; /* ≈ 16px если base 13–14px */
+    -fx-font-size: 1.15em; /* ≈ 16px если base 13–14px */
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, #cc5c28, 10, 0.2, 0, 0);
 }
@@ -172,7 +175,7 @@
     -fx-border-image-insets: 0;
     -fx-padding: 0.1em 0.5em;
     -fx-min-height: 2em; /* ~22px */
-    -fx-font-size: 1.05em;
+    -fx-font-size: 1.15em;
     -fx-highlight-fill: #3b1a0f;
     -fx-highlight-text-fill: white;
 }
@@ -189,7 +192,7 @@
     -fx-blend-mode: lighten;
     -fx-text-fill: #80d2a2;
     -fx-font-weight: bold;
-    -fx-font-size: 1.05em;
+    -fx-font-size: 1.15em;
 }
 /* ===== FIX: white "corner" at top-right of TableView ===== */
 .table-view .corner,
@@ -263,3 +266,5 @@
 .table-view .custom-table-cell:editing {
     -fx-font-weight: bold;
 }
+
+

@@ -1,26 +1,49 @@
 package lv.lenc;
 
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.stage.Screen;
 
 public class UiScaleHelper {
-    public static final double REAL_SCREEN_WIDTH;
-    public static final double REAL_SCREEN_HEIGHT;
-    public static final double SCREEN_WIDTH;
-    public static final double SCREEN_HEIGHT;
+    public static double REAL_SCREEN_WIDTH;
+    public static double REAL_SCREEN_HEIGHT;
+    public static double SCREEN_WIDTH;
+    public static double SCREEN_HEIGHT;
     public static final double BASE_W = 1920.0;
     public static final double BASE_H = 1080.0;
-    public static final double UNIFORM_SCALE;
-    public static final double CONTENT_OFFSET_X;
-    public static final double CONTENT_OFFSET_Y;
+    public static double UNIFORM_SCALE;
+    public static double CONTENT_OFFSET_X;
+    public static double CONTENT_OFFSET_Y;
 
     static {
-        REAL_SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
-        REAL_SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();
+        refreshFromPrimaryScreen();
+    }
 
+    public static synchronized void refreshFromPrimaryScreen() {
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        applyScale(bounds.getWidth(), bounds.getHeight());
+    }
+
+    public static synchronized void refreshFromScene(Scene scene) {
+        if (scene == null) {
+            refreshFromPrimaryScreen();
+            return;
+        }
+        double w = scene.getWidth();
+        double h = scene.getHeight();
+        if (w <= 1.0 || h <= 1.0) {
+            refreshFromPrimaryScreen();
+            return;
+        }
+        applyScale(w, h);
+    }
+
+    private static void applyScale(double w, double h) {
+        REAL_SCREEN_WIDTH = w;
+        REAL_SCREEN_HEIGHT = h;
         UNIFORM_SCALE = Math.min(REAL_SCREEN_WIDTH / BASE_W, REAL_SCREEN_HEIGHT / BASE_H);
         SCREEN_WIDTH = BASE_W * UNIFORM_SCALE;
         SCREEN_HEIGHT = BASE_H * UNIFORM_SCALE;
-
         CONTENT_OFFSET_X = (REAL_SCREEN_WIDTH - SCREEN_WIDTH) * 0.5;
         CONTENT_OFFSET_Y = (REAL_SCREEN_HEIGHT - SCREEN_HEIGHT) * 0.5;
     }

@@ -3,6 +3,8 @@ package lv.lenc;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -13,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -27,16 +30,28 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class SettingBox {
-    private static final double SETTINGS_WINDOW_SCALE = 1.375;
+    private static final double SETTINGS_WINDOW_SCALE = 1.5125;
+
+    private static double effectiveSettingsScale() {
+        double ui = UiScaleHelper.scale(1.0);
+        if (ui >= 1.0) {
+            return SETTINGS_WINDOW_SCALE;
+        }
+        // On smaller-than-FHD resolutions reduce the extra boost,
+        // so text and paddings stay readable and do not collapse.
+        double adaptiveFactor = 0.68 + 0.32 * ui;
+        return SETTINGS_WINDOW_SCALE * adaptiveFactor;
+    }
 
     private static double sv(double fullHdValue) {
-        return fullHdValue * SETTINGS_WINDOW_SCALE;
+        return fullHdValue * effectiveSettingsScale();
     }
 
     private static double sx(double fullHdValue) {
@@ -130,6 +145,7 @@ public class SettingBox {
     private static StackPane overlayRoot;     // full-screen dim layer
     private static StackPane windowHolder;    // centers the window
     private static Pane windowContent;        // actual settings window (your old root)
+    private static final List<Consumer<Boolean>> visibilityListeners = new CopyOnWriteArrayList<>();
 
     private SettingBox() {}
 
@@ -212,6 +228,10 @@ public class SettingBox {
             CustomBorder borderTable,
             CustomTableView tableView
     ) {
+        if (appRoot != null && appRoot.getScene() != null) {
+            UiScaleHelper.refreshFromScene(appRoot.getScene());
+        }
+
         if (overlayRoot == null) {
             overlayRoot = buildOverlay(appRoot, localization, background, longButton, main, borderTable, tableView);
             appRoot.getChildren().add(overlayRoot);
@@ -237,6 +257,7 @@ public class SettingBox {
         overlayRoot.setVisible(true);
         overlayRoot.setOpacity(0);
         overlayRoot.setMouseTransparent(false);
+        notifyVisibilityChanged(true);
 
         Platform.runLater(() -> {
             overlayRoot.applyCss();
@@ -274,6 +295,7 @@ public class SettingBox {
         if (overlayRoot != null) {
             overlayRoot.setVisible(false);
             overlayRoot.setMouseTransparent(true);
+            notifyVisibilityChanged(false);
         }
         if (blurredTarget != null && blurredTarget.getEffect() == blurEffect) {
             javafx.animation.Timeline blurOut = new javafx.animation.Timeline(
@@ -431,7 +453,7 @@ public class SettingBox {
 
         Region lefthighlightRegion = new Region();
         lefthighlightRegion.setMinWidth(sx(162));
-        lefthighlightRegion.setMinHeight(sy(470));
+        lefthighlightRegion.setMinHeight(sy(484));
         StackPane.setAlignment(lefthighlightRegion, Pos.TOP_LEFT);
         lefthighlightRegion.setBorder(new Border(highlightBorder));
 
@@ -590,7 +612,11 @@ public class SettingBox {
 
         HBox defaultSaveRow = new HBox(sx(8), uiDEFAUTBUTTON, saveButton);
         defaultSaveRow.setAlignment(Pos.CENTER);
-        VBox.setMargin(defaultSaveRow, new Insets(sy(-9), 0, 0, 0));
+        VBox.setMargin(defaultSaveRow, new Insets(sy(2), 0, 0, 0));
+        defaultSaveRow.setTranslateY(-sy(22));
+
+        Region uiBottomSpacer = new Region();
+        VBox.setVgrow(uiBottomSpacer, Priority.ALWAYS);
 
         VBox uiBox = new VBox(
                 sy(10),
@@ -601,6 +627,7 @@ public class SettingBox {
                 backgroundLightCheckBox,
                 tableLightCheckBox,
                 shimmerRow,
+                uiBottomSpacer,
                 defaultSaveRow
         );
         uiBox.setAlignment(Pos.TOP_CENTER);
@@ -859,7 +886,7 @@ public class SettingBox {
         // -------------------------
         // API Panel (Google key)
         // -------------------------
-        VBox apiBox = new VBox(
+        VBox apiServicesContent = new VBox(
                 sy(8),
                 googleApiKeyLabel,
                 googleApiKeyRow,
@@ -868,13 +895,53 @@ public class SettingBox {
                 siliconFlowApiKeyLabel,
                 siliconFlowApiKeyRow,
                 deepLApiKeyLabel,
-                deepLApiKeyRow,
+                deepLApiKeyRow
+        );
+        apiServicesContent.setAlignment(Pos.TOP_CENTER);
+        apiServicesContent.setFillWidth(true);
+        apiServicesContent.setPadding(new Insets(sy(10), sx(5), sy(6), sx(5)));
+        apiServicesContent.setPrefWidth(sx(282));
+        apiServicesContent.setMaxWidth(sx(282));
+
+        ScrollPane apiServicesScroll = new ScrollPane(apiServicesContent);
+        apiServicesScroll.setFitToWidth(true);
+        apiServicesScroll.setFitToHeight(false);
+        apiServicesScroll.setPannable(true);
+        apiServicesScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        apiServicesScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        apiServicesScroll.setPrefViewportHeight(sy(312));
+        apiServicesScroll.setMinViewportHeight(sy(312));
+        apiServicesScroll.setMaxHeight(sy(312));
+        apiServicesScroll.setPrefWidth(sx(292));
+        apiServicesScroll.setMaxWidth(sx(292));
+        apiServicesScroll.getStyleClass().add("settings-api-services-scroll");
+        apiServicesScroll.setStyle("-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;");
+
+        StackPane apiServicesPanel = new StackPane(apiServicesScroll);
+        apiServicesPanel.setPrefWidth(sx(292));
+        apiServicesPanel.setMaxWidth(sx(292));
+        apiServicesPanel.setPrefHeight(sy(336));
+        apiServicesPanel.setMaxHeight(sy(336));
+        apiServicesPanel.setPadding(new Insets(sy(4), sx(4), sy(4), sx(4)));
+        apiServicesPanel.setStyle(
+                "-fx-background-color: linear-gradient(to bottom, rgba(42, 13, 8, 0.97), rgba(28, 9, 7, 0.97));"
+                        + "-fx-border-color: transparent;"
+                        + "-fx-border-image-source: url('" + texturePath + "ui_nova_archives_listitem_selected.png');"
+                        + "-fx-border-image-slice: 14;"
+                        + "-fx-border-image-width: 8;"
+                        + "-fx-border-image-repeat: stretch;"
+                        + "-fx-effect: dropshadow(gaussian, rgba(255, 132, 46, 0.46), " + sy(15) + ", 0.34, 0, 0);"
+        );
+
+        VBox apiBox = new VBox(
+                sy(8),
+                apiServicesPanel,
                 apiGuideWrap,
                 saveApiKeysWrap
         );
         apiBox.setAlignment(Pos.TOP_CENTER);
         apiBox.setPadding(new Insets(sy(10), sx(10), sy(12), sx(10)));
-        apiBox.setTranslateY(-sy(8));
+        apiBox.setTranslateY(-sy(14));
         Pane apiView = new StackPane(apiBox);
 
         // -------------------------
@@ -920,9 +987,9 @@ public class SettingBox {
         otherView.setVisible(false);
 
         StackPane rightPanel = new StackPane(languageView, uiView, dictionariesView, controlsView, apiView, otherView);
-        rightPanel.setMinSize(sx(316), sy(470));
-        rightPanel.setMaxSize(sx(316), sy(470));
-        rightPanel.setPrefSize(sx(316), sy(470));
+        rightPanel.setMinSize(sx(316), sy(484));
+        rightPanel.setMaxSize(sx(316), sy(484));
+        rightPanel.setPrefSize(sx(316), sy(484));
         rightPanel.setBorder(new Border(highlightBorder));
         rightPanel.setAlignment(Pos.TOP_CENTER);
         rightPanel.setPadding(new Insets(sy(10), sx(10), sy(10), sx(10)));
@@ -937,12 +1004,12 @@ public class SettingBox {
                 localization.get("setting.box.other"),
         };
 
-        languageView.setMinSize(sx(306), sy(470));
-        uiView.setMinSize(sx(306), sy(470));
-        dictionariesView.setMinSize(sx(306), sy(470));
-        controlsView.setMinSize(sx(306), sy(470));
-        apiView.setMinSize(sx(306), sy(470));
-        otherView.setMinSize(sx(306), sy(470));
+        languageView.setMinSize(sx(306), sy(484));
+        uiView.setMinSize(sx(306), sy(484));
+        dictionariesView.setMinSize(sx(306), sy(484));
+        controlsView.setMinSize(sx(306), sy(484));
+        apiView.setMinSize(sx(306), sy(484));
+        otherView.setMinSize(sx(306), sy(484));
 
         menuButtons = new CustomLanguageButton[6];
 
@@ -971,14 +1038,14 @@ public class SettingBox {
                         + buttonHeight / 2.0;
 
                 double markerHeight = selectionMarkImage.getBoundsInParent().getHeight();
-                double baseOffset = sy(28);
+                double baseOffset = sy(25);
                 double scaleFactor = UiScaleHelper.scale(1);
 
                 double hdLift = (scaleFactor < 1.0) ? sy(6) : 0.0;
                 double adjustedY = centerY - markerHeight / 2.0 + baseOffset - hdLift;
 
                 selectionMarkImage.setLayoutY(adjustedY);
-                selectionMarkImage.setLayoutX(-sx(20));
+                selectionMarkImage.setLayoutX(-sx(25));
                 selectionMarkImage.setVisible(true);
 
                 selectionMarkImage.setOpacity(0);
@@ -1020,9 +1087,9 @@ public class SettingBox {
         HBox contentLayout = new HBox(0, leftPanel, rightPanel);
         contentLayout.setAlignment(Pos.TOP_LEFT);
         contentLayout.setPadding(new Insets(
-                sy(12),
+                sy(16),
                 sx(6),
-                sy(20),
+                sy(2),
                 sx(8)
         ));
 
@@ -1119,6 +1186,26 @@ public class SettingBox {
         if (overlayRoot != null && overlayRoot.isVisible()) {
             overlayRoot.setVisible(false);
             overlayRoot.setMouseTransparent(true);
+            notifyVisibilityChanged(false);
+        }
+    }
+
+    public static boolean isOverlayVisible() {
+        return overlayRoot != null && overlayRoot.isVisible() && !overlayRoot.isMouseTransparent();
+    }
+
+    public static void addVisibilityListener(Consumer<Boolean> listener) {
+        if (listener != null) {
+            visibilityListeners.add(listener);
+        }
+    }
+
+    private static void notifyVisibilityChanged(boolean visible) {
+        for (Consumer<Boolean> listener : visibilityListeners) {
+            try {
+                listener.accept(visible);
+            } catch (Exception ignored) {
+            }
         }
     }
     public static void prewarm(

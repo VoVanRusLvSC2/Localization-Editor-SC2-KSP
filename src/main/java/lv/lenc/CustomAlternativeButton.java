@@ -2,7 +2,9 @@ package lv.lenc;
 
 import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
+import javafx.scene.Scene;
 import javafx.scene.text.Font;
+import javafx.beans.value.ChangeListener;
 
 public class CustomAlternativeButton extends Button implements Disabable {
 
@@ -13,6 +15,7 @@ public class CustomAlternativeButton extends Button implements Disabable {
     private final double widthPxFullHD;
     private final double heightPxFullHD;
     private final double fontPxFullHD;
+    private final ChangeListener<Number> sceneScaleListener = (obs, oldV, newV) -> refreshScaledSizing();
 
     /**
      * Constructor exactly matching your call:
@@ -38,6 +41,7 @@ public class CustomAlternativeButton extends Button implements Disabable {
         setEffect(glow);
 
         bindBehavior();
+        bindScaleRefresh();
     }
 
     private void applyScaledSizing() {
@@ -45,15 +49,37 @@ public class CustomAlternativeButton extends Button implements Disabable {
         double w = UiScaleHelper.scaleX(widthPxFullHD);
         double h = UiScaleHelper.scaleY(heightPxFullHD);
 
-        // uniform font scaling (no crooked text)
-        double fontScale = Math.min(UiScaleHelper.scaleX(1.0), UiScaleHelper.scaleY(1.0));
+        // uniform font scaling with a safe floor so text never disappears
+        double fontPx = Math.max(fontPxFullHD * UiScaleHelper.UNIFORM_SCALE, 10.0);
 
-        double fontPx = fontPxFullHD * fontScale;
-
+        setMinSize(w, h);
         setPrefSize(w, h);
         setMaxSize(w, h);
 
         setFont(Font.font("Arial Black", fontPx));
+    }
+
+    private void refreshScaledSizing() {
+        Scene scene = getScene();
+        if (scene != null) {
+            UiScaleHelper.refreshFromScene(scene);
+        }
+        applyScaledSizing();
+    }
+
+    private void bindScaleRefresh() {
+        sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (oldScene != null) {
+                oldScene.widthProperty().removeListener(sceneScaleListener);
+                oldScene.heightProperty().removeListener(sceneScaleListener);
+            }
+            if (newScene != null) {
+                UiScaleHelper.refreshFromScene(newScene);
+                newScene.widthProperty().addListener(sceneScaleListener);
+                newScene.heightProperty().addListener(sceneScaleListener);
+                applyScaledSizing();
+            }
+        });
     }
 
     private void bindBehavior() {

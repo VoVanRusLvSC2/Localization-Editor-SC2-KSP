@@ -6,37 +6,45 @@
     -fx-background-color: transparent;
 
     /* Same as your inline style */
-    -fx-control-inner-background: #1d1309;
-    -fx-base: #d8a74f;
-    -fx-focus-color: #e0b764;
+    -fx-control-inner-background: #261108;
+    -fx-base: #ffb454;
+    -fx-focus-color: #ffc674;
     -fx-faint-focus-color: transparent;
 
     /* Padding (replace UiScaleHelper with fixed values) */
     -fx-padding: 2 0 2 0;
 }
 
-/* Track styling (optional, but usually looks better) */
 .slider.custom-slider .track {
-    -fx-background-color: #1d1309;
+    -fx-background-color: linear-gradient(to bottom, rgba(56, 19, 9, 1), rgba(24, 10, 7, 1));
     -fx-background-insets: 0;
-    -fx-background-radius: 4;
+    -fx-background-radius: 5;
+    -fx-border-color: rgba(255, 145, 58, 0.92);
+    -fx-border-width: 1.2;
+    -fx-border-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(255, 118, 36, 0.55), 10, 0.32, 0, 0),
+        innershadow(gaussian, rgba(255, 181, 106, 0.22), 6, 0.25, 0, 0);
 }
 
-/* Thumb styling (optional) */
 .slider.custom-slider .thumb {
-    -fx-background-color: #d8a74f;
+    -fx-background-color: linear-gradient(to bottom, #ffd996, #ffb24f);
     -fx-background-insets: 0;
-    -fx-background-radius: 999;
+    -fx-background-radius: 3;
+    -fx-border-color: rgba(255, 231, 182, 1);
+    -fx-border-width: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(255, 170, 74, 0.95), 12, 0.48, 0, 0),
+        dropshadow(gaussian, rgba(255, 102, 26, 0.78), 20, 0.35, 0, 0);
 }
-/* Track (background bar) */
-.slider.custom-slider .track {
-    -fx-background-color: #1d1309;
-    -fx-background-insets: 0;
-    -fx-background-radius: 6;
 
-    /* Missing border / outline */
-    -fx-border-color: #d8a74f;      /* warm gold */
-    -fx-border-width: 1;
-    -fx-border-insets: 0;
-    -fx-border-radius: 6;
+.slider.custom-slider .thumb:hover {
+    -fx-background-color: linear-gradient(to bottom, #ffe4b5, #ffc265);
+    -fx-border-color: rgba(255, 241, 210, 1);
+    -fx-effect: dropshadow(gaussian, rgba(255, 192, 108, 1), 14, 0.52, 0, 0),
+        dropshadow(gaussian, rgba(255, 124, 43, 0.88), 24, 0.36, 0, 0);
+}
+
+.slider.custom-slider .thumb:pressed {
+    -fx-background-color: linear-gradient(to bottom, #ffc673, #f79b2d);
+    -fx-border-color: rgba(255, 213, 152, 0.98);
+    -fx-effect: dropshadow(gaussian, rgba(255, 146, 57, 0.85), 9, 0.38, 0, 0);
 }

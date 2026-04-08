@@ -162,6 +162,13 @@ final class InAppSwingFileChooserDialog {
         navigateTo(resolveInitialDirectory(initialSelection), initialSelection);
     }
 
+    private double sf(double fullHdPx, double minPx) {
+        return Math.max(UiScaleHelper.scaleY(fullHdPx), minPx);
+    }
+    private double sfx(double fullHdPx, double minPx) {
+        return Math.max(UiScaleHelper.scaleX(fullHdPx), minPx);
+    }
+
     static void show(Node owner,
                      LocalizationManager localization,
                      File initialSelection,
@@ -169,6 +176,7 @@ final class InAppSwingFileChooserDialog {
         if (owner == null || owner.getScene() == null || onConfirm == null) {
             return;
         }
+        UiScaleHelper.refreshFromScene(owner.getScene());
         Parent sceneRoot = owner.getScene().getRoot();
         if (!(sceneRoot instanceof Pane pane)) {
             return;
@@ -185,30 +193,30 @@ final class InAppSwingFileChooserDialog {
         FileOpenDialogStyle.ensureStylesheet(overlay);
 
         Label title = new Label(text("\u041e\u0442\u043a\u0440\u044b\u0442\u044c", "Open"));
-        title.setStyle(FileOpenDialogStyle.titleStyle(UiScaleHelper.scaleY(18)));
+        title.setStyle(FileOpenDialogStyle.titleStyle(sf(18, 13)));
 
         statusLabel.setWrapText(true);
-        statusLabel.setStyle(FileOpenDialogStyle.statusStyle(UiScaleHelper.scaleY(12)));
+        statusLabel.setStyle(FileOpenDialogStyle.statusStyle(sf(12, 10)));
 
         HBox titleBar = new HBox(title);
         titleBar.setAlignment(Pos.CENTER_LEFT);
         enableDragging(titleBar);
 
-        HBox pathBar = new HBox(UiScaleHelper.scaleX(8), upButton, pathField, searchField);
+        HBox pathBar = new HBox(sfx(8, 6), upButton, pathField, searchField);
         pathBar.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(pathField, Priority.ALWAYS);
-        searchField.setPrefWidth(UiScaleHelper.scaleX(240));
+        searchField.setPrefWidth(Math.max(UiScaleHelper.scaleX(240), UiScaleHelper.scaleX(180)));
 
         SplitPane splitPane = new SplitPane(placesList, filesTable);
         splitPane.getStyleClass().add("file-open-split");
         splitPane.setDividerPositions(0.24);
-        splitPane.setPrefHeight(UiScaleHelper.scaleY(380));
+        splitPane.setPrefHeight(sf(380, 260));
         VBox.setVgrow(splitPane, Priority.ALWAYS);
         splitPane.setStyle("-fx-background-color: transparent;");
 
         Label fileNameLabel = new Label(text("\u0418\u043c\u044f \u0444\u0430\u0439\u043b\u0430:", "File name:"));
         styleFormLabel(fileNameLabel);
-        HBox fileRow = new HBox(UiScaleHelper.scaleX(8), fileNameLabel, fileNameField);
+        HBox fileRow = new HBox(sfx(8, 6), fileNameLabel, fileNameField);
         fileRow.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(fileNameField, Priority.ALWAYS);
 
@@ -216,10 +224,10 @@ final class InAppSwingFileChooserDialog {
         styleFormLabel(filterLabel);
         Region buttonSpacer = new Region();
         HBox.setHgrow(buttonSpacer, Priority.ALWAYS);
-        HBox actions = new HBox(UiScaleHelper.scaleX(10), filterLabel, filterCombo, buttonSpacer, openButton, cancelButton);
+        HBox actions = new HBox(sfx(10, 8), filterLabel, filterCombo, buttonSpacer, openButton, cancelButton);
         actions.setAlignment(Pos.CENTER_LEFT);
 
-        panel.setSpacing(UiScaleHelper.scaleY(10));
+        panel.setSpacing(sf(10, 7));
         panel.getChildren().setAll(
                 titleBar,
                 statusLabel,
@@ -232,14 +240,16 @@ final class InAppSwingFileChooserDialog {
             panel.getStyleClass().add("file-open-panel");
         }
         panel.setPadding(new Insets(
-                UiScaleHelper.scaleY(14),
-                UiScaleHelper.scaleX(14),
-                UiScaleHelper.scaleY(14),
-                UiScaleHelper.scaleX(14)
+                sf(14, 10),
+                sfx(14, 10),
+                sf(14, 10),
+                sfx(14, 10)
         ));
-        panel.setMinSize(UiScaleHelper.scaleX(920), UiScaleHelper.scaleY(590));
-        panel.setPrefSize(UiScaleHelper.scaleX(920), UiScaleHelper.scaleY(590));
-        panel.setMaxSize(UiScaleHelper.scaleX(920), UiScaleHelper.scaleY(590));
+        double panelW = Math.max(UiScaleHelper.scaleX(920), UiScaleHelper.scaleX(720));
+        double panelH = Math.max(UiScaleHelper.scaleY(590), UiScaleHelper.scaleY(470));
+        panel.setMinSize(panelW, panelH);
+        panel.setPrefSize(panelW, panelH);
+        panel.setMaxSize(panelW, panelH);
         panel.setStyle(FileOpenDialogStyle.panelStyle());
 
         overlay.getChildren().setAll(dim, panel);
@@ -258,6 +268,7 @@ final class InAppSwingFileChooserDialog {
         applyBackgroundBlur();
         host.getChildren().add(overlay);
         overlay.toFront();
+        applyTableHeaderScale();
         playOpenAnimation();
         Platform.runLater(pathField::requestFocus);
     }
@@ -267,9 +278,9 @@ final class InAppSwingFileChooserDialog {
         openButton.setText(text("\u041e\u0442\u043a\u0440\u044b\u0442\u044c", "Open"));
         cancelButton.setText(text("\u041e\u0442\u043c\u0435\u043d\u0430", "Cancel"));
 
-        styleButton(upButton, 96);
-        styleButton(openButton, 122);
-        styleButton(cancelButton, 122);
+        styleButton(upButton, 110);
+        styleButton(openButton, 150);
+        styleButton(cancelButton, 150);
         upButton.getStyleClass().add("file-open-button-compact");
 
         upButton.setOnAction(event -> navigateUp());
@@ -288,10 +299,10 @@ final class InAppSwingFileChooserDialog {
                 setText(empty || item == null ? null : item.label);
             }
         });
-        placesList.setFixedCellSize(UiScaleHelper.scaleY(30));
-        placesList.setPrefWidth(UiScaleHelper.scaleX(190));
-        placesList.setMinWidth(UiScaleHelper.scaleX(190));
-        placesList.setStyle(FileOpenDialogStyle.listSurfaceStyle(UiScaleHelper.scaleY(12)));
+        placesList.setFixedCellSize(sf(30, 22));
+        placesList.setPrefWidth(sfx(190, 150));
+        placesList.setMinWidth(sfx(190, 150));
+        placesList.setStyle(FileOpenDialogStyle.listSurfaceStyle(sf(13, 11)));
         placesList.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (handleTypeAheadInPlaces(event)) {
                 event.consume();
@@ -315,17 +326,17 @@ final class InAppSwingFileChooserDialog {
                 "\u0412 \u044d\u0442\u043e\u0439 \u043f\u0430\u043f\u043a\u0435 \u043d\u0435\u0442 \u043f\u043e\u0434\u0445\u043e\u0434\u044f\u0449\u0438\u0445 \u0444\u0430\u0439\u043b\u043e\u0432.",
                 "This folder has no matching files."
         )));
-        filesTable.setStyle(FileOpenDialogStyle.tableSurfaceStyle(UiScaleHelper.scaleY(12)));
+        filesTable.setStyle(FileOpenDialogStyle.tableSurfaceStyle(sf(13, 11)));
         filesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        filesTable.setFixedCellSize(UiScaleHelper.scaleY(30));
+        filesTable.setFixedCellSize(sf(30, 22));
 
         TableColumn<FileEntry, String> nameColumn = new TableColumn<>(text("\u0418\u043c\u044f", "Name"));
         nameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().name));
-        nameColumn.setPrefWidth(UiScaleHelper.scaleX(470));
+        nameColumn.setPrefWidth(sfx(470, 280));
 
         TableColumn<FileEntry, String> typeColumn = new TableColumn<>(text("\u0422\u0438\u043f", "Type"));
         typeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().type));
-        typeColumn.setPrefWidth(UiScaleHelper.scaleX(150));
+        typeColumn.setPrefWidth(sfx(150, 100));
         typeColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -392,15 +403,15 @@ final class InAppSwingFileChooserDialog {
                 setText(empty || item == null ? null : item.label);
             }
         });
-        filterCombo.setPrefWidth(UiScaleHelper.scaleX(350));
-        filterCombo.setStyle(FileOpenDialogStyle.fieldStyle(UiScaleHelper.scaleY(12)));
+        filterCombo.setPrefWidth(sfx(350, 240));
+        filterCombo.setStyle(FileOpenDialogStyle.fieldStyle(sf(13, 11)));
         // Keep a static filter label: do not open dropdown list.
         filterCombo.setMouseTransparent(true);
         filterCombo.setFocusTraversable(false);
     }
 
     private void configureFields() {
-        String fieldStyle = FileOpenDialogStyle.fieldStyle(UiScaleHelper.scaleY(12));
+        String fieldStyle = FileOpenDialogStyle.fieldStyle(sf(13, 11));
         pathField.setStyle(fieldStyle);
         searchField.setStyle(fieldStyle);
         fileNameField.setStyle(fieldStyle);
@@ -802,19 +813,30 @@ final class InAppSwingFileChooserDialog {
     }
 
     private void styleButton(Button button, double width) {
-        button.setMinWidth(UiScaleHelper.scaleX(width));
-        button.setPrefWidth(UiScaleHelper.scaleX(width));
-        button.setMinHeight(UiScaleHelper.scaleY(36));
-        button.setPrefHeight(UiScaleHelper.scaleY(36));
+        button.setMinWidth(sfx(width, width * 0.72));
+        button.setPrefWidth(sfx(width, width * 0.72));
+        button.setMinHeight(sf(38, 30));
+        button.setPrefHeight(sf(38, 30));
         button.setFocusTraversable(false);
         button.setAlignment(Pos.CENTER);
+        button.setStyle(
+                "-fx-font-size: " + sf(13, 11) + "px;"
+                        + "-fx-padding: 0 " + sfx(12, 8) + "px 0 "
+                        + sfx(12, 8) + "px;"
+        );
         if (!button.getStyleClass().contains("file-open-button")) {
             button.getStyleClass().add("file-open-button");
         }
     }
 
+    private void applyTableHeaderScale() {
+        final double headerFont = sf(13, 11);
+        Platform.runLater(() -> filesTable.lookupAll(".column-header .label")
+                .forEach(node -> node.setStyle("-fx-font-size: " + headerFont + "px; -fx-font-weight: 700;")));
+    }
+
     private void styleFormLabel(Label label) {
-        label.setStyle(FileOpenDialogStyle.formLabelStyle(UiScaleHelper.scaleY(12)));
+        label.setStyle(FileOpenDialogStyle.formLabelStyle(sf(12, 10)));
     }
 
     private void close() {

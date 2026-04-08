@@ -513,14 +513,14 @@
 
 .key-filter-tree {
     -fx-background-color: rgba(0, 0, 0, 0.98);
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
 }
 
 .key-filter-tree .tree-cell {
     -fx-background-color: rgba(0, 0, 0, 0.90);
     -fx-text-fill: #80d2a2;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-padding: 4 8;
     -fx-border-color: transparent;
     -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_normal.png");
@@ -612,7 +612,7 @@
     -fx-padding: 0 10;
     -fx-alignment: center;
     -fx-font-family: "Arial Black";
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-font-weight: bold;
     -fx-text-fill: #80d2a2;
     -fx-border-color: transparent;
@@ -626,7 +626,7 @@
 .key-filter-table-button:hover {
     -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_over.png");
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-padding: 0 10;
     -fx-effect: dropshadow(gaussian, rgba(114, 255, 218, 0.45), 12, 0.32, 0, 0);
 }
@@ -634,7 +634,7 @@
 .key-filter-table-button:pressed {
     -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_selected.png");
     -fx-text-fill: #ffe7cb;
-    -fx-font-size: 14px;
+    -fx-font-size: 1em;
     -fx-padding: 0 10;
     -fx-effect: dropshadow(gaussian, rgba(84, 255, 200, 0.38), 12, 0.30, 0, 0),
         dropshadow(gaussian, rgba(44, 148, 112, 0.44), 18, 0.24, 0, 0);

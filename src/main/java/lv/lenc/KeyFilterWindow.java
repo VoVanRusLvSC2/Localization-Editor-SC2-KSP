@@ -113,6 +113,9 @@ public final class KeyFilterWindow {
 
     public static void show(StackPane appRoot, CustomTableView table, LocalizationManager localization, String selectedKey) {
         if (appRoot == null || table == null) return;
+        if (appRoot.getScene() != null) {
+            UiScaleHelper.refreshFromScene(appRoot.getScene());
+        }
 
         ensureOverlayAttached(appRoot);
 
@@ -326,6 +329,8 @@ public final class KeyFilterWindow {
         tree = new TreeView<>();
         tree.setShowRoot(false);
         tree.getStyleClass().add("key-filter-tree");
+        tree.setStyle("-fx-font-size: " + sf(14, 10.5) + "px;");
+        tree.setFixedCellSize(Math.max(UiScaleHelper.scaleY(44), 24));
         TreeItem<NodeData> root = new TreeItem<>(new NodeData("All keys", ""));
         root.setExpanded(true);
         buildTree(root, table);
@@ -562,6 +567,9 @@ public final class KeyFilterWindow {
         });
 
         appRoot.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (appRoot.getScene() != null) {
+                UiScaleHelper.refreshFromScene(appRoot.getScene());
+            }
             if (fullscreen) {
                 double targetW = Math.max(minPopupW, appRoot.getWidth() - UiScaleHelper.scaleX(16));
                 double targetH = Math.max(minPopupH, appRoot.getHeight() - UiScaleHelper.scaleY(16));
@@ -569,6 +577,9 @@ public final class KeyFilterWindow {
             }
         });
         appRoot.heightProperty().addListener((obs, oldVal, newVal) -> {
+            if (appRoot.getScene() != null) {
+                UiScaleHelper.refreshFromScene(appRoot.getScene());
+            }
             if (fullscreen) {
                 double targetW = Math.max(minPopupW, appRoot.getWidth() - UiScaleHelper.scaleX(16));
                 double targetH = Math.max(minPopupH, appRoot.getHeight() - UiScaleHelper.scaleY(16));
@@ -1187,8 +1198,12 @@ public final class KeyFilterWindow {
         Text node = new Text(chunk);
         node.setFill(javafx.scene.paint.Color.web(color));
         node.setUnderline(underline);
-        node.setStyle("-fx-font-family: \"Segoe UI\", \"Arial\", sans-serif; -fx-font-weight: bold; -fx-font-size: 16px;");
+        node.setStyle("-fx-font-family: \"Segoe UI\", \"Arial\", sans-serif; -fx-font-weight: bold; -fx-font-size: " + sf(16, 11) + "px;");
         flow.getChildren().add(node);
+    }
+
+    private static double sf(double fullHdPx, double minPx) {
+        return Math.max(UiScaleHelper.scaleY(fullHdPx), minPx);
     }
 
     private static void loadRowIntoEditors(LocalizationData row) {

@@ -220,8 +220,8 @@ public class Main extends Application {
         fileSelected = new CustomFileChooser(
                 localization,
                 createFileSelectable(tableView),
-                UiScaleHelper.scaleX(70),
-                UiScaleHelper.scaleY(70)
+                70,
+                70
         );
 
         BoxAlertTitle = new GlowingLabel(localization.get("label.ExitConfirmation"));
@@ -266,14 +266,14 @@ public class Main extends Application {
 
         keyFilterButton = new CustomAlternativeButton(
                 localizedFilterText(),
-                0.6, 0.8, 140.0, 56.0, 14.0
+                0.6, 0.8, 180.0, 56.0, 14.0
         );
         keyFilterButton.getStyleClass().remove("alt-button");
         keyFilterButton.getStyleClass().add("key-filter-table-button");
 
         tableFullscreenButton = new CustomAlternativeButton(
                 localizedTableFullscreenText(),
-                0.6, 0.8, 210.0, 56.0, 14.0
+                0.6, 0.8, 240.0, 56.0, 14.0
         );
         tableFullscreenButton.getStyleClass().remove("alt-button");
         tableFullscreenButton.getStyleClass().add("key-filter-table-button");
@@ -281,7 +281,7 @@ public class Main extends Application {
 
         tableSearchButton = new CustomAlternativeButton(
                 localizedSearchText(),
-                0.6, 0.8, 128.0, 56.0, 14.0
+                0.6, 0.8, 160.0, 56.0, 14.0
         );
         tableSearchButton.getStyleClass().remove("alt-button");
         tableSearchButton.getStyleClass().add("key-filter-table-button");
@@ -1263,7 +1263,7 @@ public class Main extends Application {
 
         windowedModeButton = new CustomAlternativeButton(
                 localizedWindowedModeText(),
-                0.6, 0.8, 148.0, 56.0, 14.0
+                0.6, 0.8, 182.0, 56.0, 14.0
         );
         windowedModeButton.getStyleClass().remove("alt-button");
         windowedModeButton.getStyleClass().add("key-filter-table-button");
@@ -1271,7 +1271,7 @@ public class Main extends Application {
 
         appFullscreenButton = new CustomAlternativeButton(
                 localizedAppFullscreenText(),
-                0.6, 0.8, 158.0, 56.0, 14.0
+                0.6, 0.8, 182.0, 56.0, 14.0
         );
         appFullscreenButton.getStyleClass().remove("alt-button");
         appFullscreenButton.getStyleClass().add("key-filter-table-button");

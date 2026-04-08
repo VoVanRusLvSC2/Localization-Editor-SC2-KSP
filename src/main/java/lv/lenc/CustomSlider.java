@@ -17,7 +17,7 @@ public class CustomSlider extends Slider {
         super(min, max, value);
 
         // Previously: setMaxWidth(scaleX(266)) — keep as base "current size"
-        double width = UiScaleHelper.scaleX(266);
+        double width = UiScaleHelper.scaleX(292);
         setMaxWidth(width);
         setPrefWidth(width);
         setMinWidth(Region.USE_PREF_SIZE);
@@ -42,15 +42,15 @@ public class CustomSlider extends Slider {
 
 
 
-        track.setMinHeight(UiScaleHelper.scaleY(8));
-        track.setPrefHeight(UiScaleHelper.scaleY(8));
-        track.setMaxHeight(UiScaleHelper.scaleY(8));
+        track.setMinHeight(UiScaleHelper.scaleY(10));
+        track.setPrefHeight(UiScaleHelper.scaleY(10));
+        track.setMaxHeight(UiScaleHelper.scaleY(10));
 
-        thumb.setMinSize(UiScaleHelper.scaleY(18), UiScaleHelper.scaleY(18));
-        thumb.setPrefSize(UiScaleHelper.scaleY(18), UiScaleHelper.scaleY(18));
-        thumb.setMaxSize(UiScaleHelper.scaleY(18), UiScaleHelper.scaleY(18));
+        thumb.setMinSize(UiScaleHelper.scaleY(22), UiScaleHelper.scaleY(22));
+        thumb.setPrefSize(UiScaleHelper.scaleY(22), UiScaleHelper.scaleY(22));
+        thumb.setMaxSize(UiScaleHelper.scaleY(22), UiScaleHelper.scaleY(22));
 
-        double controlHeight = UiScaleHelper.scaleY(34);
+        double controlHeight = UiScaleHelper.scaleY(40);
         setMinHeight(controlHeight);
         setPrefHeight(controlHeight);
         setMaxHeight(controlHeight);
@@ -60,8 +60,8 @@ public class CustomSlider extends Slider {
 
         setPickOnBounds(true);
         // 2) Custom fill — fully scaled as well
-        fill.setHeight(UiScaleHelper.scaleY(6));
-        fill.setFill(Color.web("#ffd98a"));
+        fill.setHeight(UiScaleHelper.scaleY(7));
+        fill.setFill(Color.web("#ffb85c"));
         fill.setManaged(false);
         fill.setMouseTransparent(true);
 

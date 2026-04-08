@@ -3,9 +3,12 @@ package lv.lenc;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AppLauncher {
     public static void main(String[] args) {
+        suppressJavaFxWarnings();
         AppLog.init();
         AppLog.info("[APP] Starting application");
         AppLog.info("[APP] Log directory: " + AppLog.getLogDirectory());
@@ -29,6 +32,15 @@ public class AppLauncher {
         configureWindowsHighPerformanceGpuPreference();
 
         Main.main(args);
+    }
+
+    private static void suppressJavaFxWarnings() {
+        try {
+            Logger.getLogger("com.sun.javafx.application.PlatformImpl").setLevel(Level.SEVERE);
+            Logger.getLogger("javafx.scene.CssStyleHelper").setLevel(Level.SEVERE);
+        } catch (Exception ignored) {
+            // Keep startup safe even if logging implementation changes.
+        }
     }
 
     private static boolean isForceGpuRequested() {

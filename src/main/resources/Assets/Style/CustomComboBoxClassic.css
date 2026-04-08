@@ -260,3 +260,89 @@
     -fx-min-height: 0;
     -fx-max-height: 0;
 }
+
+/* Settings API services inner panel scroll */
+.settings-api-services-scroll {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.settings-api-services-scroll > .viewport {
+    -fx-background-color: rgba(33, 10, 7, 0.96);
+}
+
+.settings-api-services-scroll > .content {
+    -fx-background-color: transparent;
+}
+
+.settings-api-services-scroll .scroll-bar:vertical,
+.settings-api-services-scroll .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-border-image-source: url("../Textures/ui_nova_global_scrollbar_bg.png");
+    -fx-border-image-slice: 14;
+    -fx-border-image-width: 5;
+    -fx-border-image-repeat: stretch;
+}
+
+.settings-api-services-scroll .scroll-bar:vertical {
+    -fx-pref-width: 24px;
+}
+
+.settings-api-services-scroll .scroll-bar:horizontal {
+    -fx-pref-height: 24px;
+}
+
+.settings-api-services-scroll .scroll-bar .track,
+.settings-api-services-scroll .scroll-bar .track-background {
+    -fx-background-color: linear-gradient(to bottom, rgba(64, 20, 8, 0.98), rgba(28, 10, 7, 0.98));
+    -fx-background-insets: 2;
+    -fx-border-color: rgba(255, 132, 44, 0.78);
+    -fx-border-width: 1;
+    -fx-effect: innershadow(gaussian, rgba(255, 126, 40, 0.26), 9, 0.28, 0, 0);
+}
+
+.settings-api-services-scroll .scroll-bar .thumb {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 188, 90, 1), rgba(255, 107, 24, 1));
+    -fx-background-radius: 3;
+    -fx-border-color: rgba(255, 168, 86, 0.98);
+    -fx-border-width: 1.3;
+    -fx-border-insets: 1;
+    -fx-min-height: 34px;
+    -fx-min-width: 34px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 122, 32, 0.95), 16, 0.48, 0, 0),
+        dropshadow(gaussian, rgba(255, 86, 16, 0.82), 26, 0.34, 0, 0);
+}
+
+.settings-api-services-scroll .scroll-bar .thumb:hover {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 206, 123, 1), rgba(255, 131, 36, 1));
+    -fx-border-color: rgba(255, 191, 112, 1);
+    -fx-effect: dropshadow(gaussian, rgba(255, 149, 52, 1), 18, 0.52, 0, 0),
+        dropshadow(gaussian, rgba(255, 95, 18, 0.92), 30, 0.36, 0, 0);
+}
+
+.settings-api-services-scroll .scroll-bar .thumb:pressed {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 150, 56, 1), rgba(210, 78, 18, 1));
+    -fx-border-color: rgba(255, 170, 84, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(255, 114, 33, 0.84), 10, 0.38, 0, 0);
+}
+
+.settings-api-services-scroll .scroll-bar .increment-button,
+.settings-api-services-scroll .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+    -fx-max-height: 0;
+    -fx-max-width: 0;
+    -fx-background-color: transparent;
+}
+
+.settings-api-services-scroll .corner {
+    -fx-background-color: transparent;
+}
