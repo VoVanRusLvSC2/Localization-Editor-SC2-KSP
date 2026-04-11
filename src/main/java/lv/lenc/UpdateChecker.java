@@ -5,7 +5,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -13,8 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 final class UpdateChecker {
     private static final String LATEST_RELEASE_API =
@@ -54,8 +60,20 @@ final class UpdateChecker {
             }
 
             String current = currentVersion();
+            if (current == null || current.isBlank()) {
+                AppLog.warn("[Update] current version is unknown");
+                return Optional.empty();
+            }
+            DownloadAsset preferredAsset = pickPreferredAsset(root);
             boolean hasUpdate = compareVersionTokens(normalizeVersion(latestTag), normalizeVersion(current)) > 0;
-            return Optional.of(new UpdateInfo(current, latestTag, htmlUrl, hasUpdate));
+            return Optional.of(new UpdateInfo(
+                    current,
+                    latestTag,
+                    htmlUrl,
+                    preferredAsset == null ? null : preferredAsset.downloadUrl,
+                    preferredAsset == null ? null : preferredAsset.fileName,
+                    hasUpdate
+            ));
         } catch (Exception ex) {
             AppLog.warn("[Update] check failed: " + ex.getMessage());
             return Optional.empty();
@@ -67,6 +85,36 @@ final class UpdateChecker {
             String impl = trimToNull(UpdateChecker.class.getPackage().getImplementationVersion());
             if (impl != null) {
                 return impl;
+            }
+        } catch (Exception ignored) {
+        }
+
+        // Runtime fallback: parse version from bundled jar name.
+        try {
+            URL location = UpdateChecker.class.getProtectionDomain().getCodeSource().getLocation();
+            if (location != null) {
+                String name = Path.of(location.toURI()).getFileName().toString();
+                Matcher m = Pattern.compile("-(\\d+(?:\\.\\d+){1,3})\\.jar$", Pattern.CASE_INSENSITIVE).matcher(name);
+                if (m.find()) {
+                    String v = trimToNull(m.group(1));
+                    if (v != null) {
+                        return v;
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        // Runtime fallback: read Maven pom.properties bundled in jar.
+        try (InputStream in = UpdateChecker.class.getClassLoader()
+                .getResourceAsStream("META-INF/maven/lv.lenc/Localization_Editor_SC2_KSP/pom.properties")) {
+            if (in != null) {
+                Properties props = new Properties();
+                props.load(in);
+                String v = trimToNull(props.getProperty("version"));
+                if (v != null) {
+                    return v;
+                }
             }
         } catch (Exception ignored) {
         }
@@ -88,7 +136,7 @@ final class UpdateChecker {
         } catch (IOException ignored) {
         }
 
-        return "0.0.0";
+        return null;
     }
 
     private static String normalizeVersion(String raw) {
@@ -149,17 +197,86 @@ final class UpdateChecker {
         return t.isEmpty() ? null : t;
     }
 
+    private static DownloadAsset pickPreferredAsset(JsonObject releaseRoot) {
+        if (releaseRoot == null || !releaseRoot.has("assets") || !releaseRoot.get("assets").isJsonArray()) {
+            return null;
+        }
+        return releaseRoot.getAsJsonArray("assets")
+                .asList()
+                .stream()
+                .filter(JsonElement::isJsonObject)
+                .map(JsonElement::getAsJsonObject)
+                .map(UpdateChecker::assetFromJson)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .max(Comparator.comparingInt(a -> a.priority))
+                .orElse(null);
+    }
+
+    private static Optional<DownloadAsset> assetFromJson(JsonObject asset) {
+        String name = readAsText(asset, "name");
+        String url = readAsText(asset, "browser_download_url");
+        if (name == null || url == null) {
+            return Optional.empty();
+        }
+        int priority = scoreAsset(name);
+        if (priority <= 0) {
+            return Optional.empty();
+        }
+        return Optional.of(new DownloadAsset(name, url, priority));
+    }
+
+    private static int scoreAsset(String fileName) {
+        String n = fileName.toLowerCase(Locale.ROOT);
+        if (n.contains("-setup.exe")) {
+            return n.endsWith(".zip") ? 90 : 100;
+        }
+        if (n.endsWith(".exe")) {
+            return 70;
+        }
+        if (n.endsWith(".exe.zip")) {
+            return 60;
+        }
+        if (n.endsWith(".msi")) {
+            return 50;
+        }
+        return 0;
+    }
+
     static final class UpdateInfo {
         final String currentVersion;
         final String latestVersion;
         final String releaseUrl;
+        final String downloadUrl;
+        final String downloadFileName;
         final boolean hasUpdate;
 
-        UpdateInfo(String currentVersion, String latestVersion, String releaseUrl, boolean hasUpdate) {
+        UpdateInfo(
+                String currentVersion,
+                String latestVersion,
+                String releaseUrl,
+                String downloadUrl,
+                String downloadFileName,
+                boolean hasUpdate
+        ) {
             this.currentVersion = currentVersion;
             this.latestVersion = latestVersion;
             this.releaseUrl = releaseUrl;
+            this.downloadUrl = downloadUrl;
+            this.downloadFileName = downloadFileName;
             this.hasUpdate = hasUpdate;
+        }
+    }
+
+    private static final class DownloadAsset {
+        final String fileName;
+        final String downloadUrl;
+        final int priority;
+
+        DownloadAsset(String fileName, String downloadUrl, int priority) {
+            this.fileName = fileName;
+            this.downloadUrl = downloadUrl;
+            this.priority = priority;
         }
     }
 }

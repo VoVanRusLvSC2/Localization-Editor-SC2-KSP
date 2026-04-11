@@ -2,7 +2,16 @@ package lv.lenc;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URLDecoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -10,6 +19,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javafx.animation.PauseTransition;
 import javafx.animation.FadeTransition;
@@ -910,14 +921,147 @@ public class Main extends Application {
                 root,
                 txt("update.available.header", "A new version is available"),
                 baseMessage + "\n\n" + details,
-                txt("update.available.open", "Open release"),
+                txt("update.available.download", "Download update"),
                 txt("update.available.later", "Later"),
-                open -> {
-                    if (open) {
-                        openReleasePage(info.releaseUrl);
+                download -> {
+                    if (download) {
+                        downloadAndOfferInstall(info);
                     }
                 }
         );
+    }
+
+    private void downloadAndOfferInstall(UpdateChecker.UpdateInfo info) {
+        if (info == null) {
+            return;
+        }
+        if (info.downloadUrl == null || info.downloadUrl.isBlank()) {
+            openReleasePage(info.releaseUrl);
+            return;
+        }
+
+        Thread worker = new Thread(() -> {
+            try {
+                Path downloadsDir = resolveDownloadsDir();
+                String fileName = info.downloadFileName;
+                if (fileName == null || fileName.isBlank()) {
+                    fileName = deriveFileNameFromUrl(info.downloadUrl, "Localization-Editor-update.bin");
+                }
+                Path downloaded = downloadsDir.resolve(fileName).normalize();
+                downloadFile(info.downloadUrl, downloaded);
+
+                Path installer = downloaded;
+                if (downloaded.getFileName().toString().toLowerCase(Locale.ROOT).endsWith(".zip")) {
+                    Path extracted = extractInstallerFromZip(downloaded, downloadsDir);
+                    if (extracted != null) {
+                        installer = extracted;
+                    }
+                }
+
+                Path finalInstaller = installer;
+                Platform.runLater(() -> InAppUpdateDialog.showChoice(
+                        root,
+                        txt("update.download.title", "Update downloaded"),
+                        txt("update.download.message", "Update file saved to:") + "\n\n" + finalInstaller.toAbsolutePath(),
+                        txt("update.download.run", "Run installer"),
+                        txt("update.warning.no", "Later"),
+                        runNow -> {
+                            if (runNow) {
+                                launchDownloadedInstaller(finalInstaller);
+                            }
+                        }
+                ));
+            } catch (Exception ex) {
+                AppLog.warn("[Update] download failed: " + ex.getMessage());
+                Platform.runLater(() -> InAppUpdateDialog.showInfo(
+                        root,
+                        txt("update.warning.title", "Errors"),
+                        txt("update.download.failed", "Failed to download update."),
+                        txt("update.warning.yes", "OK")
+                ));
+            }
+        }, "le-update-download");
+        worker.setDaemon(true);
+        worker.start();
+    }
+
+    private static Path resolveDownloadsDir() throws IOException {
+        Path home = Path.of(System.getProperty("user.home"));
+        Path downloads = home.resolve("Downloads");
+        if (Files.isDirectory(downloads)) {
+            return downloads;
+        }
+        if (Files.isDirectory(home)) {
+            return home;
+        }
+        Path tmp = Path.of(System.getProperty("java.io.tmpdir"), "LocalizationEditorDownloads");
+        Files.createDirectories(tmp);
+        return tmp;
+    }
+
+    private static String deriveFileNameFromUrl(String url, String fallback) {
+        try {
+            String path = URI.create(url).getPath();
+            if (path != null) {
+                String raw = Path.of(path).getFileName().toString();
+                String decoded = URLDecoder.decode(raw, StandardCharsets.UTF_8);
+                if (!decoded.isBlank()) {
+                    return decoded;
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return fallback;
+    }
+
+    private static void downloadFile(String url, Path destination) throws IOException, InterruptedException {
+        Files.createDirectories(destination.getParent());
+        HttpClient http = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(java.time.Duration.ofMinutes(6))
+                .header("User-Agent", "LocalizationEditorSC2KSP/Updater")
+                .GET()
+                .build();
+        HttpResponse<Path> response = http.send(request, HttpResponse.BodyHandlers.ofFile(destination));
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new IOException("HTTP " + response.statusCode());
+        }
+    }
+
+    private static Path extractInstallerFromZip(Path zipFile, Path destinationDir) {
+        try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(zipFile))) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                String entryName = entry.getName().toLowerCase(Locale.ROOT);
+                if (entryName.endsWith(".exe") || entryName.endsWith(".msi")) {
+                    Path out = destinationDir.resolve(Path.of(entry.getName()).getFileName().toString()).normalize();
+                    Files.copy(zis, out, StandardCopyOption.REPLACE_EXISTING);
+                    return out;
+                }
+            }
+        } catch (Exception ex) {
+            AppLog.warn("[Update] zip extraction failed: " + ex.getMessage());
+        }
+        return null;
+    }
+
+    private void launchDownloadedInstaller(Path installerPath) {
+        if (installerPath == null || !Files.exists(installerPath)) {
+            return;
+        }
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(installerPath.toFile());
+            }
+        } catch (Exception ex) {
+            AppLog.warn("[Update] failed to launch installer: " + ex.getMessage());
+        }
     }
 
     private void openReleasePage(String url) {
