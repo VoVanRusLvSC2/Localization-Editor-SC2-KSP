@@ -86,11 +86,13 @@ public final class AppLog {
             return;
         }
         LOG.log(Level.SEVERE, throwable.getMessage(), throwable);
+        ErrorReportMailer.reportAsync(throwable.getMessage(), throwable);
     }
 
     public static void error(String message, Throwable throwable) {
         init();
         LOG.log(Level.SEVERE, message, throwable);
+        ErrorReportMailer.reportAsync(message, throwable);
     }
 
     private static Path resolveLogDirectory() {

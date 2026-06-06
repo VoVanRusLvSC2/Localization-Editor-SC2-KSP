@@ -14,7 +14,7 @@ It is built for real SC2 projects, not only single text files:
 - https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/releases
 
 ## Current Installer
-- Current Windows installer build: `2.1`
+- Current Windows installer build: `2.2`
 - If an older build is installed, use the latest installer from Releases.
 
 ## Quick Start
@@ -33,6 +33,8 @@ Main application logs are rotating UTF-8 files:
 Local LibreTranslate startup and repair logs are stored separately:
 - Windows: `%LOCALAPPDATA%\LocalizationEditorSC2KSP\argos-runtime\startup-logs\lt-*.log`
 - Other OS: `~/.localization-editor-argos-runtime/startup-logs/lt-*.log`
+
+When a severe exception is logged, the app creates `error-report-*.txt` in the main log folder and opens a prepared email to the maintainer. The user can review the text before sending.
 
 PowerShell examples:
 

@@ -329,6 +329,7 @@ public class Main extends Application {
                 : "Archive file");
         archiveFileSwitchCombo.setMinWidth(UiScaleHelper.scaleX(230));
         archiveFileSwitchCombo.setPrefWidth(UiScaleHelper.scaleX(275));
+        applyArchiveComboSize(archiveFileSwitchCombo);
         archiveFileSwitchCombo.setVisibleRowCount(6);
         archiveFileSwitchCombo.setFocusTraversable(false);
         archiveFileSwitchCombo.setCellFactory(cb -> archiveFileSwitchCell());
@@ -2236,6 +2237,7 @@ public class Main extends Application {
         fileCombo.setMinWidth(comboWidth);
         fileCombo.setPrefWidth(comboWidth);
         fileCombo.setMaxWidth(Double.MAX_VALUE);
+        applyArchiveComboSize(fileCombo);
         fileCombo.setOnShowing(e -> {
             int rows = Math.max(1, Math.min(7, fileCombo.getItems().size()));
             fileCombo.setVisibleRowCount(rows);
@@ -2283,6 +2285,7 @@ public class Main extends Application {
         mainLangCombo.setMinWidth(comboWidth);
         mainLangCombo.setPrefWidth(comboWidth);
         mainLangCombo.setMaxWidth(Double.MAX_VALUE);
+        applyArchiveComboSize(mainLangCombo);
         mainLangCombo.setCellFactory(cb -> new javafx.scene.control.ListCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -2491,6 +2494,16 @@ public class Main extends Application {
         closeFileButton.setAlignment(Pos.CENTER);
     }
 
+    private void applyArchiveComboSize(ComboBox<String> combo) {
+        if (combo == null) {
+            return;
+        }
+        double height = UiScaleHelper.scaleY(60);
+        combo.setMinHeight(height);
+        combo.setPrefHeight(height);
+        combo.setMaxHeight(height);
+    }
+
     private void tuneArchiveComboPopup(ComboBox<String> combo, int visibleRows) {
         if (combo == null) {
             return;
@@ -2499,12 +2512,12 @@ public class Main extends Application {
         if (!(node instanceof javafx.scene.control.ListView<?> listView)) {
             return;
         }
-        double cell = UiScaleHelper.scaleY(44);
+        double cell = UiScaleHelper.scaleY(48);
         int rows = Math.max(1, visibleRows);
         listView.setFixedCellSize(cell);
         listView.setMinHeight(UiScaleHelper.scaleY(80));
-        listView.setPrefHeight(Math.min(UiScaleHelper.scaleY(440), cell * rows + UiScaleHelper.scaleY(14)));
-        listView.setMaxHeight(UiScaleHelper.scaleY(440));
+        listView.setPrefHeight(Math.min(UiScaleHelper.scaleY(480), cell * rows + UiScaleHelper.scaleY(14)));
+        listView.setMaxHeight(UiScaleHelper.scaleY(480));
     }
 
     private void removeArchivePopupOverlays() {

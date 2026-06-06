@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class InstallerLaunchCommandTest {
     @Test
     void delayedInstallerCommandDoesNotUseUnsupportedInnoFlags() {
-        List<String> command = Main.delayedInstallerCommand(Path.of("C:/Temp/Localization-Editor-SC2-KSP-2.1-setup.exe"));
+        List<String> command = Main.delayedInstallerCommand(Path.of("C:/Temp/Localization-Editor-SC2-KSP-2.2-setup.exe"));
         String joined = String.join(" ", command);
 
         assertFalse(joined.contains("/VERYSILENT"));
         assertFalse(joined.contains("/SUPPRESSMSGBOXES"));
-        assertTrue(joined.contains("Localization-Editor-SC2-KSP-2.1-setup.exe"));
+        assertTrue(joined.contains("Localization-Editor-SC2-KSP-2.2-setup.exe"));
     }
 
     @Test

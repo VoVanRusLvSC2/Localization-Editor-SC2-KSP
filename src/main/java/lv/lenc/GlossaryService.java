@@ -1364,9 +1364,8 @@ public final class GlossaryService {
                 clear();
                 ensureEditableGlossariesAvailableExternally();
                 if (SettingsManager.loadCheckboxState(SettingsManager.BASE_GLOSSARY_KEY, SettingsManager.DEFAULT_BASE_GLOSSARY)) {
-                    if (!loadTxtGlossaryFromExternalIfPresent(WORD_GLOSSARY_FILE)) {
-                        loadTxtFromResource("/glossary/" + WORD_GLOSSARY_FILE);
-                    }
+                    loadTxtGlossaryFromExternalIfPresent(WORD_GLOSSARY_FILE);
+                    loadTxtFromResource("/glossary/" + WORD_GLOSSARY_FILE);
                 }
                 if (SettingsManager.loadCheckboxState(SettingsManager.UNITS_GLOSSARY_KEY, SettingsManager.DEFAULT_UNITS_GLOSSARY)) {
                     loadAdditionalGlossaryFile("Addition_UnitNames_Detailed_KSP.txt");
@@ -1402,9 +1401,8 @@ public final class GlossaryService {
     }
 
     private void loadAdditionalGlossaryFile(String fileName) {
-        if (!loadTxtGlossaryFromExternalIfPresent(fileName)) {
-            loadTxtFromResource("/glossary/" + fileName);
-        }
+        loadTxtGlossaryFromExternalIfPresent(fileName);
+        loadTxtFromResource("/glossary/" + fileName);
     }
 
     private boolean loadTxtGlossaryFromExternalIfPresent(String fileName) {

@@ -74,9 +74,9 @@
     -fx-effect: none;
     -fx-font-size: 17px;
     -fx-font-weight: bold;
-    -fx-padding: -2 48 0 20;
-    -fx-min-height: 54px;
-    -fx-pref-height: 54px;
+    -fx-padding: 0 48 0 20;
+    -fx-min-height: 60px;
+    -fx-pref-height: 60px;
     -fx-border-image-source: url("../Textures/ui_nova_archives_listitem_normal.png");
     -fx-border-image-slice: 12;
     -fx-border-image-width: 6;
@@ -145,7 +145,7 @@
     -fx-border-image-repeat: stretch;
     -fx-padding: 4;
     -fx-max-height: 440px;
-    -fx-fixed-cell-size: 44px;
+    -fx-fixed-cell-size: 48px;
 }
 
 .archive-open-combo .list-view .list-cell {
@@ -159,10 +159,10 @@
     -fx-font-weight: bold;
     -fx-padding: 0 12 0 12;
     -fx-content-display: text-only;
-    -fx-cell-size: 44px;
-    -fx-min-height: 44px;
-    -fx-pref-height: 44px;
-    -fx-max-height: 44px;
+    -fx-cell-size: 48px;
+    -fx-min-height: 48px;
+    -fx-pref-height: 48px;
+    -fx-max-height: 48px;
     -fx-alignment: center-left;
     -fx-border-color: rgba(255, 160, 92, 0.18);
     -fx-border-width: 0 0 1 0;
@@ -186,7 +186,7 @@
     -fx-border-image-repeat: stretch;
     -fx-padding: 4;
     -fx-max-height: 440px;
-    -fx-fixed-cell-size: 44px;
+    -fx-fixed-cell-size: 48px;
 }
 
 .archive-open-combo .combo-box-popup .list-cell {
@@ -200,10 +200,10 @@
     -fx-font-weight: bold;
     -fx-padding: 0 12 0 12;
     -fx-content-display: text-only;
-    -fx-cell-size: 44px;
-    -fx-min-height: 44px;
-    -fx-pref-height: 44px;
-    -fx-max-height: 44px;
+    -fx-cell-size: 48px;
+    -fx-min-height: 48px;
+    -fx-pref-height: 48px;
+    -fx-max-height: 48px;
     -fx-alignment: center-left;
     -fx-border-color: rgba(255, 160, 92, 0.18);
     -fx-border-width: 0 0 1 0;
