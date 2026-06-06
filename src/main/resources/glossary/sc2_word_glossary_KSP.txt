@@ -1501,3 +1501,684 @@ Mutator Widow Mine Burrow;Mutator Widow Mine Burrow;Mutator Widow Mine Burrow;Mu
 Monlyth Artifact Force Field;Монлит - силовое поле артефакта;Monlyth - Artefakt, Kraftfeld;Campo de fuerza del artefacto de Monlyth;Monlito - Campo de fuerza del Artefacto;Champ de force de l’artefact de Monlyth;Campo di forza dell'artefatto di Monlyth;몬리스 유물 역장;Artefakt z Monlyth – pole siłowe;Campo de força de Artefato de Monlyth;蒙莱斯神器力场;蒙利斯神器力場
 Caster Time;Время заклинателя;Caster - Zeit;Tiempo de irradiador;Lanzador - Tiempo;Durée d’incantation;Tempo di attivazione;시전자 시간;Rzucający, Czas;Lançador - Tempo;施法者时间;施放者時間
 Cluster Nova;Серия взрывов;Splitternova;Nova de racimo;Nova de cúmulos;Novas naines;Supernova globulare;집속 폭발;Rozdzielny rozbłysk;Nova de Fragmentação;集束新星;集束光球
+
+A Strong Heart;Принятие себя;Ein starkes Herz;Un corazón fuerte;Corazón valiente;Une âme forte;Un grande cuore;강인한 심장;Silne Serce;Um coração forte;勇敢的心;堅強的心靈
+Ability Efficiency;Эффективность способностей;Fähigkeiteneffizienz;Eficiencia de habilidades;Eficiencia de habilidad;Efficience des capacités;Abilità efficienti;능력 효율;Efektywność;Eficiência de Habilidade;技能专精;效率強化
+Ability list;Список способностей;Fähigkeiten-Liste;Lista de habilidades;Lista de habilidades;Liste de capacités;Elenco abilità;능력 목록;Lista umiejętności;Lista de habilidades;能力列表;技能表
+Accelerated Mutation;Улучшенное перевоплощение;Beschleunigte Mutation;Mutación acelerada;Mutación acelerada;Mutation accélérée;Mutazione accelerata;가속 변이;Przyspieszona mutacja;Mutação acelerada;加速突变;加速突變
+Acidic Enzymes;Кислотные ферменты;Zersetzende Enzyme;Enzimas ácidas;Encimas ácidas;Enzymes acides;Enzimi acidi;산성 효소;Enzymy kwasowe;Enzimas Ácidas;酸性酶;酸性酵素
+Adaptive Plating;Адаптивный панцирь;Adaptiver Panzer;Caparazón adaptable;Coraza adaptable;Armure adaptable;Rivestimento adattivo;적응성 장갑;Adaptabilna powłoka;Revestimento Adaptável;应激骨片;特化甲殼
+Adrenal Glands;Адреналиновые железы;Adrenalindrüsen;Glándulas suprarrenales;Glándulas adrenales;Glandes surrénales;Ghiandole surrenali;아드레날린 분비선;Nadnercza;Glândulas suprarrenais;肾上腺体;腎上腺體
+Adrenal Overload;Выброс адреналина;Adrenalinsättigung;Sobrecarga suprarrenal;Sobrecarga adrenal;Surcharge d’adrénaline;Sovraccarico surrenale;아드레날린 과부하;Adrenalinowy szał;Sobrecarga Adrenal;腺体过载;腎上腺超載
+Advanced Ballistics;Дальнобойные баллистические орудия;Verbesserte Ballistik;Balística avanzada;Balística avanzada;Balistique avancée;Balistica avanzata;첨단 탄도 시스템;Zaawansowana balistyka;Balística Avançada;强化弹道;強化彈道
+Advanced Healing AI;Система синхронного лечения;Fortgeschrittene Heilungs-K.I.;IA de sanación avanzada;IA de curación avanzada;IA de soin avancée;IA curativa avanzata;고급 치료 인공지능;Zaawansowana SI leczenia;I.A. de cura avançada;高级治疗AI;進階治療A.I.
+Advanced Mitosis;Улучшенный митоз;Fortgeschrittene Mitose;Mitosis avanzada;Mitosis avanzada;Mitose avancée;Mitosi avanzata;고급 유사분열;Zaawansowana mitoza;Mitose Avançada;强化分裂;高等分裂
+Advanced Optics;Улучшенный визор;Verfeinerte Optik;Óptica avanzada;Ópticas avanzadas;Système optique amélioré;Ottica avanzata;향상된 시력;Udoskonalony układ optyczny;Ótica Avançada;高级瞄准镜;進階光學瞄準器
+Advanced Repair Systems;Улучшенные системы ремонта;Fortgeschrittenes Reparatursystem;Sistemas de reparación avanzados;Sistemas de reparación avanzados;Système de réparation avancé;Sistemi di riparazione avanzata;첨단 수리 시스템;Zaawansowane systemy naprawcze;Sistemas de Reparo Avançados;强化修理系统;進階修復系統
+Advanced Siege Tech;Улучшенные осадные технологии;Verbesserte Belagerungstechnik;Tecnología de asedio avanzada;Tecnología de asedio avanzada;Mode Siège avancé;Tecnologia d'assedio avanzata;고급 공성 기술;Zaawansowana technologia oblężnicza;Tecnologia de Cerco Avançada;高级攻城科技;強化攻城科技
+Advanced Targeting Systems;Улучшенные системы наведения;Fortgeschrittene Zielerfassungssysteme;Sistemas de objetivo avanzados;Sistemas de focalización avanzados;Système de ciblage avancé;Sistemi di puntamento avanzati;첨단 조준 시스템;Zaawansowane systemy celownicze;Sistemas de Armas Avançados;高级瞄准系统;進階瞄準系統
+Aerial Burst Sacs;Взрывные воздушные камеры;Berstkapseln;Bolsas de ráfaga aérea;Sacos explosivos aéreos;Poches aéroplosives;Sacche aeree esplosive;공중 폭발 배주머니;Wybuchowe komory powietrzne;Bolsas Eruptivas Aéreas;空中爆囊;空爆囊
+Anaerobic Enhancement;Анаэробное усиление;Erhöhte Sprungkraft;Mejora anaeróbica;Mejora anaeróbica;Métabolisme anaérobie;Incremento anaerobico;혐기성 도약;Wzmocnienie anaerobowe;Aprimoramento Anaeróbico;厌氧强化;瞬間體能強化
+Analyze Weakness;Выявление слабостей;Schwachstelle analysieren;Analizar debilidad;Analizar debilidad;Analyse des points faibles;Analisi tattica;약점 분석;Analiza Słabych Punktów;Analisar Ponto Fraco;分析弱点;分析弱點
+Ancillary Carapace;Вспомогательный панцирь;Zusätzlicher Panzer;Caparazón auxiliar;Caparazón auxiliar;Carapace auxiliaire;Carapace ancillare;보조 갑피;Dodatkowy karapaks;Carapaça Auxiliar;附属甲壳;輔助性蟲殼
+Anion Pulse-Crystals;Анионные импульс-кристаллы;Anionen-Impulskristall;Cristales de pulso de aniones;Cristales de impulso aniónicos;Cristaux à impulsion anionique;Cristalli a impulsi ionici;음이온파 수정;Anionowe kryształy impulsowe;Cristais de Pulso Aniônico;阴离子脉冲水晶;負離子脈衝水晶
+Anti Air Missiles;Ракеты ПВО;Luftabwehrraketen;Misiles antiaéreos;Misiles antiaéreos;Missiles antiaériens;Missili Antiaerei;대공 미사일;Pociski przeciwlotnicze;Mísseis Antiaéreos;对空导弹;對空飛彈
+Anti-Air Cannons;Зенитные орудия;Luftabwehrgeschütz;Cañones antiaéreos;Cañones antiaéreos;Canons antiaériens;Cannoni antiaerei;대공포;Działa przeciwlotnicze;Canhões Antiaéreos;防空炮;防空加農砲
+AoE Healing;Лечение по области;Flächenheilung;Sanación de AdE;Curación con AdE;Soins de zone;Cura ad area;광역 치유;Uzdrowienie obszarowe;Cura de AdE;范围性治疗;範圍治療
+Apollo Infantry Suit;Скафандр «Аполлон»;Apollo-Infanterieanzug;Traje de infantería apolo;Traje de infantería Apolo;Combinaison Apollo;Tuta da fanteria Apollo;아폴로 보병 전투복;Kombinezon Piechoty Apollo;Traje de Infantaria Apolo;阿波罗步兵服;阿波羅步兵戰鬥服
+Archon Merge;Слияние в архонта;Archon-Verschmelzung;Fusionar arconte;Arconte - Fusión;Fusion en archonte;Fusione in Arconte;집정관 합체;Archont – scalenie;Arconte Combinar;执政官融合;合併執政官
+Archon Shock Attack;Архонт - пси-удар;Archon - Schockangriff;Arconte: ataque de choque;Arconte - Choque - Ataque;Archonte - Attaque foudroyante;Arconte - Attacco Elettrico;집정관 충격 공격;Archont, Porażenie, Atak;Arconte - Ataque de Choque;Archon Shock Attack;執政官電擊波
+Argus Crystal;Кристалл Аргуса;Arguskristall;Cristal argus;Cristal Argus;Cristal Argus;Cristallo Argus;아르거스 수정;Kryształ argusolitu;Cristal Argus;阿古斯水晶;阿格斯水晶
+Army Energy;Увеличенный энергозапас;Armee-Energie;Energía del ejército;Energía del ejército;Énergie de l’armée;Energia esercito;군대 에너지;Energia armii;Energia Bélica;军队能量;部隊能量
+Artifact Disruption;Дестабилизация;Störung durch Artefakte;Disrupción de artefacto;Disrupción de artefacto;Effet disrupteur;Disgregazione;유물 붕괴;Zakłócenie artefaktowe;Disrupção de Artefato;神器干扰;神器干擾
+Artifact Enhancement: Barrier;Дар артефакта: «Барьер»;Artefaktverbesserung: Barriere;Mejora de artefacto: barrera;Mejora de Artefacto: Barrera;Amélioration d’artéfact : Barrière;Potenziamento artefatto: Barriera;유물 강화: 방어막;Artefaktowe wzmocnienia: Bariera;Aprimoramento de Artefato: Barreira;神器强化：屏障;神器強化：能量屏障
+Artifact Enhancement: Blink;Дар артефакта: «Скачок»;Artefaktverbesserung: Transit;Mejora de artefacto: traslación;Mejora de Artefacto: Parpadeo;Amélioration d’artéfact : Transfert;Potenziamento artefatto: Traslazione;유물 강화: 점멸;Artefaktowe wzmocnienia: Mignięcie;Aprimoramento de Artefato: Translação;神器强化：闪现;神器強化：瞬移
+Artillery Ducts;Артиллерийские каналы;Artilleriekanal;Conductos de artillería;Ductos de artillería;Conduits d’artillerie;Condotti d'artiglieria;포관;Kanały artyleryjskie;Duto de Artilharia;炮击导管;砲擊導管
+Astral Wind;Звездный ветер;Astralwind;Viento astral;Viento astral;Vent astral;Vento astrale;별의 바람;Astralne Wichry;Vento Astral;星界之风;星癒之風
+Automated Extractors;Автоматические экстракторы;Automatisierte Extraktoren;Extractores automatizados;Extractores automatizados;Extracteurs automatisés;Estrattori automatizzati;자동 추출장;Autonomiczne ekstraktory;Extratores Automatizados;自动萃取房;自動化瓦斯萃取巢
+Automated Mitosis;Автоматический митоз;Automatisierte Mitose;Mitosis automatizada;Mitosis automatizada;Mitose automatique;Mitosi automatizzata;자동 분열;Samoczynna mitoza;Mitose Automatizada;自行裂生;自動分裂
+Automated Repair;Автоматический ремонт;Automatische Reparatur;Reparación automática;Reparación automatizada;Auto-réparation;Riparazione automatizzata;자동 수리;Automatyczna naprawa;Conserto automático;自动修理;自動修復
+Baneling Barrage;Вал гиблингов;Berstling-Bowling;Lanzar pesteling;Andanada Uetzi;Barrage de chancres;Sbarramento di Baneling;맹독충 난사;Kanonada Tępicieli;Barragem de Tatu-bomba;爆虫冲锋;連環毒爆蟲
+Baneling Incubation;Инкубация гиблингов;Berstling-Inkubation;Incubación de pesteling;Incubación de Uetzis;Incubation de chancre;Incubazione di Baneling;맹독충 배양;Inkubacja Tępicieli;Incubação de Tatu-bomba;爆虫孕育;毒爆蟲孵化
+Barbed Talons;Зазубренные когти;Stachelbewehrte Klauen;Espolones con púas;Garras espinosas;Serres acérées;Artigli uncinati;날카로운 발톱;Kolczaste szpony;Garras Serrilhadas;尖锐利爪;尖刺蟲爪
+Barbed Tentacles;Шипастые щупальца;Stachelige Tentakel;Tentáculos con púas;Tentáculos espinosos;Tentacules acérés;Tentacoli uncinati;날카로운 촉수;Kolczaste macki;Tentáculos Farpados;倒刺触须;尖刺觸角
+Battle Shout;Боевой крик;Schlachtruf;Grito de guerra;Grito de batalla;Cri de guerre;Grido di battaglia;전투의 외침;Okrzyk Bojowy;Grito de Batalha;战斗怒吼;戰鬥怒吼
+Bile Ducts;Желчные протоки;Gallendrüse;Conductos biliares;Conductos biliares;Voies biliaires;Condotti biliari;담관;Przewody Żółciowe;Dutos de Bile;胆管;膽管
+Bile Stream;Поток желчи;Gallestrahl;Corriente de bilis;Torrente de bilis;Afflux de bile;Getto di bile;악성 광선;Strumień żółci;Fluxo de Bile;胆汁喷流;膽汁湧流
+Bio-Acids;Биокислоты;Biosäuren;Bioácidos;Bioácidos;Bio-acides;Bioacidi;생체 산;Biokwasy;Bio-Ácidos;生物酸;生化酸液
+Bio-Mechanical Repair;Биомеханический ремонт;Biomechanische Reparatur;Reparación biomecánica;Reparación biomecánica;Réparation biomécanique;Riparazione biomeccanica;생체기계 수리;Naprawa biomechaniczna;Conserto Biomecânico;生物机械修理;生化機械維修
+Bio-Plasmid Discharge;Биоплазмидный разряд;Bioplasmidentladung;Descarga de bioplasma;Descarga bioplásmida;Décharge bio-plasmide;Scarica di bioplasmidi;생체 플라스미드 방출;Wyładowanie bioplazmidowe;Descarga bioplasmídica;质粒喷涌;釋放生化電漿
+Birth Classic Queen;Породить стандартную королеву;Klassische Königin erschaffen;Crear reina clásica;Crear Reina clásica;Engendrer une reine classique;Genera Regina classica;고전 여왕 생성;Powij królową;Criar Rainha Clássica;出生旧版后虫;孵化經典后蟲
+Birth Queen;Породить королеву;Königin erschaffen;Crear reina;Crear Reina;Engendrer une reine;Genera Regina;여왕 생성;Powij królową;Gerar Rainha;孵化虫后;孵化后蟲
+Birth Swarm Queen;Породить королеву Роя;Schwarmkönigin erschaffen;Crear reina del Enjambre;Crear Reina del Enjambre;Faire naître une reine de l’Essaim;Genera Regina;군단 여왕 생성;Powij królową roju;Criar Rainha do Enxame;孵化虫后;孵化蟲群后蟲
+Birthing Chamber;Камера рождения;Brutkammer;Cámara de incubación;Cámara de incubación;Chambre de couvaison;Camera generativa;부화실;Komora Rodna;Câmara de Nascimento;哺育腔;孵化室
+Birthing Roost;Гнездовье рождения;Brutnest;Nido de incubación;Nido de incubación;Perchoir de couvaison;Nido generativo;부화둥지;Gniazdo rodne;Ninho de Nascimento;哺育栖地;產蟲巢穴
+Black Hole;Черная дыра;Schwarzes Loch;Agujero negro;Agujero negro;Trou noir;Buco nero;블랙홀;Czarna Dziura;Buraco Negro;黑洞;黑洞
+Blink Hallucination;Иллюзия при скачке;Transit - Halluzination;Alucinación de traslación;Alucinación fugaz;Transfert - Hallucination;Traslazione - Allucinazione;점멸 환상;Mignięcie, Halucynacja;Translação Alucinatória;闪现幻象;瞬移幻影
+Bloated Bile Ducts;Раздутые желчные протоки;Geschwollene Gallendrüse;Conductos biliares hinchados;Conductos biliares hinchados;Voies biliaires gonflées;Condotti biliari dilatati;부풀어오른 담관;Kurczliwe przewody żółciowe;Dutos de Bile Inchados;肿胀胆管;肥大體液導管
+Blood Shields;Кровавые щиты;Blutschilde;Escudos de sangre;Escudos sangrientos;Boucliers de sang;Scudi sanguinei;피의 보호막;Krwawe osłony;Escudos de Sangue;鲜血护盾;血之護盾
+Bloodshard Resonance;Резонанс кровавых кристаллов;Bluttsplitterresonanz;Resonancia de piedra de sangre;Resonancia de esquirla sangrienta;Résonance des cristaux de sang;Risonanza sanguinea;혈석 공명;Rezonator krwawych odłamków;Ressonância de Cristais de Sangue;血水晶共鸣;血岩晶體共振
+Braced Exoskeleton;Жесткий экзоскелет;Verstärktes Exoskelett;Exoesqueleto reforzado;Exoesqueleto reforzado;Exosquelette renforcé;Esoscheletro rinforzato;외골격 보강;Stężony egzoszkielet;Exoesqueleto Reforçado;支撑性机械外骨骼;加固裝甲
+Brilliance Aura;Аура великолепия;Brillanzaura;Aura de brillo;Aura brillante;Aura d’illumination;Aura di splendore;광휘 오라;Aura błyskotliwości;Aura Brilhante;辉煌光环;卓越靈氣
+Brood Lord;Хозяин стаи;Brutlord;Señor de la prole;Amo de la colonia;Seigneur-vermine;Patriarca;무리 군주;Rządca szczepu;Lorde de Casta;巢虫领主;寄生王蟲
+Broodling Gestation;Созревание симбионта;Parasitenbefall;Gestación de crías;Gestación de Ácaros;Incubation de vermine;Gestazione Progenidi;공생충 잉태;Rozwój pomiotów;Gestação de Parasitoides;巢虫育生;寄生蟲宿主
+Broodling Incubation;Инкубация симбионтов;Brütling-Inkubation;Incubación de crías;Incubación de Ácaros;Incubation de vermine;Incubazione di Progenidi;공생충 배양;Inkubacja pomiotów;Incubação de Parasitoide;孕育巢虫;寄生蟲感染
+Building Collapse;Разрушить строение;Gebäude - Einsturz;Derrumbar edificio;Edificación - Derrumbe;Destruction du bâtiment;Struttura - Crollo;건물 붕괴;Budowla, Zawalenie;Prédio - Colapso;建筑塌陷;建築坍塌
+Building Collapse Undo;Отменить разрушение строения;Gebäude - Einsturz, rückgängig;Deshacer derrumbar edificio;Edificación - Derrumbe - Deshacer;Annuler la destruction du bâtiment;Struttura - Annulla crollo;건물 붕괴 취소;Budowla, Zawalenie, Cofnij;Prédio - Colapso - Desfazer;建筑探险撤销;建築坍塌 - 復原
+Builid Starport;Построить космопорт;Raumhafen bauen;Construir puerto estelar;Construir Puerto estelar;Construire un spatioport;Costruisci Spazioporto;우주공항 생산;Stwórz port gwiezdny;Construir Estaleiro Sideral;建造星港;建造星際港
+Bursting Glands;Усиленные гланды;Druckdrüsen;Glándulas rebosantes;Estallido de glándulas;Glandes explosives;Ghiandole eruttive;파열 분비선;Wybuchające gruczoły;Glândulas Explosivas;爆炸腺体;迸射腺體
+Buy Candy;Купить конфету;Süßigkeiten kaufen;Comprar chucherías;Comprar caramelo;Acheter un bonbon;Negozio di caramelle;사탕 구매;Kup cukierka;Comprar Doce;购买糖果;買糖果
+Caduceus Reactor;Реактор «Кадуцей»;Caduceus-Reaktor;Reactor caduceo;Reactor caduceo;Réacteur Caduceus;Reattore Caduceo;카두세우스 반응로;Reaktor Asklepios;Reator Caduceu;卡度休斯反应堆;醫療反應爐
+Calldown Alarak;Вызов Аларака;Alarak anfordern;Llamar a Alarak;Llamar a Alarak;Envoi d’Alarak;Richiama Alarak;알라라크 투하;Wezwanie Alaraka;Convocar Alarak;Calldown Alarak;躍傳亞拉瑞克
+Calldown MULEDouble Down;Вызов двух МУЛов;M.U.L.E. anfordern - Verdoppelung;Solicitar doble MULA;Llamado: EMUL - Doble - Abajo;Envoi MULE double;Raddoppio richiesta MULE;지게로봇 이중 투하;Wezwanie MUŁAPodwójne;Calldown MULEDouble Down;召唤双重矿骡;空投雙重礦騾
+Calldown Nuke;Запросить ядерный удар;Nuklearschlag anfordern;Solicitar bomba nuclear;Llamar misil nuclear;Frappe nucléaire;Richiesta nucleare;핵 투하;Zrzucenie pocisku jądrowego;Chamada - Arma Nuclear;呼叫聚变打击;呼叫核彈
+Calldown: MULE;Запрос: МУЛ;M.U.L.E. anfordern;Solicitar: MULA;Llamado: EMUL;Envoi : MULE;Richiedi MULE;투하: 지게로봇;Wezwanie: MUŁ;Chamada: MULE;轨道空投：矿骡;空投：礦騾
+Calldown: Supply Depot;Вызов хранилища;Versorgungsdepot anfordern;Solicitar depósito de suministros;Llamado: Depósito de suministros;Envoi : dépôt de ravitaillement;Richiesta Deposito;투하: 보급고;Wezwanie: Magazyn;Chamada: Depósito de suprimentos;空投：补给站;空投：補給站
+Campaign Vehicles;Техника из кампании;Kampagnenfahrzeuge;Vehículos de campaña;Vehículos de campaña;Véhicules de campagne;Veicoli della campagna;캠페인 차량;Pojazdy kampanii;Veículos da Campanha;战役车辆;劇情戰役載具
+Carrier Bombing Run;Авианосец - бомбометание;Träger - Bomberangriff;Carrera de bombardeo de portanaves;Portanaves - Bombardeo - Huída;Porte-nefs - Raid aérien;Portastormo - Bombardamento a Tappeto;우주모함 폭격 비행;Lotniskowiec, Nalot bombowy;Transportadora - Passagem de Bombardeio;Carrier Bombing Run;航空母艦轟炸
+Carrier Shields;Щиты авианосца;Trägerschilde;Escudos de portanaves;Portanaves - Escudo;Bouclier de porte-nefs;Portastormo - Scudi;우주모함 보호막;Osłony lotniskowca;Escudos de Transportadora;航母护盾;航空母艦護盾
+Caster Specialization;Специализация: особые способности;Fähigkeitenspezialisierung;Especialización de hechizos;Especialización de lanzador;Spécialisation lanceur de sorts;Specializzazione Distanza;시전자 전문화;Rzucający, Specjalizacja;Especialização de Lançador;施法特化;施放者專長
+Caustic Additive;Каустическая добавка;Ätzender Zusatz;Aditivo cáustico;Aditivo cáustico;Additif corrosif;Additivo caustico;부식성 첨가물;Kaustyczny dodatek;Aditivo Cáustico;腐蚀添加剂;腐蝕成分
+Caustic Mucus;Едкая слизь;Ätzendes Sekret;Mucosidad cáustica;Mucosa cáustica;Mucus caustique;Muco caustico;석회 점액;Żrący śluz;Muco Cáustico;腐蚀黏液;酸蝕黏液
+Cell Rejuvenation;Восстановление клеток;Zellverjüngung;Rejuvenecimiento celular;Rejuvenecimiento celular;Régénération cellulaire;Rigenerazione cellulare;세포 회복;Odnowa komórkowa;Rejuvenescimento Celular;细胞恢复;細胞回復
+Cellular Fission;Клеточное дробление;Zellspaltung;Fisión celular;Fisión celular;Division cellulaire;Scissione cellulare;세포 분열;Fuzja komórkowa;Fissão Celular;细胞裂变;細胞分裂
+Centrifugal Hooks;Круговые зацепы;Zentrifugalhaken;Ganchos centrífugos;Ganchos centrífugos;Crochets centrifuges;Uncini frenetici;원심 고리;Pazury dośrodkowe;Ganchos Centrífugos;环心镰钩;離心蟲鉤
+Cerberus Mine;Мина «Цербер»;Cerberus-Mine;Mina cerbero;Mina Cerbero;Mines Cerbère;Mina Cerbero;케르베로스 지뢰;Mina „Cerber”;Mina Cerberus;地狱犬地雷;地獄犬詭雷
+Chain Lightning;Цепная молния;Kettenblitz;Cadena de relámpagos;Relámpagos en cadena;Chaîne d’éclairs;Catena di fulmini;연쇄 번개;Seryjne błyskawice;Cadeia de relâmpagos;闪电链;連鎖閃電
+Chaotic Attunement;Единение с хаосом;Chaoskonfiguration;Armonización caótica;Alineación caótica;Syntonie chaotique;Armonia caotica;혼돈의 조율;Chaotyczne zestrojenie;Sintonia Caótica;混乱调和;混沌同調
+Cheaper Hatcheries;Дешевые инкубаторы;Billigere Brutstätten;Criaderos más baratos;Larvarios más baratos;Couveuses moins chères;Vivai economici;가격 싼 부화장;Tańsze wylęgarnie;Incubadoras Mais Baratas;低廉孵化场;低消耗孵化所
+Cheat Death;Обман смерти;Von der Schippe springen;Burlar a la muerte;Truco - Muerte;Trompe-la-mort;Inganno alla Morte;위장 소멸;Oszukanie śmierci;Escapar da Morte;欺骗死神;詐死
+Chemical Treatment;Антикоррозийное покрытие;Chemische Behandlung;Tratamiento químico;Tratamiento químico;Traitement chimique;Trattamento chimico;화학 처리;Obróbka chemiczna;Tratamento Químico;化学处理;化學處理
+Chitinous Carapace;Хитиновый щиток;Chitinpanzer;Caparazón quitinoso;Caparazón quitinoso;Carapace chitineuse;Carapace chitinoso;키틴질 갑피;Karapaks chitynowy;Carapaça Quitinosa;生物甲壳;幾丁化蟲殼
+Chronal Distortion;Хроноискажение;Temporale Verzerrung;Distorsión cronal;Cronodistorsión;Entrave temporelle;Alterazione temporale;시간 왜곡;Zakłócenie Temporalne;Distorção Temporal;时空扭曲;時間扭曲
+Chrono Boost;Темпоральное ускорение;Zeitschleife;Aceleración cronos;Cronoimpulso;Poussée temporelle;Accelerazione temporale;시간 증폭;Zagięcie czasoprzestrzeni;Reforço Temporal;时空提速;超時空加速
+Chrono Shift;Темпоральное смещение;Zeitverschiebung;Traslación cronos;Cronocambio;Translation temporelle;Salto Temporale;시간 전환;Chronoprzesunięcie;Crono Deslocamento;时空转移;時空位移
+Chrono Surge;Ускорение времени;Zeitraffer;Oleada cronos;Cronodinámica;Impulsion temporelle;Varco temporale;시간 쇄도;Zagięcie Czasoprzestrzeni;Impulso Crono;时空涌动;超次元加速
+Clarity of Purpose;Ясная цель;Klare Ziele;Claridad de propósito;Claridad de propósito;Clarté de l’intention;Intento risoluto;명확한 목표;Jasność celu;Clareza de Propósito;明确目标;目的明確
+Cliff Blink;Уступ - скачок;Klippentransit;Traslación de elevaciones;Risco - Parpadeo;Transfer de la falaise;Traslazione dislivello;언덕 점멸;Mignięcie przez klif;Translação de Penhasco;悬崖闪现;山崖瞬移
+Cliff Jumping;Преодоление уступов;Klippenspringen;Saltar elevaciones;Saltar riscos;Saut de falaises;Salto dei dislivelli;언덕 도약;Przeskakiwanie klifów;Pular em Penhasco;悬崖跳跃;行走山崖中
+Cloak Aura;Аура маскировки;Tarnaura;Aura de invisibilidad;Aura de camuflaje;Aura de camouflage;Aura occultante;은폐 오라;Aura Maskowania;Aura de Camuflagem;隐形光环;匿蹤靈氣
+Clolarion' A.I. Personality;Матрица личности Клолариона;Clolarions KI-Persönlichkeit;IA de personalidad de Clolarion;Personalidad de IA de Clolarion;Personnalité artificielle de Clolarion;I.A. eroica di Clolarion;클로라리온 인공지능;Osobowość SI Clolariona;Personalidade I.A. de Clolárion;科罗拉里昂的智能人格;庫勒瑞安的A.I.人格
+Close Gate;Закрыть ворота;Tor schließen;Cerrar puerta;Cerrar compuerta;Fermer la barrière;Chiudi cancello;문 닫기;Zamknij bramę;Fechar portão;关闭大门;關閉閘門
+Cloud Dispersal;Облачное рассеивание;Schwarmwolke;Disociación en nube;Nube dispersiva;Nuée dispersive;Dispersione nebulizzata;구름 분산;Przekształcenie w chmarę;Dispersão de Nuvem;云状散化;蟲雲噴散
+Collect Essence;Собрать эссенцию;Essenz sammeln;Recolectar esencia;Recolectar esencia;Collecte d’essence;Raccogli essenza;정수 수집;Zbierz esencję;Coletar Essência;采集精华;收集原質
+Colossus Damage;Урон колосса;Koloss - Schaden;Daño de coloso;Coloso - Daño;Colosse - Dégâts;Colosso - Danni;거신 피해;Kolos, Obrażenia;Dano de Colosso;Colossus Damage;巨像傷害
+Combat Chrono Aura;Темпоральная боевая аура;Kampfzeitschleife - Aura;Aura de combate cronos;Cronocombate - Aura;Aura de combat temporel;Aura di Scontro Temporale;전투 시간 오라;Walka, Chrono, Aura;Aura - Crono Combate;战斗提速光环;戰鬥加速靈氣
+Combat Leap;Боевой прыжок;Anspringen;Salto de combate;Salto de combate;Bond offensif;Balzo d'assalto;전투 도약;Skok bojowy;Salto de Combate;战斗跳跃;戰鬥躍擊
+Combat Mastery;Боевое искусство;Kampfmeisterung;Maestría de combate;Maestría de combate;Maîtrise du combat;Maestria tattica;전투 마스터;Mistrzowska walka;Maestria de Combate;战斗精通;戰鬥專精
+Combat Sensor Array;Сенсорная матрица;Gefechtsoptimiertes Sensorfeld;Equipo detector de combate;Matriz sensora de combate;Capteurs de combat;Batteria bellica sensoriale;전투 감지기 배열;Bojowa matryca sensorowa;Matriz de Sensores de Combate;战斗感应器阵列;戰鬥感測序列
+Combustive Glands;Огненные железы;Feuerdrüsen;Glándulas incendiarias;Glándulas explosivas;Glandes incendiaires;Ghiandole combustive;연소성 분비선;Gruczoły Zapalne;Glândulas Comburentes;助燃腺体;易燃腺體
+Command Zerg;Управление зергами;Zerg befehligen;Controlar zerg;Controlar zerg;Diriger les Zergs;Controllo zerg;저그 조종;Dowodzenie zergami;Comando Zerg;命令异虫;指揮蟲族
+Concentrated Fire;Сфокусированный огонь;Konzentriertes Feuer;Fuego concentrado;Fuego puntual;Feu concentré;Fuoco concentrato;집중된 화염;Skupienie Ognia;Fogo Concentrado;汇聚烈焰;火焰集灼
+Concussive Grenades;Фугасные гранаты;Schockgranaten;Granadas de conmoción;Granadas de concusión;Grenades incapacitantes;Granate a concussione;충격 유탄;Granaty ogłuszające;Granadas de Choque;震荡榴弹;震撼彈
+Concussive Shells;Фугасные гранаты;Schockmunition;Proyectiles conmocionantes;Cartuchos de concusión;Obus incapacitants;Granate a concussione;충격탄;Pociski ogłuszające;Cápsulas de concussão;震荡弹;震撼彈
+Confederate Condors;Кондоры Конфедерации;Kondore der Konföderation;Cóndores confederados;Cóndores confederados;Condors confédérés;Condor confederati;연합 콘도르;Kondory Konfederacji;Condores Confederados;联邦神鹰;聯邦神鷹
+Construction Time;Время строительства;Bauzeit;Tiempo de construcción;Tiempo de construcción;Temps de construction;Tempo di Costruzione;건설 시간;Czas budowy;Tempo de Construção;建造时间;建造速度
+Consume Zerg;Поглотить зерга;Zerg verschlingen;Consumir zerg;Consumir zerg;Absorption de Zerg;Consuma zerg;저그 흡수;Pochłonięcie zerga;Consumir Zerg;吞噬异虫;吞噬 - 蟲族
+Corrosive Ooze;Едкая жижа;Ätzender Schleim;Moco corrosivo;Excreción corrosiva;Bave corrosive;Melma corrosiva;부식성 진흙;Żrący szlam;Gosma Corrosiva;腐蚀软泥;酸蝕腐泥
+Corrosive Spray;Едкие брызги;Ätzende Tröpfchen;Rocío corrosivo;Rocío corrosivo;Projection corrosive;Spruzzo corrosivo;부식성 분사;Żrący rozprysk;Borrifada Corrosiva;腐蚀喷涌;酸液噴灑
+Corrosive Talons;Ядовитые когти;Ätzende Klauen;Garras corrosivas;Garras corrosivas;Serres corrosives;Artigli corrosivi;부식성 발톱;Żrące szpony;Garras Corrosivas;腐蚀利爪;酸蝕蟲爪
+Corrosive Venom;Едкий яд;Ätzendes Gift;Veneno corrosivo;Veneno corrosivo;Venin corrosif;Veleno corrosivo;부식성 맹독;Żrący jad;Peçonha Corrosiva;腐蚀毒液;酸蝕猛毒
+Corrupted Yamato Cannon;Инфицированное орудие «Ямато»;Kontaminierte Yamato-Kanone;Cañón yamato corrompido;Cañón Yamato corrupto;Canon Yamato corrompu;Cannone Yamato corrotto;부패한 야마토 포;Zainfekowane działo Yamato;Canhão Yamato Corrompido;被腐化的大和炮;腐化的大和砲
+Corruption Focus;Порча;Kampfschwerpunkt Korrumpierung;Enfoque de corrupción;Foco de corrupción;Mode Corruption;Focalizzazione di corruzione;타락 특성;Specjalizacja skażenia;Foco em Corrupção;堕落专精;腐化專精
+Cosmic Fury;Космическая ярость;Kosmische Raserei;Furia cósmica;Furia cósmica;Fureur cosmique;Furia Cosmica;우주의 격노;Kosmiczna furia;Fúria Cósmica;寰宇之怒;宇宙之怒
+Covert Triage;Скрытое исцеление;Tarnheilungsmodul;Triaje encubierto;Triaje encubierto;Triage furtif;Cure segrete;비밀 치료;Niewykrywalne leczenie;Triagem Secreta;隐秘检伤;隱密維修
+Crash Morph;Удар - мутация;Verwandlung;Transformación de choque;Transformación de choque;Transformation crash;Trasformazione impatto;충돌 변형;Rozbity Przekształcenie;Acidente de Transmutação;碰撞变形;撞擊 - 變形
+Creep Generation;Выработка слизи;Kriechererzeugung;Generación de biomateria;Generación de talo;Génération de mucus;Genera biostrato;점막 생성;Wydzielanie biomasy;Gerar Gosma;生成菌毯;蟲苔增生
+Creep Generator;Распространитель слизи;Kriechererzeuger;Generador de biomateria;Generador de talo;Générateur de mucus;Generatore di biostrato;점막 생성체;Wydzielacz biomasy;Gerador de Gosma;菌毯分泌腺体;蟲苔生成單位
+Creep Spread;Распространение слизи;Kriecherverbreitungsrate;Extender biomateria;Expansión de talo;Répandre du mucus;Diffondi biostrato;점막 확산;Rozprzestrzenianie biomasy;Contágio de Gosma;菌毯散布;蟲苔擴散
+Creeping Doom;Смертоносная слизь;Kriechendes Verhängnis;Condenación sigilosa;Talo de la perdición;Mort insidieuse;Rovina strisciante;임박한 파멸;Pełzająca zagłada;Ruína Rastejante;末日菌毯;束縛蟲苔
+Crippling Psionic Storm;Увечащий псионный шторм;Lähmender Psi-Sturm;Tormenta psiónica paralizante;Tormenta psiónica devastadora;Tempête psionique affaiblissante;Tempesta psionica immobilizzante;무력화 사이오닉 폭풍;Przełamującą burza psioniczna;Tempestade Psiônica Debilitante;致残灵能风暴;破甲幽能風暴
+Crius Suit;Костюм «Криос»;Crius-Anzug;Traje crius;Traje Crius;Armure Crius;Tuta Ade;크리오스 전투복;Kombinezon Krios;Armadura Crius;克利俄斯战服;泰坦裝束
+Cross-Spectrum Dampeners;Светопоглощающее покрытие;Transspektral-Dämpfer;Amortiguador de espectro cruzado;Depresores de espectro cruzado;Refroidisseurs multi-spectre;Offuscatori multispettro;스펙트럼 대역 흡수기;Tłumiki spektrum krzyżowego;Supressores de espectro cruzado;交叉光谱抑光仪;交叉頻譜抑制器
+Crystalline Amplifiers;Кристаллические усилители;Kristallverstärker;Amplificadores cristalinos;Amplificadores cristalinos;Amplificateurs cristallins;Amplificatori cristallini;결정 증폭기;Wzmacniacze Krystaliczne;Amplificadores Cristalinos;水晶增幅器;水晶增幅器
+Cybros Arbiter Suit;Арбитр «Киброса»;Konfiguration Cybros-Arbiter;Armadura de árbitro de Cybros;Traje de árbitro de Cybros;Armure d’Arbitre de Cybros;Arbiter Cybros;사이브로스 중재자 전투복;Pancerz Arbitra Cybrosa;Traje Mediadora Cybros;塞布罗斯仲裁者战甲;賽博洛斯審判者機甲
+D99 Detonator;Детонатор D99;Detonator D99;Detonador D99;Detonador D99;Détonateur D99;Detonatore D99;D99 기폭 장치;Detonator D99;Detonador D99;D99型起爆器;D99引爆器
+Dark Inertia;Темная инерция;Dunkle Trägheit;Inercia oscura;Inercia oscura;Sombre inertie;Inerzia Oscura;어둠의 무력감;Mroczna inercja;Inércia das Trevas;黑暗惯量;黑暗慣性
+Deadly Reach;Вытягивание;Tödliche Reichweite;Alcance mortal;Alcance letal;Portée fatale;Allungo mortale;연속 격파;Zabójczy Zasięg;Alcance Mortal;致命触击;致命攫取
+Defense System;Оборонительная система;Verteidigungssystem;Sistema de defensa;Sistema defensivo;Système de défense;Sistema difensivo;방어 시스템;System obronny;Sistema de Defesa;防御系统;防禦系統
+Dehaka PH;Дехака;Dehaka;Dehaka;Dehaka PH;Dehaka PH;Dehaka;데하카;Dehaka;Dehaka;德哈卡;德哈卡
+Demolition Efficiency;Уничтожение строений;Zerstörungseffizienz;Eficiencia de demolición;Eficiencia en demolición;Démolition efficace;Demolizione efficiente;파괴 효율성;Skuteczność niszczenia;Eficiência da Demolição;高效爆破;破壞效率
+Deploy Covert Banshees;Вызвать тактические «Банши»;Tarnkappen-Banshees anfordern;Desplegar átropos encubiertas;Desplegar Banshees encubiertas;Déploiement de Banshees furtives;Schiera Banshee occulte;비밀 밴시 배치;Wezwij banshee tajnych oddziałów;Lançar Vudus Camufladas;部署隐秘女妖;部署隱形女妖轟炸機
+Deploy Dark Pylon;Вызов темного пилона;Dunklen Pylon anfordern;Desplegar pilón tétrico;Desplegar Pilón oscuro;Déploiement d’un pylône noir;Colloca Pilone oscuro;암흑 수정탑 배치;Przesył Mrocznego Pylonu;Implantar Pilar Negro;部署黑暗水晶塔;躍傳黑暗水晶塔
+Deploy Elite Marines;Вызвать элитных морпехов;Elite-Marines anfordern;Desplegar soldados de élite;Desplegar Marines de élite;Déploiement de marines d’élite;Schiera Marine d'élite;정예 해병 배치;Wezwij elitarnych marines;Lançar Soldados de Elite;部署精英陆战队员;部署精英陸戰隊
+Deploy Fenix;Вызов Феникса;Fenix anfordern;Desplegar a Fénix;Desplegar a Fénix;Déploiement de Fénix;Schiera Fenix;피닉스 배치;Przesył Feniksa;Convocar Fenix;部署菲尼克斯;部署菲尼克斯
+Deploy Hellbat Rangers;Вызвать десантные «Геллитроны»;Ranger-Kampfhellion anfordern;Desplegar murciélagos infernales exploradores;Desplegar Murciélagos infernales exploradores;Déploiement de Nettoyeurs éclaireurs;Schiera Hellbat scelti;화염기갑 특전병 배치;Wezwij helbaty komandosów;Lançar Batedores Morcegos Infernais;部署恶蝠游骑兵;部署戰狼遊騎兵
+Deploy Mag Mines;Магнитные мины;Magnetminen einsetzen;Desplegar minas magnéticas;Desplegar minas magnéticas;Déploiement de mines magnétiques;Schiera Mine automatizzate;자기 지뢰 매설;Miny Magnetyczne;Posicionar Minas Magnéticas;部署麦格天雷;部署磁力機雷
+Deploy Marauder Commandos;Вызвать мародеров-коммандос;Kommando-Marodeure anfordern;Desplegar persecutores comando;Desplegar Comandos Merodeador;Déploiement de maraudeurs d’élite;Schiera Devastatori commando;불곰 특공대 배치;Wezwij maruderów komandosów;Lançar Comandantes Demolidores;部署劫掠者突击手;部署特戰掠奪者
+Deploy Pylon;Вызвать пилон;Pylon anfordern;Desplegar pilón;Desplegar Pilón;Déploiement de pylône;Colloca Pilone;수정탑 배치;Przesył Pylonu;Implantar Pilar Energético;部署水晶塔;躍傳水晶塔
+Deploy Raid Liberators;Вызвать ударные «Освободители»;Sturmfalken anfordern;Desplegar liberadores de incursión;Desplegar Libertadores de incursión;Déploiement de croiseurs de raid;Schiera Liberatori d'assalto;습격 해방선 배치;Wezwij liberatory szturmowe;Lançar Libertadores de Raide;部署掠袭解放者;部署突擊解放者
+Deploy Railgun Turret;Разместить электромагнитную турель;Railgun-Geschütz einsetzen;Desplegar torreta de raíles;Desplegar torreta de cañón de riel;Déploiement de la tourelle électromagnétique;Torretta elettrica;레일건 포탑 설치;Rozstaw wieżyczkę kinetyczną;Instalar Torre Magnética;部署磁轨炮塔;部署磁軌砲台
+Deploy Raven Type-II;Вызвать «Ворона-II»;Raven Typ II anfordern;Desplegar cuervo tipo II;Desplegar Cuervo tipo II;Déploiement d’un Corbeau de type II;Schiera Raven 2.0;밤까마귀 타입-II 배치;Wezwij kruka typu II;Lançar Corvo Tipo II;部署铁鸦II型;部署渡鴉二型
+Deploy Revitalizer;Установить «Целитель»;Vitalstimulator aufstellen;Desplegar revitalizador;Desplegar revitalizador;Déployer un vivificateur;Rivitalizzatore;재충전기 배치;Regenerator;Posicionar Revitalizador;部署恢复器;部署復原器
+Deploy Shadow Guard;Темные стражи;Schattenwache anfordern;Enviar a guardia de las sombras;Desplegar Guardia sombría;Déploiement de la Garde de l’ombre;Schiera Guardia dell'ombra;그림자 파수대 배치;Przesył Gwardii Cieni;Evocar Guarda Sombria;部署暗影卫队;部署暗影護衛
+Deploy Spider Mine;Установка паучьей мины;Spinnenmine legen;Colocar mina araña;Desplegar Mina araña;Déployer une mine araignée;Piazza Mina ragno;거미 지뢰 설치;Rozstawienie miny pajęczej;Instalar Mina-aranha;部署蜘蛛雷;部署蜘蛛詭雷
+Deploy Strike Goliaths;Вызвать штурмовые «Голиафы»;Taktische Goliaths anfordern;Desplegar goliats de asalto;Desplegar Goliats de asalto;Déploiement de Goliaths d’assaut;Schiera Goliath incursori;타격 골리앗 배치;Wezwij goliaty szturmowe;Lançar Golias de Ataque;部署强击歌利亚;部署特攻巨人
+Deploy Talandar;Вызов Таландара;Talandar anfordern;Desplegar a Talandar;Desplegar a Talandar;Déployer Talandar;Schiera Talandar;탈란다르 배치;Przesył Talandara;Convocar Talandar;部署塔兰达尔;部署塔蘭達
+Destroy Drone;Уничтожить модуль;Drohne zerstören;Destruir robot;Destruir dron;Détruire le drone;Distruggi droide;드론 파괴;Zniszcz drona;Destruir Drone;摧毁无人机;摧毀無人機
+Destruction Focus;Разрушение;Kampfschwerpunkt Zerstörung;Enfoque de destrucción;Foco de destrucción;Mode Destruction;Focalizzazione di distruzione;파괴 특성;Specjalizacja niszcząca;Foco em Destruição;毁灭专精;毀滅專精
+Detect Weakness;Выявление уязвимостей;Schwachstellenanalyse;Detectar debilidad;Debilidad expuesta;Détection des faiblesses;Istinto predatorio;약점 탐지;Ujawnianie słabości;Detectar Fraqueza;侦测弱点;偵測弱點
+Detector Radar;Радар детектора;Detektorradar;Radar detector;Detector - Radar;Radar détecteur;Radar Individuatore;탐지기 레이더;Radar wykrywający;Radar Detector;侦测雷达;偵測單位 - 雷達
+Devolution Wave;Волна инволюции;Degenerationswelle;Ola de involución;Oleada involutiva;Vague de régression;Ondata involutiva;퇴화의 파동;Fala Deewolucyjna;Onda de Regressão;退化振波;退化之潮
+Devour Drone;Пожрать рабочего;Drohne verschlingen;Devorar zángano;Devorar Obrero;Assimiler un ouvrier;Consuma Drone primordiale;일벌레 섭취;Pożarcie robotnicy;Devorar Zangão;吞食工蜂;吞噬工蟲
+Disintegration;Дезинтеграция;Desintegration;Desintegración;Desintegración;Désintégration;Disintegrazione;분해;Dezintegracja;Desintegração;衰变;崩解
+Disintegration Beam;Луч дезинтеграции;Desintegrationsstrahl;Haz de desintegración;Rayo de desintegración;Rayon désintégrateur;Raggio Disintegratore;분해 광선;Promień dezintegrujący;Raio Desintegrador;裂解光束;崩解光束
+Disruptor Orb;Сфера дестабилизации;Disruptorkugel;Orbe disruptor;Orbe disruptor;Orbe disrupteur;Sfera Disgregante;분열기 구체;Kula destabilizatora;Orbe Disruptor;裂光球;阻斷砲能量彈
+Dissolving Acid;Разъедающая кислота;Zersetzende Säure;Ácido disolvente;Ácido disolvente;Acide caustique;Solvente acido;산성 융해;Roztapiający kwas;Ácido Solvente;溶解强酸;溶蝕強酸
+Double Shield Recharge;Двойная перезарядка щита;Duale Schildaufladung;Recarga de escudo doble;Recarga de escudos doble;Double recharge de bouclier;Ricarica scudo doppia;이중 보호막 재충전;Podwójne doładowanie osłon;Recarga Dupla de Escudo;双重护盾充能;雙重充能
+Dragoon Revive;Восстановление драгуна;Dragoner wiederbeleben;Revivir dragón;Dragún - Revivir;Ranimation de dragon;Resuscita Dragone;용기병 부활;Ożywienie dragona;Dragonte - Reviver;龙骑士复活;龍騎士復活
+Drop-Pods;Десантные капсулы;Brutkapseln;Cápsulas de lanzamiento;Cápsulas de inserción;Capsules de débarquement;Capsule da sbarco;낙하 주머니;Komory Desantowe;Módulos de transporte;空投囊;空投囊
+Dual-Fusion Repair;Ускоренный ремонт;Dual-Fusionsreparatur;Reparación de fusión doble;Reparación de fusión doble;Réparation à double fusion;Ripara con doppio saldatore;이중 핵융합 수리;Podwójna naprawa fuzyjna;Reparo de fusão dupla;双熔切焊枪修理;雙重核融合修復
+Eclipse Protocol;Протокол «Затмение»;Eklipsenprozess;Protocolo de eclipse;Protocolo de eclipse;Protocole éclipse;Protocollo eclissi;일월식 프로토콜;Protokół zaćmienia;Protocolo Eclipse;星蚀协议;日蝕協定
+Elongated Proboscis;Удлиненный хобот;Verlängerter Rüssel;Probóscide elongada;Probóscide elongada;Proboscide allongé;Proboscide allungata;늘어진 코;Wydłużona ssawka;Probóscide Alongada;细长喙嘴;鼻管延長
+Emergency Medivac;Аварийный медэвак;Notfall-Medivac;Medevac de emergencia;Evamed de emergencia;Médivac d’urgence;Navetta medica d'emergenza;긴급 의료선;Awaryjny prom medyczny;Ambunave de Emergência;救急医疗运输机;緊急醫療艇
+EMP Blast;ЭМИ;EMP-Ladung;Explosión PEM;Explosión PEM;Déflagration d’IEM;Scarica elettromagnetica;EMP 폭발;Wybuch EMP;Impacto PEM;EMP冲击;電磁脈衝波轟擊
+EMP Burst;Электромагнитная волна;EMP-Entladung;Ráfaga PEM;Ráfaga de PEM;Explosion IEM;Scarica elettromagnetica;EMP 폭발;Wybuch EMP;Explosão PEM;EMP喷发;電磁脈衝波轟擊
+Empower Me;Усиливайте меня!;Bemächtigung;Potenciadme;Sírvanme;Renforcement;Potere ampliato;날 강화하라;Wzmocnienie;Deem-me Poder;供奉我;強化我的力量吧
+Empowered Blades;Усиленные клинки;Energieerfüllte Klingen;Cuchillas potenciadas;Cuchillas fortalecidas;Lames renforcées;Lame potenziate;강화된 검;Wzmocnione Ostrza;Lâminas Energizadas;充能利刃;強化之刃
+Endless Swarm;Бесчисленный рой;Ewiger Schwarm;Enjambre infinito;Enjambre infinito;Essaim infini;Sciame sconfinato;끝없는 군단;Nieskończony rój;Enxame Infinito;无尽虫群;無盡蟲群
+Endurance Training;Тренировка выносливости;Abhärtung;Entrenamiento de fondo;Entrenamiento de resistencia;Résistance à l’effort;Addestramento intensivo;지구력 훈련;Trening wydolnościowy;Treinamento de Resistência;耐力训练;耐力訓練
+Energy Regeneration Aura;Аура восстановления энергии;Aura für Energieregeneration;Aura de regeneración de energía;Aura de regeneración de energía;Aura de régénération d’énergie;Aura di rigenerazione energetica;에너지 재생 오라;Aura regeneracji energii;Aura de Regeneração de Energia;能量恢复光环;能量恢復靈氣
+Enervating Beam;Ослабляющий луч;Entkräftender Strahl;Haz debilitador;Rayo enervante;Rayon débilitant;Raggio Innervante;무기력 광선;Promień osłabiający;Feixe Enervante;委顿光束;衰弱光束
+Engorged Appendages;Набухшие отростки;Angeschwollene Gliedmaßen;Apéndices congestionados;Apéndices ingurgitados;Appendices congestionnés;Appendici divoranti;울혈 부속물;Nabrzmiałe wyrostki;Apêndices Ingurgitados;充血尾翼;腫脹外肢
+Enhanced Carapace;Укрепленный панцирь;Verbesserter Panzer;Caparazón mejorado;Caparazón mejorado;Carapace améliorée;Carapace evoluto;강화 갑피;Wzmocniony karapaks;Carapaça Aprimorada;强化甲壳;強化蟲殼
+Enhanced Hostilities Kit;Улучшенный боекомплект;Verbesserte Kampfhandlungsausrüstung;Kit de hostilidades mejoradas;Kit de hostilidades mejorado;Kit d’aggravation des hostilités;Dotazione da scontro potenziata;개선된 교전 장비;Zestaw Ulepszeń Bojowych;Kit de Hostilidade Aprimorado;强化版爆破套件;強化戰意套件
+Enhanced Manufacturing;Повышение производительности;Verbesserte Fertigung;Fabricación mejorada;Fabricación mejorada;Fabrication améliorée;Costruzione migliorata;제조 강화;Efektywniejsze wytwarzanie;Fabricação Aprimorada;强化加工;先進製造程序
+Enhanced Mitochondria;Усовершенствованные митохондрии;Erweiterte Mitochondrien;Mitocondria mejorada;Mitocondrias mejoradas;Mitochondrie améliorée;Mitocondri potenziati;향상된 미토콘드리아;Wzmocnione mitochondrium;Mitocôndria Aprimorada;强化线粒体;高效粒線體
+Enhanced Targeting;Улучшение систем наведения;Verbesserte Zielfindung;Selección de objetivo mejorada;Focalización mejorada;Ciblage amélioré;Puntamento migliorato;향상된 목표 설정;Ulepszone systemy celownicze;Mira Aprimorada;强化瞄准;強化鎖定
+Enlarged Parotid Glands;Увеличенные околоушные железы;Vergrößerte Speicheldrüsen;Glándulas parótidas agrandadas;Glándulas parótidas aumentadas;Parotides hypertrophiées;Parotidi superiori;귀밑샘 확대;Powiększone ślinianki;Glândulas Parótidas Aumentadas;膨胀腮腺;增大唾腺
+Enter Subway;Войти в метро;U-Bahn betreten;Entrar al tren subterráneo;Entrar al subterráneo;Entrer dans le tunnel;Ingresso;지하철 들어가기;Wejdź do metra;Entrar no Metrô;进入地铁;搭乘地鐵
+Eruptive Spores;Эруптивные споры;Hervorbrechende Sporen;Esporas explosivas;Esporas eruptivas;Spores éruptives;Spore erompenti;분출 포자;Wybuchowe zarodniki;Esporos Irruptivos;喷射孢子;爆破孢子
+Eternity Barrier;Барьер вечности;Ewigkeitsbarriere;Barrera de eternidad;Barrera de la eternidad;Barrière d’éternité;Barriera eterna;영원 방어막;Bariera wieczności;Barreira da Eternidade;永恒屏障;永恆屏障
+Evolution Aura;Аура эволюции;Entwicklungsaura;Aura de evolución;Aura de evolución;Aura d’évolution;Aura evolutiva;진화 오라;Aura Ewolucyjna;Aura de Evolução;进化光环;進化靈氣
+Evolved Adrenal Glands;Улучшенные адреналиновые железы;Entwickelte Adrenalindrüsen;Glándulas suprarrenales evolucionadas;Glándulas adrenales evolucionadas;Glandes surrénales évoluées;Ghiandole surrenali evolute;아드레날린 분비선 진화;Wyewoluowane nadnercza;Glândulas Suprarrenais Evoluídas;进化肾上腺体;進化腎上腺體
+Evolved Carapace;Улучшенный панцирь;Entwickelter Panzer;Caparazón evolucionado;Caparazón evolucionado;Carapace évoluée;Carapace evoluto;갑피 진화;Wyewoluowany karapaks;Carapaça Evoluída;进化甲壳;進化蟲殼
+Evolved Incubation Sacs;Улучшенные инкубационные камеры;Entwickelte Inkubationsbeutel;Bolsas de incubación evolucionadas;Sacos de incubación evolucionados;Poches d’incubation évoluées;Sacche d'incubazione evolute;부화 주머니 진화;Wyewoluowane komory inkubacyjne;Bolsas de Incubação Evoluídas;进化孵化囊;進化育卵囊
+Evolved Leeching;Улучшенное вытягивание здоровья;Entwickelter Lebensentzug;Absorción evolucionada;Drenaje evolucionado;Ponction évoluée;Sottrazione evoluta;착취 진화;Wyewoluowane wysysanie;Drenagem Evoluída;进化吸血;進化生命竊取
+Executioner Missiles;Ракеты «Палач»;Scharfrichterraketen;Misiles verdugo;Misiles verdugos;Missiles Tortionnaire;Missili Executioner;집행자 미사일;Pociski Egzekutor;Mísseis Executores;处决飞弹;處決者飛彈
+Exit Subway;Выйти из метро;U-Bahn verlassen;Salir del tren subterráneo;Salir del subterráneo;Sortir du tunnel;Uscita;지하철 나가기;Wyjdź z metra;Sair do Metrô;离开地铁;離開地鐵
+Explode Infested;Взорвать зараженного;Verseuchte detonieren;Explosionar infestado;Detonar Infestado;Explosion de contaminé;Esplosione infestato;감염 폭발;Wybuch zainfekowanego;Explodir Infestado;引爆感染体;引爆感染大軍
+Explosive Spines;Взрывные шипы;Explosive Stacheln;Espinas explosivas;Espinas explosivas;Aiguillons explosifs;Aculei esplosivi;분출 포자;Wybuchowe kolce;Espinhos Explosivos;爆炸性脊针;爆破脊刺
+Extended Claws;Удлиненные когти;Längere Klauen;Garras extendidas;Garras extendidas;Griffes;Artigli estesi;발톱 연장;Wydłużone szpony;Garras prolongadas;强化利爪;加長利爪
+Extended Lash;Удлиненная плеть;Verlängerte Peitsche;Latigazo extendido;Cola extendida;Fouet étiré;Sferza estesa;채찍 연장;Wydłużony bicz;Açoite Estendido;延伸长鞭;刺鞭延長
+Extended Thermal Lance;Дальнобойный термальный луч;Verbesserte Thermolanze;Lanza térmica extendida;Lanza térmica extendida;Thermolance étendue;Lancia termica estesa;열 광선 사거리;Wydłużona lanca termiczna;Lança Térmica de Longo Alcance;加长热能射线枪;遠程熱能射線
+Extra Equipment list;Дополнительное оборудование;Zusätzliche Ausrüstungsliste;Lista de equipo extra;Lista de equipamiento extra;Liste d’équipement supplémentaire;Elenco equipaggiamento extra;추가 장비 목록;Lista dodatkowego wyposażenia;Lista de equipamentos extras;额外装备列表;額外裝備清單
+Faster Larvae;Быстрое рождение личинок;Schnellere Larven;Larvas más rápidas;Larvas más rápidas;Larve plus rapide;Larve rapide;빠른 애벌레;Szybsza larwa;Larvas Mais Rápidas;幼虫突变;幼蟲加速
+Feeding Hunger;Утоление голода;Unstillbarer Hunger;Hambre insaciable;Hambre insaciable;Faim dévorante;Pasto macabro;허기 충족;Nasycanie;Fome que Alimenta;进食饥渴;飢渴攝食
+Fenix (Air);Феникс (воздух);Fenix (Luft);Fénix (aire);Fénix (Aire);Fénix (aérien);Fenix - Aria;피닉스 (공중);Fenix (Powietrzny);Fenix (Air);菲尼克斯（空中）;菲尼克斯（空中單位）
+Fenix PH;Феникс;Fenix;Fénix;Fénix;Fénix - Temporaire;Fenix;피닉스 임시;Fenix;Fenix PH;Fenix PH;菲尼克斯
+Fibrous Core;Волокнистые внутренности;Fasriger Kern;Músculos fibrosos;Núcleo fibroso;Noyau fibreux;Nucleo fibroso;섬유질 핵;Włóknisty rdzeń;Núcleo Fibroso;纤维核;纖維核心
+Final Artifact Power;Последний дар артефакта;Letzte Artefaktmacht;Poder de artefacto final;Último poder de artefacto;Dernier pouvoir d’artéfact;Potere artefatto finale;마지막 유물의 힘;Ostatnia moc artefaktu;Poder Final do Artefato;最终神器力量;最終神器之力
+Finish Morph;Завершить мутацию;Metamorphose abschließen;Finalizar mutación;Finalizar transformación;Achever la transformation;Termina Trasformazione;변형 완료;Zakończ przekształcanie;Concluir Transmutação;完成变异;結束變形
+Flame Mech;Огненная мех-текстура;Flammenkampfläufer;Robot de llamas;Mecánica de llama;Mécanoïde lance-flammes;Mech incendiario;화염 기계;Płomień Mech;Fogo Mech;烈焰机甲;噴火裝置
+Fly high;Высокий полет;Hochfliegen;Vuelo de altitud;Volar alto;Envol;Volo Alto;고공 비행;Wysoki lot;Voo Alto;Fly high;高處飛行
+Flying Explosive Creepers;Летающие взрывные ползуны;Flügelzecken;Propagadores explosivos voladores;Furtivos voladores explosivos;Mucopodes explosifs volants;Locuste esplosive volanti;비행 폭발성 땅무지;Wybuchowe latające pełzacze;Rastejantes Explosivos Aéreos;飞行爆裂掘地虫;爆炸飛蝗
+Flying Primal Locusts;Летающие изначальные саранчиды;Flügelschrecken;Langostas voladoras primigenias;Langostas primigenias voladoras;Nuisibles primordiaux volants;Locuste primordiali volanti;비행 원시 식충;Latająca pierwotna szarańcza;Gafanhotos Primevos Voadores;飞行原始蝗虫;原生飛蝗
+Focused Gathering;Эффективная добыча ресурсов;Fokussiertes Abbauen;Recogida concentrada;Recolección focalizada;Collecte exclusive;Raccolta focalizzata;집중 수집;Skoncentrowane gromadzenie;Coleta Concentrada;专注集中;專注採集
+Force Blast;Выброс силы;Rückstoßwelle;Explosión de fuerza;Estallido de fuerza;Déflagration psionique;Esplosione di forza;동력 폭발;Uderzenie mocy;Impacto de Força;力场冲击;能量震盪
+Force Missiles;Силовые ракеты;Paralysegeschosse;Misiles de fuerza;Misiles de fuerza;Missiles assourdissants;Missili superiori;양자 미사일;Rakiety Mocy;Mísseis de Força;动能飞弹;力場飛彈
+Force Of Will;Сила воли;Willensstärke;Fuerza de voluntad;Fuerza de voluntad;Forte volonté;Forza di volontà;의지의 힘;Siła Woli;Força de Vontade;意志力场;意志之力
+Force Push;Силовое отталкивание;Kraftschub;Empuje potente;Empuje forzoso;Poussée de force;Avanzata di Forza;밀쳐내기;Pchnięcie mocą;Empurrão de Força;力场推挤;動能加速
+Fortification Barrier;Силовой барьер;Gebäudebarriere;Barrera de fortificación;Barrera de fortificación;Barrière de fortification;Barriera difensiva;강화 방어막;Bariera umacniająca;Barreira de Fortificação;强固屏障;防禦屏障
+Fortified Bunker;Укрепленный бункер;Befestigter Bunker;Búnker fortificado;Búnker fortificado;Bunker fortifié;Bunker fortificato;강화 벙커;Wzmocniony bunkier;Casamata fortificada;加固地堡;強化碉堡
+Fracturing Spines;Дробящие шипы;Splitternde Stacheln;Espinas lesivas;Espinas fracturadas;Aiguillons entailleurs;Aculei frantumanti;분열 가시;Kruszące kolce;Espinhos Rompedores;破碎脊针;碎裂脊刺
+Free Radicals;Свободные радикалы;Freie Radikale;Radicales libres;Radicales libres;Radicaux libres;Radicali liberi;자유 에너지 방출;Darmowi Radykałowie;Radicais Livres;自由激进;自由基
+Frenzied Overload;Бешеная перегрузка;Kritische Überladung;Sobrecarga frenética;Sobrecarga frenética;Élan frénétique;Sovraccarico frenetico;광란의 과부하;Szał przeciążeniowy;Sobrecarga Frenética;疯狂超载;狂怒超載
+Fungal Snare;Грибная ловушка;Pilzsporen;Freno fúngico;Trampa fungoidea;Piège fongique;Trappola fungina;진균 올가미;Grzybniowe usidlenie;Armadilha Fúngica;真菌诱捕;真菌羅網
+Fusion Mortars;Ядерные мортиры;Fusionsmörser;Morteros de fusión;Morteros de fusión;Mortiers à fusion;Mortai a fusione;융합포;Moździerze fuzyjne;Morteiros de Fusão;聚变迫击炮;熱熔迫擊砲
+Future Self;Образ из будущего;Zukünftiges Selbst;Yo futuro;Futuro - Propio;Moi futur;Visione del Futuro;미래의 자신;Przyszła postać;Futuro Eu;未来的你;未來的自己
+G-4 Cluster Bombs;Кассетные бомбы G-4;G-4-Splitterbomben;Bombas de racimo G-4;Bombas de racimo G-4;Bombes à fragmentation G-4;Bombe a grappolo G-4;G-4 집속탄;Bomby kasetowe G-4;Aglomerado de bombas G-4;G-4型集束炸弹;G-4集束炸藥
+Gaping Maw;Зияющая пасть;Gähnender Schlund;Mandíbula caudal;Fauces enormes;Gueule béante;Fauci spalancate;벌린 입;Rozwarta paszcza;Boca Escancarada;张裂巨胃;巨顎
+Gas Canister;Канистра с горючим;Gaskanister;Bombona de gas;Contenedor de gas;Bonbonne de gaz;Bombola di gas;가스통;Kanister z gazem;Bomba de gás;瓦斯气罐;瓦斯容器罐
+Generate Creep;Выработка слизи;Kriechererzeugung;Generar biomateria;Generar talo;Générer du mucus;Genera biostrato;점막 생성;Wydzielanie Biomasy;Gerar Gosma;排放菌毯;產生蟲苔
+Glial Reconstitution;Глиоцитарное восстановление;Glia-Neubildung;Reconstitución glial;Reconstitución glial;Reconstruction gliale;Ricostruzione neurale;신경 재구성;Regeneracja glejowa;Reconstituição Glial;神经胶原重组;重建膠質
+Global Chrono;Глобальный темпоральный эффект;Globale Zeitschleife;Cronos global;Cronoglobal;Poussée universelle;Tempo Globale;전역 시간;Globalne chrono;Crono Global;全体加速;全體加速
+Global Cloak;Глобальная маскировка;Globale Tarnung;Invisibilidad global;Camuflaje global;Camouflage universel;Occultamento Globale;전역 은폐;Globalne maskowanie;Camuflagem Global;全体隐形;全體匿蹤
+Graduating Range;Калибровка по дальности;Mehrstufige Reichweitenerhöhung;Alcance gradual;Alcance graduado;Portée graduée;Portata graduale;사거리 점증;Rosnący zasięg;Alcance Gradual;射程调节;射程遞增
+Grasping Tentacles;Цепкие щупальца;Greifarme;Tentáculos de agarre;Tentáculos inmovilizantes;Tentacules crampons;Tentacoli Bramosi;갈고리 촉수;Chwytne macki;Tentáculos Agarradores;抓地机械手;抓攫觸手
+Gravimetric Overload;Гравиметрическая перегрузка;Gravimetrische Überlastung;Sobrecarga gravimétrica;Sobrecarga gravimétrica;Surcharge gravimétrique;Sovraccarico gravimetrico;중력 과충전;Przeciążenie Grawimetryczne;Sobrecarga Gravimétrica;重力过载;重力超載
+Gravitic Boosters;Гравиускорители;Gravitationsbooster;Aceleradores gravíticos;Propulsores gravitatorios;Réacteurs antigrav;Spinta gravitonica;중력 가속기;Dopalacze grawitacyjne;Turbinas antigravidade;重力加速器;重力加速器
+Gravitic Drive;Гравипривод;Gravitationsantrieb;Impulsor gravítico;Aceleración gravitatoria;Répulseur;Propulsore gravitonico;중력 구동;Napęd grawitacyjny;Potência antigravidade;重力驱动器;重力引擎
+Gravitic Thrusters;Гравиускорители;Gravitätsschubdüsen;Propulsor gravítico;Propulsores de gravedad;Propulseurs antigrav;Propulsori gravitonici;중력 추진기;Silniki grawitacyjne;Jatos Antigravidade;引力推进器;重力推進器
+Graviton Disruptors;Гравитонные расщепители;Gravitondisruptor;Disruptores gravitón;Disruptores de gravitones;Disrupteurs à gravitons;Disgregatori gravitonici;중력 양자 분열포;Rozszczepiacze grawitonowe;Disruptores de Gráviton;重力碎裂炮;重力阻斷器
+Graviton Pulse;Гравитонный импульс;Gravitonimpuls;Pulso gravitón;Pulso de gravitones;Impulsion à gravitons;Impulso Gravitazionale;중력자 파동;Impuls grawitonowy;Pulso Gráviton;重力脉冲;重力脈衝
+Greater Bile Stream;Улучшенный поток желчи;Massiver Gallestrahl;Corriente de bilis superior;Torrente de bilis superior;Afflux de bile supérieur;Getto di bile superiore;거대 악성 광선;Większy strumień żółci;Fluxo de Bile Maior;强效胆汁喷流;巨蟲膽汁湧流
+Greater Deep Tunnel;Улучшенный глубинный тоннель;Gewaltiger Tiefentunnel;Túnel profundo superior;Túnel profundo superior;Tunnel profond supérieur;Rintanamento profondo superiore;향상된 굴 파기;Większy Głęboki Przekop;Túnel Profundo Maior;强效深槽虫道;巨蟲深度挖掘
+Greater Heal;Улучшенное лечение;Erhöhte Heilung | Größere Heilung;Pozo gravitatorio;Curación mayor;Soins supérieurs;Cura superiore;상급 치료;Intensywne leczenie | Lepsze leczenie;Cura Maior;强效治疗;強效治療
+Greater Spiked Hide;Сверхшипастая шкура;Massiver Stachelpanzer;Cuero con púas superior;Cuero picudo mayor;Réaction épidermique supérieure;Aura di spine superiore;향상된 가시 가죽;Wzmocniona kolczasta skóra;Carapaça Espinhosa Maior;大型尖刺厚皮;巨型尖刺蟲皮
+Griffin Airstrike;Бомбардировка «Грифона»;Griffin-Luftschlag;Ataque aéreo del Grifo;Ataque aéreo del Grifonte;Frappe aérienne du Griffon;Attacco aereo;그리핀 공습;Nalot Gryfa;Ataque Aéreo do Griffin;狮鹫号空袭;獅鷲艦空襲
+Grooved Spines;Полые костяные иглы;Stachelprofil;Espinas estriadas;Espinas acanaladas;Aiguillons fuselés;Aculei scanalati;가시 홈;Rowkowane kolce;Espinhos com Ranhuras;深槽脊刺;鑿溝脊刺
+Hades Oil;Масло «Инферно»;Hadesöl;Aceite Hades;Aceite del inframundo;Huile d’Hadès;Olio infernale;하데스 기름;Olej Hades;Óleo Hades;哈迪斯浮油;黑帝斯燃油
+Hail of Lead;Свинцовый град;Kugelhagel;Lluvia de plomo;Granizo de plomo;Appel du meneur;Grandine di piombo;총알 세례;Grad Ołowiu;Chuva de Chumbo;硝云弹雨;重鉛冰雹
+Halt Repairs;Прекратить ремонт;Reparatur einstellen;Parar reparaciones;Detener reparaciones;Arrêter les réparations;Interrompi riparazione;수리 중지;Wstrzymaj naprawy;Parar Consertos;停止修复;停止修復
+Hammer Munitions;Гранаты «Молот»;Hammermunition;Munición martillo;Municiones Maza;Munitions contondantes;Munizioni Hammer;망치 탄약;Amunicja Młot;Munições Hammer;重锤牌爆射弹;巨錘彈
+Hardened Carapace;Усиленный панцирь;Gehärteter Panzer;Caparazón endurecido;Caparazón endurecido;Carapace renforcée;Carapace indurito;강화 갑피;Utwardzony karapaks;Carapaça Endurecida;硬化甲壳;硬化蟲殼
+Hardened Claws;Усиленные когти;Gehärtete Klauen;Garras endurecidas;Garras endurecidas;Griffes renforcées;Artigli induriti;강화 발톱;Utwardzone szpony;Garras Endurecidas;硬化利爪;硬化蟲爪
+Hardened Shield;Прочный щит;Verstärkter Schild;Escudo reforzado;Escudo reforzado;Bouclier renforcé;Scudo Rinforzato;강화 보호막;Wzmocniona osłona;Escudo Fortalecido;刚毅护盾;強化護盾
+Hardened Thorax;Усиленная грудная клетка;Gehärteter Brustkorb;Tórax endurecido;Tórax endurecido;Thorax renforcé;Torace indurito;강화 흉부;Wzmocnienie odwłoka;Tórax Endurecido;硬化胸腔;硬化胸甲
+Harvesting Beam;Добывающий луч;Abbaustrahl;Haz de recolección;Rayo recolector;Rayon récolteur;Raggio Raccoglitore;채취 광선;Promień wydobywczy;Feixe de Colheita;采集光束;採集光束
+Havoc Detection;«Обнаружение» разрушителя;Detektorfunktion für Aggressor;Detección de caos;Detección del Caótico;Détection pour carnage;Atomizzatori vigili;교란기 탐지;Chaotyk wykrywacz;Detectar Devastador;浩劫探测;浩劫者偵測
+Haywire Missiles;Ракеты «Нокаут»;Überlastungsraketen;Misiles frenéticos;Misiles Haywire;Missiles perturbateurs;Missili Haywire;폭주 미사일;Pociski Haywire;Mísseis Descontrolados;铁丝导弹;怒風飛彈
+Healing Adaptation;Восстановительная адаптация;Regenerative Anpassung;Adaptación sanadora;Adaptación curativa;Adaptation revitalisante;Adattamento curativo;회복 적응;Lecząca adaptacja;Adaptação Curativa;治疗适性;再生適應力
+Healing Powers;Целебные способности;Heilkräfte;Poderes de sanación;Poderes curativos;Pouvoirs de guérison;Poteri curativi;치유 능력;Moce leczące;Poderes de Cura;治疗能力;治療能量
+Heavily Armored;Прочная стена;Schwer gepanzert;Blindaje pesado;Fuertemente blindado;Lourdement blindé;Corazza pesante;강화장갑;Ciężko opancerzony;Blindagem pesada;重装甲;裝備重型裝甲
+Hel's Angels;«Ангелы Аида»;Hel's Angels;Ángeles de Hel;Ángeles del Inferno;Les Anges de l’enfer;Angeli dannati;헬의 천사;Aniołki Hel;Anjos Hel;地狱天使;海爾天使
+Hero Inventory;Предметы;Helden-Inventar;Inventario de héroe;Inventario del héroe;Inventaire de héros;Inventario eroe;영웅 가방;Ekwipunek bohatera;Inventário do herói;英雄物品栏;英雄物品欄
+Heroic Shield;Героический щит;Heroischer Schild;Escudo heroico;Escudo heroico;Bouclier héroïque;Scudo Eroico;영웅 보호막;Osłona bohaterska;Escudo Heroico;英雄护盾;英雄護盾
+High Archon;Верховный архонт;Hoher Archon;Alto arconte;Alto Arconte;Haut archonte;Alto Arconte;고위 집정관;Wysoki archont;Arconte Supremo;高阶执政官;高階執政官
+High Capacity Containers;Баки повышенной вместимости;Hochleistungscontainer;Contenedores de gran capacidad;Contenedores de gran capacidad;Réservoirs de haute capacité;Taniche ad alta capacità;대용량 컨테이너;Wielkopojemne Zbiorniki;Contêineres de Alta Capacidade;高容积储油罐;大容量油箱
+Hire Block B;Нанять «Блок Б»;"""Block B"" anheuern";Contratar Bloque B;Contratar pabellón B;Engager l’Agence B;Assolda le Bestie nere;B 구역 용병대 고용;Najmij Blok B;Contratar - Bloco B;雇用B区佣兵;雇用 B 集團
+Hive Mind;Разум улья;Schwarmgedanken;Mente de la colmena;Mente de colmena;Conscience collective;Mente alveare;군체의식;Zbiorowa świadomość;Mente de Colmeia;主巢意志;蟲群意志
+Hive Mind Amplifier;Усилитель разума улья;Schwarmgedankenverstärker;Amplificador de mente de la colmena;Amplificador de Mente de colmena;Amplificateur de conscience collective;Amplificatore Unica Mente;군체의식 증폭기;Wzmacniacz świadomości zbiorowej;Amplificador de Mente de Colmeia;主巢心灵增幅器;蟲巢腦波增幅器
+Host Corpses;Паразитизм;Wirtsleichen;Cadáveres anfitriones;Habitar cadáveres;Hôtes du trépas;Infestazione cadaverica;숙주 시체;HotS – zwłoki;Corpos Hospedeiros;宿主尸体;寄生屍體
+Hybrid Immortal Consume;Гибрид-бессмертный - поглощение;Hybridunsterblicher - Verzehren;Inmortal híbrido: consumir;Consumir de Inmortal híbrido;Absorption - Immortel - Hybride;Ibrido immortale - Consunzione;혼종 불멸자 흡수;Hybryda nieśmiertelny, Pochłonięcie;Consumir Híbrido Imortal;混合体不朽者吞噬;混源體不朽者吞噬
+Hydralisk Evolved;Мутация гидралиска;Hydralisk - entwickelt;Hidralisco evolucionado;Hidralisco - Evolucionado;Hydralisk évolué;Idralisca evoluta;히드라리스크 진화됨;Wyewoluowano hydraliska;Hidralisca Evoluída;刺蛇已进化;刺蛇進化了
+Hydralisk Impaler;Гидралиск-пронзатель;Pfählerhydralisk;Hidralisco empalador;Empalador Hidralisco;Hydralisk empaleur;Idralisca Trafiggitore;히드라리스크 관통 촉수;Przekształć w hydraliska;Hidralisca Empalador;刺蛇穿刺者;刺蛇刺獸
+Hydralisk Lurker;Гидралиск-скрытень;Schleicherhydralisk;Hidralisco merodeador;Acechador Hidralisco;Hydralisk rôdeur;Idralisca Criptolisca;히드라리스크로 변태;Hydralisk czyhacz;Hidralisca Furtivo;刺蛇潜伏者;刺蛇遁地獸
+Hydriodic Bile;Иодоводородная кислота;Iodwasserstoffgalle;Bilis yodhídrica;Bilis yodhídrica;Bile hydriotique;Bile idriodica;요오드화 담즙;Żółć jodowodorowa;Bile Hidriódica;氢碘胆汁;氫碘酸液
+Ignite Afterburners;Форсаж;Nachbrenner zünden;Iniciar postcombustión;Encender postquemadores;Allumage de la post-combustion;Attiva Postbruciatori;재연소 장치 점화;Uruchom dopalacze;Ignição Pós-combustão;后燃推进系统;啟動後燃器
+Imaging Radar;Визио-РЛС;Abbildungsradar;Radar de imágenes;Radar óptico;Radar cinétique;Radar rilevatore;영상 레이더;Radar obrazujący;Radar Imagético;成像雷达;造影雷達
+Immortal Shield;Бессмертный - щит;Unsterblicher - Schild;Escudo de inmortal;Inmortal - Escudo;Immortel - Bouclier;Immortale - Scudo;불멸자 보호막;Osłona nieśmiertelnego;Escudo Imortal;不朽者护盾;不朽者 - 護盾
+Immortal Super Cannons;Бессмертный - суперорудия;Unsterblicher - Superkanonen;Súper cañones de inmortal;Inmortal - Supercañones;Immortel - Super canons;Immortale - Super Cannoni;불멸자 거대 포;Nieśmiertelny, Super-działa;Supercanhões Imortais;Immortal Super Cannons;不朽者 - 超級加農砲
+Immortality Protocol;Протокол бессмертия;Unsterblichkeitsprotokoll;Protocolo de inmortalidad;Protocolo de inmortalidad;Protocole Immortalité;Protocollo d'immortalità;불멸 프로토콜;Protokół nieśmiertelności;Protocolo de imortalidade;永生程序;不朽協定
+Impaler Morph;Мутация в пронзателя;Pfähler-Metamorphose;Mutar empalador;Transformación de Empalador;Transformation Empaleur;Trasforma in Trafiggitore;관통 촉수 변태;Przekształcenie przebijacza;Transmutação de Empalador;穿刺者变异;刺獸變形
+Impaler Rounds;Патроны «Жало»;Impaler-Projektile;Proyectiles empalador;Municiones Empaladoras;Balles empaleuses;Proiettili Impaler;관통 탄환;Pociski Nadziewacz;Rodadas perfurantes;穿刺弹;穿透彈
+Improved Chrono Boost;Улучшенное темпоральное ускорение;Verbesserte Zeitschleife;Improved Chrono Boost;Cronoimpulso mejorado;Poussée temporelle améliorée;Accelerazione Temporale Migliorata;향상된 시간 증폭;Ulepszone zagięcie czasoprzestrzeni;Reforço Temporal Aprimorado;强化时空提速;強化超時空加速
+Improved Crawlers;Улучшенные ползучие стражи;Verbesserte Krabbler;Reptadores mejorados;Rastreros mejorados;Rampants améliorés;Striscianti migliorati;향상된 촉수;Ulepszone pełzacze/wije;Rastejantes Aprimorados;改进型爬虫;強化爬行蟲
+Improved Nano-Repair;Улучшенный наноремонт;Verbesserte Nanoreparatur;Nano-reparación mejorada;Nanoreparación mejorada;Nano-réparation améliorée;Nanoriparazione migliorata;향상된 나노 수리;Efektywniejsza nanonaprawa;Nanoconserto Aprimorado;强化纳米修复;強化奈米修復
+Improved Osmosis;Улучшенный осмос;Verbesserte Osmose;Ósmosis mejorada;Ósmosis mejorada;Osmose améliorée;Osmosi migliorata;향상된 삼투;Efektywniejsza osmoza;Osmose Aprimorada;强化渗透;強化穿透
+Improved Overlords;Улучшенные надзиратели;Verbesserte Overlords;Superamos mejorados;Amos Supremos mejorados;Dominants améliorés;Sorveglianti migliorati;향상된 대군주;Ulepszeni Nadrządcy;Suseranos Aprimorados;改进型王虫;強化王蟲
+Improved Soul Steal;Улучшенная кража души;Verbesserter Seelenraub;Robo de alma mejorado;Robo de alma mejorado;Vol d’âme amélioré;Furto d'Anime Migliorato;향상된 영혼 강탈;Ulepszona kradzież duszy;Roubar Alma Aprimorado;强化窃魂;強化靈魂竊取
+Incendiary Acid;Обжигающая кислота;Brandsäure;Ácido incendiario;Ácido incendiario;Acide incendiaire;Acido incendiario;산성 방화;Kwas zapalający;Ácido Incendiário;易燃酸液;易燃強酸
+Incendiary Spores;Воспламеняющие споры;Brandsporen;Esporas incendiarias;Esporas incendiarias;Spores incendiaires;Spore incendiarie;화염 포자;Zarodniki zapalające;Esporos Incendiários;燃烧孢子;火焰孢子
+Incinerator Gauntlets;Интегрированные огнеметы;Verbrennungsstulpen;Guanteletes incineradores;Puños incineradores;Gants incinérateurs;Guanti crematori;화염증폭기;Dysze wielopunktowe;Manoplas incineradoras;焚烧臂铠;焚化臂鎧
+Increased Scarab Damage;Увеличенный урон скарабеев;Erhöhter Scarab-Schaden;Daño de alfazaque aumentado;Mejorado - Escarabajo - Daño;Dégâts des scarabées augmentés;Danni Scarabeo aumentati;갑충탄 공격력 증가;Zwiększone obrażenia od skarabeuszy;Dano de Escaravelho Aumentado;Increased Scarab Damage;聖甲蟲傷害提高
+Incubate Banelings;Инкубация гиблингов;Berstling-Inkubation;Incubar pesteling;Incubar Uetzis;Incuber des chancres;Incubazione di Baneling;맹독충 부화;Inkubacja Tępicieli;Incubar Tatus-bomba;孕育爆虫;孵育毒爆蟲
+Incubate Scourge;Инкубация слепней;Terror-Inkubation;Incubar hostigador;Incubar Azote;Incuber des fléaux;Incubazione di Flagelli;갈귀 부화;Inkubacja Zmory;Incubar Flagelo;培育爆蚊;孵育自殺蟲
+Inertial Destabilizer;Инерционный дестабилизатор;Trägheitsdämpfer;Desestabilizador de inercia;Desestabilizador de inercia;Déstabilisateur à inertie;Destabilizzatore inerziale;관성 불안정화기;Destabilizator inercyjny;Desestabilizador inercial;惰性去稳定剂;慣性減穩器
+Infernal Plating;Инфернальная обшивка;Infernium-Beschichtung;Chapado infernal;Coraza infernal;Blindage infernal;Blindatura Inferno;지옥불 장갑;Opancerzenie Diablo;Revestimento Infernal;地狱火装甲;地獄裝甲
+Infernal Pre-Igniter;Запал «Адское пламя»;Infernalisches Zündsystem;Preignición infernal;Predeflagrador infernal;Amorce Infernale;Pre-iniettori Inferno;지옥불 조기점화기;Piekielny zapłon;Pré-ignição Infernal;地狱火预燃器;地獄預燃器
+Infest Broodlings;Заражение симбионтами;Brütling-Infektion;Infestar con crías;Infestar ácaros;Propagation de vermines;Infestazione di Progenidi;감염 공생충;Plaga Pomiotów;Infestar Parasitoides;感染巢虫;感染寄生蟲
+Infest Roachlings;Заражение труплингами;Mit Schablingen verseuchen;Infestar con crías de cucaracha;Infestar cucarachitas;Propagation de cancrelats;Infestazione di Blattidi;감염 애바퀴;Zainfekuj karakańcami;Infestar Baratídeos;感染小蟑螂;感染蟑螂
+Infestation Source;Источник заражения;Quelle der Verseuchung;Fuente de infestación;Fuente de infestación;Source de contamination;Fonte d'infestazione;감염원;Źródło infekcji;Origem da Infestação;感染源;感染源
+Infested Banshees;Зараженные «Банши»;Verseuchte Banshees;Átropos infestadas;Banshees infestados;Banshees contaminées;Banshee infestate;감염된 밴시;Zainfekowane banshee;Vudus Infestados;被感染的女妖;受感染的女妖轟炸機
+Infested Cortex;Энергетический потенциал;Verseuchter Kortex;Corteza infestada;Corteza infestada;Cortex contaminé;Corteccia infestata;감염된 피질;Zainfekowana kora;Córtices Infestados;寄生卷须;異化皮質層
+Infested Medics;Зараженные медики;Verseuchte Sanitäter;Médicos infestados;Médicas infestados;Médics contaminés;Medici infestati;감염된 의무관;Zainfekowane sanitariuszki;Médicos Infestados;被感染的医疗兵;受感染的醫護兵
+Infested Pods;Зараженные капсулы;Verseuchte Kapseln;Cápsulas infestadas;Cápsulas infestadas;Capsules contaminées;Capsule Infestate;감염된 주머니;Zainfekowane Komory;Infestar Cápsulas;感染瘤;受感染的空投囊
+Infested Siege Breakers;Зараженные «Мастера осады»;Verseuchte Siege Breaker;Sicarios del Asedio infestados;Rompeasedios infestados;Briseurs de siège contaminés;Demolitori infestati;감염된 공성 파괴단;Zainfekowani wierni pancerni;Rompedores de cerco Infestados;被感染的突围者;受感染的攻城毀滅者
+Infested Stim;Зараженные стимуляторы;Verseuchtes Stimpack;Estimulantes infestados;Estimpack infestado;Stimulants contaminés;Stimpack infestato;감염된 자극제;Zainfekowany stymulant;Esteroides Infestados;感染强化剂;受感染的戰鬥藥劑
+Infinite Void;Бескрайняя Пустота;Endlose Leere;Vacío infinito;Vacío infinito;Vide infini;Vuoto infinito;무한한 공허;Bezdenna otchłań;Vazio Infinito;无尽虚空;無盡虛空
+Inject Larva;Ввод личинки;Larven erschaffen;Inyectar larva;Inyectar Larva;Injecter une larve;Inoculazione larvale;애벌레 주입;Wszczepienie Larw;Injetar Larva;幼虫注射;生產幼蟲
+Inject Larvae;Ввод личинок;Larven erschaffen;Inyectar larvas;Inyectar larvas;Injecter des larves;Inoculazione larvale;애벌레 주입;Wszczepienie Larwy;Injetar Larvas;幼虫注射;生產幼蟲
+Install Drone Hangar;Пристроить ангарную палубу;Drohnenhangar einbauen;Instalar hangar de drones;Instalar Hangar de drones;Installer une baie de drones;Costruisci Hangar dei Droni;비행정 격납고 설치;Zamontuj hangar dronów;Instalar Hangar de Drones;安装无人机机库;安裝無人機機棚
+Instant Regeneration;Мгновенная регенерация;Sofortige Regeneration;Regeneración instantánea;Regeneración instantánea;Régénération instantanée;Rigenerazione istantanea;순간 재활;Natychmiastowa Regeneracja;Regeneração Instantânea;极速恢复;立刻再生
+Interlocking Plates;Смыкающиеся пластины;Verzahnte Platten;Placas entrelazadas;Placas entrelazadas;Plaques superposées;Placche intrecciate;맞물림 장갑;Zachodzące płyty;Placas Encaixadas;联结甲片;連鎖甲殼
+Interlocking Scales;Плотная чешуя;Verzahnte Schuppen;Escamas entrelazadas;Escamas entrelazadas;Écailles superposées;Scaglie intrecciate;맞물림 비늘;Zachodzące łuski;Escamas Encaixadas;联结鳞片;連鎖鱗甲
+Ion Thrusters;Ионные ускорители;Ionenschub;Propulsores de iones;Impulsores de iones;Propulseurs à ions;Propulsori ionici;이온 추진기;Pędniki jonowe;Jatos Iônicos;离子推进器;離子推進器
+Jelly Grab;Захват щупальцем;Her damit!;Jelly Grab;Captura gelatinosa;Prise de méduse;Presa Gelatinosa;젤리 움켜잡기;Żelichwyt;Agarrar Gelatina;凝胶诱捕;水母之握
+Jet Pack Overdrive;Перегрузка нитроускорителей;Extremsprungdüsen;Aceleración de mochila reactor;Sobrecarga de propulsor;Zone rouge;Propulsore dorsale superiore;추진기 오버드라이브;Dopalacz plecaka odrzutowego;Turbo de Jatos Propulsores;喷气背包加力;噴射背包超載
+Jetpack Overdrive;Перегрузка нитроускорителей;Extremsprungdüsen;Aceleración de mochila reactor;Sobrecarga de propulsor;Zone rouge;Propulsore dorsale superiore;추진기 오버드라이브;Dopalacz plecaka odrzutowego;Turbo de Jatos Propulsores;喷气背包加力;噴射背包超載
+Juggernaut Plating;Обшивка «Джаггернаут»;Gefechtspanzerung;Chapado juggernaut;Blindaje Jugernauta;Blindage Mastodonte;Blindatura Juggernaut;철인 장갑;Opancerzenie Moloch;Revestimento Juggernaut;铁人装甲;重型裝甲
+Jump Jets;Прыжковый двигатель;Sprungdüsen;Propulsores de salto;Propulsores;Réacteurs;Propulsori;도약 추진기;Odrzutniki skokowe;Jatos Propulsores | Jatos de Salto;喷气背包;噴射推進器
+Jump Stomp;Сотрясающий прыжок;Sprungstampfer;Salto pisotón;Salto aplastante;Saut-choc;Assalto volante;도약 발구르기;Tupot ze skokiem;Esmagamento;跳跃践踏;跳躍踐踏
+Kaldalis' A.I. Personality;Матрица личности Калдалиса;Kaldalis' KI-Persönlichkeit;IA de personalidad de Kaldalis;Personalidad de IA de Kaldalis;Personnalité artificielle de Kaldalis;I.A. eroica di Kaldalis;칼달리스 인공지능;Osobowość SI Kaldalisa;Personalidade I.A. de Kaldalis;卡尔达利斯的智能人格;卡達利斯的A.I.人格
+KD9a Implosion Core;Имплозивное ядро KD9a;KD9a-Implosionskern;Núcleo de implosión KD9a;Núcleo de implosión KD9a;Noyau implosif KD9a;Nucleo implosivo KD9a;KD9a 내폭 핵;Rdzeń Implozyjny KD9a;Núcleo de Implosão KD9a;KD9a型聚爆核心;KD9a內爆核心
+Keen Senses;Обостренное чутье;Geschärfte Sinne;Sentidos agudos;Sentidos agudizados;Sens affûtés;Sensi affinati;예민한 감각;Wyostrzone Zmysły;Sentidos Aguçados;敏锐感官;敏銳感官
+Kel-Morian Assist;Помощь келморийцев;Kel-morianische Unterstützung;Auxiliar Kel-Morian;Ayudante kelmoriano;Soutien kel-morian;Aiuto kelmoriano;켈모리안 지원;Pomoc kel-moriańska;Ajuda Kelmoriana;凯莫瑞安助手;凱爾莫瑞亞援助
+Kel-Morian Ripper Rounds;Келморийские разрывные патроны;Kel-morianische Ripper-Geschosse;Proyectiles desgarradores de Kel-Moria;Municiones desgarradoras kelmorianas;Cartouches d’éventreur kel-morian;Proiettili kelmoriani;켈모리안 도살탄;Kel-moriańskie Pociski Rozrywające;Munição Retalhadora Kelmoriana;凯莫瑞安碎甲弹;凱爾莫瑞亞開膛彈
+Kerrigan Flyer Siege;Керриган: Воздушная осада;Kerrigan - Flieger, Belagerung;Kerrigan: asedio de unidad voladora;Kerrigan - Asedio volador;Kerrigan - Siège, en vol;Volante d'artiglieria di Kerrigan;케리건 비행 공성;Kerrigan – Latająca – Oblężenie;Voador do Cerco de Kerrigan;凯瑞甘攻城飞行生物;凱莉根 - 飛行單位 - 攻城
+Kerrigan Revive Cocoon;Кокон воскрешения Керриган;Kerrigans Wiederbelebungskokon;Kerrigan: revivir capullo;Kerrigan - Revivir - Capullo;Cocon de réanimation de Kerrigan;Bozzolo di rianimazione di Kerrigan;케리건 부활 고치;Kerrigan – ożywienie, kokon;Reviver Casulo de Kerrigan;凯瑞甘复活虫茧;凱莉根 - 復活蟲蛹
+Kerrigan's Wrath;Гнев Керриган;Kerrigans Zorn;Ira de Kerrigan;Ira de Kerrigan;Courroux de Kerrigan;Furia di Kerrigan;케리건의 분노;Gniew Kerrigan;Ira de Kerrigan;凯瑞甘之怒;凱莉根之怒
+Khaydarin Amulet;Кайдариновый амулет;Khaydarin-Amulett;Amuleto khaydarin;Amuleto khaydarín;Amulette Khaydarin;Amuleto khaydarin;케이다린 부적;Amulet khaydarinowy;Amuleto khaydariano;心能水晶坠饰;凱達林水晶項鍊
+Killer Phantasm;Смертельное видение;Killer-Trugbild;Espíritu asesino;Aparición Asesina;Tueur fantasme;Illusione assassina;도살자 환영;Zabójczy fantom;Fantasma assassino;鬼影杀手;魅影殺手
+Kinetic Foam;Пенный наполнитель;Kinetischer Schaum;Espuma cinética;Espuma cinética;Mousse cinétique;Schiuma cinetica;동역학 충격완화복;Pianka kinetyczna;Espuma cinética;动能泡沫;動力泡沫塑料
+Kinetic Mitosis;Кинетический митоз;Kinetische Mitose;Mitosis cinética;Mitosis cinética;Mitose cinétique;Mitosi cinetica;운동 체세포 분열;Kinetyczna mitoza;Mitose Cinética;动态分裂;動能分裂
+LarsCorp G7 Charges;Заряды LarsCorp G7;LarsCorp Sprengsatz G7;Cargas G7 de LarsCorp;Cargas de G7 de LarsCorp;Charges LarsCorp G7;Cariche LarsCorp G7;라스콥 G7 폭탄;Ładunki LarsCorp G7;Cargas LarsCorp G7;拉尔斯科技G7型炸弹;拉斯企業G7炸藥
+Laser Attack;Лазерная атака;Laserangriff;Ataque de láser;Ataque láser;Attaque laser;Attacco Laser;레이저 공격;Atak laserowy;Ataque Laser;激光攻击;雷射攻擊
+Laser Barrage;Лазерный обстрел;Lasersalve;Descarga de láseres;Andanada láser;Barrage laser;Raffica laser;레이저 탄막;Ostrzał laserowy;Salva de Laser;激光弹幕;雷射彈幕
+Lashing Tongue;Оплетающий язык;Peitschenzunge;Lengua azotadora;Lengua flagelante;Fouet-langue;Lingua sferzante;혀 채찍;Smagnięcie jęzorem;Língua-açoite;冲击长舌;舌鞭
+Lava Ball;Шар лавы;Lavakugel;Bola de lava;Bola de lava;Boule de lave;Sfera Lavica;용암구;Kula lawy;Bola de Lava;熔岩机器人;熔岩球
+LE9 Cluster Charges;Кластерные снаряды LE9;LE9-Streuladungen;Cargas de racimo LE9;Cargas de racimo LE9;Chapelet de charges de LE9;Bombe a grappolo LE9;LE9 집속탄;Ładunki kasetowe LE9;Cargas de Fragmentação de LE9;LE9型集束炸弹;LE9集束炸藥
+Leap (Dehaka);Прыжок (Дехака);Anspringen (Dehaka);Salto;Salto (Dehaka);Bond (Dehaka);Balzo (Dehaka);도약 (데하카);Skok (Dehaka);Salto (Dehaka);跳跃（德哈卡）;躍擊（德哈卡）
+Leaping Strike;Удар в прыжке;Sprungangriff;Salto devastador;Ataque de salto;Attaque bondissante;Balzo assassino;도약 공격;Atak z Wyskoku;Golpe no Ar;跳击;跳躍打擊
+Life Drain;Похищение жизненной силы;Lebensentzug;Drenar vida;Extracción de vida;Drain de vie;Sottrazione vitale;생명 흡수;Wyssanie życia;Dreno de Vida;生命汲取;吸取生命
+Lightning Dash;Молниеносный рывок;Blitzsprint;Carga de relámpagos;Embestida relámpago;Sprint éclair;Scatto fulmineo;번개 돌진;Uderzenie Błyskawicy;Investida Relâmpago;闪电冲锋;電光突擊
+Lightning Field;Электрическое поле;Blitzfeld;Campo eléctrico;Campo de relámpagos;Champ d’éclairs;Campo elettrificato;전기장;Pole błyskawic;Campo de relâmpagos;闪电力场;閃電力場
+Lightning Surge;Разряд молнии;Energieblitz;Oleada de relámpagos;Ráfaga relámpago;Arc électrique;Eruzione elettrica;번개 쇄도;Uderzenie Błyskawicy;Surto de Raios;闪电奔涌;電光脈衝
+Lockdown Missiles;Ослепляющие ракеты;Stopper-Geschosse;Misiles de cierre;Misiles de aislamiento;Missiles incapacitants;Missili disorientanti;잠금 미사일;Pociski Grom;Mísseis de Neutralização;锁定飞弹;癱瘓飛彈
+Locust Speed;Быстрые саранчиды;Schreckengeschwindigkeit;Velocidad de langosta;Velocidad de langosta;Vitesse du nuisible;Velocità delle Locuste;식충 속도;Szybkość szarańczy;Velocidade do gafanhoto;蝗虫加速;蝗蟲加速
+Longbolt Missile;Дальнобойные ракеты;Kapillar-Rakete;Misil trueno;Misiles Asiru;Missiles Flèche;Missile Longbolt;장거리 미사일;Rakieta Longbolt;Míssil relâmpago;长箭飞弹;神箭手飛彈
+Lower Library;Опустить библиотеку;Bibliothek absenken;Bajar biblioteca;Bajar biblioteca;Bibliothèque baissée;Abbassa biblioteca;기록소 내리기;Obniż bibliotekę;Abaixar Biblioteca;降下藏书馆;降下文卷館
+M.A.L.I.C.E. Ammunition;Снаряды «ЗЛОБА»;Kollisionsmunition;Munición M.A.L.I.C.I.A.;Munición M.A.L.I.C.I.A.;Munitions M.AL.I.C.E.;Munizioni M.A.L.E.F.I.C.;악의적인 탄약;Amunicja A.G.R.E.S.O.R.;Munição O.U.S.A.D.A.;M.A.L.I.C.E.弹药;M.A.L.I.C.E.彈藥補給
+Map-Wide Chrono Surge;Глобальное темпоральное ускорение;Zeitraffer kartenweit;Oleada cronos por todo el mapa;Cronodinámica global;Impulsion temporelle sur toute la carte;Varco temporale generale;전역 시간 쇄도;Zagięcie Czasoprzestrzeni na całej mapie;Impulso Crono Global;全地图时空涌动;全地圖超次元加速
+Marines in Bunker;Морпехи в бункере;Space-Marines im Bunker;Búnker con soldados;Marines en el Búnker;Marines dans le bunker;Marine nei bunker;벙커 안의 해병;Marines w bunkrze;Soldados na Casamata;地堡中的陆战队员;碉堡裡有陸戰隊
+Mark Biomass Collector;Отметить сборщик биомассы;Als Biomassensammler markieren;Marcar recolector de biomasa;Marcar Recolector de biomasa;Marquer le collecteur de biomasse;Segna raccoglitore di biomassa;생체 물체 수집자 표시;Zaznacz zbieracza biomateriału;Marcar Coletor de Biomassa;标记生物质收集者;標記生物質收集者
+Mass Frenzy;Массовое бешенство;Kollektive Raserei;Frenesí en masa;Frenesí en masa;Frénésie de masse;Frenesia di massa;대규모 광란;Zbiorowy Szał;Frenesi em Massa;群体狂暴;群體狂怒
+Mass Mega Shield;Огромный суперщит;Massiver Megaschild;Megaescudo masivo;Masa - Megaescudo;Méga bouclier de masse;Scudo di Massa;대규모 초강력 보호막;Masowa mega-osłona;Mega Escudo em Massa;大型超能护盾;大量巨型護盾
+Mass Teleport;Массовая телепортация;Massenteleportation;Teletransporte en masa;Teletransportación en masa;Téléportation de masse;Teletrasporto di massa;대규모 순간이동;Zbiorowa teleportacja;Teleporte em Massa;群体传送;群體傳送
+Matter Dispersion;Дисперсия материи;Partikelstreuung;Dispersión de materia;Dispersión de materia;Dispersion de matière;Dispersione materica;물질 확산;Rozproszenie materii;Dispersão de Matéria;物质散化;物質散射
+Mechanical Repair;Механический ремонт;Mechanische Reparatur;Reparación mecánica;Reparación mecánica;Réparation mécanique;Riparazione Meccanica;기계 수리;Naprawa mechaniczna;Consertar Mecânico;机械维修;機械修理
+Med-Kit;Аптечка;Medikit;Kit médico;Botiquín;Médi-kit;Kit medico;구급 상자;Zestaw medyczny;Kits médicos;医疗包;醫療包
+Medusa Blades;Лезвия медузы;Medusaklingen;Hojas medusa;Cuchillas Medusa;Lames méduses;Lame Medusa;메두사 칼날;Ostrza Meduzy;Lâminas de Medusa;美杜莎之刃;梅杜莎之刃
+Medusas Blades;Лезвия медузы;Medusaklingen;Hojas medusa;Cuchillas Medusa;Lames méduses;Lame Medusa;메두사 칼날;Ostrza Meduzy;Lâminas de Medusa;美杜莎之刃;梅杜莎之刃
+Merc Units;Войска наемников;Söldnereinheiten;Unidades mercenarias;Unidades mercenarias;Unités mercenaires;Unità mercenarie;용병 유닛;Najemne – Jednostki;Unidades Mercenárias;雇佣单位;傭兵單位
+Metabolic Acceleration;Ускоренное развитие;Metabolismusbeschleunigung;Aceleración metabólica;Aceleración metabólica;Accélération métabolique;Accelerazione metabolica;신진대사 가속;Przyspieszenie metaboliczne;Aceleração Metabólica;加速代谢;提高代謝
+Metabolic Boost;Ускоренный метаболизм;Metabolismusschub;Potenciador metabólico;Estímulo metabólico;Boost métabolique;Incremento metabolico;대사 촉진;Przyspieszony metabolizm;Aceleração Metabólica;代谢加速;代謝加速
+Micro-Filtering;Микрофильтрация;Mikrofilterung;Microfiltrado;Microfiltrado;Micro-filtrage;Microfiltraggio;미세 여과 장치;Mikro-filtrowanie;Microfiltragem;微型过滤;微過濾系統
+Mighty Swing;Могучий удар;Mächtiger Schwung;Golpe poderoso;Golpe potente;Coup puissant;Colpo Possente;거센 휘두르기;Potężny zamach;Golpe Violento;强力挥砍;強力揮擊
+Minigun Strafe;Пулеметный обстрел;Minigunbeschuss;Ráfaga de ametralladora;Ráfaga de minigun;Mini-canon mitrailleur;Minigun;기관총 난사;Ostrzał z działka;Rajada da Miniarma;机枪扫射;機槍掃射
+Minion Frenzy;Бешенство саранчидов;Raserei der Diener;Frenesí de esclavo;Frenesí de esbirros;Frénésie de serviteur;Frenesia del servitore;졸개 광란;Stwór - szał;Frenesi Servil;爪牙狂暴;部下狂怒
+Mojo's A.I. Personality;Матрица личности Моджо;Mojos KI-Persönlichkeit;IA de personalidad de Mojo;Personalidad de IA de Mojo;Personnalité artificielle de Mojo;I.A. eroica di Mojo;모조 인공지능;Osobowość SI Mojo;Personalidade I.A. de Mojo;摩约的智能人格;摩裘的A.I.人格
+Monarch Blades;Королевские клинки;Monarchenklingen;Hojas de monarca;Cuchillas monárquicas;Lames souveraines;Lame colossali;군주 칼날;Królewskie ostrza;Lâminas Monárquicas;君王之刃;王者之刃
+Mothership Taldarim;Материнский корабль талдаримов;Tal'darim-Mutterschiff;Tal'darim de nave nodriza;Nave nodriza tal'darim;Vaisseau mère Tal’darim;Nave madre Tal'darim;모선 탈다림;Statek-matka tal'darimów;Nave-mãe Taldarim;母舰塔达林;塔達力姆聖母艦
+Multi-Lock Weapons System;Множественное наведение;Multi-Zielaufschaltung;Sistema de armamento multifijación;Sistema de focalización múltiple;Système d’armement à verrouillage multiple;Sistema di puntamento multiplo;다중 조준 무기 시스템;Wielokanałowy system uzbrojenia;Sistema de mira múltipla;多重锁定武器系统;多重鎖定系統
+Multi-Task MAF Servos;Универсальные магнитные приводы;Mehrschritt-Magnetservos;Servointeligencia;Servos MAF multitarea;Servomoteurs magnétiques;Servocomponenti MAF polivalenti;다중 작업 MAF 제어 장치;Wielozadaniowe serwomechanizmy MAF;Servomecanismos MAF Multitarefa;多任务MAF伺服器;多工智能傳動
+Multi-Threaded Sensors;Многопоточные сенсоры;Multiprozess-Sensoren;Sensores multihilo;Sensores múltiples;Détecteurs multifilaires;Sensori multipli;멀티스레드 센서;Czujniki wielokierunkowe;Sensores Multilinhas;多线程传感器;多執行緒感應器
+Muscular Augmentation;Наращивание мускулов;Muskelfaserverstärkung;Aumento muscular;Incrementación muscular;Augmentation musculaire;Potenziamento muscolare;근육 보강;Wzmocnione mięśnie;Aumento Muscular;肌腱扩增;肌力增強
+Mutating Carapace;Мутирующий панцирь;Mutierender Panzer;Mutar caparazón;Caparazón en mutación;Carapace mutante;Carapace mutante;변이 갑피;Mutujący Karapaks;Carapaça em Mutação;变异甲壳;突變蟲殼
+Mutation Efficiency;Эффективные мутации;Mutationseffizienz;Eficiencia de mutación;Eficiencia en mutación;Efficacité de la mutation;Mutazione efficiente;변이 효율;Efektywność mutacji;Eficiência da Mutação;效率突变;突變效率
+My Significant Other;Вторая половинка;Meine bessere Armeehälfte;Mi media naranja;Mi media naranja;Ma moitié;Dolce metà;나의 소중한 사람;Moja druga połówka;Minha Cara-Metade;我的另一半;合作無間
+N3 Networking;Сеть N3;N3-Netz;Red N3;Conexión N3;Mise en réseau N3;Rete N3;N3 네트워킹;Sieć N3;Rede N3;N3网络;N3網路連結
+Nano-Repair;Наноремонт;Nanoreparatur;Nano-reparación;Nanorreparación;Nano-réparation;Nanoriparazione;나노 수리;Nanonaprawa;Nanoconserto;纳米修复;奈米修復
+Narud Epilogue Build;Наруд, эпилог: строительство;Narud - Epilog, Bauen;Construir de Narud: Epílogo;Narud - Epílogo - Construir;Épilogue - Narud - Construire;Narud - Epilogo - Costruzione;나루드 에필로그 건설;Narud, Epilog, Stwórz;Narud Epilogue Build;Narud Epilogue Build;那魯 - 終章 - 生成
+Narud Epilogue Train;Наруд, эпилог: обучение;Narud - Epilog, Ausbilden;Narud Epilogue Train;Narud - Epílogo - Entrenar;Épilogue - Narud - Former;Narud - Epilogo - Addestra;나루드 에필로그 훈련;Narud, Epilog, Wyszkol;Narud - Epílogo - Treinar;Narud Epilogue Train;
+Neosteel Bunker;Бункер из неостали;Neostahl-Bunker;Búnker de neoacero;Búnker de neoacero;Bunker en NéoAcier;Bunker in neo-acciaio;신소재 강철 벙커;Neostalowy bunkier;Casamata de novoaço;精钢地堡;新型鋼鐵碉堡
+Neural Disruption Device;Нейродестабилизатор;Neuraldisruptor;Dispositivo de interrupción neural;Dispositivo de disrupción neural;Dispositif neuro-disrupteur;Dispositivo di disgregazione neurale;신경 붕괴 장치;Neuronalne Urządzenie Zakłócające;Dispositivo de Disrupção Neural;神经干扰器;神經破壞裝置
+Neural Infestation;Нейропаразитарное заражение;Neurale Verseuchung;Infestación neural;Infestación neural;Contamination neurale;Infestazione neurale;신경 감염;Infekcja Neuronalna;Infestação Neural;神经感染;神經感染
+Neural Parasite;Нейропаразит;Neuralparasit;Parásito neural;Parásito neural;Parasite neural;Parassita neurale;신경 기생충;Pasożyt neuronalny;Parasita Neural;神经寄生;神經寄生
+Nexus Overcharge;Перегрузка нексуса;Nexusüberladung;Sobrecarga del nexo;Sobrecarga del Nexo;Surcharge du Nexus;Sovraccarico Nexus;연결체 과충전;Przeciążenie Nexusa;Nexus Sobrecarregado;枢纽超载;星核超載
+No Gadget Equipped;Устройство не используется;Kein Zubehör ausgerüstet;Ningún artilugio equipado;Sin dispositivo equipado;Équipée d’aucun gadget;Nessun accessorio equipaggiato;장치 미장착;Nie wybrano gadżetu;Sem Dispositivo Equipado;未装备配装;未裝備任何裝置
+No Weapon Equipped;Оружие не используется;Keine Waffe ausgerüstet;Ningún arma equipada;Sin arma equipada;Équipée d’aucune arme;Nessun'arma equipaggiata;무기 미장착;Nie wybrano broni;Sem Arma Equipada;未装备武器;未裝備任何武器
+Noble Sacrifice;Самопожертвование;Heldenopfer;Noble sacrificio;Noble sacrificio;Noble sacrifice;Nobile Sacrificio;고귀한 희생;Szlachetne poświęcenie;Sacrifício Nobre;崇高牺牲;光榮犧牲
+Nova Battery;Аккумулятор взрывов;Novabatterie;Batería de novas;Batería de nova;Batterie de nova;Batteria esplosiva;폭발 포대;Bateria rozbłyskowa;Bateria de Nova;新星电池;光球砲轟
+Noxious Cloud;Вредоносное облако;Giftige Wolke;Nube tóxica;Nube nociva;Nuage toxique;Nube tossica;독성 구름;Toksyczny obłok;Nuvem Nóxia;毒性云雾;劇毒酸霧
+Noxious Fumes;Вредоносные испарения;Giftige Dämpfe;Vapores tóxicos;Gases nocivos;Vapeurs nocives;Fumi tossici;악성 배출;Toksyczne opary;Emanações Nóxias;毒性烟雾;劇毒煙霧
+Nuke Timer;Таймер ядерного удара;Nuklearraketen-Timer;Temporizador de ataque nuclear;Temporizador del Misil nuclear;Chrono de la bombe nucléaire;Timer testata nucleare;핵 초시계;Odliczanie;Cronômetro da Arma Nuclear;核弹计时器;核彈計時器
+Null Shield;Нуль-щит;Nullschild;Escudo de anulación;Escudo de anulación;Barrière-zéro;Scudo nullificante;무효화 보호막;Osłona Nicości;Escudo Nulo;虚相护盾;抑制之盾
+Nyx-Class Cloaking Module;Маскировочный модуль «Никта»;Tarnmodul der Nyx-Klasse;Módulo de invisibilidad de clase nyx;Módulo de camuflaje clase Nyx;Module de camouflage : classe Nyx;Modulo d'occultamento classe Nyx;닉스급 은폐 모듈;Moduł maskujący klasy Nyx;Módulo de camuflagem classe Nyx;尼克斯级隐形组件;尼克斯級匿蹤組件
+Ocular Implants;Глазные импланты;Okularimplantate;Implantes oculares;Implantes oculares;Implants oculaires;Impianti ottici;인공눈 이식;Implanty oczne;Implantes oculares;目镜移植;植入式目鏡
+Oil Spill;Лужа мазута;Ölspur;Charco de petróleo;Derrame de petróleo;Flaque d’huile;Chiazza d'olio;기름 유출;Plama Oleju;Vazamento de Óleo;浮油;燃油
+Omegalisk Rebirth;Возрождение омегалиска;Wiederbelebung für Omegalisken;Renacimiento de omegalisco;Omegalisco - Renacimiento;Renaissance d’omégalisk;Rinascita dell'Omegalisca;오메가리스크 부활;Omegalisk – odrodzenie;Renascimento de Omegalisca;末世凶兽再生;末日獸重生
+Optimized Ordnance;Улучшенное снабжение;Optimierte Geschütze;Artillería optimizada;Ordenanza optimizada;Artillerie optimisée;Munizioni ottimizzate;포 최적화;Optymalizacja uzbrojenia;Artilharia Otimizada;军械优化;軍械改良
+Orbital Drop-Pods;Орбитальные десантные капсулы;Orbitale Landekapseln;Cápsulas de lanzamiento orbitales;Cápsulas de inserción orbitales;Capsules de débarquement orbitales;Capsule da sbarco orbitali;궤도 낙하기;Orbitalne Kapsuły Desantowe;Módulos de Transporte Orbitais;轨道空投;星軌空投艙
+Organic Carapace;Органический панцирь;Organischer Panzer;Caparazón orgánico;Caparazón orgánico;Carapace organique;Carapace organico;유기 갑피;Unaczyniony karapaks;Carapaça Orgânica;有机甲壳;有機蟲殼
+Outback Hunters;Охотники Пустошей;Outback Hunters;Cazadores del Baldío;Cazadores Agrestes;Les Boucaniers;Cacciatori degli altipiani;황야의 사냥꾼;Łowcy Pustkowi;Caçadores sertanejos;内陆猎手;邊疆獵人
+Overcharge Beam;Разогрев;Strahl aufladen;Haz de sobrecarga;Rayo sobrecargado;Surcharge du rayon;Sovraccarico irradiante;과충전 광선;Wiązka przeciążająca;Sobrecarga de Feixe;充能光束;超載光束
+Overcharged Reactor;Перегрузка реактора;Überlasteter Reaktor;Reactor sobrecargado;Reactor sobrecargado;Réacteur en surcharge;Sovraccarico reattore;과충전 반응로;Przeciążony reaktor;Reator Sobrecarregado;超载反应堆;超載反應爐
+Overcharged!;Перегрузка!;Überladen!;¡Sobrecargado!;¡Sobrecargado!;En surcharge !;Sovraccarico!;과충전!;Przeciążenie!;Sobrecarregado!;超载！;超載中！
+Overwhelming Power;Переполняющая мощь;Überwältigende Kraft;Poder abrumador;Poder abrumador;Puissance accablante;Potere Travolgente;압도적인 힘;Obezwładniająca moc;Poder Esmagador;绝对力量;壓倒性的力量
+Page 2;Страница 2;Seite 2;Página 2;Página 2;Page 2;Pagina 2;2 페이지;Strona 2;Página 2;第2页;第2页
+Paralytic Barbs;Паралитические шипы;Paralytische Widerhaken;Hebras de parálisis;Púas paralizantes;Dards paralysants;Evolvi Barbigli paralizzanti;마비 미늘;Paraliżujące kolce;Espinhos Paralisantes;麻痹勾刺;癱瘓毒刺
+Pelvic Extensors;Разгибательные мышцы;Hüftstreckermuskeln;Extensores pélvicos;Extensores pélvicos;Extenseurs pelviens;Estensori pelvici;골반 신근;Mięśnie prostowniki biodra;Extensores Pélvicos;骨盆伸展肌;尾部延展肌
+Penetrating Blast;Осколочный залп;Durchbohrendes Feuer;Explosión penetrante;Estallido penetrante;Déflagration perforante;Esplosione perforante;관통 산탄;Przebijający Wystrzał;Disparo Penetrante;穿透爆弹;穿甲轟擊
+Penetrating Spines;Бронебойные шипы;Durchdringende Stacheln;Espinas penetrantes;Espinas penetrantes;Aiguillons foreurs;Spine penetranti;관통 가시;Przebijające kolce;Espinhos Penetrantes;穿刺脊针;尖銳脊刺
+Permanent Cloak;Постоянная маскировка;Permanente Tarnung;Invisibilidad permanente;Camuflaje permanente;Camouflage permanent;Occultamento permanente;영구 은폐;Stałe maskowanie;Camuflagem Permanente;永久隐形;永久匿蹤
+Phantom Hydralisks;Призрачные гидралиски;Geister-Hydralisken;Hidraliscos fantasma;Hidraliscos fantasmas;Hydralisks fantômes;Idralische illusorie;히드라리스크 환영;Hydraliski fantomowe;Hidraliscas fantasmas;幻影刺蛇;幽靈刺蛇
+Phantom Mutalisk;Призрачный муталиск;Geister-Mutalisk;Mutalisco fantasma;Mutalisco fantasma;Mutalisks fantômes;Mutalisca illusoria;뮤탈리스크 환영;Mutaliski fantomowe;Mutalisca fantasma;幻影异龙;幽靈飛螳
+Phantom Zerglings;Призрачные зерглинги;Geister-Zerglinge;Zergling fantasma;Zergueznos fantasmas;Zerglings fantômes;Zergling illusori;저글링 환영;Zerglingi fantomowe;Zergnídeos fantasmas;幻影跳虫;幽靈異化蟲
+Phase Battery;Фазовая батарея;Phasenbatterie;Batería de fase;Batería de fase;Batterie de phase;Batteria fasica;위상 축전지;Bateria fazowa;Bateria de Fase;相位电池;相位電池
+Phase Blink;Фазовый скачок;Phasenteleport;Traslación de fase;Parpadeo fásico;Transfert de phase;Traslazione fasica;위상 점멸;Mignięcie fazowe;Translação Fásica;相位闪现;相位閃現
+Phase Detonation;Фазовая детонация;Phasendetonation;Detonación de fase;Detonación fásica;Détonation phasique;Detonazione fasica;위상 폭발;Eksplozja fazowa;Detonação Fásica;相位爆裂;相位引爆
+Phase-Smith;Фазовый кузнец;Phasenschmied;Forjador de fase;Forjafases;Forge-phase;Mastro di Fase;차원장인;Fazmator;Modulador;相位技师;相位工匠
+Photon Bombs;Фотонные бомбы;Photonenbomben;Bombas de fotones;Bombas de fotones;Bombes à photons;Bombe fotoniche;광자 폭탄;Bomby fotonowe;Bombas de Fótons;光子炸弹;光子炸彈
+Plagued Munitions;Зараженные боеприпасы;Toxische Munition;Munición plagada;Municiones plagadas;Munitions infectées;Munizioni contaminate;역병 탄약;Zainfekowana amunicja;Munições Empesteadas;染疫弹药;疫病武器
+Planet Cracker A;Раскалыватель планет A;Planetenbrecher A;Incinerador planetario A;Fisurador planetario A;Casse-planète A;Distruttore di Mondi A;행성 분열기 A;Łamacz planet A;Arrasa-planetas A;Planet Cracker A;行星粉碎器A
+Plasma Shot;Выстрел плазмой;Plasmaschuss;Explosión de plasma;Disparo de plasma;Tir de plasma;Colpo al plasma;플라스마 발사;Strzał Plazmowy;Tiro de Plasma;等离子射击;電漿射擊
+Pneumatized Carapace;Облегченный панцирь;Pneumatischer Panzer;Caparazón neumatizado;Caparazón neumatizado;Carapace pneumatique;Carapace pneumatico;기낭 갑피;Karapaks pneumatyczny;Carapaça pneumática;充气甲壳;蟲殼導流
+Porous Cartilage;Пористый хрящ;Poröser Knorpel;Cartílago poroso;Cartílago poroso;Cartilage poreux;Cartilagine porosa;다공성 연골;Porowata chrząstka;Cartilagem Porosa;孔状软骨;中空軟骨
+Potent Bile;Действенная желчь;Verstärkte Galle;Bilis potente;Bilis potente;Bile puissante;Bile addensata;초강력 담즙;Silna żółć;Bile Potente;强酸胆汁;強酸體液
+Power Down;Энергия отключена;Energie geschwächt;Redirigir energía;Disminución de energía;Baisse de puissance;Decrementa energia;동력 내리기;Wyłączenie zasilania;Sem energia;能量中断;電源中斷
+Power Up;Энергия включена;Aufladen;Restaurar energía;Aumento de energía;Hausse de puissance;Incrementa energia;동력 공급;Doładowanie;Ligar;能量开启;開啟電源
+Praetor Armor Suit;Преторская броня;Konfiguration Prätorpanzerung;Armadura de pretor;Traje de armadura de pretor;Armure de préteur;Corazza pretoriale;법무관 전투복;Pancerz Pretora;Traje de Blindagem de Pretor;执政官战甲;司法官防護機甲
+Predator Battlesuit;Костюм «Хищник»;Predator-Kampfanzug;Traje de batalla depredador;Traje de batalla Depredador;Armure de combat Prédateur;Tuta da combattimento Predator;약탈자 전투복;Kombinezon bojowy Predator;Traje de Batalha do Predador;掠食者战服;獵殺者戰鬥套裝
+Predator Missile;Ракета «Хищник»;Predator-Rakete;Misil depredador;Misil depredador;Missile Prédateur;Missile Predator;포식자 미사일;Pocisk Predator;Míssil Predador;捕食者飞弹;獵殺飛彈
+Prescient Spores;Споры провидения;Intelligente Sporen;Esporas premonitorias;Esporas premonitorias;Spores prescientes;Spore preveggenti;예측 포자;Inteligentne zarodniki;Esporos Prescientes;预言孢子;預見孢子
+Primal Rage;Истинная ярость;Rage der Urzerg;Furia primigenia;Ira primigenia;Rage primordiale;Rabbia primordiale;원시 분노;Pierwotna wściekłość;Raiva Primeva;原始狂怒;原生怒氣
+Primal Ravasaur;Изначальный равазавр;Urravasaurier;Ravasaurio primigenio;Ravasaurio primigenio;Ravasaure primordial;Ravasauro primordiale;원시 라바사우르스;Pierwotny rawazaur;Ravassauro Primevo;原始暴掠龙;原生暴掠龍
+Primal Strength;Истинная сила;Stärke der Urzerg;Fuerza primigenia;Fuerza primigenia;Force primordiale;Forza primordiale;원시의 힘;Pierwotna siła;Força Primeva;原始力量;原生之力
+Primal Town Hall;Изначальный инкубатор;Hauptgebäude der Urzerg;Colmena primigenia;Ayuntamiento primigenio;Bâtiment principal primordial;Struttura primaria primordiale;원시 마을 회관;Ratusz pierwotnych;Base Primeva;原始城镇大厅;原生基地
+Primordial Fury;Первозданная ярость;Urwut;Furia primordial;Furia primordial;Fureur primordiale;Furia primordiale;태고의 분노;Pierwotna furia;Fúria Primordial;原始狂怒;原生兇猛
+Procyon Serum;Сыворотка Procyon;Procyon Heilserum;Suero de Procyon;Suero de Procyon;Sérum Procyon;Siero Procyon;프로키온 혈청;Serum Procyon;Soro Procyon;普罗希昂血清;恆星血清
+Procyon Shade Suit;Маскировочный костюм Procyon;Procyon Schattenanzug;Traje de incógnito de Procyon;Traje sombrío de Procyon;Combinaison d’évasion Procyon;Tuta da occultamento Procyon;프로키온 그림자 전투복;Kombinezon Maskujący Procyon;Traje de Vulto Procyon;普罗希昂遮光服;恆星幽影套裝
+Project Power Field;Активировать энергетическое поле;Energiefeld projizieren;Proyectar campo de energía;Proyectar campo de energía;Projection de champ d’énergie;Proietta Campo energetico;동력장 투사;Rozpostarcie Pola Zasilającego;Projetar Campo de Energia;投射能量场;投射能量力場
+Projectile Accelerators;Баллистические ускорители;Projektilbeschleuniger;Aceleradores de proyectiles;Aceleradores de proyectiles;Accélérateurs de projectiles;Acceleratori di proiettili;탄환 가속기;Akceleratory balistyczne;Aceleradores de projétil;射弹加速器;投射物加速裝置
+Proliferating Creep;Растущая слизь;Wuchernder Kriecher;Proliferación de biomateria;Talo expansivo;Mucus proliférant;Biostrato proliferante;점막 확산;Namnażalna biomasa;Gosma Proliferadora;增殖菌毯;散播蟲苔
+Prolonged Dispersion;Увеличенная дисперсия;Längenstreuung;Esparcimiento prolongado;Dispersión prolongada;Dispersion prolongée;Dispersione prolungata;지속 확산;Daleki rozrzut;Dispersão Prolongada;加长散射;遠距轟擊
+Prophetic Vision;Пророчество;Prophetische Vision;Visión profética;Visión profética;Vision prophétique;Visione profetica;예언의 시야;Prorocza Wizja;Visão Profética;先知视野;先知視野
+Protective Cover;Защитное покрытие;Deckung;Cubierta protectora;Cubierta protectora;Couverture protectrice;Copertura protettiva;보호 덮개;Powłoka ochronna;Carapaça Protetora;肉身掩体;防禦罩
+Protector Focus;Защита;Kampfschwerpunkt Schutz;Enfoque protector;Foco de protección;Mode Protection;Focalizzazione del protettore;보호 특성;Specjalizacja obronna;Foco Protetor;守护者专精;護衛者專精
+Proto Titan;Прототитан;Proto-Titan;Prototitán;Prototitán;Proto-titan;Prototitano;시험용 타이탄;Prototytan;Proto-titã;泰坦原型机;原型泰坦機甲
+Proto Titan Fighter1;Экспериментальный истребитель «Титан»1;Proto-Titankämpfer1;Proto Titan Fighter1;Caza Prototitán 1;Guerrier proto-titan 1;Caccia Prototitani 2;시험용 타이탄 전투기 1;Proto, Tytan, Myśliwiec1;Proto-titã - Lutador1;Proto Titan Fighter1;原型泰坦機甲 - 戰鬥機1
+Proto Titan Fighters;Экспериментальные истребители «Титан»;Proto-Titankämpfer;Luchadores de prototitán;Cazas Prototitán;Guerriers proto-titans;Caccia Prototitani;시험용 타이탄 전투기;Proto, Tytan, Myśliwce;Proto-titã - Lutadores;Proto Titan Fighters;原型泰坦機甲 - 戰鬥機
+Protoss Capped;Запечатано протоссами;Protoss - Unerschlossen;Sellado por los protoss;Protoss limitado;Bouclé par les Protoss;Copertura protoss;프로토스 봉인;Protosi - osiągnięto limit;Protoss coberto;星灵已达上限;由神族封閉
+Psi Storm Cripple;Пси-шторм - увечье;Psi-Sturm - Verkrüppeln;Lisiar tormenta psi;Tormenta psiónica - Mutilación;Tempête psionique - Affaiblissement;Tempesta psionica - Mutilazione;사이오닉 폭풍 무력화;Burza psioniczna, Okaleczenie;Tempestade Psiônica - Aleijar;灵能风暴致残;幽能風暴 - 破甲
+Psi Storm Filter;Пси-шторм - фильтр;Psi-Sturm - Filter;Filtrar tormenta psi;Tormenta psiónica - Filtrar;Tempête psionique - Filtre;Tempesta psionica - Filtro;사이오닉 폭풍 필터;Burza psioniczna, Filtr;Tempestade Psiônica - Filtrar;灵能风暴过滤;幽能風暴 - 過濾
+Psionic Amplifier;Псионный усилитель;Psi-Verstärker;Amplificador psiónico;Amplificador psiónico;Amplificateur psionique;Amplificatore Psionico;사이오닉 증폭기;Wzmacniacz psioniczny;Amplificador Psiônico;灵能增幅器;幽能增幅器
+Psionic Avatar;Псионная аватара;Psi-Avatar;Avatar psiónico;Avatar psiónico;Avatar psionique;Avatar Psionico;사이오닉 아바타;Awatar psioniczny;Avatar Psiônico;灵能化身;幽能化身
+Psionic Lash;Псионный хлыст;Psionische Peitsche;Flagelo psiónico;Flagelo psiónico;Fouet psionique;Sferza psionica;사이오닉 채찍;Bicz psioniczny;Golpe psiônico;灵能鞭笞;幽能鞭策
+Psionic Projection;Псионная проекция;Psi-Projektion;Proyección psiónica;Proyección psiónica;Projection psionique;Proiezione psionica;사이오닉 투영;Projekcja psioniczna;Projeção Psiônica;灵能投射;幽能延伸
+Psionic Pulse;Псионный импульс;Psi-Impuls;Pulso psiónico;Pulso psiónico;Impulsion psionique;Impulso psionico;사이오닉 파동;Impuls psioniczny;Pulso Psiônico;灵能脉冲;幽能脈衝
+Psionic Radar;Псионный радар;Psionischer Radar;Radar psiónico;Radar psiónico;Radar psionique;Radar psionico;사이오닉 레이더;Radar psioniczny;Radar psiônico;灵能雷达;幽能雷達
+Psionic Rift;Пси-разлом;Psionischer Spalt;Falla psiónica;Fisura psiónica;Faille psionique;Raffica psionica;사이오닉 균열포;Szczelina psioniczna;Fissura psiônica;灵能裂隙;幽能裂縫
+Psionic Super Storm;Псионный супершторм;Psi-Orkan;Supertormenta psiónica;Supertormenta psiónica;Super tempête psionique;Super Tempesta psionica;사이오닉 거대 폭풍;Superburza psioniczna;Super Tempestade Psiônica;超级灵能风暴;超級幽能風暴
+Psionic Winds;Псионные ветра;Psi-Wind;Vientos psiónicos;Vientos psiónicos;Vents psioniques;Venti psionici;사이오닉 바람;Wichry psioniczne;Ventos Psiônicos;灵能阵风;幽能之風
+Pulse Amplifier;Импульсный усилитель;Impulsverstärker;Amplificador de pulsos;Amplificador de pulso;Amplificateur d’impulsion;Amplificatore d'impulsi;파동 증폭기;Wzmacniacz impulsów;Amplificador de Pulso;脉冲增幅器;脈衝增幅器
+Purification Echo;Очищающее эхо;Psi-Echo;Eco de purificación;Eco purificador;Écho purificateur;Eco purificante;정화의 메아리;Oczyszczające echo;Eco de Purificação;净化回荡;淨化共鳴
+Purity of Will;Чистота воли;Reinheit des Willens;Pureza de voluntad;Pureza de voluntad;Pureté de la volonté;Volontà pura;의지의 순수함;Nieskalana Wola;Pureza da Vontade;纯粹意志;純粹意志
+Pylon Cannon Charges;Заряды боевого пилона;Pylonkanone - Aufladungen;Cargas de cañón de pilón;Pilón - Cañón - Cargas;Charges de Pylône armé;Pilone Guardiano - Cariche;수정탑 포 충전 횟수;Pylon, Działo, Ładunki;Pilar Energético - Cargas de Canhão;水晶塔炮充能;水晶塔加農砲 - 充能
+Pylon Overcharge;Перегрузка пилона;Pylonüberladung;Sobrecarga de pilón;Sobrecarga de Pilón;Surcharge du pylône;Sovraccarico Pilone;수정탑 과충전;Przeciążenie pylonu;Sobrecarga do Pilar Energético;水晶塔超载;水晶塔超載
+Quantum Blast;Квантовый взрыв;Quantumexplosion;Explosión cuántica;Estallido cuántico;Explosion quantique;Esplosione Quantica;양자 폭발;Wybuch kwantowy;Explosão Quântica;量子爆破;量子炸裂
+Quantum Force;Квантовая сила;Quantumfeld;Fuerza cuántica;Fuerza cuántica;Force quantique;Forza Quantica;양자력;Moc kwantowa;Força Quântica;量子力场;量子之力
+Queen Shockwave;Ударная волна королевы;Königin - Schockwelle;Onda de choque de Reina de Espadas;Reina - Onda de impacto;Onde de choc de la reine;Onda d'urto della Regina;여왕 충격파;Fala uderzeniowa królowej;Rainha - Onda de choque;虫后冲击波;女皇衝擊波
+Queenof Venom;Королева Яда;Königin des Gifts;Reina de veneno;Reina del Veneno;Reine de fiel;Regina del Veleno;맹독 여왕;Królowa Jadu;Rainha do Veneno;毒液王后;蠱毒女皇
+Raid Artillery;Ударная артиллерия;Sturmartillerie;Artillería de incursión;Artillería de incursión;Artillerie de raid;Artiglieria d'assalto;습격포;Artyleria szturmowa;Artilharia de Raide;掠袭火炮;突擊砲轟
+Raise Library;Поднять библиотеку;Bibliothek anheben;Subir biblioteca;Elevar biblioteca;Lever la bibliothèque;Alza biblioteca;기록소 올리기;Unieś bibliotekę;Elevar Biblioteca;升起藏书馆;升起文卷館
+Rampage Attack;Атака в неистовстве;Wutanfall - Angriff;Ataque de devastación;Arrasar - Ataque;Saccage - Attaquer;Attacco Distruzione;광란 공격;Demolka Atak;Chacina Ataque;暴怒攻击;狂暴攻擊
+Range Upgrade;Увеличение дальности;Reichweiten-Upgrade;Mejora de alcance;Mejora de alcance;Amélioration de portée;Potenziamento gittata;원거리 업그레이드;Ulepszenie zasięgu;Aprimoramento do alcance;范围升级;射程升級
+Rangefinder Oculus;Визор-дальномер;Distanzmesserokular;Óculo telemétrico;Telémetro Oculus;Visière Oculus;Telemetro Oculus;광학 측정기;Wizjer dalekosiężny Oculus;Visor de Detecção de Alcance;测距透镜;測距顯示儀
+Rapid Bombardment;Скоростная бомбардировка;Schnelle Bombardierung;Bombardeo rápido;Bombardeo rápido;Bombardement rapide;Bombardamento rapido;고속 포격;Szybkie bombardowanie;Bombardeio Rápido;快速轰炸;快速砲擊
+Rapid Gestation;Быстрое созревание;Rasche Reifung;Gestación acelerada;Gestación rápida;Gestation rapide;Gestazione rapida;빠른 잉태;Błyskawiczny rozwój;Gestação Rápida;快速哺育;快速繁衍
+Rapid Hibernation;Быстрая гибернация;Kryptobiose;Hibernación rápida;Hibernación rápida;Hibernation rapide;Letargo rapido;신속 동면;Błyskawiczna hibernacja;Hibernação Rápida;快速潜伏;快速冬眠
+Rapid Metamorph;Быстрые метаморфозы;Schnelle Metamorphose;Metamorfosis acelerada;Metamorfosis rápida;Métamorphose rapide;Metamorfosi rapida;급속 변태류;Błyskawiczna metamorfoza;Metamórfico rápido;快速蜕变;快速蛻變
+Rapid Power Cycling;Ускоренный энергообмен;Induktionsbeschleuniger;Ciclo de carga rápido;Energización rápida;Accélérateur à induction;Ciclo rapido;급속 동력 순환;Szybkie przełączanie mocy;Ciclo de Poder Rápido;快速能量循环;快速能量循環
+Rapid Recharging;Быстрая перезарядка;Schnelle Aufladung;Recarga rápida;Recarga rápida;Recharge rapide;Ricarica rapida;신속 재충전;Szybkie doładowanie;Recarga Rápida;快速恢复;快速充能
+Rapid Recovery;Быстрое восстановление;Schnelle Erholung;Recuperación acelerada;Recuperación rápida;Récupération rapide;Recupero rapido;급속 회복;Błyskawiczna regeneracja;Recuperação Rápida;急速恢复;快速回復
+Rapid Regeneration Roach;Быстрая регенерация тараканов;Rasche Regeneration - Schabe;Regeneración rápida de cucaracha;Regeneración rápida - Cucaracha;Cafard à régénération rapide;Rigenerazione rapida Blatta;빠른 재생력 바퀴;Błyskawiczna regeneracja Karakan;Regeneração rápida Barata;急速再生蟑螂;快速再生蟑螂
+Rapid Transfusion;Быстрое переливание;Schnelle Transfusion;Transfusión rápida;Transfusión rápida;Transfusion rapide;Trasfusione rapida;급속 수혈;Szybka transfuzja;Transfusão Rápida;速效哺液;快速輸血
+Raptor Death;Раптор - смерть;Raptor - Tod;Muerte de raptor;Rapaz - Muerte;Mort du raptor;Morte Raptor;랩터 죽음;Drapieżca Śmierć;Raptor Morte;腾跃虫死亡;迅猛蟲死亡
+Reaver Champion;Элитный опустошитель;Räuber-Champion;Campeón conceptor;Hostigador adalid;Ravageur champion;Trilobita Campione;파괴자 용사;Rozrywacz, Czempion;Aniquiloide - Campeão;精英掠夺者;掠殺者 - 英雄
+Rebirth Queenof Blades;Возрождение Королевы Клинков;Wiedergeburt - Königin der Klingen;Renacimiento de Reina de Espadas;Revivir Reina de las Cuchillas;Renaissance reine des Lames;Rianima Regina delle Lame;칼날 여왕 부활;Odrodzenie Królowa Ostrzy;Renascimento Rainha das Lâminas;复原刀锋女王;重生 - 刀鋒女皇
+Recall Fighters;Отозвать истребители;Kampfflieger zurückrufen;Llamar cazas;Replegar cazas;Rappeler les chasseurs;Richiama caccia;전투기 소환;Wycofaj myśliwce;Convocar Forças Especiais;召回战术机;召喚戰鬥機
+Reconstitution;Воссоздание;Neubildung;Reconstitución;Reconstitución;Reconstitution;Ricostruzione;복원;Regeneracja;Reconstituição;跳虫重构;重組
+Reconstructive Tissue;Восстановительная ткань;Rekonstruktives Gewebe;Tejido reconstructivo;Tejido reconstructivo;Cicatrisation des tissus;Tessuto autoricostituente;조직 복원;Regeneracyjne tkanki;Tecido Reconstrutivo;肌理重构;組織重建
+Redeploy Nux;Повторно вызвать Накса;Nux erneut einsetzen;Volver a desplegar a Obús;Reinvocar a Nux;Redéployer Nux;Rianima Nux;넉스 재배치;Przywrócenie Nuxa;Reposicionar Nux;重新部署纳克斯;重新部署納克斯
+Redeploy Vega;Повторно вызвать Вегу;Vega erneut einsetzen;Volver a desplegar a Vega;Reinvocar a Vega;Redéployer Véga;Rianima Vega;베가 재배치;Przywrócenie Vegi;Reposicionar Vega;重新部署维嘉;重新部署維嘉
+Reduced Research Costs;Снижение стоимости разработки;Verringerte Forschungskosten;Costes de investigación reducidos;Costos de investigación reducidos;Coûts de recherche réduits;Riduzione costi di ricerca;연구 비용 감소;Redukcja kosztu badań;Custos de Pesquisa Reduzidos;降低研究费用;研發費用降低
+Regen Aura;Аура регенерации;Regenerationsaura;Aura de regen.;Aura de regeneración;Aura de régén.;Aura rigenerativa;재생 오라;Aura regeneracji;Aura Regen;恢复光环;恢復靈氣
+Regenerative Acid;Регенеративная кислота;Regenerative Säure;Ácido regenerador;Ácido regenerativo;Acide régénérant;Acido rigenerativo;재생성 산;Kwas regenerujący;Ácido Regenerativo;再生性虫酸;再生酸液
+Regenerative Plating;Регенеративная обшивка;Regenerative Panzerung;Chapado regenerativo;Blindaje regenerativo;Blindage régénérant;Blindatura rigenerativa;재생성 철판;Regeneracyjne poszycie;Revestimento Regenerativo;再生型钢板;活性合金板
+Reincarnation;Возрождение;Wiedergeburt;Reencarnación;Reencarnación;Ranimer;Reincarnazione;부활;Reinkarnacja;Reencarnação;恢复;重生
+Reincarnation Suppressed;Возрождение временно недоступно;Wiedergeburt unterdrückt;Reencarnación no disponible;Reencarnación suprimida;Ranimer supprimé;Reincarnazione soppressa;부활 억제됨;Reinkarnacja wstrzymana;Reencarnação Suprimida;恢复已禁止;已抑制重生
+Reinforced Cell Membrane;Усиленная клеточная мембрана;Verstärkte Zellenmembran;Membrana celular reforzada;Membrana celular reforzada;Membrane cellulaire renforcée;Cellule membranose rinforzate;강화 세포막;Wzmocniona membrana komórkowa;Membrana Celular Reforçada;强化细胞膜;強化細胞膜
+Reinvigorating Burst;Живительный импульс;Kräftigungsschub;Ráfaga revigorizante;Ráfaga revigorizante;Formule revigorante;Scarica rigenerativa;폭발적인 회복;Impuls Regeneracyjny;Rajada Revigorante;活力喷发;精力爆發
+Relentless Swarmer;Безжалостный роитель;Unerbittlicher Schwarm;Enjambrista implacable;Enjambreadora impacable;Nuée impitoyable;Sciame Implacabile;무자비한 군단;Nieustępliwy Rój;Enxame Implacável;无尽虫群;無畏蟲群
+Reliquary of Souls;Реликварий душ;Reliquiar der Seelen;Relicario de almas;Relicario de Almas;Reliquaire des âmes;Reliquiario delle anime;영혼의 성물함;Relikwiarz Dusz;Relicário de Almas;灵魂之匣;靈魂聖匣
+Remote Deployment;Удаленное развертывание;Fernausladen;Despliegue remoto;Despliegue remoto;Déploiement à distance;Schieramento a distanza;원격 투하;Zdalny desant;Lançamento Remoto;远程部署;遠端部署
+Remote Detonate;Дистанционный подрыв;Fernzündung;Detonación remota;Detonación remota;Explosion télécommandée;Detonazione a distanza;원격 폭파;Zdalna detonacja;Detonação a distância;远程爆破;遙控引爆
+Replenish Spider Mine;Перезарядка паучьих мин;Spinnenminen wiederauffüllen;Recargar mina araña;Reabastecer Mina araña;Stock de mines araignées;Rifornimento di Mine ragno;거미 지뢰 보충;Uzupełnij miny pajęcze;Recarregar Minas-aranha;装填蜘蛛雷;補充蜘蛛詭雷
+Replenish Widow Mines;Перезарядка мин «Вдова»;Arachnominen wiederauffüllen;Recargar minas viudas;Reabastecer Minas viudas;Stock de mines veuves;Rifornimento di Mine Widow;땅거미 지뢰 보충;Uzupełnij wdowie miny;Reabastecer Minas Viúvas;补充寡妇雷;補充寡婦詭雷
+Respawn Nest;Возрождение гнезда;Nest neu erschaffen;Reconstitución de nido;Reaparición - Nido;Faire réapparaître un nid;Rigenera Nido;둥지 재생성;Ożywienie gniazda;Recriar Ninho Tóxico;重生巢穴;復活蟲巢
+Retinal Augmentation;Усовершенствованная сетчатка;Netzhauterweiterung;Aumento de retina;Amplificación retinal;Augmentation rétinienne;Sviluppo retineo;망막 증강;Udoskonalona siatkówka;Aperfeiçoamento de Retina;视网增强;強化視網膜
+Reveal Weakness;Выявление слабости;Schwäche enthüllen;Revelar debilidad;Revelar debilidad;Révéler la faiblesse;Rivela debolezza;약점 드러내기;Ujawnij słaby punkt;Revelar Fraqueza;暴露弱点;顯示弱點
+Revive Placement;Воскрешение с размещением;Wiederbelebungsplatzierung;Ubicación de revivir;Revivir ubicación;Position de la réanimation;Disposizione rianimazione;부활 지점;Ożyw - Miejsce;Posicionamento de Reviver;复活放置;復活配置
+Revive Standard;Обычное воскрешение;Standardwiederbelebung;Revivir estándar;Revivir estándar;Étendard de réanimation;Rianimazione standard;부활 표준;Ożyw - Standardowo;Padrão de Reviver;复活标准;復活旗幟
+Ripwave Missiles;Ракеты «Волнорез»;Ripwave-Raketen;Misiles de dispersión;Misiles desgarrantes;Missiles Tsunami;Missili Ripwave;분쇄파 미사일;Rakiety „Ripwave”;Mísseis rasgantes;破浪飞弹;波浪飛彈
+Roach Speed;Скорость таракана;Schabengeschwindigkeit;Velocidad de cucaracha;Velocidad de Cucaracha;Vitesse de cafard;Velocità Blatta;바퀴 속도;Szybkość karakana;Velocidade da Barata;蟑螂速度;蟑螂加速
+Rocket Barrage;Ракетный залп;Raketenbeschuss;Lluvia de misiles;Andanada de misiles;Barrage de roquettes;Sbarramento missilistico;로켓 포화;Salwa rakietowa;Saraivada de Mísseis;火箭弹幕;火箭彈幕
+SA-55 Thunderbolt Missiles;Ракеты SA-55 «Молния»;Thunderbolt-Raketen SA-55;Misiles rayo SA-55;Misiles relámpago SA-55;Missiles Fulgurance SA-55;Missili Thunderbolt SA-55;SA-55 천둥벼락 미사일;Pociski Rakietowe SA-55 Grom;Mísseis Trovejantes SA-55;SA-55型霹雳飞弹;SA-55雷擊飛彈
+Salivating Gullet;Слизистая глотка;Speichelnde Speiseröhre;Tialismo;Garganta salivosa;Salive œsophagienne;Esofago bavoso;타액분비 식도;Śliniankowy przełyk;Canal de Saliva;垂涎欲滴;食道溶蝕
+Scarab Housing;Отсеки скарабеев;Scarab-Reserve;Revestimiento de alfazaque;Carcasa de Escarabajos;Logement à scarabée;Alloggiamento Scarabei;갑충탄 축적;Korpus skarabeuszy;Abrigo de Escaravelhos;金甲虫机壳;聖甲蟲容納倉
+Scorching Breath;Чудовищное дыхание;Feueratem;Aliento agostador;Aliento abrasador;Souffle infernal;Soffio ardente;그을리는 숨결;Palący Oddech;Sopro Calcinante;灼热吐息;灼燒之息
+Scourge Incubation;Инкубация слепней;Terror-Inkubation;Incubación de hostigador;Incubación de Azote;Incubation de fléau;Incubazione di Flagelli;갈귀 부화;Inkubacja zmory;Incubação de Flagelo;培育爆蚊;自殺蟲孵育
+Secondary Esophagus;Дополнительный пищевод;Sekundäre Speiseröhre;Esófago secundario;Esófago secundario;Œsophage secondaire;Esofago secondario;2차 식도;Pomocniczy przełyk;Esôfago Secundário;第二食管;第二食道
+Secondary Membrane;Дополнительная мембрана;Sekundäre Membran;Membrana secundaria;Membrana secundaria;Membrane secondaire;Membrana secondaria;이차막;Membrana pomocnicza;Membrana Secundária;次级隔膜;備用膜層
+Secondary Organs;Вспомогательные органы;Sekundärorgane;Órganos secundarios;Órganos secundarios;Organes secondaires;Organi secondari;2차 기관;Organy pomocnicze;Órgãos Secundários;次要器官;備用器官
+Secret Stash Stimpack;Стимуляторы «Заначка»;Geheimer Stimpack-Vorrat;Estimulantes de alijo secreto;Estimpack de reserva secreta;Stimulants du stock secret;Stimpack di scorta;비밀 은닉 전투 자극제;Tajna Rezerwa Stymulantów;Esteroides do Armazenamento Secreto;秘密储备强化剂;私房戰鬥藥劑
+Seismic Spines;Сейсмические шипы;Seismische Wirbelsäule;Espinas sísmicas;Espinas sísmicas;Aiguillons sismiques;Aculei sismici;진동 가시뼈;Wściekłe kolce;Ferrões Sísmicos;震地脊刺;震地脊刺
+Self-Repair;Саморемонт;Selbstreparatur;Autorreparación;Autorreparación;Autoréparation;Autoriparazione;자가 수리;Samonaprawa;Autoconserto;自我修复;自我修復
+Selfix Armor;Броня «Сделай сам»;Regenerative Panzerung;Armadura autorreparadora;Armadura autorreparadora;Armure Autosoignante;Corazza autoriparante;자가수리 장갑;Pancerz Samoreperujący;Blindagem Selfix;自我修补型装甲;再生裝甲
+Sensor Array;Сенсорная матрица;Sensorfeld;Equipo detector;Matriz sensora;Matrice de détection;Sistema sensoriale;감지기 배열;Matryca sensorowa;Matriz de Sensores;感应器阵列;感測序列
+Sensor Visor;Сенсорный визор;Sensorvisier;Visor con sensores;Visor con sensor;Visière de détection;Visore a sensori;감지 조준경;Wizjer czujnikowy;Visor do Sensor;感知面罩;感應顯示鏡
+Sentinel Missiles;Ракеты «Страж»;Wächterraketen;Misiles centinela;Misiles centinela;Missiles Sentinelle;Missili Sentinella;감시 미사일;Pociski Argus;Mísseis Sentinela;哨兵导弹;哨兵飛彈
+Serdath Legion;Легион Сердата;Serdaths Legion;Legión de Serdath;Legión de Serdath;Légion de Serdath;Legione di Serdath;세르다스 군단 호출;Legion Serdatha;Legião de Serdath;塞达斯军团;瑟達斯軍團
+Severing Glave;Разрывающий чакрум;Durchtrennende Gleve;Guja amputadora;Gladia cercenante;Sabre tranchant;Simbionte smembrante;절단 쐐기;Tnąca glewia;Espada Cortante;削铁刃虫;截斷之刃
+Shadow Cleave;Удар тени;Schattenschlitzer;Cuchilla de las sombras;Hendidura de las sombras;Taillade d’ombre;Fendente dell'ombra;그림자 베기;Mroczne Rozdarcie;Corte Sombrio;暗影顺劈;暗影順劈斬
+Shadow Clones;Теневые клоны;Schattenklone;Clones sombríos;Clones de sombra;Clones d’ombre;Cloni ombra;그림자 복제;Mroczne klony;Clones;暗影克隆;暗影分身
+Shadow Stalk;Преследование в тени;Schattengang;Acecho de las sombras;Acecho sombrío;Traque des ombres;Persecuzione dell'ombra;그림자 추적;Zakradanie w cieniach;Espreita Sombria;暗影追踪;暗影匿蹤
+Shaped Hull;Профилированная обшивка;Angepasste Hülle;Casco moldeado;Casco con forma;Coque profilée;Scafo modellato;일체형 동체;Profilowany kadłub;Casco formado;铸型壳体;強化外殼
+Shield Regen;Восстановление прочности щита;Schildregeneration;Regen. de escudo;Regeneración de escudo;Régen. de bouclier;Rigenerazione Scudi;보호막 재생;Regeneracja osłon;Regeneração de Escudo;护盾恢复;護盾恢復
+Shield Regeneration;Восстановление прочности щита;Schildregeneration;Regeneración de escudo;Regeneración de escudo;Régénération de bouclier;Rigenerazione Scudi;보호막 재생;Regeneracja osłon;Regeneração de Escudo;护盾恢复;護盾恢復
+Shifting Carapace;Подвижный панцирь;Flexibler Panzer;Caparazón cambiante;Caparazón mutable;Carapace cinétique;Carapace mutante;이동 갑피;Elastyczny Karapaks;Carapaça Cambiante;变换甲壳;移形蟲殼
+Shock Blast;Шоковый удар;Schockwelle;Explosión de choque;Explosión de choque;Horion explosif;Esplosione folgorante;충격 작렬;Porażający wybuch;Impacto de Concussão;震爆;震爆
+Shredder Rounds;Патроны «Мясорубка»;Schreddergeschosse;Proyectiles trituradores;Municiones trituradoras;Balles perçantes;Munizioni sminuzzatrici;파쇄탄;Pociski Rozrywacz;Munição Retalhadora;撕裂弹;碎裂彈
+Shredding Claws;Острые когти;Reißklauen;Garras despedazadoras;Garras lacerantes;Griffes déchiqueteuses;Artigli distruttori;분쇄하는 발톱;Rozdzierające szpony;Garras Retalhadoras;切割利爪;撕裂爪
+Simplified Genome;Упрощенный геном;Vereinfachtes Genom;Genoma simplificado;Genoma simplificado;Génome simplifié;Genoma semplificato;단순화된 게놈;Uproszczony genom;Genoma Simplificado;简化基因组;簡化基因組
+SJHyperion Banshees;«Банши» «Гипериона»;SJHyperion - Banshees;Átropos de HyperionSJ;SJ - Hiperión - Banshees;SJ Hypérion Banshees;Banshee Hyperion SJ;SJ 히페리온 밴시;SJHyperion Banshee;SJHipérion Vudus;SJ休伯利安号女妖;SJ海伯利昂號 - 女妖轟炸機
+SJHyperion Banshees2;«Банши» «Гипериона» 2;SJHyperion - Banshees 2;Átropos de HyperionSJ 2;SJ - Hiperión - Banshees 2;SJ Hypérion Banshees 2;Banshee 2 Hyperion SJ;SJ 히페리온 밴시2;SJHyperion Banshee2;SJHipérion Vudus2;SJ休伯利安号女妖2;SJ海伯利昂號 - 女妖轟炸機2
+SJHyperion Banshees3;«Банши» «Гипериона» 3;SJHyperion - Banshees 3;Átropos de HyperionSJ 3;SJ - Hiperión - Banshees 3;SJ Hypérion Banshees 3;Banshee 3 Hyperion SJ;SJ 히페리온 밴시3;SJHyperion Banshee3;SJHipérion Vudus3;SJ休伯利安号女妖3;SJ海伯利昂號 - 女妖轟炸機3
+SJHyperion Level Up;Повысить уровень «Гипериона»;SJHyperion - Stufenaufstieg;Subida de nivel de HyperionSJ;SJ - Hiperión - Ascenso de nivel;SJ - Hypérion - montée de niveau;Nuovo livello Hyperion SJ;SJ 히페리온 레벨 상승;SJHyperion Awans o poziom;SJHipérion Subir de nível;SJ休伯利安号升级;SJ海伯利昂號 - 升級
+SJHyperion Shield;Щит «Гипериона»;SJHyperion - Schild;Escudo de Hyperion SJ;SJ - Hiperión - Escudo;SJ - Hypérion - Bouclier;Scudo Hyperion SJ;SJ 히페리온 보호막;SJHyperion Osłona;SJHipérion Escudo;SJ休伯利安号护盾;SJ海伯利昂號 - 護盾
+Slicing Glave;Режущий чакрум;Schneidender Sporenwurm;Guja rebanadora;Gladia rebanadora;Mandibules acérées;Simbionte acuminato;절단 쐐기;Tnąca glewia;Peste Fatiadora;切割之爪;削切之刃
+Slivan Puke;Рвота Зилван;Slivan - Kotze;Slivan: vómito;Slivan - Vómito;Slivan - Vomis;Bile corrosiva;슬리반 토사;Wymiociny Sylwan;Vômito de Slivan;斯利凡呕吐;絲莉芬 - 嘔吐
+Smoke Grenade;Дымовая граната;Rauchgranate;Granada de humo;Granada de humo;Grenade fumigène;Bomba fumogena;연막탄;Granat dymny;Granada de Fumaça;烟雾弹;煙霧手榴彈
+Sniper Round;Снайперский выстрел;Scharfschütze;Disparo de precisión;Munición de francotirador;Tir de précision;Tiro di precisione;저격;Strzał Snajperski;Tiro de Precisão;狙杀;狙擊彈
+Solar Bombardment;Солнечная бомбардировка;Solarbombardement;Bombardeo solar;Bombardeo solar;Bombardement solaire;Bombardamento solare;태양 포격;Bombardowanie Solarne;Bombardeio Solar;太阳轰炸;日炎轟炸
+Solar Flare;Солнечная вспышка;Solarbrenner;Llamarada solar;Destello solar;Éruption solaire;Vampa solare;태양 후폭풍;Rozbłysk solarny;Explosão Solar;太阳耀斑;日炎閃焰
+Solar Lance;Солнечное копье;Solarlanze;Lanza solar;Heliolanza;Lance solaire;Lancia solare;태양의 창;Lanca Solarna;Lança Solar;太阳能射线枪;日炎熱線
+Solarite Dragoon Suit;Соларитовый драгун;Konfiguration Solaritdragoner;Armadura de dragón de solarita;Traje de Dragún de solario;Armure de dragon de solarite;Dragone a solarite;태양 용기병 전투복;Pancerz Solarytowego Dragona;Traje Dragonte de Solarita;太阳能龙骑士战甲;日炎龍騎士機甲
+Solarite Payload;Соларитовый заряд;Solarit-Ladung;Descarga de solarita;Carga de solario;Charge de solarite;Missili a solarite;태양석 탄두;Ładunek solarytowy;Carga de Solarita;太阳能负载;日炎甲蟲
+Soul Absorption;Поглощение души;Seelenabsorption;Absorción de almas;Absorción anímica;Absorption d’âme;Assorbimento di anime;영혼 흡수;Wchłonięcie Duszy;Absorção Anímica;灵魂吸食;靈魂吸收
+Soul Augmentation;Твердость духа;Seelenstärkung;Aumento de alma;Amplificación anímica;Renforcement psychique;Incremento di anime;영혼 증강;Wzmocnienie duchowe;Aprimoramento de Alma;灵魂强化;靈魂強化
+Spawning Chamber;Камера порождения;Schlupfkammer;Cámara de engendramiento;Engendrar Cámara;Chambre de génération;Camera di generazione;산란장;Komora powijania;Fosso de Desova;孵化腔室;孵化室
+Spectre Psi Round;Пси-импульс;Phantom - Psi-Geschoss;Proyectil psi de ánima;Munición psi del Espectro;Balle psi du spectre;Proiettile psionico dello Spettro;악령 사이오닉 탄;Pocisk psioniczny widma;Munição psiônica da Aparição;幽魂灵能弹;幽魂幽能彈
+Speed Aura;Аура скорости;Geschwindigkeitsaura;Aura de velocidad;Aura de velocidad;Aura de vitesse;Aura di velocità;속도 오라;Aura szybkości;Aura de Velocidade;速度光环;速度靈氣
+Spiked Hide;Шипастая шкура;Stachelpanzer;Cuero con púas;Cuero picudo;Réaction épidermique;Aura di spine;가시 가죽;Kolczasta Skóra;Carapaça Espinhosa;尖刺厚皮;尖刺蟲皮
+Splinter;Осколок;Splitter;Dividir;Astillador;Fragment;Rottura;가시;Odprysk;Farpa;Splinter;分裂
+SS_Shooting;SS_Стрельба;SS_Shooting;SS_Shooting;SS_Shooting;SS_Shooting;SS_Sparo;SS_Shooting;SS_Strzelanie;SS_Shooting;SS_射击;SS_Shooting
+Stab;Укол;Stachelschuss;Apuñalar;Puñalada;Piqûre;Puntura;찌르기;Dźgnięcie;Esfaquear;刺击;脊刺飛擊
+Stabilizer Medpacks;Стабилизаторы;Stabilisator-Medipacks;Paquetes médicos estabilizadores;Botiquines estabilizadores;Trousse de premiers soins;Medpack stabilizzanti;전투 안정제;Apteczki stabilizujące;Kits médicos estabilizadores;稳定剂医疗包;野戰急救包
+Stalker Multishot;Сталкер - залп;Hetzer - Mehrfachschuss;Multidisparo de acechador;Persecutor - Multidisparo;Traqueur - Tir multiple;Persecutore - Tiro Multiplo;추적자 연발 사격;Tropiciel, Wielostrzał;Tormento - Tiros Múltiplos;追猎者多重射击;追獵者 - 多重射擊
+Stalker Phasing Armory;Фазовая броня палачей;Phasenpanzerung für Henker;Arsenal de fase de acechador;Armadura fásica de Persecutor;Armure phasique pour traqueur;Corazza fasica dei Persecutori;추적자 위상 장갑;Pancerz fazowy tropicieli;Tormento - Arsenal Fásico;追猎者相位武装;屠敵者相位裝甲
+Stance Dance;Универсальный солдат;Schnellrekonfiguration;Cambio de equipo;Postura de baile;Alternance tactique;Postura di danza;날쌘 전환;Zmiana Trybu;Troca de Postura;随机应变;隨機應變
+Starfall;Звездопад;Sternenregen;Estrella fugaz;Lluvia de estrellas;Pluie d’étoiles;Pioggia di Stelle;별똥별;Spadające gwiazdy;Chuva Estelar;星辰坠落;星殞
+Start Morph;Начать мутацию;Metamorphose beginnen;Iniciar mutación;Iniciar transformación;Commencer la transformation;Inizia Trasformazione;변형 시작;Rozpocznij przekształcanie;Iniciar Transmutação;开始变异;開始變形
+Stasis Calibration;Калибровка стазиса;Stasiskalibrierung;Calibración de estasis;Calibración de estasis;Calibrage de stase;Calibrazione di stasi;정지 조율;Kalibracja zastoju;Calibração de Estase;静滞校正;靜滯校準
+Stasis Shell;Стазисная камера;Stasishülle;Cámara de estasis;Cápsula de estasis;Enveloppe de stase;Guscio di stasi;정지장 보호막;Komora zastoju;Cápsula de Estase;静滞晶壳;靜滯護罩
+Static Discharge;Статический разряд;Statische Entladung;Descarga estática;Descarga estática;Décharge statique;Scarica statica;전하 방출;Wyładowanie statyczne;Descarga estática;静电释放;靜電放射
+Steadfast Reinforcements;Стойкие резервы;Standhafte Verstärkung;Refuerzos leales;Refuerzos implacables;Renforts inébranlables;Rinforzi saldi;굳건한 지원군;Stałe Posiłki;Reforços Firmes;刚韧援军;堅定援軍
+Stomp;Топот;Stampfen;Pisotón;Pisoteo;Piétinement;Assalto;발 구르기;Stąpnięcie;Pisada;践踏;重踏
+Stukov Crystal Channel;Кристалл Стукова;Stukov - Kristallkanalisierung;Stukov: canalizar cristal;Canal de cristal de Stukov;Canalisation de cristal de Stukov;Incanala cristallo di Stukov;스투코프 수정 집중;Stiukow – kryształ – kierowanie;Stukov Canal de Cristal;斯托科夫水晶通道;斯杜科夫 - 水晶引導
+Stun Drone;Оглушающий модуль;Betäubungsdrohne;Robot aturdidor;Dron aturdidor;Drone étourdissant;Droide stordente;제압 드론;Dron ogłuszający;Drone de Atordoamento;眩晕无人机;震撼無人機
+Stunning Blow;Оглушающий удар;Betäubender Schlag;Arremetida aturdidora;Golpe aturdidor;Coup étourdissant;Colpo Stordente;기절의 일격;Ogłuszający cios;Pancada Atordoante;昏迷猛击;昏迷猛擊
+Sunder;Раскол;Zerfetzen;Hender;Dividir;Séparation;Mitosi;가르기;Rozdarcie;Romper;撕裂;割裂
+Sunder Aura;Аура раскола;Aura der Desintegration;Hender aura;División - Aura;Aura clivante;Aura Infuocata;가르기 오라;Aura rozdarcia;Aura Rompedora;震慑光环;裂甲靈氣
+Sundering Glave;Взрывной чакрум;Explodierende Gleve;Guja penetrante;Gladia cercenada;Sabre scindant;Simbionte esplosivo;폭발 쐐기;Wybuchowa glewia;Espada Rompedora;裂骨龙爪;碎裂之刃
+Super Bio-Steel;Супербиосталь;Superbiostahl;Bioacero superior;Súper bioacero;Super bio-acier;Bio-acciaio superiore;초생물강철;Super biostal;Superbioaço;超级生物钢;超級生化鋼鐵
+Superior Warp Gates;Улучшенные врата искривления;Überlegene Warptore;Portales de distorsión superiores;Superior - Portales de transposición;Portes de transfert supérieures;Portali dimensionali superiori;진보한 차원 관문;Ulepszone Wrota Przesyłowe;Portal de Dobra Superior;超级折跃门;高階空間之門
+Suppression Field;Подавляющее поле;Unterdrückungsfeld;Campo de anulación;Campo de supresión;Champ de neutralisation;Campo di soppressione;억제장;Pole Zaporowe;Campo de Supressão;抑制场;壓制力場
+Suppression Procedure;Протокол подавления;Unterdrückungsprotokoll;Procedimiento de supresión;Procedimiento de supresión;Incapacitation;Procedura di soppressione;억제 절차;Protokół Zaporowy;Procedimento de Supressão;压制程序;火力壓制程序
+Suppression Shells;Подавляющие снаряды;Unterdrückungsmunition;Proyectiles de supresión;Cartuchos de supresión;Obus incapacitants;Granate disorientanti;억제탄;Pociski ogłuszające;Cápsulas de Supressão;压制弹;壓制彈
+Swarm Focus;Мать Роя;Kampfschwerpunkt Schwarm;Enfoque de Enjambre;Foco de enjambre;Mode Essaim;Focalizzazione dello Sciame;군단 특성;Specjalizacja roju;Foco em Enxame;虫群专精;蟲群專精
+Swarm Genades;Гранаты Роя;Schwarmgranaten;Granadas enjambre;Granadas del Enjambre;Grenades grouillantes;Granate dello Sciame;연막 수류탄;Granaty roju;Granadas do Enxame;蜂群手雷;群擊榴彈
+Switch Weapon;Сменить оружие;Waffe wechseln;Cambiar arma;Cambiar arma;Changer d’arme;Cambia arma;무기 전환;Zmień broń;Trocar arma;切换武器;切換武器
+Swoop;Пикирование;Sturzflug;Descenso en picado;Descenso en picada;Rapace;Picchiata;급강하;Lądowanie;Rasante;飞扑;俯衝
+T4 Cloudburst Shells;Патроны Т4 «Ливень»;"T4-Hülsen ""Wolkenbruch""";Proyectiles de tormenta T4;Cartuchos Cazanubes T4;Cartouches à vaporisation T4;Granate esplosive T4;T4 집중호우탄;Pociski Naddźwiękowe T4;Cartuchos de Nuvem Explosiva T4;T4云爆弹;T4暴雨彈
+T82 Missile Pods;Ракетные модули T82;T82-Raketenbatterien;Cápsula de misiles T82;Cápsulas de misiles T82;Silos à missiles T82;Batterie di missili T82;T82 미사일 포;Wyrzutnie rakiet T82;Módulos de Mísseis T82;T82飞弹仓;T82型飛彈艙
+Tactical Airlift;Тактический авиамост;Taktischer Lufttransport;Transporte aéreo táctico;Repliegue aéreo táctico;Évacuation tactique;Ponte aereo tattico;전술 공중 수송;Transport Taktyczny;Transporte Aéreo Tático;战术空运;戰術空運
+Tactical Stealth Suit;Маскировочный костюм;Taktischer Tarnanzug;Traje táctico de invisibilidad;Traje de camuflaje táctico;Combinaison tactique furtive;Tuta occultante tattica;전술 은신 전투복;Taktyczny Kombinezon Maskujący;Traje Furtivo Tático;战术潜行服;戰術匿蹤套裝
+Taldarin's A.I. Personality;Матрица личности Талдарина;Taldarins KI-Persönlichkeit;IA de personalidad de Taldarin;Personalidad de IA de Taldarin;Personnalité artificielle de Taldarin;I.A. eroica di Taldarin;탈다린 인공지능;Osobowość SI Taldarina;Personalidade I.A. de Taldarin;塔尔达林的智能人格;塔德林的A.I.人格
+Talis' A.I. Personality;Матрица личности Талис;Talis' KI-Persönlichkeit;IA de personalidad de Talis;Personalidad de IA de Talis;Personnalité artificielle de Talis;I.A. eroica di Talis;탈리스 인공지능;Osobowość SI Talis;Personalidade I.A. de Talis;塔里斯的智能人格;泰莉絲的A.I.人格
+Tar Bombs;Смоляные бомбы;Teerbomben;Granadas de brea;Bombas de alquitrán;Bombes à poix;Bombe bituminose;타르 폭탄;Bomby smoliste;Bombas de Piche;焦油炸弹;焦油彈
+Targeting;Наведение;Anvisieren;Selección;Objetivo;Ciblage;Puntamento;대상 지정;Celowanie;Mirando;瞄准;目標顯示模式
+Targeting Optics;Система оптического наведения;Zielfindungsoptik;Óptica de objetivo;Ópticas de ataque;Système optique de visée;Ottica di puntamento;조준경;Optyczny układ celowniczy;Ótica Balística;瞄准光学镜;雷射鎖定儀
+Telbrus Legion;Легион Телбруса;Telbrus' Legion;Legión de Telbrus;Legión de Telbrus;Légion de Telbrus;Legione di Telbrus;텔브루스 군단 호출;Legion Telbrusa;Legião de Telbrus;特布鲁斯军团;泰伯洛斯軍團
+Telekinesis;Телекинез;Telekinese;Telekinesia;Telequinesis;Télékinésie;Telecinesi;염동력;Telekineza;Telecinese;心灵传动;心靈傳動
+Teleport;Телепортация;Teleportieren;Teletransporte;Teletransportar;Téléportation;Teletrasporto;순간이동;Teleportacja;Teleportar;传送;傳送
+Tentacle Slam;Удар щупальцем;Tentakelschlag;Embate de tentáculo;Golpe de tentáculo;Frappe tentaculaire;Tentacoli;촉수 강타;Walnięcie macką;Bordoada de Tentáculo;触须砸击;巨觸猛擊
+Terazine;Терразин;Terrazin;Terrazine;Terracino;Terrazine;Terrazine;테라진;Terrazyt;Terrazino;地嗪;態化氫
+Terazine Fury;Терразиновое неистовство;Terrazinraserei;Furia de terrazine;Terracino - Furia;Fureur de terrazine;Furia Terrazine;테라진 격노;Terrazytowa furia;Fúria de Terrazino;地嗪狂乱;態化氫之怒
+Terran Capped;Запечатано терранами;Terraner - Unerschlossen;Sellado por los terran;Terran limitado;Bouclé par les Terrans;Copertura terran;테란 봉인;Terranie - osiągnięto limit;Terrano coberto;人类已达上限;由人類封閉
+Terrazine Harvest;Добыча терразина;Terrazinernte;Recolección de terrazine;Cosecha de terracino;Extraire la terrazine;Raccolta di terrazine;테라진 채취;Zbieranie terrazytu;Coleta de Terrazino;地嗪采集;態化氫採集
+Terrazine Insanity;Терразиновое безумие;Terrazinwahn;Locura de terrazine;Demencia por terracino;Démence de terrazine;Follia Terrazine;테라진 광기;Terrazytowy obłęd;Insanidade de Terrazino;地嗪癫狂;態化氫狂亂
+The Strongest Survive;Выживает сильнейший;Überleben des Stärksten;Sobrevive el más fuerte;Supervivencia del más fuerte;La loi du plus fort;Selezione naturale;약육강식;Przetrwanie Najsilniejszych;Os Mais Fortes Sobrevivem;强者生存;強者生存
+Thermite Filaments;Термитная смесь;Thermitdrähte;Filamentos de termita;Filamentos de termita;Filaments en thermite;Filamenti di termite;테르밋 필라멘트;Żarnik termitowy;Pré-ignição infernal;灼热剂纤丝;鋁熱燃劑
+Thorns;Шипы;Dornen;Espinas;Espinos;Épines;Spine;가시;Kolce;Espinhos;荆棘;棘刺
+Throw Void Spheres;Бросить сферы Пустоты;Leerensphären werfen;Lanzar esferas de vacío;Arrojar Esferas del vacío;Lancer Sphères du Vide;Lancia Sfere del Vuoto;공허의 구슬 던지기;Rzuć kule otchłani;Arremessar esferas destruidoras;投掷虚空球;投擲虛空螺旋球
+Time Bomb;Темпоральная бомба;Zeitbombe;Bomba de cadencia;Bomba de tiempo;Chronobombe;Bomba Temporale;시간 폭탄;Bomba czasowa;Bomba Temporal;时间炸弹;時空裂彈
+Tinker;Механик;Tüftler;Manitas;Arreglar;Bricoleur;Aggiusta;손보기;Majsterkowanie;Faz-tudo;调试;工匠
+Tinkering;Мелкий ремонт;Tüftelei;Manitas;Arreglando;Bricolage;Aggiustamento;손보는 중;Majsterkowanie;Improvisando;调试;調整
+Tissue Assimilation;Ассимиляция тканей;Gewebeassimilierung;Asimilación de tejidos;Asimilación tisular;Assimilation des tissus;Assimilazione dei tessuti;조직 융합;Asymilacja tkanki;Assimilação de Tecido;组织同化;組織同化
+Titanium Housing;Титановая обшивка;Titangehäuse;Revestimiento de titanio;Carcasa de titanio;Logement en titane;Alloggiamento in titanio;티타늄 외피;Tytanowa obudowa;Superestrutura reforçada;钛钢外壁;鈦合金外殼
+Tomahawk Power Cells;Энергетическое ядро «Томагавк»;Tomahawk-Energiezellen;Células de energía tomahawk;Celdas de energía Tomahawk;Accumulateurs Tomahawk;Celle energetiche Tomahawk;토마호크 전지;Ogniwa Tomahawk;Baterias Tomahawk;战斧能源电池;戰斧動力核
+Toss Shredder Grenade;Бросить гранату;Schreddergranate werfen;Lanzar granada trituradora;Arrojar granada destructora;Lancer Grenade déchiqueteuse;Lancia Granata sminuzzatrice;분쇄 수류탄 던지기;Rzuć Granat Odłamkowy;Jogar granada de retalhação;手榴弹;投擲手榴彈
+Towering;Длинные ноги;Aufbäumen;Mastodóntico;Elevado;Imposant;Imponente;건너뛰기;Górowanie;Em forma de torre;巨兽;高大
+Toxic Bile;Токсичная желчь;Giftige Galle;Bilis tóxica;Bilis tóxica;Bile toxique;Bile tossica;맹독성 담즙;Toksyczna żółć;Bile Tóxica;剧毒胆汁;猛毒膽汁
+Transfer Link;Перенос;Transferverbindung;Enlace de transferencia;Enlace de transferencia;Voie de transfert;Legame di trasferimento;전송 연결;Łącze transferowe;Transferir Vínculo;传输链;傳輸連結
+Transfusion Chain;Цепное переливание;Transfusionskette;Cadena de transfusión;Cadena de transfusión;Transfusions en chaîne;Trasfusione a catena;연쇄 수혈;Łańcuch transfuzji;Cadeia de Transfusão;哺液链;連環輸血
+Transfusion Wave;Переливающая волна;Transfusionswelle;Oleada de transfusión;Oleada de transfusión;Vague de transfusion;Trasfusione - Onda;수혈파;Fala transfuzji;Onda de Transfusão;哺液洪流;連鎖輸血
+Transwarp;Пространственный переход;Transwarp;Trasladar;Transcambiar;Transdim;Trans-evocazione;공간 도약;Transprzesył;Transdobra;变速折跃;跳躍傳送
+TravelModeOn;Режим движения (вкл.);Transportmodus aktiviert;TravelModeOn;Modo viaje activado;Mode Déplacement activé;Attiva Modalità spostamento;이동 모드 켜기;Tryb ruchu wł.;TravelModeOn;开启行驶模式;移動模式啟動
+Tri-Lithium Power Cell;Трилитиевые батареи;Trilithium-Energiezelle;Célula de energía de trilitio;Celda de energía de trilitio;Accumulateur au tri-lithium;Cella energetica al trilitio;삼중리튬 전지;Trójlitowe ogniwo energetyczne;Baterias de trilítio;三锂能源电池;三鋰動力核
+Triple Tap;Тройной выстрел;Dreierpack;Triple impacto;Disparo triple;Tir triple;Triplo sparo;삼연발 사격;Potrójny strzał;Toque Triplo;三连击;三連狙擊
+Tunneling Claws;Когти-землерои;Gräberklauen;Garras tuneladoras;Garras excavadoras;Griffes fouisseuses;Artigli scavatori;땅굴 발톱;Szpony kopiące;Garras Penetrantes;掘地之爪;掘地爪
+Twin Drones;Рабочие-близнецы;Zwillingsdrohnen;Zánganos gemelos;Obreros gemelos;Ouvriers jumeaux;Droni gemelli;쌍둥이 일벌레;Bliźniacze Robotnice;Zangões Gêmeos;工蜂双子;雙生工蟲
+Twin-Linked Flame Thrower;Спаренные огнеметы;Doppel-Flammenwerfer;Lanzallamas doble;Lanzallamas dobles interconectados;Lance-flammes bi-jumelé;Lanciafiamme binati;이중 연결 화염방사기;Podwójne miotacze ognia;Lança-chamas Duplo Conectado;双联火焰喷射器;雙聯火焰發射器
+Tychus' Secret Stash;Заначка Тайкуса;Tychus' geheimer Vorrat;Alijo secreto de Tychus;Reserva secreta de Tychus;Stock secret de Tychus;Comparto segreto di Tychus;타이커스의 비밀 가방;Tajna skrytka Tychusa;Esconderijo secreto de Tychus;泰凯斯的藏匿处;泰科斯的秘密寶箱
+Type-88 Persuader;«Убеждатор-88»;Type-88 Persuader;Persuasor tipo 88;Persuasor de tipo 88;Argument type 88;Persuasore modello 88;88형 설득자;Motywator Model 88;Persuasor Tipo-88;88式劝服者;88式說服者頭盔
+Tyrant's Protection;Тираническая защита;Schutzinstinkt;Protección tiránica;Protección del tirano;Protection du tyran;Protezione tirannica;폭군의 보호;Ochrona tyranozora;Proteção do Tirano;暴龙的保护;暴虐防護
+Ultrasonic Boosters;Ультразвуковые усилители;Ultraschallverstärker;Intensificadores ultrasónicos;Amplificadores ultrasónicos;Amplificateur ultra-sonique;Propulsori ultrasonici;초음파 증폭기;Dopalacze Naddźwiękowe;Reforços Ultrassônicos;超声波放大器;超音波強化器
+Umojan Lab Turret;Турель умоджанской лаборатории;Umojanischer Laborturm;Torreta de laboratorio de Umoja;Torreta de laboratorio umojano;Tourelle du laboratoire umojan;Torretta laboratorio umojana;우모자 연구실 포탑;Umojańskie laboratorium – Wieżyczka;Torre de artilharia do Laboratório Umojan;尤摩扬实验室炮塔;尤摩捷實驗室砲台
+Umojan Repair Nanites;Умоджанские ремонтные наниты;Umojanische Reparaturnanobots;Nanitas de reparación de Umoja;Nanobots reparadores umojanos;Nanites de réparation umojanes;Naniti riparatori umojani;우모자 수리용 나노 기기;Umojańskie Nanoboty Regeneracyjne;Nanoides de Conserto Umojanos;尤摩扬纳米修复机器人;尤摩捷奈米修理機器人
+Umojan Signal Modulator;Умоджанский модулятор сигнала;Umojanischer Signalmodulator;Modulador de señal de Umoja;Modulador de señal umojano;Modulateur signalétique umojan;Modulatore di segnale umojano;우모자 신호 변조기;Umojański Modulator Sygnału;Modulador de Sinal Umojano;尤摩扬信号调制器;尤摩捷訊號調節器
+Unit Cloak;Маскировка боевое единицы;Einheitentarnung;Invisibilidad de la unidad;Unidad - Camuflar;Camouflage d’unité;Occultamento Unità;유닛 은폐;Maskowanie jednostki;Camuflar Unidade;单体隐形;單位匿蹤
+Unregistered Cloaking System;Контрафактные устройства маскировки;Illegale Tarnsysteme;Sistema de invisibilidad no registrado;Sistema de camuflaje no registrado;Système de camouflage non conventionnel;Sistema di occultamento illegale;미등록 은폐 시스템;Nielegalny system maskujący;Sistema de Camuflagem Não Registrado;未登记的隐形系统;不合法的匿蹤系統
+Upgraded Disruption Beam;Улучшенный разрушающий луч;Verbesserter Disruptorstrahl;Haz de disrupción mejorado;Rayo disruptor mejorado;Rayon disrupteur amélioré;Raggio Disgregante Migliorato;업그레이드된 분열 광선;Ulepszony promień rozrywający;Feixe de Distúrbio Aprimorado;高级瓦解射线;升級的干擾光束
+Urgency;Спешка;Dringlichkeit;Urgencia;Urgencia;Urgence;Urgenza;위기;Oddanie;Urgência;紧急;迅疾
+Vampiric Aura;Аура вампира;Vampiraura;Aura vampírica;Aura vampírica;Aura vampirique;Aura di vampirismo;흡혈 오라;Wampiryczna aura;Aura Vampírica;吸血光环;吸血靈氣
+Vanadium Shell;Ванадиевая оболочка;Vanadiummantelung;Proyectil de vanadio;Cartucho de vanadio;Obus en vanadium;Corazza al vanadio;바나듐 포탄;Skorupa Wanadowa;Cartucho de Vanádio;钒钢弹壳;釩金彈
+Vespene Transfusion;Передача веспена;Vespintransfusion;Transfusión de vespeno;Transfusión de vespeno;Transfusion de vespène;Trasfusione di vespene;베스핀 수혈;Transfuzja wespanu;Transfusão de Vespeno;瓦斯注射;傳輸高能瓦斯
+Vicious Glave;Губительный чакрум;Bösartige Gleve;Guja feroz;Gladia viciosa;Sabre vicieux;Simbionte maligno;악성 쐐기;Wściekła glewia;Espada Cruel;残暴龙爪;惡毒之刃
+Viral Contamination;Вирусное заражение;Virale Kontamination;Contaminación viral;Contaminación viral;Transmission virale;Contaminazione virale;바이러스 오염;Skażenie wirusowe;Contaminação Viral;病毒播洒;病毒擴散
+Virulent Microbes;Вирулентные микробы;Virulente Mikroben;Microbios virulentos;Microbios virulentos;Microbes virulents;Evolvi Microbi virali;악성 미생물;Zakaźne mikroby;Micróbios Virulentos;剧毒细菌;劇毒微生物
+Virulent Spores;Вирулентные споры;Ansteckende Sporen;Esporas virulentas;Esporas virulentas;Spores virulentes;Spore virali;독성 포자;Złośliwe zarodniki;Esporos Virulentos;剧毒孢子;劇毒孢子
+Virus Cure Beam;Антивирусный луч;Virusbeseitigungsstrahl;Haz de curación de virus;Rayo curavirus;Rayon virucide;Raggio curativo virus;바이러스 치유 광선;Wiązka antywirusowa;Feixe de Cura Viral;杀毒射线;病毒消滅光線
+Viscous Secretion;Вязкие выделения;Dickflüssiges Sekret;Secreción viscosa;Secreción viscosa;Sécrétion visqueuse;Secrezione viscosa;점액 분비;Lepka wydzielina;Secreção Viscosa;邪恶分泌物;黏稠分泌
+Void Breath;Дыхание Пустоты;Leerenatem;Aliento de vacío;Aliento del Vacío;Souffle du Vide;Alito del Vuoto;공허의 숨결;Tchnienie Otchłani;Sopro do Caos;虚空吐息;虛空氣息
+Void Grip;Хватка Пустоты;Leerengriff;Agarre de vacío;Agarre del Vacío;Poigne du Vide;Stretta del Vuoto;공허 손아귀;Chwyt Otchłani;Garra do Vazio;虚空之握;虛空之握
+Void Ray Hanger;Зависание излучателя Пустоты;Phasengleiterhangar;Hangar de rayo de vacío;Hangar de Mantarraya del Vacío;Disloqueur - Suspenseur;Lancia del Vuoto - Hangar;공허 포격기 격납고;Promień otchłani podtrzymanie;Hangar da Destruidora;虚空辉光舰机库;虛空艦機棚
+Void Sanctuary;Святилище Пустоты;Leerenzuflucht;Refugio de vacío;Santuario del Vacío;Sanctuaire du Vide;Santuario del Vuoto;공허의 안식처;Sanktuarium Otchłani;Santuário do Vazio;虚空穹顶;虛空庇護所
+Volatile Biomass;Нестабильная биомасса;Instabile Biomasse;Biomasa volátil;Biomasa volátil;Biomasse instable;Biomassa instabile;폭발성 생체 물질;Niestabilna biomasa;Biomassa Volátil;烈性生质;易爆生物質
+Volatile Ejection;Летучий выброс;Gasausstoß;Eyección volátil;Eyección volátil;Propulsion instable;Espulsione volatile;순간 방출;Gwałtowny rozbryzg;Ejeção Volátil;易变注射剂;猛烈推進
+Vortex Storm;Штормовая воронка;Vortexsturm;Vórtice de la tormenta;Tormenta vorticial;Vortex tempétueux;Vortice Tempestoso;소용돌이 폭풍;Wir burzowy;Tempestade Vórtice;漩涡风暴;漩渦風暴
+W.I.L.D. Missiles;Ракеты «Д.И.Ч.»;Sturmraketen;Misiles S.A.L.V.A.J.E.S.;Misiles F.I.E.R.A.;Roquettes B.A.R.J.O.;Missili W.I.L.D.;화끈한 미사일;Rakiety D.Z.I.K.;Mísseis W.I.L.D.;狂暴飞弹;W.I.L.D.飛彈
+War Configuration;Боевая конфигурация;Gefechtskonfiguration;Modo de guerra;Configuración de guerra;Configuration de combat;Configurazione bellica;전쟁 배치;Konfiguracja bojowa;Configuração de Guerra;战争配置;戰鬥模式
+War Pigs;«Боевые кабаны»;War Pigs;Jabalíes de Guerra;Cerdos de Guerra;Les Phacochères;Porci da guerra;전쟁광;Wieprze Wojny;Porcos de Guerra;战地豪猪;戰豬
+Warbot;Боевой робот;Kriegsbot;Guerrabot;Guerrabot;Robot guerrier;Droide da guerra;전쟁로봇;Robot bojowy;Robô de guerra;战斗机器人;戰鬥機器人
+WarpinDisruptionWard;Вызвать дестабилизирующую ловушку;WarpinDisruptionWard;Invocar protector de disrupción;WarpinDisruptionWard;Transférer une balise de disruption;Evoca Guardia Disgregante;분열 수호물 소환;PrzyzwijOkowyDestabilizacji;WarpinDisruptionWard;WarpinDisruptionWard;躍傳癱瘓詭雷
+Warping Away;Телепортация;Wegwarpen;Invocando;Transposicionando;Transfert en cours;Traslazione;차원 이동;Odsyłanie;Transdobrando;折跃离开;躍傳離開中
+Wild Aggresion;Дикая агрессия;Wilde Aggression;Agresividad salvaje;Agresión salvaje;Agression sauvage;Aggressione selvaggia;거친 공격;Dzika agresja;Agressão Selvagem;野性侵略;狂野襲擊
+Wild Mutation Map-Wide;Всеобщая дикая мутация;Wilde Mutation - Kartenweit;Mutación salvaje por todo el mapa;Mutación salvaje en todo el mapa;Mutations frénétiques sur toute la carte;Mutazione selvaggia - Intera mappa;전장 전역 야생 변이;Dzika mutacja na całej mapie;Mutação Selvagem por todo o Mapa;全图野性突变;全域狂野突變
+Wildfire Explosives;Взрывчатка «Гремучка»;Lauffeuersprengsätze;Explosivos de fuego salvaje;Explosivos incendiarios;Bombe incendiaire;Esplosivi instabili;연소 폭발;Ładunki ogniowe;Explosivos Incendiários;狂火炸药;野火炸藥
+Wildflame Fuel Additives;Присадка «Дикий огонь»;Wildfeuer-Brandbeschleuniger;Aditivos de combustible de llama salvaje;Aditivos para combustible fuego salvaje;Additif pour carburant Retour de flamme;Additivi incendiari;야생불꽃 연료 첨가제;Wysokooktanowe Dodatki do Paliwa;Aditivos de Combustível Chama Selvagem;狂焰牌燃料添加剂;野火燃料添加劑
+Wings Of Hatred;Крылья ненависти;Schwingen des Hasses;Alas de odio;Alas de odio;Ailes de haine;Ali dell'odio;증오의 날개;Skrzydła nienawiści;Asas de Ódio;憎恨之翼;仇恨之翼
+Wingsof Consuming Hatred;Крылья всепоглощающей ненависти;Schwingen des verzehrenden Hasses;Alas de odio devorador;Alas de Odio devorador;Ailes de haine dévorante;Ali dell'odio logorante;강렬한 증오의 날개;Skrzydła trawiącej nienawiści;Asas de Ódio Devorador;吞噬憎恨之翼;噬恨之翼
+X-71 Impact Boots;Ударные ботинки Х-71;X-71 Schockstiefel;Botas de impacto X-71;Botas de impacto X-71;Bottes à impact X-71;Stivali da sbarco X-71;X-71 충격 장화;Ciężkie Buciory X-71;Botas de Impacto X-71;X-71型震击靴;X-71衝擊靴
+X88T Anti-Armor;X88T - бронебойный;X88T - Panzerbrechend;X88T antiblindaje;X88T Antiblindaje;Antiblindage de X88T;Proiettile perforante dell'X88T;X88T 대장갑 미사일;Przeciwpancerny X88T;X88T Antiblindagem;X88T型穿甲弹;X88T 反裝甲
+X88T Lockdown;X88T - замыкание;X88T - Stopper;X88T de cierre;Bloqueo X88T;Verrou de X88T;Interferenza dell'X88T;X88T 잠금;Blokada X88T;Neutralização X88T;X88T型追踪弹;X88T 鎖定
+X88T Napalm;X88T - напалм;X88T - Napalm;X88T de napalm;X88T - Napalm;Napalm de X88T;Napalm dell'X88T;X88T 네이팜;Napalm X88T;Napalm X88T;X88T型凝固汽油弹;X88T 凝固汽油彈
+XCMC-670 Combat Suit;Боевой скафандр ХСМС-670;XCMC-670 Kampfanzug;Traje de combate XCMC-670;Traje de combate XCMC-670;Armure de combat XCMC-670;Tuta da combattimento XCMC-670;XCMC-670 전투복;Kombinezon Bojowy XCMC-670;Traje de Combate XCMC-670;XCMC-670型战斗装甲;XCMC-670戰鬥套裝
+XM-77 Matrix Generator;Генератор матрицы ХМ-77;Matrixgenerator XM-77;Generador de matriz XM-77;Generador de matriz XM-77;Générateur matriciel XM-77;Generatore di matrice XM-77;XM-77 매트릭스 생성기;Generator Matrycy XM-77;Gerador de Matriz XM-77;XM-77型矩阵发生器;XM-77矩陣產生器
+Yagdra Tunnel;Подкоп Ягдры;Yagdra - Tunnel;Túnel de Yagdra;Yagdra - Túnel;Tunel de Yagdra;Rintanamento di Yagdra;야그드라 땅굴;Tunel Yagdry;Túnel de Yagdra;亚格卓拉钻地;亞格爪 - 挖掘
+Zealot Health;Зилот - здоровье;Berserker - Trefferpunkte;Salud de Zeratul;Zelot - Vida;Zélote - Santé;Zelota - Salute;광전사 체력;Żywotność zeloty;Fanáticus - Vida;Zealot Health;狂戰士 - 生命值
+Zoraya Legion;Легион Зораи;Zorayas Legion;Legión de Zoraya;Legión de Zoraya;Légion de Zoraya;Legione di Zoraya;조라야 군단 호출;Legion Zorayi;Legião de Zoraya;佐拉亚军团;佐拉雅軍團
+Zurvan Lightning Breath;Электрическое дыхание Зурван;Zurvan - Blitzodem;Aliento de relámpago de Zurvan;Zurvan - Aliento eléctrico;Souffle foudroyant de Zurvan;Soffio elettrico di Zurvan;주르반 번개 숨결;Błyskawicowy oddech Zurvana;Sopro de Relâmpago de Zurvan;祖尔温闪电吐息;祖爾文 - 閃電吐息

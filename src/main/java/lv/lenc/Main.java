@@ -1030,7 +1030,7 @@ public class Main extends Application {
                         txt("update.warning.no", "Later"),
                         runNow -> {
                             if (runNow) {
-                                launchDownloadedInstaller(finalInstaller);
+                                askInstallMode(finalInstaller);
                             }
                         }
                 ));
@@ -1119,12 +1119,122 @@ public class Main extends Application {
             return;
         }
         try {
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().open(installerPath.toFile());
-            }
+            launchInstallerProcess(installerPath);
         } catch (Exception ex) {
             AppLog.warn("[Update] failed to launch installer: " + ex.getMessage());
         }
+    }
+
+    private void askInstallMode(Path installerPath) {
+        if (installerPath == null || !Files.exists(installerPath)) {
+            return;
+        }
+        InAppUpdateDialog.showChoice(
+                root,
+                txt("update.install.mode.title", "Choose install mode"),
+                txt("update.install.mode.message", "How do you want to install the update?"),
+                txt("update.install.mode.auto", "Auto install"),
+                txt("update.install.mode.manual", "Open installer"),
+                autoMode -> {
+                    if (autoMode) {
+                        InAppUpdateDialog.showChoice(
+                                root,
+                                txt("update.install.confirm.title", "Install update"),
+                                txt("update.install.confirm.message",
+                                        "App will close and installer will start. Continue?"),
+                                txt("update.warning.yes", "Yes"),
+                                txt("update.warning.no", "No"),
+                                yes -> {
+                                    if (yes) {
+                                        startInstallerAndMaybeExit(installerPath, true);
+                                    }
+                                }
+                        );
+                    } else {
+                        startInstallerAndMaybeExit(installerPath, false);
+                    }
+                }
+        );
+    }
+
+    private void startInstallerAndMaybeExit(Path installerPath, boolean autoMode) {
+        try {
+            if (autoMode) {
+                scheduleInstallerAfterExit(installerPath);
+                Platform.exit();
+            } else {
+                launchInstallerProcess(installerPath);
+            }
+        } catch (Exception ex) {
+            AppLog.warn("[Update] failed to start installer: " + ex.getMessage());
+            InAppUpdateDialog.showInfo(
+                    root,
+                    txt("update.warning.title", "Errors"),
+                    txt("update.install.failed", "Failed to start installer."),
+                    txt("update.warning.yes", "OK")
+            );
+        }
+    }
+
+    private void launchInstallerProcess(Path installerPath) throws IOException {
+        installerProcessBuilder(installerPath).start();
+    }
+
+    private static void scheduleInstallerAfterExit(Path installerPath) throws IOException {
+        ProcessBuilder pb = new ProcessBuilder(delayedInstallerCommand(installerPath));
+        pb.redirectOutput(ProcessBuilder.Redirect.DISCARD);
+        pb.redirectError(ProcessBuilder.Redirect.DISCARD);
+        pb.start();
+    }
+
+    static ProcessBuilder installerProcessBuilder(Path installerPath) {
+        if (installerPath == null) {
+            throw new IllegalArgumentException("installerPath is null");
+        }
+        String fullPath = installerPath.toAbsolutePath().toString();
+        if (isWindows() && isMsiInstaller(installerPath)) {
+            return new ProcessBuilder("msiexec.exe", "/i", fullPath);
+        }
+        return new ProcessBuilder(fullPath);
+    }
+
+    static List<String> delayedInstallerCommand(Path installerPath) {
+        if (installerPath == null) {
+            throw new IllegalArgumentException("installerPath is null");
+        }
+        String fullPath = installerPath.toAbsolutePath().toString();
+        if (!isWindows()) {
+            return List.of(fullPath);
+        }
+        String quotedPath = powershellSingleQuoted(fullPath);
+        String script;
+        if (isMsiInstaller(installerPath)) {
+            script = "$p=" + quotedPath + "; Start-Sleep -Seconds 2; "
+                    + "Start-Process -FilePath 'msiexec.exe' -ArgumentList @('/i', $p)";
+        } else {
+            script = "$p=" + quotedPath + "; Start-Sleep -Seconds 2; Start-Process -FilePath $p";
+        }
+        return List.of(
+                "powershell",
+                "-NoProfile",
+                "-WindowStyle",
+                "Hidden",
+                "-Command",
+                script
+        );
+    }
+
+    private static boolean isMsiInstaller(Path installerPath) {
+        String n = installerPath.getFileName().toString().toLowerCase(Locale.ROOT);
+        return n.endsWith(".msi");
+    }
+
+    private static boolean isWindows() {
+        return System.getProperty("os.name", "").toLowerCase(Locale.ROOT).contains("win");
+    }
+
+    private static String powershellSingleQuoted(String value) {
+        return "'" + (value == null ? "" : value.replace("'", "''")) + "'";
     }
 
     private void openReleasePage(String url) {

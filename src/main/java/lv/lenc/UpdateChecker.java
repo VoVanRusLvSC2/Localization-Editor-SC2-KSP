@@ -139,7 +139,7 @@ final class UpdateChecker {
         return null;
     }
 
-    private static String normalizeVersion(String raw) {
+    static String normalizeVersion(String raw) {
         String s = trimToNull(raw);
         if (s == null) {
             return "0.0.0";
@@ -151,7 +151,7 @@ final class UpdateChecker {
         return s;
     }
 
-    private static int compareVersionTokens(String left, String right) {
+    static int compareVersionTokens(String left, String right) {
         String[] a = left.split("[^0-9]+");
         String[] b = right.split("[^0-9]+");
         int max = Math.max(a.length, b.length);
@@ -226,7 +226,7 @@ final class UpdateChecker {
         return Optional.of(new DownloadAsset(name, url, priority));
     }
 
-    private static int scoreAsset(String fileName) {
+    static int scoreAsset(String fileName) {
         String n = fileName.toLowerCase(Locale.ROOT);
         if (n.contains("-setup.exe")) {
             return n.endsWith(".zip") ? 90 : 100;
@@ -280,4 +280,3 @@ final class UpdateChecker {
         }
     }
 }
-
