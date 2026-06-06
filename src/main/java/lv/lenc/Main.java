@@ -98,12 +98,16 @@ public class Main extends Application {
     private VBox bottomControlsContainer;
     private HBox fileManagerBar;
     private HBox windowModeBar;
+    private ComboBox<String> archiveFileSwitchCombo;
     private StackPane tableContainer;
     private boolean tableFullscreenMode;
     private Transition tableModeTransition;
     private TableSearchPopup tableSearchPopup;
     private Stage primaryStageRef;
     private final GlossaryService glossaryService = new GlossaryService();
+    private File currentArchiveInput;
+    private FileUtil.OpenPlan currentArchivePlan;
+    private boolean archiveFileSwitchUpdating;
 
     public GlossaryService getGlossaryService() {
         return glossaryService;
@@ -316,6 +320,26 @@ public class Main extends Application {
         closeFileButton.setFocusTraversable(false);
         applyCloseFileButtonGraphic();
 
+        archiveFileSwitchCombo = new ComboBox<>();
+        archiveFileSwitchCombo.getStyleClass().add("key-filter-lang-combo");
+        archiveFileSwitchCombo.getStyleClass().add("archive-open-combo");
+        archiveFileSwitchCombo.getStyleClass().add("archive-open-textured-combo");
+        archiveFileSwitchCombo.setPromptText(isRussianUi()
+                ? "\u0424\u0430\u0439\u043b \u0430\u0440\u0445\u0438\u0432\u0430"
+                : "Archive file");
+        archiveFileSwitchCombo.setMinWidth(UiScaleHelper.scaleX(230));
+        archiveFileSwitchCombo.setPrefWidth(UiScaleHelper.scaleX(275));
+        archiveFileSwitchCombo.setVisibleRowCount(6);
+        archiveFileSwitchCombo.setFocusTraversable(false);
+        archiveFileSwitchCombo.setCellFactory(cb -> archiveFileSwitchCell());
+        archiveFileSwitchCombo.setButtonCell(archiveFileSwitchCell());
+        archiveFileSwitchCombo.setOnShowing(e -> {
+            int rows = Math.max(1, Math.min(7, archiveFileSwitchCombo.getItems().size()));
+            archiveFileSwitchCombo.setVisibleRowCount(rows);
+            Platform.runLater(() -> tuneArchiveComboPopup(archiveFileSwitchCombo, rows));
+        });
+        setManagedVisible(archiveFileSwitchCombo, false);
+
         tableSearchPopup = new TableSearchPopup(localization, tableView);
 
         // table in center
@@ -353,6 +377,7 @@ public class Main extends Application {
         tableFullscreenButton.disableProperty().bind(fileOpened.not());
         tableSearchButton.disableProperty().bind(fileOpened.not());
         closeFileButton.disableProperty().bind(fileOpened.not().or(fileLoading));
+        archiveFileSwitchCombo.disableProperty().bind(fileOpened.not().or(fileLoading));
 
     }
 
@@ -375,11 +400,14 @@ public class Main extends Application {
                 if (plan == null || plan.getFileOptions() == null || plan.getFileOptions().isEmpty()) {
                     plan = FileUtil.buildFallbackArchivePlan();
                 }
+                currentArchiveInput = archiveInput;
+                currentArchivePlan = plan;
                 showArchiveOpenPopup(archiveInput, plan,
                         choice -> openSelectedInput(tableView, archiveInput, choice.fileOption, choice.mainLanguage),
                         () -> {
                             fileOpened.set(false);
                             chooseAllMode.set(false);
+                            clearArchiveSwitcher();
                         });
                 return;
             }
@@ -441,8 +469,14 @@ public class Main extends Application {
             }
 
             if (ok) {
+                syncArchiveSwitcher(file, preferredFile, preferredMainLanguage);
                 if (project.getOpenedFile() != null) {
-                    fileTitleLabel.setText(project.getOpenedFile().getName());
+                    File openedArchive = resolveArchiveInput(file);
+                    if (openedArchive != null) {
+                        fileTitleLabel.setText(openedArchive.getName());
+                    } else {
+                        fileTitleLabel.setText(project.getOpenedFile().getName());
+                    }
                 }
                 String srcUi = (sourceUi != null) ? sourceUi : tableView.getMainSourceLang();
 
@@ -471,12 +505,14 @@ public class Main extends Application {
             } else {
                 fileOpened.set(false);
                 chooseAllMode.set(false);
+                clearArchiveSwitcher();
             }
             return ok;
         } catch (Exception ex) {
             AppLog.error("[UI] openSelectedInput failed", ex);
             fileOpened.set(false);
             chooseAllMode.set(false);
+            clearArchiveSwitcher();
             return false;
         } finally {
             fileLoading.set(false);
@@ -511,6 +547,8 @@ public class Main extends Application {
             String srcUi = (sourceUi != null) ? sourceUi : tableView.getMainSourceLang();
             tableView.showOnly(srcUi, targetUi);
         });
+
+        archiveFileSwitchCombo.setOnAction(e -> switchArchiveLocalizedFile(tableView));
 
         quitButton.setOnAction(e -> {
             ExitConfirmDialog.showConfirm(root, BoxAlertDescription, localization, exitConfirmed -> {
@@ -745,7 +783,7 @@ public class Main extends Application {
                 model = SiliconFlowTranslationProvider.activeModelForLogs();
             } else if (TranslationService.getSelectedBackend() == TranslationService.TranslationBackend.DEEPL_FREE) {
                 endpoint = DeepLTranslationProvider.activeEndpointForLogs();
-                service = "DeepL API Free";
+                service = "DeepL API";
             } else if (TranslationService.getSelectedBackend() == TranslationService.TranslationBackend.CLOUDFLARE_M2M100) {
                 endpoint = CloudflareM2M100TranslationProvider.activeEndpointForLogs();
                 service = "Cloudflare Worker AI";
@@ -1485,6 +1523,7 @@ public class Main extends Application {
         discordURL.setTranslateY(UiScaleHelper.scaleY(-6));
         fileManagerBar.getChildren().addAll(
                 fileTitleLabel,
+                archiveFileSwitchCombo,
                 discordURL,
                 fileSelected,
                 keyFilterButton,
@@ -1647,6 +1686,11 @@ public class Main extends Application {
         if (tableFullscreenButton != null) tableFullscreenButton.setText(localizedTableFullscreenText());
         if (tableSearchButton != null) tableSearchButton.setText(localizedSearchText());
         if (closeFileButton != null) applyCloseFileButtonGraphic();
+        if (archiveFileSwitchCombo != null) {
+            archiveFileSwitchCombo.setPromptText(isRussianUi()
+                    ? "\u0424\u0430\u0439\u043b \u0430\u0440\u0445\u0438\u0432\u0430"
+                    : "Archive file");
+        }
         updateWindowModeButtonTexts();
         if (tableSearchPopup != null) tableSearchPopup.updateTexts();
 
@@ -1847,6 +1891,134 @@ public class Main extends Application {
             cursor = cursor.getParentFile();
         }
         return null;
+    }
+
+    private javafx.scene.control.ListCell<String> archiveFileSwitchCell() {
+        return new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : shortArchiveFileLabel(item));
+                setGraphic(null);
+                setContentDisplay(javafx.scene.control.ContentDisplay.TEXT_ONLY);
+                setStyle("-fx-font-size: " + UiScaleHelper.scaleY(14) + "px; -fx-padding: 0 10 0 10;");
+            }
+        };
+    }
+
+    private static String shortArchiveFileLabel(String value) {
+        if (value == null || value.isBlank()) {
+            return "";
+        }
+        String normalized = value.replace('\\', '/');
+        int idx = normalized.lastIndexOf('/');
+        return idx >= 0 ? normalized.substring(idx + 1) : normalized;
+    }
+
+    private void switchArchiveLocalizedFile(CustomTableView tableView) {
+        if (archiveFileSwitchUpdating || archiveFileSwitchCombo == null || fileLoading.get()) {
+            return;
+        }
+        String selectedFile = archiveFileSwitchCombo.getValue();
+        if (selectedFile == null || selectedFile.isBlank()) {
+            return;
+        }
+
+        File archive = currentArchiveInput != null ? currentArchiveInput : resolveArchiveInput(project.getSourceInput());
+        if (archive == null || !isArchiveInput(archive)) {
+            return;
+        }
+        if (selectedFile.equalsIgnoreCase(project.getArchiveRelativePath())) {
+            return;
+        }
+
+        String mainLang = sourceUi;
+        List<String> langs = currentArchivePlan == null
+                ? List.of()
+                : currentArchivePlan.getMainLanguages(selectedFile);
+        if (mainLang == null || mainLang.isBlank() || (!langs.isEmpty() && !langs.contains(mainLang))) {
+            if (langs.contains("enUS")) {
+                mainLang = "enUS";
+            } else if (!langs.isEmpty()) {
+                mainLang = langs.get(0);
+            } else {
+                mainLang = "enUS";
+            }
+        }
+
+        if (tableSearchPopup != null) {
+            tableSearchPopup.reset();
+        }
+        openSelectedInput(tableView, archive, selectedFile, mainLang);
+    }
+
+    private void syncArchiveSwitcher(File sourceInput, String preferredFile, String preferredMainLanguage) {
+        File archive = resolveArchiveInput(sourceInput);
+        if (archive == null || archiveFileSwitchCombo == null) {
+            clearArchiveSwitcher();
+            return;
+        }
+
+        FileUtil.OpenPlan plan = currentArchiveInput != null
+                && currentArchiveInput.equals(archive)
+                && currentArchivePlan != null
+                ? currentArchivePlan
+                : FileUtil.buildOpenPlan(archive);
+        if (plan == null || plan.getFileOptions() == null || plan.getFileOptions().isEmpty()) {
+            plan = FileUtil.buildFallbackArchivePlan();
+        }
+
+        currentArchiveInput = archive;
+        currentArchivePlan = plan;
+
+        String selected = preferredFile;
+        if (selected == null || selected.isBlank()) {
+            selected = project.getArchiveRelativePath();
+        }
+        if (selected == null || selected.isBlank()) {
+            selected = plan.getDefaultFileOption();
+        }
+
+        List<String> options = new java.util.ArrayList<>(plan.getFileOptions());
+        if (selected != null && !selected.isBlank() && !options.contains(selected)) {
+            options.add(0, selected);
+        }
+
+        archiveFileSwitchUpdating = true;
+        try {
+            archiveFileSwitchCombo.getItems().setAll(options);
+            archiveFileSwitchCombo.setValue(selected);
+            archiveFileSwitchCombo.setTooltip(new javafx.scene.control.Tooltip(
+                    isRussianUi()
+                            ? "\u041f\u0435\u0440\u0435\u0439\u0442\u0438 \u043a \u0434\u0440\u0443\u0433\u043e\u043c\u0443 \u0444\u0430\u0439\u043b\u0443 \u043b\u043e\u043a\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u0432 \u044d\u0442\u043e\u043c \u0436\u0435 \u0430\u0440\u0445\u0438\u0432\u0435"
+                            : "Switch localization file inside the current archive"
+            ));
+            archiveFileSwitchCombo.setVisibleRowCount(Math.max(1, Math.min(7, options.size())));
+            setManagedVisible(archiveFileSwitchCombo, options.size() > 1);
+        } finally {
+            archiveFileSwitchUpdating = false;
+        }
+        AppLog.info("[UI] archive switcher ready: archive=" + archive.getName()
+                + ", selected=" + selected
+                + ", main=" + preferredMainLanguage
+                + ", options=" + options.size());
+    }
+
+    private void clearArchiveSwitcher() {
+        currentArchiveInput = null;
+        currentArchivePlan = null;
+        if (archiveFileSwitchCombo == null) {
+            return;
+        }
+        archiveFileSwitchUpdating = true;
+        try {
+            archiveFileSwitchCombo.getItems().clear();
+            archiveFileSwitchCombo.setValue(null);
+            archiveFileSwitchCombo.setTooltip(null);
+            setManagedVisible(archiveFileSwitchCombo, false);
+        } finally {
+            archiveFileSwitchUpdating = false;
+        }
     }
 
     private void showArchiveOpenPopup(File selectedInput,
@@ -2251,6 +2423,7 @@ public class Main extends Application {
         project.clear();
         tableView.clearLoadedData();
         tableView.setPreferredMainSourceUi(null);
+        clearArchiveSwitcher();
         sourceUi = null;
         translateToAll = false;
         chooseAllMode.set(false);

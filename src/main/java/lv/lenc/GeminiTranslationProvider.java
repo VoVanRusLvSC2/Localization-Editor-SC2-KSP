@@ -256,7 +256,7 @@ final class GeminiTranslationProvider {
             inputArray.add(text == null ? "" : text);
         }
         String sourceValue = (source == null || source.isBlank()) ? "auto" : source;
-        Map<String, String> relevantGlossary = filterGlossaryHintsForInputs(uncachedInputs, glossaryHints, 24);
+        Map<String, String> relevantGlossary = filterGlossaryHintsForInputs(uncachedInputs, glossaryHints, 32);
         String glossarySection = buildGlossaryHintSection(relevantGlossary);
 
         return "You are an expert StarCraft II localization translator.\n"
@@ -267,7 +267,9 @@ final class GeminiTranslationProvider {
                 + "2) Keep input order and number of items unchanged.\n"
                 + "3) Return ONLY a JSON array of strings, no markdown, no comments.\n"
                 + "4) Use provided SC2 glossary mappings as preferred terminology.\n"
-                + "5) Adapt endings/case/gender only when grammar requires it.\n"
+                + "5) Do not force glossary word order from the source; place glossary terms naturally in the target sentence.\n"
+                + "6) Adapt endings/case/gender only when grammar requires it.\n"
+                + "7) If input contains __SC2_TERM_n__ placeholders, keep those placeholders exactly; they will be resolved later.\n"
                 + glossarySection
                 + "Input JSON array:\n"
                 + inputArray;
@@ -314,7 +316,7 @@ final class GeminiTranslationProvider {
         StringBuilder sb = new StringBuilder("SC2 glossary for this batch:\n");
         int count = 0;
         for (Map.Entry<String, String> e : glossaryHints.entrySet()) {
-            if (count >= 24) {
+            if (count >= 32) {
                 break;
             }
             String sourceTerm = e.getKey();
@@ -344,6 +346,7 @@ final class GeminiTranslationProvider {
         }
 
         Map<String, String> filtered = new LinkedHashMap<>();
+        boolean hasFrozenTermToken = normalizedInputs.stream().anyMatch(s -> s.contains("__sc2_term_"));
         for (Map.Entry<String, String> entry : glossaryHints.entrySet()) {
             if (filtered.size() >= limit) {
                 break;
@@ -359,6 +362,19 @@ final class GeminiTranslationProvider {
                     filtered.putIfAbsent(sourceTerm, targetTerm);
                     break;
                 }
+            }
+        }
+        if (filtered.size() < limit && (hasFrozenTermToken || filtered.isEmpty())) {
+            for (Map.Entry<String, String> entry : glossaryHints.entrySet()) {
+                if (filtered.size() >= limit) {
+                    break;
+                }
+                String sourceTerm = entry.getKey();
+                String targetTerm = entry.getValue();
+                if (sourceTerm == null || sourceTerm.isBlank() || targetTerm == null || targetTerm.isBlank()) {
+                    continue;
+                }
+                filtered.putIfAbsent(sourceTerm, targetTerm);
             }
         }
         return filtered;

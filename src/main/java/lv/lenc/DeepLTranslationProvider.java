@@ -19,8 +19,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 final class DeepLTranslationProvider {
-    static final String DEEPL_FREE_TRANSLATE_ENDPOINT = "https://api-free.deepl.com/v2/translate";
-    static final String DEEPL_FREE_USAGE_ENDPOINT = "https://api-free.deepl.com/v2/usage";
+    private static final String DEEPL_FREE_API_BASE = "https://api-free.deepl.com";
+    private static final String DEEPL_PRO_API_BASE = "https://api.deepl.com";
+    static final String DEEPL_FREE_TRANSLATE_ENDPOINT = DEEPL_FREE_API_BASE + "/v2/translate";
+    static final String DEEPL_FREE_USAGE_ENDPOINT = DEEPL_FREE_API_BASE + "/v2/usage";
+    static final String DEEPL_PRO_TRANSLATE_ENDPOINT = DEEPL_PRO_API_BASE + "/v2/translate";
+    static final String DEEPL_PRO_USAGE_ENDPOINT = DEEPL_PRO_API_BASE + "/v2/usage";
+    private static volatile String activeApiBase = "";
 
     private DeepLTranslationProvider() {
     }
@@ -32,34 +37,43 @@ final class DeepLTranslationProvider {
     static String checkAvailability(OkHttpClient http) {
         String apiKey = resolveApiKey();
         if (apiKey.isBlank()) {
-            return "DeepL API Free requires DEEPL_API_KEY or settings.properties deepl.api.key.";
+            return "DeepL API requires DEEPL_API_KEY or settings.properties deepl.api.key.";
         }
 
-        Request request = new Request.Builder()
-                .url(DEEPL_FREE_USAGE_ENDPOINT)
-                .get()
-                .header("Authorization", "DeepL-Auth-Key " + apiKey)
-                .header("Accept", "application/json")
-                .build();
+        String lastFailure = "";
+        for (String apiBase : endpointOrder(apiKey)) {
+            Request request = new Request.Builder()
+                    .url(apiBase + "/v2/usage")
+                    .get()
+                    .header("Authorization", "DeepL-Auth-Key " + apiKey)
+                    .header("Accept", "application/json")
+                    .build();
 
-        try (Response response = http.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                return "";
+            try (Response response = http.newCall(request).execute()) {
+                if (response.isSuccessful()) {
+                    activeApiBase = apiBase;
+                    return "";
+                }
+                String body = response.body() == null ? "" : response.body().string();
+                if (response.code() == 456) {
+                    return endpointLabel(apiBase) + " quota exceeded (HTTP 456). Monthly character limit reached.";
+                }
+                if (response.code() == 429) {
+                    return endpointLabel(apiBase) + " rate limit exceeded (HTTP 429). Try again later.";
+                }
+                lastFailure = endpointLabel(apiBase) + " is unavailable (HTTP " + response.code() + "): "
+                        + shortenDiagnostic(body);
+                if (response.code() == 403 || response.code() == 404) {
+                    continue;
+                }
+                return lastFailure;
+            } catch (IOException ex) {
+                lastFailure = endpointLabel(apiBase) + " check failed: " + ex.getMessage();
             }
-            String body = response.body() == null ? "" : response.body().string();
-            if (response.code() == 456) {
-                return "DeepL API Free quota exceeded (HTTP 456). Monthly character limit reached.";
-            }
-            if (response.code() == 403) {
-                return "DeepL API Free access denied (HTTP 403). Check DEEPL_API_KEY.";
-            }
-            if (response.code() == 429) {
-                return "DeepL API Free rate limit exceeded (HTTP 429). Try again later.";
-            }
-            return "DeepL API Free is unavailable (HTTP " + response.code() + "): " + shortenDiagnostic(body);
-        } catch (IOException ex) {
-            return "DeepL API Free check failed: " + ex.getMessage();
         }
+        return lastFailure.isBlank()
+                ? "DeepL API check failed. Check DEEPL_API_KEY or settings.properties deepl.api.key."
+                : lastFailure;
     }
 
     static List<String> translatePreparedTexts(
@@ -87,32 +101,45 @@ final class DeepLTranslationProvider {
             body.add("text", text == null ? "" : text);
         }
 
-        Request request = new Request.Builder()
-                .url(Objects.requireNonNull(HttpUrl.parse(DEEPL_FREE_TRANSLATE_ENDPOINT)))
-                .post(body.build())
-                .header("Authorization", "DeepL-Auth-Key " + apiKey)
-                .header("Accept", "application/json")
-                .build();
+        IOException lastFailure = null;
+        for (String apiBase : endpointOrder(apiKey)) {
+            Request request = new Request.Builder()
+                    .url(Objects.requireNonNull(HttpUrl.parse(apiBase + "/v2/translate")))
+                    .post(body.build())
+                    .header("Authorization", "DeepL-Auth-Key " + apiKey)
+                    .header("Accept", "application/json")
+                    .build();
 
-        try (Response response = http.newCall(request).execute()) {
-            String responseText = response.body() == null ? "" : response.body().string();
-            if (!response.isSuccessful()) {
-                throw new IOException("[DeepL] HTTP " + response.code() + ": " + shortenDiagnostic(responseText));
-            }
-            if (responseText.isBlank()) {
-                throw new IOException("[DeepL] Empty response");
-            }
+            try (Response response = http.newCall(request).execute()) {
+                String responseText = response.body() == null ? "" : response.body().string();
+                if (!response.isSuccessful()) {
+                    lastFailure = new IOException("[DeepL] " + endpointLabel(apiBase)
+                            + " HTTP " + response.code() + ": " + shortenDiagnostic(responseText));
+                    if (response.code() == 403 || response.code() == 404) {
+                        continue;
+                    }
+                    throw lastFailure;
+                }
+                if (responseText.isBlank()) {
+                    throw new IOException("[DeepL] Empty response");
+                }
 
-            List<String> out = parseResponse(responseText, uncachedInputs.size());
-            if (out.size() != uncachedInputs.size()) {
-                throw new IOException("[DeepL] MISMATCH: in=" + uncachedInputs.size() + " out=" + out.size());
+                List<String> out = parseResponse(responseText, uncachedInputs.size());
+                if (out.size() != uncachedInputs.size()) {
+                    throw new IOException("[DeepL] MISMATCH: in=" + uncachedInputs.size() + " out=" + out.size());
+                }
+                activeApiBase = apiBase;
+                return out;
             }
-            return out;
         }
+        throw lastFailure != null ? lastFailure : new IOException("[DeepL] translation request failed");
     }
 
     static String activeEndpointForLogs() {
-        return DEEPL_FREE_TRANSLATE_ENDPOINT;
+        String apiBase = activeApiBase == null || activeApiBase.isBlank()
+                ? preferredApiBase(resolveApiKey())
+                : activeApiBase;
+        return apiBase + "/v2/translate";
     }
 
     private static List<String> parseResponse(String responseText, int expectedSize) throws IOException {
@@ -135,7 +162,38 @@ final class DeepLTranslationProvider {
 
     private static String resolveApiKey() {
         String apiKey = SettingsManager.loadDeepLApiKey();
-        return apiKey == null ? "" : apiKey.trim();
+        return apiKey == null ? "" : apiKey.replace("\uFEFF", "").replaceAll("\\s+", "").trim();
+    }
+
+    private static List<String> endpointOrder(String apiKey) {
+        String preferred = preferredApiBase(apiKey);
+        String fallback = DEEPL_FREE_API_BASE.equals(preferred) ? DEEPL_PRO_API_BASE : DEEPL_FREE_API_BASE;
+        List<String> out = new ArrayList<>(3);
+        if (activeApiBase != null && !activeApiBase.isBlank()) {
+            out.add(activeApiBase);
+        }
+        if (!out.contains(preferred)) {
+            out.add(preferred);
+        }
+        if (!out.contains(fallback)) {
+            out.add(fallback);
+        }
+        return out;
+    }
+
+    private static String preferredApiBase(String apiKey) {
+        String normalized = apiKey == null ? "" : apiKey.trim().toLowerCase(Locale.ROOT);
+        return normalized.endsWith(":fx") ? DEEPL_FREE_API_BASE : DEEPL_PRO_API_BASE;
+    }
+
+    private static String endpointLabel(String apiBase) {
+        if (DEEPL_FREE_API_BASE.equals(apiBase)) {
+            return "DeepL API Free";
+        }
+        if (DEEPL_PRO_API_BASE.equals(apiBase)) {
+            return "DeepL API Pro";
+        }
+        return "DeepL API";
     }
 
     private static String normalizeSourceLang(String value) {
@@ -144,8 +202,9 @@ final class DeepLTranslationProvider {
             return "";
         }
         return switch (normalized) {
-            case "pt" -> "PT-BR";
+            case "pt", "pt-br" -> "PT";
             case "zh" -> "ZH";
+            case "en-us", "en-gb" -> "EN";
             default -> normalized.toUpperCase(Locale.ROOT);
         };
     }
@@ -153,9 +212,11 @@ final class DeepLTranslationProvider {
     private static String normalizeTargetLang(String value) {
         String normalized = value == null ? "" : value.trim().toLowerCase(Locale.ROOT);
         if (normalized.isEmpty() || "auto".equals(normalized)) {
-            return "EN";
+            return "EN-US";
         }
         return switch (normalized) {
+            case "en", "en-us" -> "EN-US";
+            case "en-gb" -> "EN-GB";
             case "pt" -> "PT-BR";
             case "zh" -> "ZH";
             default -> normalized.toUpperCase(Locale.ROOT);

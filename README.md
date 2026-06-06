@@ -1,27 +1,41 @@
 # Localization Editor SC2 KSP
 
-Localization Editor SC2 KSP is a desktop tool for editing StarCraft II localization files.
+Localization Editor SC2 KSP is a desktop editor for StarCraft II map and mod localization. It helps map makers open SC2 archives, compare language columns, translate missing text, apply SC2 glossary terminology, and save changes back into the correct `.SC2Data/LocalizedData` structure.
 
-What it does:
-- Opens `GameStrings.txt`, `ObjectStrings.txt`, and `TriggerStrings.txt`
-- Works with archives: `SC2Map`, `SC2Mod`, and `mpq`
-- Translates text into selected languages
-- Saves output to the correct `.SC2Data/LocalizedData` structure
+It is built for real SC2 projects, not only single text files:
+- Opens `GameStrings.txt`, `ObjectStrings.txt`, `TriggerStrings.txt`, `GameHotkeys.txt`, and custom localization `.txt` files.
+- Works with `SC2Map`, `SC2Mod`, and `mpq` archives.
+- Lets you switch between localization files inside the same archive without reopening the map.
+- Supports single-target translation or translating from one source language to all supported languages.
+- Uses editable StarCraft II glossaries so unit, ability, button, and common SC2 terms stay consistent.
+- Supports Google Translate Free, Google Cloud, DeepL, Gemini, SiliconFlow, Cloudflare Worker AI, and local LibreTranslate.
 
 ## Releases
 - https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/releases
 
 ## Current Installer
-- Current Windows installer build: `2.0.1`
-- If `2.0.0` was already installed, use the `2.0.1` installer instead of rerunning the old `2.0.0` package.
+- Current Windows installer build: `2.1`
+- If an older build is installed, use the latest installer from Releases.
 
 ## Quick Start
 1. Download the latest release.
 2. Install and launch the editor.
-3. Open your `SC2Map` / `SC2Mod` / `mpq` archive or `.txt` localization file.
+3. Open your `SC2Map` / `SC2Mod` / `mpq` archive or a localization `.txt` file.
+4. If an archive contains several localization files, use the archive-file dropdown near the file name to switch between them.
+5. Select a source language, target language, and translation backend.
+6. Translate, review the table, then save.
+
+## Logs
+Main application logs are rotating UTF-8 files:
+- Windows: `![alt text](image.png)` through `app-4.log`
+- Other OS: `~/.Localization_Editor_SC2_KSP/logs/app-0.log` through `app-4.log`
+
+Local LibreTranslate startup and repair logs are stored separately:
+- Windows: `%LOCALAPPDATA%\LocalizationEditorSC2KSP\argos-runtime\startup-logs\lt-*.log`
+- Other OS: `~/.localization-editor-argos-runtime/startup-logs/lt-*.log`
 
 ## Editable Glossaries After Install
-The installer now places editable glossary files in the application folder:
+The installer places editable glossary files in the application folder:
 
 - `glossary` next to `Localization Editor SC2 KSP.exe`
 - example: `C:\Program Files\Localization Editor SC2 KSP\glossary`
@@ -34,15 +48,14 @@ Default files placed there:
 - `Addition_Weapons_Detailed_KSP.txt`
 - `Addition_Abilities_Detailed_KSP.txt`
 
-On startup, the editor loads glossary files from that install-folder `glossary` first when they exist.
-For legacy installs, `%LOCALAPPDATA%\Localization Editor SC2 KSP\glossary` is still used as a fallback if present.
+On startup, the editor loads glossary files from that install-folder `glossary` first when they exist. For legacy installs, `%LOCALAPPDATA%\Localization Editor SC2 KSP\glossary` is still used as a fallback if present.
 
-## 2.0.1 Notes
-- Installer version was bumped to `2.0.1` to avoid the Windows reinstall problem when `2.0.0` is already present.
-- Default UI language is now `English` on first launch.
-- Translation background stays visible during translation, but animations are disabled for better performance.
-- File-open dialog controls were tightened and buttons were adjusted.
-- Translation after cache clear and source-language detection were fixed.
+## 2.1 Notes
+- Added archive file switching for common localization files inside one opened SC2 archive.
+- DeepL now auto-detects Free vs Pro API endpoints and uses DeepL-compatible language codes.
+- AI prompt backends now receive stronger SC2 glossary hints and preserve frozen glossary placeholders.
+- Main word glossary now includes `Creep -> Слизь` and `Nydus -> Нидус`.
+- Logging locations are documented.
 
 ## Dependencies
 - Java: `JDK 17` (required)

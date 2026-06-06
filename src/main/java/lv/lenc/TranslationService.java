@@ -313,7 +313,7 @@ public final class TranslationService {
             return "SiliconFlow API (M2M100)";
         }
         if (selectedBackend == TranslationBackend.DEEPL_FREE) {
-            return "DeepL API Free";
+            return "DeepL API";
         }
         return "LibreTranslate";
     }
@@ -341,7 +341,7 @@ public final class TranslationService {
             return "SiliconFlow API (M2M100)";
         }
         if (selectedBackend == TranslationBackend.DEEPL_FREE) {
-            return "DeepL API Free";
+            return "DeepL API";
         }
         return (isGpuActive() ? "GPU" : "CPU") + " @ " + BASE_URL;
     }
@@ -475,7 +475,7 @@ public final class TranslationService {
         if (selectedBackend == TranslationBackend.DEEPL_FREE) {
             if (!DeepLTranslationProvider.isConfigured()) {
                 setLastStartupFailureHint(
-                        "DeepL API Free requires DEEPL_API_KEY or settings.properties deepl.api.key."
+                        "DeepL API requires DEEPL_API_KEY or settings.properties deepl.api.key."
                 );
                 return false;
             }
@@ -1343,9 +1343,9 @@ public final class TranslationService {
     ) throws IOException {
         if (!DeepLTranslationProvider.isConfigured()) {
             setLastStartupFailureHint(
-                    "DeepL API Free requires DEEPL_API_KEY or settings.properties deepl.api.key."
+                    "DeepL API requires DEEPL_API_KEY or settings.properties deepl.api.key."
             );
-            throw new IOException("DeepL API Free is not configured");
+            throw new IOException("DeepL API is not configured");
         }
         return DeepLTranslationProvider.translatePreparedTexts(
                 uncachedInputs,

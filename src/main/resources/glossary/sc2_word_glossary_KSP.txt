@@ -13,6 +13,7 @@ Close;Закрыть;Schließen;Cerrar;Cerrar;Fermer;Chiudi;닫기;Zamknij;Fecha
 Continue;Продолжить;Fortfahren;Continuar;Continuar;Continuer;Continua;계속;Kontynuuj;Continuar;继续;繼續
 Cooldown;Время восстановления;Abklingzeit;Tiempo de reutilización;Tiempo de recarga;Temps de recharge;Tempo di recupero;재사용 대기시간;Czas odnowienia;Recarga;冷却时间;冷卻時間
 Cost;Стоимость;Kosten;Costo;Costo;Coût;Costo;비용;Koszt;Custo;花费;花費
+Creep;Слизь;Kriecher;Biomateria;Talo;Mucus;Biostrato;점막;Biomasa;Gosma;菌毯;蟲苔
 Damage;Урон;Schaden;Daño;Daño;Dégâts;Danni;피해;Obrażenia;Dano;伤害;傷害
 Debuff;Ослабление;Schwächungszauber;Perjuicio;Perjuicio;Affaiblissement;Depotenziamento;약화;Osłabienie;Penalidade;减益;減益
 Decline;Отказ;Ablehnen;Rechazar;Rechazar;Refuser;Rifiuta;거절;Odrzuć;Recusar;拒绝;拒絕
@@ -34,6 +35,7 @@ Massive;Массивный;Massiv;Masivo;Masivo;Massif;Massiccio;거대;Masywny;
 Mechanical;Механический;Mechanisch;Mecánico;Mecánico;Mécanique;Meccanico;기계;Mechaniczny;Mecânico;机械;機械
 Minerals;Минералы;Mineralien;Minerales;Minerales;Minerai;Minerali;광물;Minerały;Minérios;晶体矿;晶礦
 No;Нет;Nein;No;No;Non;No;아니요;Nie;Não;否;否
+Nydus;Нидус;Nydus;nydus;Nydus;Nydus;Nydus;땅굴;nydus;Nydus;坑道;蟲殖地
 OK;ОК;OK;Aceptar;Aceptar;OK;OK;확인;OK;OK;确定;確定
 Power;Мощность;Energie;Poder;Poder;Puissance;Potenza;전력;Moc;Energia;动力;動力
 Primal;Изначальный;Urzeitlich;Primordial;Primitivo;Primordial;Primordiale;원시;Pierwotny;Primordial;原始;原始
