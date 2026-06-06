@@ -166,7 +166,7 @@ public final class TranslateCancelSaveButton extends StackPane {
             running = translateStarter.get();
             if (running == null) {
                 if (activeRunId == runId) {
-                    state.set(State.CANCEL);
+                    state.set(State.TRANSLATE);
                 }
                 errorHandler.accept(new IllegalStateException("Translate starter returned null future"));
                 return;
@@ -183,7 +183,7 @@ public final class TranslateCancelSaveButton extends StackPane {
                 }
 
                 if (ex != null) {
-                    state.set(State.CANCEL);
+                    state.set(State.TRANSLATE);
                     errorHandler.accept(ex);
                     return;
                 }
@@ -193,7 +193,7 @@ public final class TranslateCancelSaveButton extends StackPane {
 
         } catch (Throwable t) {
             if (activeRunId == runId) {
-                state.set(State.CANCEL);
+                state.set(State.TRANSLATE);
             }
             errorHandler.accept(t);
         }
@@ -210,9 +210,20 @@ public final class TranslateCancelSaveButton extends StackPane {
             saved = true;
         } catch (Throwable t) {
             errorHandler.accept(t);
+            state.set(shouldResetAfterSaveFailure(t) ? State.TRANSLATE : State.SAVE);
+            return;
         }
 
         state.set(saved ? State.TRANSLATE : State.SAVE);
+    }
+
+    private static boolean shouldResetAfterSaveFailure(Throwable error) {
+        String message = error == null || error.getMessage() == null
+                ? ""
+                : error.getMessage().toLowerCase(java.util.Locale.ROOT);
+        return message.contains("context not ready")
+                || message.contains("no opened file")
+                || message.contains("target language");
     }
 
     private void cancel() {

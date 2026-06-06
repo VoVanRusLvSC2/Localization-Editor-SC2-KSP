@@ -36,7 +36,9 @@ final class GoogleWebFreeTranslationProvider {
                     ? "Google Translate Free (Web) returned an empty response."
                     : "";
         } catch (IOException ex) {
-            return "Google Translate Free (Web) is unavailable: " + ex.getMessage();
+            return "Google Translate Free (Web) is unavailable: " + ex.getMessage()
+                    + ". This is an unofficial endpoint; it can be blocked by rate limits, antivirus HTTPS inspection, proxy, or Google changes. "
+                    + "Use DeepL/Gemini/SiliconFlow for stable API translation.";
         }
     }
 

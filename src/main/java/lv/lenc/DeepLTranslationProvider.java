@@ -68,7 +68,7 @@ final class DeepLTranslationProvider {
                 }
                 return lastFailure;
             } catch (IOException ex) {
-                lastFailure = endpointLabel(apiBase) + " check failed: " + ex.getMessage();
+                lastFailure = formatTransportFailure(endpointLabel(apiBase), "check", ex);
             }
         }
         return lastFailure.isBlank()
@@ -130,6 +130,12 @@ final class DeepLTranslationProvider {
                 }
                 activeApiBase = apiBase;
                 return out;
+            } catch (IOException ex) {
+                if (isProviderDiagnostic(ex)) {
+                    throw ex;
+                }
+                lastFailure = new IOException("[DeepL] "
+                        + formatTransportFailure(endpointLabel(apiBase), "request", ex), ex);
             }
         }
         throw lastFailure != null ? lastFailure : new IOException("[DeepL] translation request failed");
@@ -231,5 +237,27 @@ final class DeepLTranslationProvider {
             return normalized;
         }
         return normalized.substring(0, maxLen - 3) + "...";
+    }
+
+    private static boolean isProviderDiagnostic(IOException ex) {
+        String message = ex == null || ex.getMessage() == null ? "" : ex.getMessage();
+        return message.startsWith("[DeepL]");
+    }
+
+    private static String formatTransportFailure(String label, String action, IOException ex) {
+        String message = ex == null || ex.getMessage() == null ? "" : ex.getMessage();
+        String lower = message.toLowerCase(Locale.ROOT);
+        boolean tlsLike = lower.contains("fatal alert")
+                || lower.contains("handshake")
+                || lower.contains("certificate")
+                || lower.contains("pkix")
+                || lower.contains("tls")
+                || lower.contains("ssl");
+        if (tlsLike) {
+            return label + " " + action + " failed with TLS/SSL error: " + message
+                    + ". Check Windows date/time, antivirus HTTPS inspection/proxy, Java 17 certificates, "
+                    + "and that a DeepL Free key uses the api-free.deepl.com endpoint.";
+        }
+        return label + " " + action + " failed: " + message;
     }
 }

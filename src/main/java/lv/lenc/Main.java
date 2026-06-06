@@ -469,6 +469,12 @@ public class Main extends Application {
             }
 
             if (ok) {
+                MapPublicationNameStore.rememberOpenedNames(
+                        project.getSourceInput(),
+                        project.getArchiveRelativePath(),
+                        tableView,
+                        sourceUi
+                );
                 syncArchiveSwitcher(file, preferredFile, preferredMainLanguage);
                 if (project.getOpenedFile() != null) {
                     File openedArchive = resolveArchiveInput(file);
@@ -598,15 +604,34 @@ public class Main extends Application {
         });
         translate.setSaveAction(() -> {
             boolean ok;
+            if (!project.isReady()) {
+                throw new IllegalStateException("[SAVE] no opened file. Reopen the map or localization file before saving.");
+            }
+            MapPublicationNameStore.protectBeforeSave(
+                    project.getSourceInput(),
+                    project.getArchiveRelativePath(),
+                    tableView,
+                    sourceUi
+            );
             if (translateToAll) {
                 ok = project.saveAllTargets(tableView);
             } else {
                 String targetUi = languageDropdown.getValue();
+                if (targetUi == null || targetUi.isBlank()) {
+                    throw new IllegalStateException("[SAVE] target language is not selected");
+                }
                 ok = project.saveTarget(tableView, targetUi);
             }
             if (!ok) {
-                throw new IllegalStateException("[SAVE] failed or context not ready");
+                throw new IllegalStateException("[SAVE] write failed. Check file/archive permissions and logs: "
+                        + AppLog.getLogDirectory());
             }
+            MapPublicationNameStore.rememberOpenedNames(
+                    project.getSourceInput(),
+                    project.getArchiveRelativePath(),
+                    tableView,
+                    sourceUi
+            );
             if (translateToAll) {
                 tableView.clearAllPendingSaveHeaders();
             } else {

@@ -27,12 +27,28 @@ It is built for real SC2 projects, not only single text files:
 
 ## Logs
 Main application logs are rotating UTF-8 files:
-- Windows: `![alt text](image.png)` through `app-4.log`
+- Windows: `%LOCALAPPDATA%\Localization Editor SC2 KSP\logs\app-0.log` through `app-4.log`
 - Other OS: `~/.Localization_Editor_SC2_KSP/logs/app-0.log` through `app-4.log`
 
 Local LibreTranslate startup and repair logs are stored separately:
 - Windows: `%LOCALAPPDATA%\LocalizationEditorSC2KSP\argos-runtime\startup-logs\lt-*.log`
 - Other OS: `~/.localization-editor-argos-runtime/startup-logs/lt-*.log`
+
+PowerShell examples:
+
+```powershell
+Get-Content "$env:LOCALAPPDATA\Localization Editor SC2 KSP\logs\app-0.log" -Tail 120
+Get-Content "$env:LOCALAPPDATA\Localization Editor SC2 KSP\logs\app-0.log" -Tail 80 -Wait
+Get-Content "$env:LOCALAPPDATA\LocalizationEditorSC2KSP\argos-runtime\startup-logs\lt-*.log" -Tail 120
+```
+
+## Publication Name Protection
+StarCraft II publication names come from `GameStrings.txt`, key `DocInfo/Name`. The editor caches that key per map/archive next to the application:
+
+- preferred folder: `publication-names` next to `Localization Editor SC2 KSP.exe`
+- fallback folder on Windows: `%LOCALAPPDATA%\Localization Editor SC2 KSP\publication-names`
+
+The cache stores the original map name and the first saved translation for each language. On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication.
 
 ## Editable Glossaries After Install
 The installer places editable glossary files in the application folder:
@@ -53,6 +69,9 @@ On startup, the editor loads glossary files from that install-folder `glossary` 
 ## 2.1 Notes
 - Added archive file switching for common localization files inside one opened SC2 archive.
 - DeepL now auto-detects Free vs Pro API endpoints and uses DeepL-compatible language codes.
+- DeepL diagnostics now call out TLS/SSL/proxy/certificate problems when the API check fails before translation.
+- Failed translation startup now returns the main button to Translate instead of leaving a stale Save action.
+- `DocInfo/Name` publication titles are cached and locked per map so later translation-backend changes do not rename the published map.
 - AI prompt backends now receive stronger SC2 glossary hints and preserve frozen glossary placeholders.
 - Main word glossary now includes `Creep -> Слизь` and `Nydus -> Нидус`.
 - Logging locations are documented.
