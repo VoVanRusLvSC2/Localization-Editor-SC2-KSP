@@ -1753,6 +1753,19 @@ public class CustomTableView extends TableView<LocalizationData> {
         }
         return normalizeUi(detected);
     }
+
+    private String resolveSourceUiForRow(String requestedUi, String text) {
+        return inferSourceUiForText(resolveDetectedColumnUi(requestedUi), text);
+    }
+
+    static String inferSourceUiForText(String preferredUi, String text) {
+        return TranslationLanguageHeuristics.inferSourceUiForText(preferredUi, text);
+    }
+
+    static boolean shouldUseTargetTextAsSource(String targetUi, String targetText) {
+        return TranslationLanguageHeuristics.shouldUseTargetTextAsSource(targetUi, targetText);
+    }
+
     public void translateFromColumnToOthers(
             LibreTranslateApi api,
             String sourceLang,
@@ -1767,7 +1780,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         String sourceUi = (sourceLang != null && !sourceLang.isBlank())
                 ? sourceLang
                 : getMainSourceLang();
-        String effectiveSourceUi = resolveDetectedColumnUi(sourceUi);
+        String effectiveSourceUi = normalizeUi(sourceUi);
 
         // 2) text source
         java.util.List<String> texts = getColumnValues(sourceUi);
@@ -1854,7 +1867,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         String sourceUi = (sourceLang != null && !sourceLang.isBlank())
                 ? sourceLang
                 : getMainSourceLang();
-        String effectiveSourceUi = resolveDetectedColumnUi(sourceUi);
+        String effectiveSourceUi = normalizeUi(sourceUi);
 
         final java.util.List<String> targetsUi = java.util.List.of(
                         "ruRU", "deDE", "enUS", "esMX", "esES", "frFR", "itIT", "plPL", "ptBR", "koKR", "zhCN", "zhTW"
@@ -2068,6 +2081,9 @@ public class CustomTableView extends TableView<LocalizationData> {
         if (targetUi == null || targetUi.isBlank()) return;
         if (targetUi.equalsIgnoreCase(sourceUi)) return;
 
+        String targetIso = toApiLang(targetUi);
+        if (targetIso == null || targetIso.isBlank() || "auto".equalsIgnoreCase(targetIso)) return;
+
         List<LocalizationData> allRows = getItems();
         if (allRows == null || allRows.isEmpty()) return;
 
@@ -2085,19 +2101,39 @@ public class CustomTableView extends TableView<LocalizationData> {
             if (stop.getAsBoolean()) return;
             if (row == null) continue;
 
-            String actualSourceUi = resolveDetectedColumnUi(sourceUi);
             String sourceText = row.getByLang(sourceUi);
+            String actualSourceUi = resolveSourceUiForRow(sourceUi, sourceText);
 
             // Ć…Ā Äā‚¬Ā¢Ć…ĀÄ€ĀĆ…Ā Ä€Ā»Ć…Ā Ä†Ćø Ć…Ā Ä†Ā¦Ć…Ā Ä€ĀµĆ…ĀÄā€Ā¬Ć…Ā Ä€ĀµĆ…Ā Ä€Ā²Ć…Ā Ä€Ā¾Ć…Ā Ä€Ā´Ć…Ā Ä†ĆøĆ…Ā Ä€Ā¼ Ć…Ā Ä€Ć†Ć…Ā Äā‚¬Ā¢ Ć…Ā Ä€Ā² enUS Ć…Ā Ä†Ćø enUS Ć…ĀÄ€ĀĆ…Ā Ä€Ā¶Ć…Ā Ä€Āµ Ć…Ā Ä€Ā·Ć…Ā Ä€Ā°Ć…Ā Ä†Ā¦Ć…Ā Ä€Ā¾Ć…Ā Ä€Ā»Ć…Ā Ä€Ā½Ć…Ā Ä€ĀµĆ…Ā Ä€Ā½ Ć„ĀÄā€Ā¬Äā‚¬ĀÆ Ć…Ā Ä€Ā±Ć…Ā Ä€ĀµĆ…ĀÄā€Ā¬Ć…ĀÄā‚¬ĀĆ…Ā Ä€Ā¼ enUS Ć…Ā Ć…ā€”Ć…Ā Ä€Ā°Ć…Ā Ć…ā€” Ć…Ā Ä†ĆøĆ…ĀÄ€ĀĆ…ĀÄā‚¬ĀĆ…Ā Ä€Ā¾Ć…ĀÄā‚¬ļ£¼Ć…Ā Ä€Ā½Ć…Ā Ä†ĆøĆ…Ā Ć…ā€”
+            String targetText = row.getByLang(targetUi);
+            if ((sourceText == null || sourceText.isBlank())
+                    && shouldUseTargetTextAsSource(targetUi, targetText)) {
+                actualSourceUi = resolveSourceUiForRow(targetUi, targetText);
+                sourceText = targetText;
+            }
+
             String enText = row.getByLang("enUS");
             if ((sourceText == null || sourceText.isBlank())
                     && !"enUS".equalsIgnoreCase(targetUi)
                     && enText != null && !enText.isBlank()) {
-                actualSourceUi = resolveDetectedColumnUi("enUS");
+                actualSourceUi = resolveSourceUiForRow("enUS", enText);
                 sourceText = enText;
             }
 
             if (sourceText == null || sourceText.isBlank()) continue;
+            actualSourceUi = inferSourceUiForText(actualSourceUi, sourceText);
+
+            String sourceIso = toApiLang(actualSourceUi);
+            if (sourceIso == null || sourceIso.isBlank() || "auto".equalsIgnoreCase(sourceIso)) {
+                sourceIso = "en";
+            }
+            if (sourceIso.equalsIgnoreCase(targetIso)) {
+                if (targetText == null || !targetText.equals(sourceText)) {
+                    setValueByLang(row, targetUi, sourceText);
+                    translatedAny = true;
+                }
+                continue;
+            }
 
             GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
@@ -2119,6 +2155,9 @@ public class CustomTableView extends TableView<LocalizationData> {
         }
 
         if (textsToTranslate.isEmpty()) {
+            if (translatedAny) {
+                markPendingSaveForTarget(targetUi);
+            }
             refresh();
             return;
         }
@@ -2133,9 +2172,6 @@ public class CustomTableView extends TableView<LocalizationData> {
                 }
                 sourceIsoToIndexes.computeIfAbsent(sourceIso, k -> new ArrayList<>()).add(i);
             }
-
-            String targetIso = toApiLang(targetUi);
-            if (targetIso == null || targetIso.isBlank() || "auto".equalsIgnoreCase(targetIso)) return;
 
             for (Map.Entry<String, List<Integer>> entry : sourceIsoToIndexes.entrySet()) {
                 if (stop.getAsBoolean()) return;
@@ -2235,18 +2271,38 @@ public class CustomTableView extends TableView<LocalizationData> {
             if (stop.getAsBoolean()) return;
             if (row == null) continue;
 
-            String actualSourceUi = resolveDetectedColumnUi(sourceUi);
             String sourceText = row.getByLang(sourceUi);
+            String actualSourceUi = resolveSourceUiForRow(sourceUi, sourceText);
+
+            String targetText = row.getByLang(targetUi);
+            if ((sourceText == null || sourceText.isBlank())
+                    && shouldUseTargetTextAsSource(targetUi, targetText)) {
+                actualSourceUi = resolveSourceUiForRow(targetUi, targetText);
+                sourceText = targetText;
+            }
 
             String enText = row.getByLang("enUS");
             if ((sourceText == null || sourceText.isBlank())
                     && !"enUS".equalsIgnoreCase(targetUi)
                     && enText != null && !enText.isBlank()) {
-                actualSourceUi = resolveDetectedColumnUi("enUS");
+                actualSourceUi = resolveSourceUiForRow("enUS", enText);
                 sourceText = enText;
             }
 
             if (sourceText == null || sourceText.isBlank()) continue;
+            actualSourceUi = inferSourceUiForText(actualSourceUi, sourceText);
+
+            String sourceIso = toApiLang(actualSourceUi);
+            if (sourceIso == null || sourceIso.isBlank() || "auto".equalsIgnoreCase(sourceIso)) {
+                sourceIso = "en";
+            }
+            if (sourceIso.equalsIgnoreCase(targetIso)) {
+                if (targetText == null || !targetText.equals(sourceText)) {
+                    setValueByLang(row, targetUi, sourceText);
+                    translatedAny = true;
+                }
+                continue;
+            }
 
             GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
@@ -2268,6 +2324,9 @@ public class CustomTableView extends TableView<LocalizationData> {
         }
 
         if (textsToTranslate.isEmpty()) {
+            if (translatedAny) {
+                markPendingSaveForTarget(targetUi);
+            }
             Platform.runLater(this::refresh);
             if (progress != null) progress.onProgress(1.0, sourceUi + " -> " + targetUi + "||");
             return;
