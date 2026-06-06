@@ -745,6 +745,7 @@ Valkyrie;Валькирия;Walküre;Valkiria;Valkiria;Valkyrie;Valkyrie;발키�
 Vanguard;Ревнитель;Todgeweihter;Vanguardia;Vanguardia;Pénitent;Pretoriano;선봉대;Awangardier;Vanguarda;先锋;先驅者
 Vega;Вега;Vega;Vega;Vega;Véga;Vega;베가;Vega;Vega;维嘉;維嘉
 Viking;Викинг;Viking;Vikingo;Vikingo;Viking;Viking;바이킹;Wiking;Viking;维京;維京戰機
+Viper;Стрекоза;Viper;Víbora;Víbora;Vipère;Vipera;살모사;Żmij;Víbora;飞蛇;飛蟒
 Virophage;Вирофаг;Virophage;Virófago;Virófaga;Virophage;Virofago;바이로파지;Wirofag;Virófago;噬毒体;噬病毒
 Vorazun;Воразун;Vorazun;Vorazun;Vorazún;Vorazun;Vorazun;보라준;Vorazun;Vorazun;沃拉尊;芙菈森
 Vulture;«Стервятник»;Adler;Buitre;Buitre;Vautour;Vulture;시체매;Sęp;Abutre;秃鹫;禿鷹
