@@ -52,7 +52,14 @@ StarCraft II publication names come from `GameStrings.txt`, key `DocInfo/Name`. 
 - fallback folder on Windows: `%LOCALAPPDATA%\Localization Editor SC2 KSP\publication-names`
 - cache file format: `<map-or-mod-file-name>-<path-hash>.xml`, for example `crys_the_swarm_reborn-3218263ec1829ae4.xml`
 
-The cache stores the original map name and the first saved translation for each language in XML properties such as `original.title`, `locked.title.ruRU`, `locked.title.enUS`, and `latest.title.*`. On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication.
+The cache uses a readable XML structure:
+
+- `source` stores the map file name/path, archive-relative file path, `DocInfo/Name` key, and update dates.
+- `main-language` stores the original publication name in the original localization language.
+- `first-seen-titles` stores the first detected map name for every language that existed in the map, with the first-save date.
+- `translations` stores the locked publication title and latest seen title for each translated language.
+
+On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication. Old flat Java `properties` XML cache files are still readable and are rewritten to the new structured format on the next save.
 
 ## Editable Glossaries After Install
 The installer places editable glossary files in the application folder:
