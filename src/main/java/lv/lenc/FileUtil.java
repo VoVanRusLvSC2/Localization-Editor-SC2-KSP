@@ -8,9 +8,11 @@ import java.lang.reflect.Field;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.DosFileAttributeView;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1635,7 +1637,11 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
     public static void writeUtf8Atomic(File target, String content) throws IOException {
         Path targetPath = target.getAbsoluteFile().toPath();
         Path dir = targetPath.getParent();
-        if (dir != null) Files.createDirectories(dir);
+        if (dir != null) {
+            clearReadOnlyForWritePath(dir);
+            Files.createDirectories(dir);
+        }
+        clearReadOnlyForWritePath(targetPath);
 
         // backUP
         if (Files.exists(targetPath)) {
@@ -1651,6 +1657,39 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         Files.write(tmp, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING);
         Files.move(tmp, targetPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
     }
+
+    private static void clearReadOnlyForWritePath(Path path) {
+        if (path == null) {
+            return;
+        }
+        Path current = path.toAbsolutePath();
+        int hops = 0;
+        while (current != null && hops++ < 8) {
+            clearDosReadOnly(current);
+            current = current.getParent();
+        }
+    }
+
+    private static void clearDosReadOnly(Path path) {
+        try {
+            if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+                return;
+            }
+            DosFileAttributeView view = Files.getFileAttributeView(
+                    path,
+                    DosFileAttributeView.class,
+                    LinkOption.NOFOLLOW_LINKS
+            );
+            if (view != null && view.readAttributes().isReadOnly()) {
+                view.setReadOnly(false);
+                AppLog.info("[SAVE] cleared read-only attribute -> " + path.toAbsolutePath());
+            }
+        } catch (Exception ex) {
+            AppLog.warn("[SAVE] failed to clear read-only attribute for " + path.toAbsolutePath()
+                    + ": " + ex.getMessage());
+        }
+    }
+
     public static boolean saveToTargetLanguage(File openedFile,
                                                File projectRoot,
                                                String targetUiLang,
@@ -1678,16 +1717,22 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         try {
             if (openedFile == null) return false;
             if (sourceInput != null && isArchiveLikeInput(sourceInput)) {
-                String relPath = archiveRelativePath != null && !archiveRelativePath.isBlank()
-                        ? archiveRelativePath.replace('\\', '/')
-                        : deriveLocalizedRelativePath(openedFile);
-                boolean savedToArchive = saveToArchiveTargetLanguage(sourceInput, relPath, targetUiLang, relatedUiLangs, fileText);
-                if (!savedToArchive) {
-                    return false;
+                if (sourceInput.isFile()) {
+                    String relPath = archiveRelativePath != null && !archiveRelativePath.isBlank()
+                            ? archiveRelativePath.replace('\\', '/')
+                            : deriveLocalizedRelativePath(openedFile);
+                    boolean savedToArchive = saveToArchiveTargetLanguage(sourceInput, relPath, targetUiLang, relatedUiLangs, fileText);
+                    if (!savedToArchive) {
+                        return false;
+                    }
+                    invalidateResolvedInputCache(sourceInput);
+                    AppLog.info("[SAVE] OK -> archive " + sourceInput.getAbsolutePath() + " :: " + relPath);
+                    return true;
                 }
-                invalidateResolvedInputCache(sourceInput);
-                AppLog.info("[SAVE] OK -> archive " + sourceInput.getAbsolutePath() + " :: " + relPath);
-                return true;
+                if (!sourceInput.isDirectory()) {
+                    throw new IOException("Save failed: source archive is missing or unavailable: "
+                            + sourceInput.getAbsolutePath());
+                }
             }
 
             File out = resolveTargetFile(openedFile, targetUiLang);
@@ -1728,6 +1773,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
             throw new IOException("Save failed: source archive cannot be read: "
                     + archiveFile.getAbsolutePath());
         }
+        clearReadOnlyForWritePath(archiveFile.toPath());
         if (!archiveFile.canWrite()) {
             throw new IOException("Save failed: no write access to source archive: "
                     + archiveFile.getAbsolutePath());
@@ -1739,7 +1785,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         Path saveBase = archiveDirFile != null && archiveDirFile.isDirectory()
                 ? archiveDirFile.toPath()
                 : Path.of(System.getProperty("java.io.tmpdir"));
-        Path tempRoot = Files.createTempDirectory(saveBase, "le-mpq-save-");
+        Path tempRoot = createArchiveSaveTempRoot(saveBase);
         Path tempArchive = tempRoot.resolve(archiveFile.getName());
         MpqHeaderInfo originalHeader = readMpqHeaderInfo(archiveFile);
         boolean requiresExtendedMpqSupport = requiresExtendedMpqSupport(originalHeader);
@@ -1836,6 +1882,21 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         } finally {
             deleteRecursively(tempRoot);
         }
+    }
+
+    private static Path createArchiveSaveTempRoot(Path preferredBase) throws IOException {
+        Path fallbackBase = Path.of(System.getProperty("java.io.tmpdir"));
+        if (preferredBase != null) {
+            try {
+                clearReadOnlyForWritePath(preferredBase);
+                return Files.createTempDirectory(preferredBase, "le-mpq-save-");
+            } catch (Exception ex) {
+                AppLog.warn("[SAVE] failed to create archive temp folder near source, using system temp: "
+                        + ex.getMessage());
+            }
+        }
+        clearReadOnlyForWritePath(fallbackBase);
+        return Files.createTempDirectory(fallbackBase, "le-mpq-save-");
     }
 
     private static String buildUserFacingSaveFailure(Exception error, File sourceInput) {
