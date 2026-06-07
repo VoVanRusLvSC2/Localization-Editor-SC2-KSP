@@ -2,24 +2,24 @@ package lv.lenc;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.URI;
+import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ErrorReportMailerTest {
     @Test
-    void mailtoUriEncodesRecipientSubjectAndBody() {
-        URI uri = ErrorReportMailer.buildMailtoUri(
-                "vlencmanissc@gmail.com",
-                "SC2 error report",
-                "line one\nline two"
-        );
+    void errorReportDoesNotOpenMailClientOrBrowserAutomatically() {
+        assertFalse(ErrorReportMailer.opensExternalMailClientAutomatically());
+    }
 
-        assertEquals("mailto", uri.getScheme());
-        String raw = uri.toString();
-        assertTrue(raw.startsWith("mailto:vlencmanissc@gmail.com?"));
-        assertTrue(raw.contains("subject=SC2%20error%20report"));
-        assertTrue(raw.contains("body=line%20one%0Aline%20two"));
+    @Test
+    void supportMessageContainsManualContactDetails() {
+        String message = ErrorReportMailer.supportMessage(Path.of("C:\\logs\\error-report.txt"));
+
+        assertTrue(message.contains(ErrorReportMailer.REPORT_EMAIL));
+        assertTrue(message.contains(ErrorReportMailer.SUPPORT_URL));
+        assertTrue(message.contains("Outlook"));
+        assertTrue(message.contains("браузер"));
     }
 }

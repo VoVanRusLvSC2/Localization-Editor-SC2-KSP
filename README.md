@@ -34,7 +34,7 @@ Local LibreTranslate startup and repair logs are stored separately:
 - Windows: `%LOCALAPPDATA%\LocalizationEditorSC2KSP\argos-runtime\startup-logs\lt-*.log`
 - Other OS: `~/.localization-editor-argos-runtime/startup-logs/lt-*.log`
 
-When a severe exception is logged, the app creates `error-report-*.txt` in the main log folder and opens a prepared email to the maintainer. The user can review the text before sending.
+When a severe exception is logged, the app creates `error-report-*.txt` in the main log folder and shows an in-app support window with `vlencmanissc@gmail.com`, the GitHub Issues URL, and the report path. It does not open Outlook, a browser, or any other external mail client automatically.
 
 PowerShell examples:
 
@@ -74,6 +74,7 @@ On startup, the editor loads glossary files from that install-folder `glossary` 
 - Installer keeps editable glossary files next to the installed EXE, so dictionary fixes can be made after installation.
 - Translation now detects mixed-language rows better, including Russian text already present in an `enUS` target column.
 - Save errors now explain missing, locked, or inaccessible SC2 archives instead of showing only a generic write failure.
+- Error reporting now writes a local `error-report-*.txt` and shows manual support contact details without opening Outlook/browser automatically.
 - Long opened map/mod names now get full-name tooltips and better fitting in the green file badge.
 - Archive file switching keeps clearer spacing and shows the full internal localization path in tooltips.
 - The in-app file search clears automatically after opening a found folder.

@@ -1,10 +1,7 @@
 package lv.lenc;
 
-import java.awt.Desktop;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,10 +13,14 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
+
 final class ErrorReportMailer {
     static final String REPORT_EMAIL = "vlencmanissc@gmail.com";
+    static final String SUPPORT_URL = "https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/issues";
     private static final int LOG_TAIL_LINES = 45;
-    private static final int MAX_MAIL_BODY_CHARS = 6500;
     private static final AtomicBoolean REPORT_STARTED = new AtomicBoolean(false);
 
     private ErrorReportMailer() {
@@ -46,32 +47,52 @@ final class ErrorReportMailer {
         try {
             String report = buildReport(context, throwable);
             Path reportFile = writeReportFile(report);
-            String body = report;
             if (reportFile != null) {
-                body = "Full local report file: " + reportFile.toAbsolutePath() + "\n\n" + body;
+                AppLog.warn("[ErrorReport] local report created: " + reportFile.toAbsolutePath()
+                        + ". Send this file manually to " + REPORT_EMAIL + " if support is needed.");
+                showSupportDialog(reportFile);
             }
-            body = trimForMailBody(body);
-
-            URI mailto = buildMailtoUri(
-                    REPORT_EMAIL,
-                    "Localization Editor SC2 KSP error report",
-                    body
-            );
-            openMailClient(mailto);
         } catch (Exception ex) {
-            AppLog.warn("[ErrorReport] failed to prepare email report: " + ex.getMessage());
+            AppLog.warn("[ErrorReport] failed to write local error report: " + ex.getMessage());
         }
     }
 
-    static URI buildMailtoUri(String recipient, String subject, String body) {
-        String safeRecipient = recipient == null ? "" : recipient.trim();
-        String query = "subject=" + encode(subject) + "&body=" + encode(body);
-        return URI.create("mailto:" + safeRecipient + "?" + query);
+    static boolean opensExternalMailClientAutomatically() {
+        return false;
     }
 
-    private static String encode(String value) {
-        return URLEncoder.encode(value == null ? "" : value, StandardCharsets.UTF_8)
-                .replace("+", "%20");
+    static String supportMessage(Path reportFile) {
+        String path = reportFile == null ? "(report file was not created)" : reportFile.toAbsolutePath().toString();
+        return "Если у вас есть баги, напишите на почту:\n"
+                + REPORT_EMAIL + "\n\n"
+                + "GitHub issues:\n"
+                + SUPPORT_URL + "\n\n"
+                + "Файл отчёта:\n"
+                + path + "\n\n"
+                + "Отправьте этот файл вместе с описанием проблемы. Outlook и браузер автоматически не запускаются.";
+    }
+
+    private static void showSupportDialog(Path reportFile) {
+        try {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Ошибка приложения");
+                alert.setHeaderText("Создан локальный отчёт об ошибке");
+
+                TextArea text = new TextArea(supportMessage(reportFile));
+                text.setEditable(false);
+                text.setWrapText(true);
+                text.setPrefColumnCount(60);
+                text.setPrefRowCount(11);
+                alert.getDialogPane().setContent(text);
+                alert.setOnShown(event -> AppStyles.applyAlertStyles(alert.getDialogPane().getScene()));
+                alert.show();
+            });
+        } catch (IllegalStateException ex) {
+            AppLog.warn("[ErrorReport] UI is not ready for support dialog: " + ex.getMessage());
+        } catch (Exception ex) {
+            AppLog.warn("[ErrorReport] failed to show support dialog: " + ex.getMessage());
+        }
     }
 
     private static String buildReport(String context, Throwable throwable) {
@@ -148,21 +169,4 @@ final class ErrorReportMailer {
         }
     }
 
-    private static String trimForMailBody(String body) {
-        if (body == null || body.length() <= MAX_MAIL_BODY_CHARS) {
-            return body;
-        }
-        return body.substring(0, MAX_MAIL_BODY_CHARS)
-                + "\n\n[mail body trimmed; see local error-report file for full details]";
-    }
-
-    private static void openMailClient(URI mailto) throws Exception {
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
-            Desktop.getDesktop().mail(mailto);
-            return;
-        }
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            Desktop.getDesktop().browse(mailto);
-        }
-    }
 }
