@@ -30,11 +30,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -73,6 +70,7 @@ public class CustomTableView extends TableView<LocalizationData> {
     private boolean currentSingleMode = false;
     private boolean baseWidthsCaptured = false;
     private boolean userColumnLayout = false;
+    private boolean applyingColumnSizing = false;
     private double currentRowHeight = UiScaleHelper.scaleY(52);
 
     private boolean lastLoadWasMulti = false;
@@ -204,16 +202,25 @@ public class CustomTableView extends TableView<LocalizationData> {
             column.setMinWidth(UiScaleHelper.scaleX(140));
             column.setMaxWidth(UiScaleHelper.scaleX(4000));
             column.setEditable(true);
+            column.setResizable(true);
+            column.setSortable(false);
+            column.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                if (applyingColumnSizing || oldWidth == null || newWidth == null) {
+                    return;
+                }
+                if (Math.abs(newWidth.doubleValue() - oldWidth.doubleValue()) > 1.0) {
+                    userColumnLayout = true;
+                }
+            });
         }
         keyColumn.setMinWidth(UiScaleHelper.scaleX(200));
+        countColumn.setResizable(false);
         countColumn.setMaxWidth(UiScaleHelper.scaleX(150));
         countColumn.setMinWidth(UiScaleHelper.scaleX(110));
         countColumn.setPrefWidth(UiScaleHelper.scaleX(110));
         hideHeaderSortedArrow();
         enableHeaderColumnSelectionHighlighting();
         enableHeaderResizeCursorHints();
-        enableHeaderSortClickFallback();
-        installHeaderContextMenus();
         hookHeaderStatePersistence();
         Label placeholderLabel = new Label(this.localization.get("table.placeholder"));
         this.setPlaceholder(placeholderLabel);
@@ -446,7 +453,6 @@ public class CustomTableView extends TableView<LocalizationData> {
             });
             updateHeaderStateStyles();
             enableHeaderResizeCursorHints();
-            installHeaderContextMenus();
         });
     }
 
@@ -462,14 +468,10 @@ public class CustomTableView extends TableView<LocalizationData> {
         Platform.runLater(() -> {
             enableHeaderColumnSelectionHighlighting();
             enableHeaderResizeCursorHints();
-            enableHeaderSortClickFallback();
-            installHeaderContextMenus();
             updateHeaderStateStyles();
             Platform.runLater(() -> {
                 enableHeaderColumnSelectionHighlighting();
                 enableHeaderResizeCursorHints();
-                enableHeaderSortClickFallback();
-                installHeaderContextMenus();
                 updateHeaderStateStyles();
                 Platform.runLater(this::updateHeaderStateStyles);
             });
@@ -611,41 +613,46 @@ public class CustomTableView extends TableView<LocalizationData> {
             }
         }
 
-        for (TableColumn<LocalizationData, ?> col : getColumns()) {
-            String name = col.getText();
+        applyingColumnSizing = true;
+        try {
+            for (TableColumn<LocalizationData, ?> col : getColumns()) {
+                String name = col.getText();
 
-            if ("N".equalsIgnoreCase(name)) {
-                col.setMinWidth(baseNMinW);
-                col.setPrefWidth(baseNPrefW);
-                col.setMaxWidth(baseNPrefW);
-                continue;
-            }
+                if ("N".equalsIgnoreCase(name)) {
+                    col.setMinWidth(baseNMinW);
+                    col.setPrefWidth(baseNPrefW);
+                    col.setMaxWidth(baseNPrefW);
+                    continue;
+                }
 
-            if ("key".equalsIgnoreCase(name)) {
-                col.setMinWidth(baseKeyMinW);
-                col.setPrefWidth((singleMode || fillAvailableWidth) ? keyWidth : baseKeyPrefW);
-                // Keep key column resizable by user in any mode.
-                col.setMaxWidth(UiScaleHelper.scaleX(4000));
-                continue;
-            }
+                if ("key".equalsIgnoreCase(name)) {
+                    col.setMinWidth(baseKeyMinW);
+                    col.setPrefWidth((singleMode || fillAvailableWidth) ? keyWidth : baseKeyPrefW);
+                    // Keep key column resizable by user in any mode.
+                    col.setMaxWidth(UiScaleHelper.scaleX(4000));
+                    continue;
+                }
 
-            if (SUPPORTED_LANGS.contains(name)) {
-                //
-                if (col.isVisible() && singleMode) {
-                    col.setMinWidth(baseLangMinW);
-                    col.setPrefWidth(stretchedLangWidth);
-                    col.setMaxWidth(baseLangMaxW);
-                } else if (col.isVisible() && fillAvailableWidth) {
-                    col.setMinWidth(baseLangMinW);
-                    col.setPrefWidth(stretchedLangWidth);
-                    col.setMaxWidth(baseLangMaxW);
-                } else {
+                if (SUPPORTED_LANGS.contains(name)) {
                     //
-                    col.setMinWidth(baseLangMinW);
-                    col.setPrefWidth(baseLangPrefW);
-                    col.setMaxWidth(baseLangMaxW);
+                    if (col.isVisible() && singleMode) {
+                        col.setMinWidth(baseLangMinW);
+                        col.setPrefWidth(stretchedLangWidth);
+                        col.setMaxWidth(baseLangMaxW);
+                    } else if (col.isVisible() && fillAvailableWidth) {
+                        col.setMinWidth(baseLangMinW);
+                        col.setPrefWidth(stretchedLangWidth);
+                        col.setMaxWidth(baseLangMaxW);
+                    } else {
+                        //
+                        col.setMinWidth(baseLangMinW);
+                        col.setPrefWidth(baseLangPrefW);
+                        col.setMaxWidth(baseLangMaxW);
+                    }
                 }
             }
+        } finally {
+            applyingColumnSizing = false;
         }
 
         if (Platform.isFxApplicationThread()) {
@@ -679,25 +686,30 @@ public class CustomTableView extends TableView<LocalizationData> {
     }
 
     private void resetAllColumnWidthsToBase() {
-        for (TableColumn<LocalizationData, ?> col : getColumns()) {
-            String name = col.getText();
-            if ("N".equalsIgnoreCase(name)) {
-                col.setMinWidth(baseNMinW);
-                col.setPrefWidth(baseNPrefW);
-                col.setMaxWidth(baseNPrefW);
-                continue;
+        applyingColumnSizing = true;
+        try {
+            for (TableColumn<LocalizationData, ?> col : getColumns()) {
+                String name = col.getText();
+                if ("N".equalsIgnoreCase(name)) {
+                    col.setMinWidth(baseNMinW);
+                    col.setPrefWidth(baseNPrefW);
+                    col.setMaxWidth(baseNPrefW);
+                    continue;
+                }
+                if ("key".equalsIgnoreCase(name)) {
+                    col.setMinWidth(baseKeyMinW);
+                    col.setPrefWidth(baseKeyPrefW);
+                    col.setMaxWidth(UiScaleHelper.scaleX(4000));
+                    continue;
+                }
+                if (SUPPORTED_LANGS.contains(name)) {
+                    col.setMinWidth(baseLangMinW);
+                    col.setPrefWidth(baseLangPrefW);
+                    col.setMaxWidth(baseLangMaxW);
+                }
             }
-            if ("key".equalsIgnoreCase(name)) {
-                col.setMinWidth(baseKeyMinW);
-                col.setPrefWidth(baseKeyPrefW);
-                col.setMaxWidth(UiScaleHelper.scaleX(4000));
-                continue;
-            }
-            if (SUPPORTED_LANGS.contains(name)) {
-                col.setMinWidth(baseLangMinW);
-                col.setPrefWidth(baseLangPrefW);
-                col.setMaxWidth(baseLangMaxW);
-            }
+        } finally {
+            applyingColumnSizing = false;
         }
     }
 
@@ -1264,112 +1276,11 @@ public class CustomTableView extends TableView<LocalizationData> {
                     boolean nearEdge = event.getX() >= Math.max(0, header.getBoundsInLocal().getWidth() - threshold);
                     header.setCursor(nearEdge ? CustomCursorManager.horizontalResizeCursor() : null);
                 });
-                header.setOnMouseDragged(event -> {
-                    double threshold = UiScaleHelper.scaleX(10);
-                    if (event.getX() >= Math.max(0, header.getBoundsInLocal().getWidth() - threshold)) {
-                        userColumnLayout = true;
-                    }
-                    header.setCursor(CustomCursorManager.horizontalResizeCursor());
-                });
                 header.setOnMouseExited(event -> header.setCursor(null));
                 header.setOnMouseReleased(event -> header.setCursor(null));
             });
             this.lookupAll(".column-resize-line").forEach(CustomCursorManager::applyHorizontalResizeCursor);
         });
-    }
-
-    private void installHeaderContextMenus() {
-        Platform.runLater(() -> this.lookupAll(".column-header").forEach(header -> {
-            if (header.getProperties().putIfAbsent("lv.lenc.headerContextMenuHook", Boolean.TRUE) != null) {
-                return;
-            }
-            header.setOnContextMenuRequested(event -> {
-                String headerKey = resolveHeaderKey(header);
-                if (headerKey == null || headerKey.isBlank()) {
-                    return;
-                }
-                TableColumn<LocalizationData, ?> column = findCol(headerKey);
-                if (column == null) {
-                    return;
-                }
-
-                MenuItem hideColumn = new MenuItem("Hide column");
-                hideColumn.setDisable("N".equalsIgnoreCase(headerKey) || "key".equalsIgnoreCase(headerKey));
-                hideColumn.setOnAction(action -> {
-                    column.setVisible(false);
-                    userColumnLayout = true;
-                    ensureCoreColumns();
-                    requestLayout();
-                    requestHeaderStateRefresh();
-                });
-
-                MenuItem showAllItem = new MenuItem("Show all columns");
-                showAllItem.setOnAction(action -> showAllColumns());
-
-                MenuItem resetWidths = new MenuItem("Reset column widths");
-                resetWidths.setOnAction(action -> {
-                    userColumnLayout = false;
-                    resetAllColumnWidthsToBase();
-                    applyColumnSizing(currentSingleMode);
-                    requestHeaderStateRefresh();
-                });
-
-                ContextMenu menu = new ContextMenu(
-                        hideColumn,
-                        new SeparatorMenuItem(),
-                        showAllItem,
-                        resetWidths
-                );
-                menu.show(header, event.getScreenX(), event.getScreenY());
-                event.consume();
-            });
-        }));
-    }
-
-    private void enableHeaderSortClickFallback() {
-        Platform.runLater(() -> {
-            this.lookupAll(".column-header").forEach(header -> {
-                if (header.getProperties().putIfAbsent("lv.lenc.sortClickHook", Boolean.TRUE) != null) {
-                    return;
-                }
-                header.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> {
-                    if (event.getButton() != javafx.scene.input.MouseButton.PRIMARY || event.getClickCount() != 1) {
-                        return;
-                    }
-                    double threshold = UiScaleHelper.scaleX(10);
-                    if (event.getX() >= Math.max(0, header.getBoundsInLocal().getWidth() - threshold)) {
-                        return;
-                    }
-                    String headerKey = resolveHeaderKey(header);
-                    if (headerKey == null || headerKey.isBlank()) {
-                        return;
-                    }
-                    TableColumn<LocalizationData, ?> column = findCol(headerKey);
-                    if (column == null || !column.isSortable()) {
-                        return;
-                    }
-                    cycleHeaderSort(column);
-                    event.consume();
-                });
-            });
-        });
-    }
-
-    private void cycleHeaderSort(TableColumn<LocalizationData, ?> column) {
-        if (column == null) {
-            return;
-        }
-        ObservableList<TableColumn<LocalizationData, ?>> sortOrder = getSortOrder();
-        if (!sortOrder.contains(column)) {
-            sortOrder.clear();
-            sortOrder.add(column);
-            column.setSortType(TableColumn.SortType.ASCENDING);
-        } else if (column.getSortType() == TableColumn.SortType.ASCENDING) {
-            column.setSortType(TableColumn.SortType.DESCENDING);
-        } else {
-            sortOrder.remove(column);
-        }
-        sort();
     }
     private static String normalizeUi(String raw) {
         if (raw == null) return "";

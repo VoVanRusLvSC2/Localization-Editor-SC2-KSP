@@ -80,7 +80,7 @@ On startup, the editor loads glossary files from that install-folder `glossary` 
 
 ## 2.3 Notes
 - Discord invite now uses the same animated promo-button shell as the Boosty support button, with tighter spacing in Settings.
-- Table columns can now be resized manually. Right-click a table header to hide a language column, show all columns again, or reset column widths.
+- Table columns can now be resized manually by dragging the header edge with the mouse. Header sorting is disabled so repeated header clicks stay responsive.
 - Exact SC2 word and phrase glossary hits are applied before any translation API call, so canonical terms such as `Roach Warren` are not retranslated word by word.
 - AI translation prompts now treat short rows as SC2 entity/UI names and require exact glossary terms for official names while still allowing natural grammar around them.
 - Missing or unavailable translation API/key problems are treated as user configuration errors: they stay in the translation error overlay and logs, but do not show the manual support email dialog.
