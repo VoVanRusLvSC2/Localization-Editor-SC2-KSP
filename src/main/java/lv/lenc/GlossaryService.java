@@ -62,8 +62,10 @@ import okhttp3.OkHttpClient;
 public final class GlossaryService {
 
     private static final String WORD_GLOSSARY_FILE = "sc2_word_glossary_KSP.txt";
+    private static final String PHRASE_GLOSSARY_FILE = "sc2_phrase_glossary_KSP.txt";
     private static final String[] EDITABLE_GLOSSARY_FILES = {
             WORD_GLOSSARY_FILE,
+            PHRASE_GLOSSARY_FILE,
             "Addition_UnitNames_Detailed_KSP.txt",
             "Addition_Weapons_Detailed_KSP.txt",
             "Addition_Abilities_Detailed_KSP.txt"
@@ -1367,6 +1369,8 @@ public final class GlossaryService {
                 if (SettingsManager.loadCheckboxState(SettingsManager.BASE_GLOSSARY_KEY, SettingsManager.DEFAULT_BASE_GLOSSARY)) {
                     loadTxtGlossaryFromExternalIfPresent(WORD_GLOSSARY_FILE);
                     loadTxtFromResource("/glossary/" + WORD_GLOSSARY_FILE);
+                    loadTxtGlossaryFromExternalIfPresent(PHRASE_GLOSSARY_FILE);
+                    loadTxtFromResource("/glossary/" + PHRASE_GLOSSARY_FILE);
                 }
                 if (SettingsManager.loadCheckboxState(SettingsManager.UNITS_GLOSSARY_KEY, SettingsManager.DEFAULT_UNITS_GLOSSARY)) {
                     loadAdditionalGlossaryFile("Addition_UnitNames_Detailed_KSP.txt");

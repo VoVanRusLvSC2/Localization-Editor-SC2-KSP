@@ -15,6 +15,14 @@ class GlossaryServiceTest {
     }
 
     @Test
+    void phraseGlossaryTranslatesRoachWarrenAsSc2Building() {
+        GlossaryService glossary = new GlossaryService();
+        glossary.loadTxtFromResource("/glossary/sc2_phrase_glossary_KSP.txt");
+
+        assertEquals("Roach Warren", glossary.findTxtMatch("ruRU", "Рассадник тараканов", "enUS"));
+    }
+
+    @Test
     void wordGlossaryFreezesResearchInsidePhrase() {
         GlossaryService glossary = new GlossaryService();
         glossary.loadTxtFromResource("/glossary/sc2_word_glossary_KSP.txt");

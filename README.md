@@ -71,6 +71,7 @@ You can edit these files after installation without rebuilding the app.
 
 Default files placed there:
 - `sc2_word_glossary_KSP.txt`
+- `sc2_phrase_glossary_KSP.txt`
 - `Addition_UnitNames_Detailed_KSP.txt`
 - `Addition_Weapons_Detailed_KSP.txt`
 - `Addition_Abilities_Detailed_KSP.txt`
@@ -79,6 +80,7 @@ On startup, the editor loads glossary files from that install-folder `glossary` 
 
 ## 2.2 Notes
 - Installer keeps editable glossary files next to the installed EXE, so dictionary fixes can be made after installation.
+- Added `sc2_phrase_glossary_KSP.txt` with official SC2 multi-word terms, so phrases like `Рассадник тараканов` are translated as `Roach Warren` instead of being assembled from separate words.
 - Translation now detects mixed-language rows better, including Russian text already present in an `enUS` target column.
 - Word glossary now includes `Research -> Исследование`, and installed editable glossaries receive missing bundled word entries without overwriting user edits.
 - Save errors now explain missing, locked, or inaccessible SC2 archives instead of showing only a generic write failure.

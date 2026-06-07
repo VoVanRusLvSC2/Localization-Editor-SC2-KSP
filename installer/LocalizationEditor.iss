@@ -84,6 +84,7 @@ Name: "{app}\glossary"; Permissions: users-modify
 [Files]
 Source: "{#MyAppExeDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "glossary\*"
 Source: "..\src\main\resources\glossary\sc2_word_glossary_KSP.txt"; DestDir: "{app}\glossary"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
+Source: "..\src\main\resources\glossary\sc2_phrase_glossary_KSP.txt"; DestDir: "{app}\glossary"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
 Source: "..\src\main\resources\glossary\Addition_UnitNames_Detailed_KSP.txt"; DestDir: "{app}\glossary"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
 Source: "..\src\main\resources\glossary\Addition_Weapons_Detailed_KSP.txt"; DestDir: "{app}\glossary"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
 Source: "..\src\main\resources\glossary\Addition_Abilities_Detailed_KSP.txt"; DestDir: "{app}\glossary"; Flags: ignoreversion onlyifdoesntexist uninsneveruninstall
