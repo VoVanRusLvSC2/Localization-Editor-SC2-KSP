@@ -33,6 +33,7 @@ import systems.crigges.jmpq3.JMpqEditor;
 
 @SuppressWarnings("all")
 public class FileUtil {
+    private static volatile String lastSaveFailureMessage = "";
     private static final Pattern LOCALE_DIR =
             Pattern.compile("^[A-Za-z]{4}\\.SC2Data$", Pattern.CASE_INSENSITIVE);
     private static final String LOCALIZED_DATA = "LocalizedData";
@@ -1673,6 +1674,7 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
                                                String targetUiLang,
                                                List<String> relatedUiLangs,
                                                String fileText) {
+        lastSaveFailureMessage = "";
         try {
             if (openedFile == null) return false;
             if (sourceInput != null && isArchiveLikeInput(sourceInput)) {
@@ -1696,10 +1698,18 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
             return true;
 
         } catch (Exception e) {
+            lastSaveFailureMessage = buildUserFacingSaveFailure(e, sourceInput);
             AppLog.error("[SAVE] failed: " + e.getMessage());
+            if (!lastSaveFailureMessage.isBlank()) {
+                AppLog.error("[SAVE] user action: " + lastSaveFailureMessage);
+            }
             AppLog.exception(e);
             return false;
         }
+    }
+
+    public static String getLastSaveFailureMessage() {
+        return lastSaveFailureMessage == null ? "" : lastSaveFailureMessage;
     }
 
     private static boolean saveToArchiveTargetLanguage(File archiveFile,
@@ -1709,6 +1719,18 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
                                                        String fileText) throws IOException {
         if (archiveFile == null || archiveRelativePath == null || archiveRelativePath.isBlank()) {
             return false;
+        }
+        if (!archiveFile.isFile()) {
+            throw new IOException("Save failed: source archive is missing or unavailable: "
+                    + archiveFile.getAbsolutePath());
+        }
+        if (!archiveFile.canRead()) {
+            throw new IOException("Save failed: source archive cannot be read: "
+                    + archiveFile.getAbsolutePath());
+        }
+        if (!archiveFile.canWrite()) {
+            throw new IOException("Save failed: no write access to source archive: "
+                    + archiveFile.getAbsolutePath());
         }
 
         String normalizedLocale = normalizeLocale(targetUiLang);
@@ -1814,6 +1836,61 @@ public static boolean loadSelectedFile2(File fileSelected, CustomTableView table
         } finally {
             deleteRecursively(tempRoot);
         }
+    }
+
+    private static String buildUserFacingSaveFailure(Exception error, File sourceInput) {
+        String message = collectThrowableMessages(error);
+        String lower = message.toLowerCase(Locale.ROOT);
+        String path = sourceInput == null ? "" : sourceInput.getAbsolutePath();
+
+        if (lower.contains("source archive is missing")
+                || lower.contains("archive file is missing")
+                || lower.contains("no such file")) {
+            return "Save failed: source map/mod archive is missing or unavailable"
+                    + (path.isBlank() ? "." : ": " + path)
+                    + ". Reconnect the drive, restore the file, or reopen the map from a local writable copy.";
+        }
+        if (hasCause(error, java.nio.file.AccessDeniedException.class)
+                || lower.contains("access is denied")
+                || lower.contains("no write access")
+                || lower.contains("cannot be read")) {
+            return "Save failed: cannot access the source archive"
+                    + (path.isBlank() ? "." : ": " + path)
+                    + ". Close StarCraft II/Editor if it is locking the file and check write permissions.";
+        }
+        if (lower.contains("failed to save localized file back into archive")) {
+            return "Save failed while writing the SC2 archive"
+                    + (path.isBlank() ? "." : ": " + path)
+                    + ". Try saving from a local writable copy and check the logs for the archive backend details.";
+        }
+        return message == null ? "" : message;
+    }
+
+    private static String collectThrowableMessages(Throwable error) {
+        if (error == null) {
+            return "";
+        }
+        List<String> messages = new ArrayList<>();
+        Throwable current = error;
+        while (current != null && messages.size() < 8) {
+            String message = current.getMessage();
+            if (message != null && !message.isBlank()) {
+                messages.add(message);
+            }
+            current = current.getCause();
+        }
+        return String.join(" | ", messages);
+    }
+
+    private static boolean hasCause(Throwable error, Class<? extends Throwable> type) {
+        Throwable current = error;
+        while (current != null) {
+            if (type.isInstance(current)) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
     }
 
     private static File resolveProjectRootForSavedFile(File targetFile, File projectRoot) {

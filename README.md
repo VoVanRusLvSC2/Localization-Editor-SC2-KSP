@@ -48,9 +48,11 @@ Get-Content "$env:LOCALAPPDATA\LocalizationEditorSC2KSP\argos-runtime\startup-lo
 StarCraft II publication names come from `GameStrings.txt`, key `DocInfo/Name`. The editor caches that key per map/archive next to the application:
 
 - preferred folder: `publication-names` next to `Localization Editor SC2 KSP.exe`
+- common per-user install example: `%LOCALAPPDATA%\Programs\Localization Editor SC2 KSP\publication-names`
 - fallback folder on Windows: `%LOCALAPPDATA%\Localization Editor SC2 KSP\publication-names`
+- cache file format: `<map-or-mod-file-name>-<path-hash>.xml`, for example `crys_the_swarm_reborn-3218263ec1829ae4.xml`
 
-The cache stores the original map name and the first saved translation for each language. On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication.
+The cache stores the original map name and the first saved translation for each language in XML properties such as `original.title`, `locked.title.ruRU`, `locked.title.enUS`, and `latest.title.*`. On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication.
 
 ## Editable Glossaries After Install
 The installer places editable glossary files in the application folder:
@@ -67,6 +69,14 @@ Default files placed there:
 - `Addition_Abilities_Detailed_KSP.txt`
 
 On startup, the editor loads glossary files from that install-folder `glossary` first when they exist. For legacy installs, `%LOCALAPPDATA%\Localization Editor SC2 KSP\glossary` is still used as a fallback if present.
+
+## 2.2 Notes
+- Installer keeps editable glossary files next to the installed EXE, so dictionary fixes can be made after installation.
+- Translation now detects mixed-language rows better, including Russian text already present in an `enUS` target column.
+- Save errors now explain missing, locked, or inaccessible SC2 archives instead of showing only a generic write failure.
+- Long opened map/mod names now get full-name tooltips and better fitting in the green file badge.
+- Archive file switching keeps clearer spacing and shows the full internal localization path in tooltips.
+- The in-app file search clears automatically after opening a found folder.
 
 ## 2.1 Notes
 - Added archive file switching for common localization files inside one opened SC2 archive.

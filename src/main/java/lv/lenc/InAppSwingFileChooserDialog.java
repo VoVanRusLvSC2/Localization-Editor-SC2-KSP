@@ -669,8 +669,16 @@ final class InAppSwingFileChooserDialog {
     private void navigateTo(File directory, File preferredSelection) {
         currentDirectory = directory != null && directory.exists() ? directory : null;
         pendingSelectionName = preferredSelection == null ? null : preferredSelection.getName();
+        clearSearchQueryAfterFolderChange();
         refreshEntries();
         syncPlacesSelection();
+    }
+
+    private void clearSearchQueryAfterFolderChange() {
+        String query = searchField.getText();
+        if (query != null && !query.isBlank()) {
+            searchField.clear();
+        }
     }
 
     private void refreshEntries() {

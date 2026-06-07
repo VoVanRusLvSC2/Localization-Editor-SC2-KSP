@@ -332,12 +332,17 @@ public class Main extends Application {
         applyArchiveComboSize(archiveFileSwitchCombo);
         archiveFileSwitchCombo.setVisibleRowCount(6);
         archiveFileSwitchCombo.setFocusTraversable(false);
-        archiveFileSwitchCombo.setCellFactory(cb -> archiveFileSwitchCell());
-        archiveFileSwitchCombo.setButtonCell(archiveFileSwitchCell());
+        archiveFileSwitchCombo.setCellFactory(cb -> archiveFileSwitchCell(false));
+        archiveFileSwitchCombo.setButtonCell(archiveFileSwitchCell(true));
         archiveFileSwitchCombo.setOnShowing(e -> {
             int rows = Math.max(1, Math.min(7, archiveFileSwitchCombo.getItems().size()));
             archiveFileSwitchCombo.setVisibleRowCount(rows);
             Platform.runLater(() -> tuneArchiveComboPopup(archiveFileSwitchCombo, rows));
+        });
+        archiveFileSwitchCombo.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (!archiveFileSwitchUpdating) {
+                updateArchiveSwitcherTooltip(newValue);
+            }
         });
         setManagedVisible(archiveFileSwitchCombo, false);
 
@@ -624,8 +629,12 @@ public class Main extends Application {
                 ok = project.saveTarget(tableView, targetUi);
             }
             if (!ok) {
-                throw new IllegalStateException("[SAVE] write failed. Check file/archive permissions and logs: "
-                        + AppLog.getLogDirectory());
+                String saveFailure = FileUtil.getLastSaveFailureMessage();
+                if (saveFailure == null || saveFailure.isBlank()) {
+                    saveFailure = "[SAVE] write failed. Check file/archive permissions and logs: "
+                            + AppLog.getLogDirectory();
+                }
+                throw new IllegalStateException(saveFailure);
             }
             MapPublicationNameStore.rememberOpenedNames(
                     project.getSourceInput(),
@@ -883,6 +892,20 @@ public class Main extends Application {
                 ? ""
                 : error.getMessage().toLowerCase();
 
+        if (message.contains("source map/mod archive is missing")
+                || message.contains("source archive is missing")
+                || message.contains("archive file is missing")) {
+            return "Reconnect the drive, restore the original file, or reopen the map from a local writable copy.";
+        }
+        if (message.contains("cannot access the source archive")
+                || message.contains("no write access")
+                || message.contains("access is denied")) {
+            return "Close StarCraft II/Editor if it is locking the file, check write permissions, then save again.";
+        }
+        if (message.startsWith("[save]") || message.startsWith("save failed")) {
+            return "Working on a local copy is recommended for external, network, or removable drives. Logs: "
+                    + AppLog.getLogDirectory();
+        }
         if (message.contains("libretranslate is not reachable") || message.contains("did not become ready")) {
             return localization.get("translating.error.hint.server");
         }
@@ -2029,17 +2052,34 @@ public class Main extends Application {
         return null;
     }
 
-    private javafx.scene.control.ListCell<String> archiveFileSwitchCell() {
+    private javafx.scene.control.ListCell<String> archiveFileSwitchCell(boolean buttonCell) {
         return new javafx.scene.control.ListCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty || item == null ? null : shortArchiveFileLabel(item));
+                setTooltip(empty || item == null ? null : new javafx.scene.control.Tooltip(item.replace('\\', '/')));
                 setGraphic(null);
                 setContentDisplay(javafx.scene.control.ContentDisplay.TEXT_ONLY);
-                setStyle("-fx-font-size: " + UiScaleHelper.scaleY(14) + "px; -fx-padding: 0 10 0 10;");
+                double left = UiScaleHelper.scaleX(12);
+                double right = buttonCell ? UiScaleHelper.scaleX(34) : UiScaleHelper.scaleX(14);
+                setStyle("-fx-font-size: " + UiScaleHelper.scaleY(14) + "px; -fx-padding: 0 "
+                        + right + " 0 " + left + ";");
             }
         };
+    }
+
+    private void updateArchiveSwitcherTooltip(String selected) {
+        if (archiveFileSwitchCombo == null) {
+            return;
+        }
+        String intro = isRussianUi()
+                ? "\u041f\u0435\u0440\u0435\u0439\u0442\u0438 \u043a \u0434\u0440\u0443\u0433\u043e\u043c\u0443 \u0444\u0430\u0439\u043b\u0443 \u043b\u043e\u043a\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u0432 \u044d\u0442\u043e\u043c \u0436\u0435 \u0430\u0440\u0445\u0438\u0432\u0435"
+                : "Switch localization file inside the current archive";
+        String full = selected == null || selected.isBlank() ? "" : selected.replace('\\', '/');
+        archiveFileSwitchCombo.setTooltip(new javafx.scene.control.Tooltip(
+                full.isBlank() ? intro : intro + "\n" + full
+        ));
     }
 
     private static String shortArchiveFileLabel(String value) {
@@ -2124,11 +2164,7 @@ public class Main extends Application {
         try {
             archiveFileSwitchCombo.getItems().setAll(options);
             archiveFileSwitchCombo.setValue(selected);
-            archiveFileSwitchCombo.setTooltip(new javafx.scene.control.Tooltip(
-                    isRussianUi()
-                            ? "\u041f\u0435\u0440\u0435\u0439\u0442\u0438 \u043a \u0434\u0440\u0443\u0433\u043e\u043c\u0443 \u0444\u0430\u0439\u043b\u0443 \u043b\u043e\u043a\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u0432 \u044d\u0442\u043e\u043c \u0436\u0435 \u0430\u0440\u0445\u0438\u0432\u0435"
-                            : "Switch localization file inside the current archive"
-            ));
+            updateArchiveSwitcherTooltip(selected);
             archiveFileSwitchCombo.setVisibleRowCount(Math.max(1, Math.min(7, options.size())));
             setManagedVisible(archiveFileSwitchCombo, options.size() > 1);
         } finally {
