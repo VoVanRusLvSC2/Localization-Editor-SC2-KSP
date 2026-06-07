@@ -73,6 +73,7 @@ On startup, the editor loads glossary files from that install-folder `glossary` 
 ## 2.2 Notes
 - Installer keeps editable glossary files next to the installed EXE, so dictionary fixes can be made after installation.
 - Translation now detects mixed-language rows better, including Russian text already present in an `enUS` target column.
+- Word glossary now includes `Research -> Исследование`, and installed editable glossaries receive missing bundled word entries without overwriting user edits.
 - Save errors now explain missing, locked, or inaccessible SC2 archives instead of showing only a generic write failure.
 - Folder-based `.SC2Map`/`.SC2Mod` projects now save as folder projects, and the editor clears Windows read-only attributes on the write path before saving.
 - Error reporting now writes a local `error-report-*.txt` and shows manual support contact details without opening Outlook/browser automatically.

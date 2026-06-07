@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.text.Normalizer;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -1446,6 +1447,7 @@ public final class GlossaryService {
         for (String fileName : EDITABLE_GLOSSARY_FILES) {
             Path target = dir.resolve(fileName);
             if (Files.exists(target)) {
+                mergeBundledWordGlossaryAdditions(target, fileName);
                 continue;
             }
             try (InputStream is = GlossaryService.class.getResourceAsStream("/glossary/" + fileName)) {
@@ -1458,6 +1460,61 @@ public final class GlossaryService {
             } catch (Exception ex) {
                 AppLog.warn("[Glossary] Failed to seed editable glossary " + target.toAbsolutePath() + ": " + ex.getMessage());
             }
+        }
+    }
+
+    private void mergeBundledWordGlossaryAdditions(Path target, String fileName) {
+        if (!isWordGlossaryFile(fileName) || target == null || !Files.isRegularFile(target)) {
+            return;
+        }
+
+        try (InputStream is = GlossaryService.class.getResourceAsStream("/glossary/" + fileName)) {
+            if (is == null) {
+                return;
+            }
+
+            List<String> existingLines = Files.readAllLines(target, StandardCharsets.UTF_8);
+            Set<String> existingSources = new HashSet<>();
+            for (String line : existingLines) {
+                String[] cells = splitSemicolonLine(stripBom(line));
+                String source = cells.length == 0 ? "" : cleanGlossaryText(cells[0]);
+                if (!isBlank(source)) {
+                    existingSources.add(normalizeText(source));
+                }
+            }
+
+            List<String> bundledLines = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+                    .lines()
+                    .toList();
+            List<String> missingLines = new ArrayList<>();
+            for (String line : bundledLines) {
+                String cleanLine = stripBom(line);
+                String[] cells = splitSemicolonLine(cleanLine);
+                String source = cells.length == 0 ? "" : cleanGlossaryText(cells[0]);
+                if (isBlank(source)) {
+                    continue;
+                }
+                if (existingSources.add(normalizeText(source))) {
+                    missingLines.add(cleanLine);
+                }
+            }
+
+            if (missingLines.isEmpty()) {
+                return;
+            }
+
+            StringBuilder append = new StringBuilder();
+            if (!existingLines.isEmpty()) {
+                append.append(System.lineSeparator());
+            }
+            append.append(String.join(System.lineSeparator(), missingLines));
+            append.append(System.lineSeparator());
+            Files.writeString(target, append.toString(), StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+            AppLog.info("[Glossary] Added " + missingLines.size()
+                    + " missing bundled word glossary entries to " + target.toAbsolutePath());
+        } catch (Exception ex) {
+            AppLog.warn("[Glossary] Failed to merge bundled word glossary additions into "
+                    + target.toAbsolutePath() + ": " + ex.getMessage());
         }
     }
 

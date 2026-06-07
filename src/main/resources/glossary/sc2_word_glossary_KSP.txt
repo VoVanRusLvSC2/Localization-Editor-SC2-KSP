@@ -42,6 +42,7 @@ Primal;Изначальный;Urzeitlich;Primordial;Primitivo;Primordial;Primord
 Queue;Очередь;Warteschlange;Cola;Cola;File d'attente;Coda;대기열;Kolejka;Fila;队列;佇列
 Range;Дальность;Reichweite;Alcance;Alcance;Portée;Portata;사거리;Zasięg;Alcance;射程;射程
 Repair;Ремонт;Reparieren;Reparar;Reparar;Réparer;Ripara;수리;Naprawiać;Reparar;修理;修理
+Research;Исследование;Forschung;Investigación;Investigación;Recherche;Ricerca;연구;Badania;Pesquisa;研究;研發
 Restart;Перезапуск;Neustart;Reiniciar;Reiniciar;Redémarrer;Riavvia;재시작;Uruchom ponownie;Reiniciar;重新开始;重新開始
 Reveal;Обнаружение;Aufdecken;Revelar;Revelar;Révéler;Rivelare;탐지;Wykrycie;Revelar;反隐形;反隱形
 Save;Сохранить;Speichern;Guardar;Guardar;Enregistrer;Salva;저장;Zapisz;Salvar;保存;儲存
