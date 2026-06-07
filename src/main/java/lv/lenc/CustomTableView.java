@@ -1915,6 +1915,13 @@ public class CustomTableView extends TableView<LocalizationData> {
                 String sourceText = row.getByLang(sourceUi);
                 if (sourceText == null || sourceText.isBlank()) continue;
 
+                String directGlossary = findDirectGlossaryTranslation(effectiveSourceUi, sourceText, targetUi);
+                if (directGlossary != null) {
+                    setValueByLang(row, targetUi, directGlossary);
+                    changedTargets.add(targetUi);
+                    continue;
+                }
+
                 GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
                 GlossaryService.FrozenTerms frozen = glossaryService.freezeTerms(
@@ -2135,6 +2142,13 @@ public class CustomTableView extends TableView<LocalizationData> {
                 continue;
             }
 
+            String directGlossary = findDirectGlossaryTranslation(actualSourceUi, sourceText, targetUi);
+            if (directGlossary != null) {
+                setValueByLang(row, targetUi, directGlossary);
+                translatedAny = true;
+                continue;
+            }
+
             GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
             GlossaryService.FrozenTerms frozen = glossaryService.freezeTerms(
@@ -2304,6 +2318,13 @@ public class CustomTableView extends TableView<LocalizationData> {
                 continue;
             }
 
+            String directGlossary = findDirectGlossaryTranslation(actualSourceUi, sourceText, targetUi);
+            if (directGlossary != null) {
+                setValueByLang(row, targetUi, directGlossary);
+                translatedAny = true;
+                continue;
+            }
+
             GlossaryService.Category category = GlossaryService.detectCategory(row.getKey());
 
             GlossaryService.FrozenTerms frozen = glossaryService.freezeTerms(
@@ -2452,6 +2473,20 @@ public class CustomTableView extends TableView<LocalizationData> {
             sb.append(key).append("=").append(val).append("\n");
         }
         return sb.toString();
+    }
+
+    private String findDirectGlossaryTranslation(String sourceUi, String sourceText, String targetUi) {
+        if (glossaryService == null || sourceText == null || sourceText.isBlank()) {
+            return null;
+        }
+        String target = glossaryService.findTxtMatch(sourceUi, sourceText, targetUi);
+        if (target == null || target.isBlank()) {
+            target = glossaryService.findWordMatch(sourceUi, sourceText, targetUi);
+        }
+        if (target == null || target.isBlank() || target.equals(sourceText)) {
+            return null;
+        }
+        return target;
     }
     //--------
     private TableColumn<LocalizationData, ?> findCol(String name) {

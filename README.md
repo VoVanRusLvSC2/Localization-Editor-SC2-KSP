@@ -14,7 +14,7 @@ It is built for real SC2 projects, not only single text files:
 - https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/releases
 
 ## Current Installer
-- Current Windows installer build: `2.2`
+- Current Windows installer build: `2.3`
 - If an older build is installed, use the latest installer from Releases.
 
 ## Quick Start
@@ -77,6 +77,12 @@ Default files placed there:
 - `Addition_Abilities_Detailed_KSP.txt`
 
 On startup, the editor loads glossary files from that install-folder `glossary` first when they exist. For legacy installs, `%LOCALAPPDATA%\Localization Editor SC2 KSP\glossary` is still used as a fallback if present.
+
+## 2.3 Notes
+- Discord invite now uses the same animated promo-button shell as the Boosty support button, with tighter spacing in Settings.
+- Exact SC2 word and phrase glossary hits are applied before any translation API call, so canonical terms such as `Roach Warren` are not retranslated word by word.
+- AI translation prompts now treat short rows as SC2 entity/UI names and require exact glossary terms for official names while still allowing natural grammar around them.
+- The phrase glossary remains editable after installation next to the EXE, so new official SC2 phrases can be added without rebuilding the app.
 
 ## 2.2 Notes
 - Installer keeps editable glossary files next to the installed EXE, so dictionary fixes can be made after installation.

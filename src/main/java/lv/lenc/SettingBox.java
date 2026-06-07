@@ -1550,12 +1550,12 @@ public class SettingBox {
         // -------------------------
         otherDescrption = new GlowingLabel(localization.get("setting.box.other.description"));
         tuneSettingLabel(otherDescrption, 16.5);
-        VBox.setMargin(otherDescrption, new Insets(0, 0, sy(12), 0));
+        VBox.setMargin(otherDescrption, new Insets(0, 0, sy(4), 0));
         otherDescrption.setWrapText(true);
         otherDescrption.setTextAlignment(TextAlignment.CENTER);
         otherDescrption.setAlignment(Pos.CENTER);
         otherDescrption.setPrefWidth(sx(286));
-        otherDescrption.setMinHeight(sy(96));
+        otherDescrption.setMinHeight(sy(82));
 
         discordURL = new CustomAlternativeButton(
                 localization.get("setting.box.other.join"),
@@ -1571,16 +1571,17 @@ public class SettingBox {
         });
 
         StackPane discordPromoButton = createPromoButtonShell(discordURL);
+        installSupportSpotlight(discordURL);
 
-        VBox otherCardBody = new VBox(sy(10), otherDescrption, discordPromoButton);
+        VBox otherCardBody = new VBox(sy(8), otherDescrption, discordPromoButton);
         otherCardBody.setAlignment(Pos.TOP_CENTER);
-        otherCardBody.setPadding(new Insets(sy(14), sx(10), sy(14), sx(10)));
+        otherCardBody.setPadding(new Insets(sy(12), sx(10), sy(12), sx(10)));
 
         StackPane otherCard = new StackPane(otherCardBody);
         otherCard.setPrefWidth(sx(328));
         otherCard.setMaxWidth(sx(328));
-        otherCard.setPrefHeight(sy(236));
-        otherCard.setMaxHeight(sy(236));
+        otherCard.setPrefHeight(sy(220));
+        otherCard.setMaxHeight(sy(220));
         otherCard.setStyle(
                 "-fx-background-color: linear-gradient(to bottom, rgba(42, 13, 8, 0.96), rgba(28, 9, 7, 0.96));"
                         + "-fx-border-color: transparent;"

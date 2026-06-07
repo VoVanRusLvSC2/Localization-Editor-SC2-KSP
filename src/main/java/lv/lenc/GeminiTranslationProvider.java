@@ -267,9 +267,12 @@ final class GeminiTranslationProvider {
                 + "2) Keep input order and number of items unchanged.\n"
                 + "3) Return ONLY a JSON array of strings, no markdown, no comments.\n"
                 + "4) Use provided SC2 glossary mappings as preferred terminology.\n"
-                + "5) Do not force glossary word order from the source; place glossary terms naturally in the target sentence.\n"
-                + "6) Adapt endings/case/gender only when grammar requires it.\n"
-                + "7) If input contains __SC2_TERM_n__ placeholders, keep those placeholders exactly; they will be resolved later.\n"
+                + "5) If a glossary entry exactly matches an input or a named entity inside it, use that target term exactly.\n"
+                + "6) Do not translate official SC2 names word-by-word when the glossary provides the canonical name.\n"
+                + "7) Treat short strings as SC2 entity/UI names; keep them concise and do not add explanations.\n"
+                + "8) Do not force glossary word order from the source; place glossary terms naturally in the target sentence.\n"
+                + "9) Adapt endings/case/gender only when grammar requires it.\n"
+                + "10) If input contains __SC2_TERM_n__ placeholders, keep those placeholders exactly; they will be resolved later.\n"
                 + glossarySection
                 + "Input JSON array:\n"
                 + inputArray;
