@@ -22,4 +22,20 @@ class ErrorReportMailerTest {
         assertTrue(message.contains("Outlook"));
         assertTrue(message.contains("браузер"));
     }
+
+    @Test
+    void translationApiConfigurationErrorsDoNotShowSupportDialog() {
+        assertTrue(ErrorReportMailer.isUserTranslationApiProblem(
+                "[DEEPL] availability check failed",
+                new IllegalStateException("DeepL API requires DEEPL_API_KEY or settings.properties deepl.api.key.")
+        ));
+    }
+
+    @Test
+    void ordinaryApplicationErrorsStillShowSupportDialog() {
+        assertFalse(ErrorReportMailer.isUserTranslationApiProblem(
+                "[SAVE] failed",
+                new IllegalStateException("Source map/mod archive is missing")
+        ));
+    }
 }

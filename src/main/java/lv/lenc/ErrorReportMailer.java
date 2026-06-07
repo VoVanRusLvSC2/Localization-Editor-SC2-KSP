@@ -30,9 +30,73 @@ final class ErrorReportMailer {
         if (throwable == null || !REPORT_STARTED.compareAndSet(false, true) || isDisabled()) {
             return;
         }
+        if (isUserTranslationApiProblem(context, throwable)) {
+            REPORT_STARTED.set(false);
+            AppLog.warn("[ErrorReport] support dialog skipped for user translation API/configuration problem: "
+                    + summarize(context, throwable));
+            return;
+        }
         Thread thread = new Thread(() -> reportNow(context, throwable), "error-report-mailer");
         thread.setDaemon(true);
         thread.start();
+    }
+
+    static boolean isUserTranslationApiProblem(String context, Throwable throwable) {
+        String text = ((context == null ? "" : context) + " " + stackTraceSummary(throwable))
+                .toLowerCase(Locale.ROOT);
+        boolean translationProvider = text.contains("api")
+                || text.contains("deepl")
+                || text.contains("gemini")
+                || text.contains("siliconflow")
+                || text.contains("google cloud")
+                || text.contains("google translate free")
+                || text.contains("cloudflare worker ai")
+                || text.contains("libretranslate");
+        if (!translationProvider) {
+            return false;
+        }
+        return text.contains("not configured")
+                || text.contains("requires ")
+                || text.contains("api_key")
+                || text.contains("api key")
+                || text.contains("invalid key")
+                || text.contains("account is not verified")
+                || text.contains("quota exceeded")
+                || text.contains("rate limit")
+                || text.contains("is not available")
+                || text.contains("is unavailable")
+                || text.contains("availability check failed")
+                || text.contains("check failed")
+                || text.contains("http 401")
+                || text.contains("http 403")
+                || text.contains("http 429")
+                || text.contains("http 456");
+    }
+
+    private static String stackTraceSummary(Throwable throwable) {
+        if (throwable == null) {
+            return "";
+        }
+        StringBuilder out = new StringBuilder();
+        Throwable current = throwable;
+        int depth = 0;
+        while (current != null && depth < 6) {
+            out.append(current.getClass().getName()).append(' ');
+            if (current.getMessage() != null) {
+                out.append(current.getMessage()).append(' ');
+            }
+            current = current.getCause();
+            depth++;
+        }
+        return out.toString();
+    }
+
+    private static String summarize(String context, Throwable throwable) {
+        String message = throwable == null ? "" : throwable.getMessage();
+        if (message == null || message.isBlank()) {
+            message = context;
+        }
+        return message == null ? "" : message;
     }
 
     private static boolean isDisabled() {

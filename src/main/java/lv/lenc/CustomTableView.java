@@ -30,8 +30,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -69,6 +72,7 @@ public class CustomTableView extends TableView<LocalizationData> {
     private boolean tableFocusMode = false;
     private boolean currentSingleMode = false;
     private boolean baseWidthsCaptured = false;
+    private boolean userColumnLayout = false;
     private double currentRowHeight = UiScaleHelper.scaleY(52);
 
     private boolean lastLoadWasMulti = false;
@@ -209,6 +213,7 @@ public class CustomTableView extends TableView<LocalizationData> {
         enableHeaderColumnSelectionHighlighting();
         enableHeaderResizeCursorHints();
         enableHeaderSortClickFallback();
+        installHeaderContextMenus();
         hookHeaderStatePersistence();
         Label placeholderLabel = new Label(this.localization.get("table.placeholder"));
         this.setPlaceholder(placeholderLabel);
@@ -441,6 +446,7 @@ public class CustomTableView extends TableView<LocalizationData> {
             });
             updateHeaderStateStyles();
             enableHeaderResizeCursorHints();
+            installHeaderContextMenus();
         });
     }
 
@@ -457,11 +463,13 @@ public class CustomTableView extends TableView<LocalizationData> {
             enableHeaderColumnSelectionHighlighting();
             enableHeaderResizeCursorHints();
             enableHeaderSortClickFallback();
+            installHeaderContextMenus();
             updateHeaderStateStyles();
             Platform.runLater(() -> {
                 enableHeaderColumnSelectionHighlighting();
                 enableHeaderResizeCursorHints();
                 enableHeaderSortClickFallback();
+                installHeaderContextMenus();
                 updateHeaderStateStyles();
                 Platform.runLater(this::updateHeaderStateStyles);
             });
@@ -559,6 +567,18 @@ public class CustomTableView extends TableView<LocalizationData> {
 
     public void applyColumnSizing(boolean singleMode) {
         currentSingleMode = singleMode;
+        if (userColumnLayout) {
+            if (Platform.isFxApplicationThread()) {
+                refresh();
+                layout();
+            } else {
+                Platform.runLater(() -> {
+                    refresh();
+                    layout();
+                });
+            }
+            return;
+        }
         double tableWidth = getEffectiveTableContentWidth();
         int visibleLangCount = visibleSupportedLangCount();
         boolean fillAvailableWidth = tableFocusMode && visibleLangCount > 0;
@@ -1244,13 +1264,66 @@ public class CustomTableView extends TableView<LocalizationData> {
                     boolean nearEdge = event.getX() >= Math.max(0, header.getBoundsInLocal().getWidth() - threshold);
                     header.setCursor(nearEdge ? CustomCursorManager.horizontalResizeCursor() : null);
                 });
-                header.setOnMouseDragged(event ->
-                        header.setCursor(CustomCursorManager.horizontalResizeCursor()));
+                header.setOnMouseDragged(event -> {
+                    double threshold = UiScaleHelper.scaleX(10);
+                    if (event.getX() >= Math.max(0, header.getBoundsInLocal().getWidth() - threshold)) {
+                        userColumnLayout = true;
+                    }
+                    header.setCursor(CustomCursorManager.horizontalResizeCursor());
+                });
                 header.setOnMouseExited(event -> header.setCursor(null));
                 header.setOnMouseReleased(event -> header.setCursor(null));
             });
             this.lookupAll(".column-resize-line").forEach(CustomCursorManager::applyHorizontalResizeCursor);
         });
+    }
+
+    private void installHeaderContextMenus() {
+        Platform.runLater(() -> this.lookupAll(".column-header").forEach(header -> {
+            if (header.getProperties().putIfAbsent("lv.lenc.headerContextMenuHook", Boolean.TRUE) != null) {
+                return;
+            }
+            header.setOnContextMenuRequested(event -> {
+                String headerKey = resolveHeaderKey(header);
+                if (headerKey == null || headerKey.isBlank()) {
+                    return;
+                }
+                TableColumn<LocalizationData, ?> column = findCol(headerKey);
+                if (column == null) {
+                    return;
+                }
+
+                MenuItem hideColumn = new MenuItem("Hide column");
+                hideColumn.setDisable("N".equalsIgnoreCase(headerKey) || "key".equalsIgnoreCase(headerKey));
+                hideColumn.setOnAction(action -> {
+                    column.setVisible(false);
+                    userColumnLayout = true;
+                    ensureCoreColumns();
+                    requestLayout();
+                    requestHeaderStateRefresh();
+                });
+
+                MenuItem showAllItem = new MenuItem("Show all columns");
+                showAllItem.setOnAction(action -> showAllColumns());
+
+                MenuItem resetWidths = new MenuItem("Reset column widths");
+                resetWidths.setOnAction(action -> {
+                    userColumnLayout = false;
+                    resetAllColumnWidthsToBase();
+                    applyColumnSizing(currentSingleMode);
+                    requestHeaderStateRefresh();
+                });
+
+                ContextMenu menu = new ContextMenu(
+                        hideColumn,
+                        new SeparatorMenuItem(),
+                        showAllItem,
+                        resetWidths
+                );
+                menu.show(header, event.getScreenX(), event.getScreenY());
+                event.consume();
+            });
+        }));
     }
 
     private void enableHeaderSortClickFallback() {
@@ -2515,6 +2588,7 @@ public class CustomTableView extends TableView<LocalizationData> {
 
     public void showAllColumns() {
         Runnable apply = () -> {
+            userColumnLayout = false;
             resetAllColumnWidthsToBase();
             for (TableColumn<LocalizationData, ?> c : getColumns()) {
                 c.setVisible(true);
@@ -2542,6 +2616,7 @@ public class CustomTableView extends TableView<LocalizationData> {
     }
     public void showOnly(String sourceUi, String targetUi) {
         Runnable apply = () -> {
+            userColumnLayout = false;
             resetAllColumnWidthsToBase();
             for (TableColumn<LocalizationData, ?> c : getColumns()) {
                 c.setVisible(false);
