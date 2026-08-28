@@ -14,7 +14,7 @@ It is built for real SC2 projects, not only single text files:
 - https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/releases
 
 ## Current Installer
-- Current Windows installer build: `2.3`
+- Current Windows installer build: `2.4`
 - If an older build is installed, use the latest installer from Releases.
 
 ## Quick Start
@@ -59,7 +59,7 @@ The cache uses a readable XML structure:
 - `first-seen-titles` stores the first detected map name for every language that existed in the map, with the first-save date.
 - `translations` stores the locked publication title and latest seen title for each translated language.
 
-On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication. Old flat Java `properties` XML cache files are still readable and are rewritten to the new structured format on the next save.
+The **Do not translate map title** setting is enabled by default. On later saves, the editor restores those locked `DocInfo/Name` values before writing the archive, so switching from DeepL to Google/Gemini/SiliconFlow cannot accidentally rename an already prepared publication. After a map is published, its title cannot be changed; translating the title of an existing map can prevent publication. Disable this setting only when you intentionally need translated titles. Old flat Java `properties` XML cache files are still readable and are rewritten to the new structured format on the next save.
 
 ## Editable Glossaries After Install
 The installer places editable glossary files in the application folder:
@@ -77,6 +77,10 @@ Default files placed there:
 - `Addition_Abilities_Detailed_KSP.txt`
 
 On startup, the editor loads glossary files from that install-folder `glossary` first when they exist. For legacy installs, `%LOCALAPPDATA%\Localization Editor SC2 KSP\glossary` is still used as a fallback if present.
+
+## 2.4 Notes
+- Added the **Do not translate map title** setting with a publication warning. It is enabled by default and applies to every save target.
+- Moved the application implementation out of `Main.java`; `Main` is now a stable minimal desktop launcher.
 
 ## 2.3 Notes
 - Discord invite now uses the same animated promo-button shell as the Boosty support button, with tighter spacing in Settings.

@@ -186,6 +186,8 @@ public class SettingBox {
     private static LabeledCheckRow shimmerRow;
     private static LabeledCheckRow backgroundLightCheckBox;
     private static LabeledCheckRow translationCachePersistRow;
+    private static LabeledCheckRow preserveMapTitleRow;
+    private static GlowingLabel preserveMapTitleHint;
     private static LabeledCheckRow useGpuDockerRow;
     private static LabeledCheckRow updateCheckOnStartupRow;
     private static LabeledCheckRow uiSoundsEnabledRow;
@@ -591,7 +593,7 @@ public class SettingBox {
             LocalizationManager localization,
             BackgroundGridLayer background,
             CustomLongButton longButton,
-            Main main,
+            LocalizationEditorApplication main,
             CustomBorder borderTable,
             CustomTableView tableView
     ) {
@@ -685,7 +687,7 @@ public class SettingBox {
             LocalizationManager localization,
             BackgroundGridLayer background,
             CustomLongButton longButton,
-            Main main,
+            LocalizationEditorApplication main,
             CustomBorder borderTable,
             CustomTableView tableView
     ) {
@@ -762,7 +764,7 @@ public class SettingBox {
             LocalizationManager localization,
             BackgroundGridLayer background,
             CustomLongButton longButton,
-            Main main,
+            LocalizationEditorApplication main,
             CustomBorder borderTable,
             CustomTableView tableView
     ) {
@@ -1167,6 +1169,22 @@ public class SettingBox {
             }
         });
 
+        preserveMapTitleRow = new LabeledCheckRow(
+                localization.get("setting.box.other.preserveMapTitle"),
+                SettingsManager.loadPreserveMapTitle()
+        );
+        tuneSettingCheckRow(preserveMapTitleRow);
+        preserveMapTitleRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) ->
+                SettingsManager.savePreserveMapTitle(newVal)
+        );
+        preserveMapTitleHint = new GlowingLabel(
+                localization.get("setting.box.other.preserveMapTitleHint")
+        );
+        tuneSettingLabel(preserveMapTitleHint, 11.5);
+        preserveMapTitleHint.setWrapText(true);
+        preserveMapTitleHint.setTextAlignment(TextAlignment.CENTER);
+        preserveMapTitleHint.setAlignment(Pos.CENTER);
+
         useGpuDockerRow = new LabeledCheckRow(
                 localization.get("setting.box.other.useGpuDocker"),
                 SettingsManager.loadUseGpuDocker()
@@ -1205,9 +1223,13 @@ public class SettingBox {
         });
 
         translationCachePersistRow.setMaxWidth(sx(286));
+        preserveMapTitleRow.setMaxWidth(sx(286));
+        preserveMapTitleHint.setMaxWidth(sx(286));
+        preserveMapTitleHint.setPrefWidth(sx(286));
         useGpuDockerRow.setMaxWidth(sx(286));
         updateCheckOnStartupRow.setMaxWidth(sx(286));
         translationCachePersistRow.setAlignment(Pos.CENTER_LEFT);
+        preserveMapTitleRow.setAlignment(Pos.CENTER_LEFT);
         useGpuDockerRow.setAlignment(Pos.CENTER_LEFT);
         updateCheckOnStartupRow.setAlignment(Pos.CENTER_LEFT);
         double apiHintIconSize = sy(48); // 3x bigger than previous 16px icon
@@ -1387,6 +1409,8 @@ public class SettingBox {
                 sy(14),
                 controlsLabel,
                 translationCachePersistRow,
+                preserveMapTitleRow,
+                preserveMapTitleHint,
                 useGpuDockerRow,
                 updateCheckOnStartupRow,
                 checkUpdatesWrap,
@@ -1865,6 +1889,8 @@ public class SettingBox {
         if (shimmerRow != null) shimmerRow.setLabel(localization.get("setting.box.ui.shimmers"));
         if (backgroundLightCheckBox != null) backgroundLightCheckBox.setLabel(localization.get("setting.box.ui.backgroundBlur"));
         if (translationCachePersistRow != null) translationCachePersistRow.setLabel(localization.get("setting.box.other.translationCachePersist"));
+        if (preserveMapTitleRow != null) preserveMapTitleRow.setLabel(localization.get("setting.box.other.preserveMapTitle"));
+        if (preserveMapTitleHint != null) preserveMapTitleHint.setText(localization.get("setting.box.other.preserveMapTitleHint"));
         if (useGpuDockerRow != null) useGpuDockerRow.setLabel(localization.get("setting.box.other.useGpuDocker"));
         if (updateCheckOnStartupRow != null) updateCheckOnStartupRow.setLabel(
                 localizedOrFallback(localization, "setting.box.other.checkUpdatesOnStartup", "Check updates on startup")
@@ -1950,7 +1976,7 @@ public class SettingBox {
             LocalizationManager localization,
             BackgroundGridLayer background,
             CustomLongButton longButton,
-            Main main,
+            LocalizationEditorApplication main,
             CustomBorder borderTable,
             CustomTableView tableView
     ) {

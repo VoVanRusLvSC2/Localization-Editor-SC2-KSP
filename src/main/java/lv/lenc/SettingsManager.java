@@ -41,6 +41,8 @@ public class SettingsManager {
 
     public static final String TRANSLATION_CACHE_PERSIST_KEY = "translation.cache.persistent";
     public static final boolean DEFAULT_TRANSLATION_CACHE_PERSIST = false;
+    public static final String PRESERVE_MAP_TITLE_KEY = "translation.preserve.map.title";
+    public static final boolean DEFAULT_PRESERVE_MAP_TITLE = true;
 
     public static final String USE_GPU_DOCKER_KEY = "use.gpu.docker";
     public static final boolean DEFAULT_USE_GPU_DOCKER = false;
@@ -117,6 +119,14 @@ public class SettingsManager {
 
     public static void saveTranslationCachePersistence(boolean enabled) {
         saveProperty(TRANSLATION_CACHE_PERSIST_KEY, Boolean.toString(enabled));
+    }
+
+    public static boolean loadPreserveMapTitle() {
+        return loadCheckboxState(PRESERVE_MAP_TITLE_KEY, DEFAULT_PRESERVE_MAP_TITLE);
+    }
+
+    public static void savePreserveMapTitle(boolean enabled) {
+        saveProperty(PRESERVE_MAP_TITLE_KEY, Boolean.toString(enabled));
     }
 
     public static boolean loadUseGpuDocker() {
