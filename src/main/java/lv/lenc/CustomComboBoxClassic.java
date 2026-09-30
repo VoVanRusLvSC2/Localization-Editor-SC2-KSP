@@ -1,6 +1,7 @@
 package lv.lenc;
 
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
@@ -21,6 +22,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
     private final double cellRadius;
     private final double cellFontSize;
     private final int visibleRows;
+    private boolean hidePopupCursor;
 
     public CustomComboBoxClassic(String texturePath, boolean isGreen,
                                  double widthFullHD, double heightFullHD,
@@ -79,6 +81,11 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         refreshVisualStyle();
     }
 
+    public void setHidePopupCursor(boolean hidePopupCursor) {
+        this.hidePopupCursor = hidePopupCursor;
+        Platform.runLater(() -> applyPopupListStyle(lookup(".list-view")));
+    }
+
     private void updateStyle() {
         applyControlStyle(isHover(), isPressed());
     }
@@ -126,7 +133,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
         if (!(listView instanceof Region region)) {
             return;
         }
-        CustomCursorManager.applyDefaultCursor(region);
+        region.setCursor(hidePopupCursor ? Cursor.NONE : CustomCursorManager.defaultCursor());
 
         boolean popupGreenTheme = isGreen;
         String borderColor = popupGreenTheme
@@ -224,7 +231,7 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
                 }
 
                 setText(item.toString());
-                CustomCursorManager.applyDefaultCursor(this);
+                setCursor(hidePopupCursor ? Cursor.NONE : CustomCursorManager.defaultCursor());
                 refreshPopupCellStyle(this);
             }
         });
@@ -323,8 +330,6 @@ public class CustomComboBoxClassic<T> extends ComboBox<T> implements Disabable {
                 }
             }
             Platform.runLater(() -> {
-                show();
-                hide();
                 Node listView = lookup(".list-view");
                 applyPopupListStyle(listView);
             });

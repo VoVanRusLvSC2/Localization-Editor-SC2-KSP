@@ -860,23 +860,18 @@ public class SettingBox {
                 LANGUAGE_OPTIONS.stream().map(o -> o.nativeName).toList()
         );
 
-        languageComboBox.setOnAction(e -> {
-            String selectedName = languageComboBox.getValue();
+        String currentLang = SettingsManager.loadPreferredLanguage();
+        languageComboBox.getSelectionModel().select(findNativeNameByCode(currentLang));
+        languageComboBox.valueProperty().addListener((obs, previous, selectedName) -> {
+            if (selectedName == null || selectedName.equals(previous)) return;
             String lang = findCodeByNativeName(selectedName);
-
             SettingsManager.saveLanguage(lang);
             localization.changeLanguage(lang);
-
-            background.getScene().getRoot().applyCss();
-
             Platform.runLater(() -> {
                 main.updateTexts();
                 SettingBox.updateTexts(localization, tableView);
             });
         });
-
-        String currentLang = SettingsManager.loadPreferredLanguage();
-        languageComboBox.setValue(findNativeNameByCode(currentLang));
 
         VBox languageBox = new VBox(sy(10), languageLabel, languageComboBox);
         languageBox.setAlignment(Pos.TOP_CENTER);
@@ -1077,6 +1072,11 @@ public class SettingBox {
         };
         musicEnabledRow.getCheckBox().selectedProperty().addListener((obs, oldVal, newVal) -> syncMusicControls.run());
         syncMusicControls.run();
+
+        uiSoundsEnabledRow.getCheckBox().selectedProperty().addListener((obs, oldVal, enabled) ->
+                UiSoundManager.saveVolumeAndEnabled(enabled, uiSoundVolumeSlider.getValue() / 100.0));
+        musicEnabledRow.getCheckBox().selectedProperty().addListener((obs, oldVal, enabled) ->
+                UiSoundManager.saveMusicSettings(enabled, musicVolumeSlider.getValue() / 100.0));
 
         saveAudioSettingsButton = new CustomAlternativeButton(
                 localizedOrFallback(localization, "setting.box.audio.save", "Save audio settings"),

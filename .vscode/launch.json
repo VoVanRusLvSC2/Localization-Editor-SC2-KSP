@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Localization Editor (F5)",
+      "request": "launch",
+      "mainClass": "lv.lenc.AppLauncher",
+      "projectName": "Localization_Editor_SC2_KSP",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}

@@ -175,6 +175,9 @@ public final class UiSoundManager {
         SettingsManager.saveProperty(KEY_UI_SOUNDS_ENABLED, Boolean.toString(enabledValue));
         SettingsManager.saveProperty(KEY_UI_VOLUME, Double.toString(clampVolume(volumeValue)));
         reloadFromSettings();
+        if (!enabled) {
+            CLIP_CACHE.values().forEach(AudioClip::stop);
+        }
     }
 
     public static void saveMusicSettings(boolean enabledValue, double volumeValue) {

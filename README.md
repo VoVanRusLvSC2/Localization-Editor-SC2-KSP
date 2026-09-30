@@ -14,7 +14,7 @@ It is built for real SC2 projects, not only single text files:
 - https://github.com/VoVanRusLvSC2/Localization-Editor-SC2-KSP/releases
 
 ## Current Installer
-- Current Windows installer build: `2.4`
+- Current Windows installer build: `2.4.1`
 - If an older build is installed, use the latest installer from Releases.
 
 ## Quick Start
@@ -77,6 +77,13 @@ Default files placed there:
 - `Addition_Abilities_Detailed_KSP.txt`
 
 On startup, the editor loads glossary files from that install-folder `glossary` first when they exist. For legacy installs, `%LOCALAPPDATA%\Localization Editor SC2 KSP\glossary` is still used as a fallback if present.
+
+## 2.4.1 Notes
+- Fixed the settings language dropdown, immediate audio toggles, and persistence of language and audio settings when UI settings are saved.
+- Applied exact SC2 glossary entries and multi-word terms inside translated sentences, with better AI hints for mixed-language and ambiguous text.
+- Fixed a stuck table-column drag highlight and hid the pointer over translation-backend menu items.
+- Cancellation of a translation no longer opens an error report; API credential, quota, and availability errors now show clearer messages.
+- Added a single VS Code F5 launch configuration for the desktop app.
 
 ## 2.4 Notes
 - Added the **Do not translate map title** setting with a publication warning. It is enabled by default and applies to every save target.

@@ -1271,13 +1271,13 @@ public class CustomTableView extends TableView<LocalizationData> {
                 if (header.getProperties().putIfAbsent("lv.lenc.resizeCursorHook", Boolean.TRUE) != null) {
                     return;
                 }
-                header.setOnMouseMoved(event -> {
+                header.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_MOVED, event -> {
                     double threshold = UiScaleHelper.scaleX(10);
                     boolean nearEdge = event.getX() >= Math.max(0, header.getBoundsInLocal().getWidth() - threshold);
                     header.setCursor(nearEdge ? CustomCursorManager.horizontalResizeCursor() : null);
                 });
-                header.setOnMouseExited(event -> header.setCursor(null));
-                header.setOnMouseReleased(event -> header.setCursor(null));
+                header.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_EXITED, event -> header.setCursor(null));
+                header.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_RELEASED, event -> header.setCursor(null));
             });
             this.lookupAll(".column-resize-line").forEach(CustomCursorManager::applyHorizontalResizeCursor);
         });
@@ -1899,7 +1899,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                 String sourceText = row.getByLang(sourceUi);
                 if (sourceText == null || sourceText.isBlank()) continue;
 
-                String directGlossary = findDirectGlossaryTranslation(effectiveSourceUi, sourceText, targetUi);
+                String directGlossary = findDirectGlossaryTranslation(row.getKey(), effectiveSourceUi, sourceText, targetUi);
                 if (directGlossary != null) {
                     setValueByLang(row, targetUi, directGlossary);
                     changedTargets.add(targetUi);
@@ -2126,7 +2126,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                 continue;
             }
 
-            String directGlossary = findDirectGlossaryTranslation(actualSourceUi, sourceText, targetUi);
+            String directGlossary = findDirectGlossaryTranslation(row.getKey(), actualSourceUi, sourceText, targetUi);
             if (directGlossary != null) {
                 setValueByLang(row, targetUi, directGlossary);
                 translatedAny = true;
@@ -2302,7 +2302,7 @@ public class CustomTableView extends TableView<LocalizationData> {
                 continue;
             }
 
-            String directGlossary = findDirectGlossaryTranslation(actualSourceUi, sourceText, targetUi);
+            String directGlossary = findDirectGlossaryTranslation(row.getKey(), actualSourceUi, sourceText, targetUi);
             if (directGlossary != null) {
                 setValueByLang(row, targetUi, directGlossary);
                 translatedAny = true;
@@ -2439,6 +2439,10 @@ public class CustomTableView extends TableView<LocalizationData> {
             if (ex instanceof InterruptedException) {
                 Thread.currentThread().interrupt();
             }
+            if (stop.getAsBoolean()) {
+                AppLog.info("[LT] single translate cancelled");
+                return;
+            }
             AppLog.error("[LT] single translate failed: " + ex.getMessage());
             AppLog.exception(ex);
             throw new RuntimeException(ex);
@@ -2459,11 +2463,14 @@ public class CustomTableView extends TableView<LocalizationData> {
         return sb.toString();
     }
 
-    private String findDirectGlossaryTranslation(String sourceUi, String sourceText, String targetUi) {
+    private String findDirectGlossaryTranslation(String key, String sourceUi, String sourceText, String targetUi) {
         if (glossaryService == null || sourceText == null || sourceText.isBlank()) {
             return null;
         }
-        String target = glossaryService.findTxtMatch(sourceUi, sourceText, targetUi);
+        String target = glossaryService.findExact(key, sourceUi, sourceText, targetUi);
+        if (target == null || target.isBlank()) {
+            target = glossaryService.findTxtMatch(sourceUi, sourceText, targetUi);
+        }
         if (target == null || target.isBlank()) {
             target = glossaryService.findWordMatch(sourceUi, sourceText, targetUi);
         }

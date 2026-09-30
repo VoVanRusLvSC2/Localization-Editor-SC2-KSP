@@ -621,6 +621,9 @@ public final class TranslationService {
                     AppLog.info("[LT] preserveTags.batch " + batchNo + " OK in " + took + "ms");
                     break;
                 } catch (IOException e) {
+                    if (stop != null && stop.getAsBoolean()) {
+                        return expandDeduped(uniqueOut, deduped, texts.size());
+                    }
                     if (isNonRetryableBackendError(e)) {
                         throw e;
                     }

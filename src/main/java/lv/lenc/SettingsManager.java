@@ -83,8 +83,7 @@ public class SettingsManager {
     }
 
     public static void saveAlphaValues(double grid, double point, double flash) {
-        Properties props = new Properties();
-        props.setProperty(LANGUAGE_KEY, loadPreferredLanguage()); // also save current language
+        Properties props = loadAllProperties();
         props.setProperty(GRID_ALPHA_KEY, String.valueOf(grid));
         props.setProperty(POINT_ALPHA_KEY, String.valueOf(point));
         props.setProperty(FLASH_ALPHA_KEY, String.valueOf(flash));

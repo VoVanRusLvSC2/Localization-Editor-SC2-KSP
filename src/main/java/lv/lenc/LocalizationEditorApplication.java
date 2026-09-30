@@ -268,6 +268,7 @@ public class LocalizationEditorApplication extends Application {
                 10
         );
         translateType.getStyleClass().add("ai-backend-combo");
+        translateType.setHidePopupCursor(true);
         refreshTranslateBackendItems(TranslationService.getSelectedBackend());
 
         editorTitleLabel = new TitleLabelGlow(localization.get("label.editor.title"), localization);
@@ -869,11 +870,25 @@ public class LocalizationEditorApplication extends Application {
     }
 
     private String buildTranslateErrorLine1(Throwable error) {
+        String message = error == null ? null : error.getMessage();
+        if (message != null && (message.startsWith("[SAVE]") || message.startsWith("Save failed"))) {
+            return message;
+        }
+        TranslationApiErrorClassifier.Issue issue = TranslationApiErrorClassifier.classify(
+                message, TranslationService.getLastStartupFailureHint());
+        String key = switch (issue) {
+            case MISSING_CREDENTIALS -> "translating.error.api.missing";
+            case INVALID_CREDENTIALS -> "translating.error.api.invalid";
+            case QUOTA -> "translating.error.api.quota";
+            case UNAVAILABLE -> "translating.error.api.unavailable";
+            case NONE -> null;
+        };
+        if (key != null) {
+            return String.format(localization.get(key), TranslationService.selectedBackendLabel());
+        }
         if (error == null) {
             return localization.get("translating.error.generic");
         }
-
-        String message = error.getMessage();
         if (message == null || message.isBlank()) {
             return localization.get("translating.error.generic");
         }

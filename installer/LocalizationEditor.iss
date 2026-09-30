@@ -3,11 +3,11 @@
 #define MyAppExeName "Localization Editor SC2 KSP.exe"
 
 #ifndef MyAppVersion
-  #define MyAppVersion "2.3"
+  #define MyAppVersion "2.4.1"
 #endif
 
 #ifndef MyDisplayVersion
-  #define MyDisplayVersion "2.3"
+  #define MyDisplayVersion "2.4.1"
 #endif
 
 #ifndef MyAppExeDir

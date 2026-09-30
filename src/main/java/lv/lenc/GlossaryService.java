@@ -314,6 +314,10 @@ public final class GlossaryService {
         return null;
     }
     public String findBestMatch(Category category, String key, String sourceLang, String sourceText, String targetLang) {
+        String exact = findExact(category, key, sourceLang, sourceText, targetLang);
+        if (!isBlank(exact)) return exact;
+        String phrase = findTxtMatch(sourceLang, sourceText, targetLang);
+        if (!isBlank(phrase)) return phrase;
         return findBestMatch(sourceLang, sourceText, targetLang);
     }
     @SuppressWarnings("unused")
@@ -430,9 +434,9 @@ public final class GlossaryService {
     public static Category detectCategory(String key) {
         if (key == null) return null;
         String k = key.trim().toLowerCase(Locale.ROOT);
-        if (k.startsWith("unit/name/")) return Category.UNIT;
-        if (k.startsWith("button/name/")) return Category.BUTTON;
-        if (k.startsWith("abil/name/")) return Category.ABILITY;
+        if (k.startsWith("unit/")) return Category.UNIT;
+        if (k.startsWith("button/")) return Category.BUTTON;
+        if (k.startsWith("abil/")) return Category.ABILITY;
         return null;
     }
 
@@ -1371,15 +1375,18 @@ public final class GlossaryService {
                     loadTxtFromResource("/glossary/" + WORD_GLOSSARY_FILE);
                     loadTxtGlossaryFromExternalIfPresent(PHRASE_GLOSSARY_FILE);
                     loadTxtFromResource("/glossary/" + PHRASE_GLOSSARY_FILE);
+                    loadFromResource("/glossary/Button_Localization_KSP.csv", Category.BUTTON);
                 }
                 if (SettingsManager.loadCheckboxState(SettingsManager.UNITS_GLOSSARY_KEY, SettingsManager.DEFAULT_UNITS_GLOSSARY)) {
                     loadAdditionalGlossaryFile("Addition_UnitNames_Detailed_KSP.txt");
+                    loadFromResource("/glossary/Units_Localization_KSP.csv", Category.UNIT);
                 }
                 if (SettingsManager.loadCheckboxState(SettingsManager.WEAPONS_GLOSSARY_KEY, SettingsManager.DEFAULT_WEAPONS_GLOSSARY)) {
                     loadAdditionalGlossaryFile("Addition_Weapons_Detailed_KSP.txt");
                 }
                 if (SettingsManager.loadCheckboxState(SettingsManager.ABILITIES_GLOSSARY_KEY, SettingsManager.DEFAULT_ABILITIES_GLOSSARY)) {
                     loadAdditionalGlossaryFile("Addition_Abilities_Detailed_KSP.txt");
+                    loadFromResource("/glossary/Ability_Localization_KSP.csv", Category.ABILITY);
                 }
                 return null;
             }
@@ -1847,13 +1854,50 @@ public final class GlossaryService {
             }
         }
 
+        // Freeze known multi-word names before individual words so MT cannot split them.
+        out = freezePhrasesByGlossary(category, sourceLang, targetLang, out, tokenToTarget, counter);
+        counter = tokenToTarget.size();
+
         // Also freeze individual words from word glossary:
         // e.g. "zergling tuffta" -> "zergling" frozen from glossary, "tuffta" stays for MT.
-        FreezeWordResult wordsResult = freezeWordsByGlossary(sourceLang, targetLang, out, tokenToTarget, counter);
+        FreezeWordResult wordsResult = freezeWordsByGlossary(category, sourceLang, targetLang, out, tokenToTarget, counter);
         out = wordsResult.text();
         counter = wordsResult.nextCounter();
 
         return new FrozenTerms(out, tokenToTarget);
+    }
+
+    private String freezePhrasesByGlossary(Category category, String sourceLang, String targetLang, String input,
+                                           Map<String, String> tokenToTarget, int counterStart) {
+        List<String> words = new ArrayList<>();
+        Matcher matcher = WORD_PATTERN.matcher(input);
+        while (matcher.find()) words.add(matcher.group());
+        String out = input;
+        int counter = counterStart;
+        for (int length = Math.min(6, words.size()); length >= 2; length--) {
+            for (int start = 0; start + length <= words.size(); start++) {
+                String phrase = String.join(" ", words.subList(start, start + length));
+                String target = findTxtMatch(sourceLang, phrase, targetLang);
+                if (isBlank(target)) target = findWordMatch(sourceLang, phrase, targetLang);
+                if (isBlank(target)) target = findCategoryTermMatch(category, sourceLang, phrase, targetLang);
+                if (isBlank(target)) continue;
+                String token = "__SC2_TERM_" + counter + "__";
+                String replaced = replaceWholeWordUnicode(out, phrase, token);
+                if (!replaced.equals(out)) {
+                    out = replaced;
+                    tokenToTarget.put(token, target);
+                    counter++;
+                }
+            }
+        }
+        return out;
+    }
+
+    private String findCategoryTermMatch(Category category, String sourceLang, String sourceText, String targetLang) {
+        if (category == null) return null;
+        String hit = textOnlyMap.get(new TextOnlyLookupKey(category, normalizeLang(sourceLang),
+                normalizeText(sourceText), normalizeLang(targetLang)));
+        return isBlank(hit) ? null : hit;
     }
 
     public Map<String, String> collectTermHints(Category category,
@@ -1894,8 +1938,26 @@ public final class GlossaryService {
             }
         }
 
+        appendPhraseGlossaryHintsFromText(hints, category, sourceLang, targetLang, text, limit);
         appendWordGlossaryHintsFromText(hints, sourceLang, targetLang, text, limit);
         return hints;
+    }
+
+    private void appendPhraseGlossaryHintsFromText(Map<String, String> hints, Category category,
+                                                   String sourceLang, String targetLang, String text, int limit) {
+        List<String> words = new ArrayList<>();
+        Matcher matcher = WORD_PATTERN.matcher(text);
+        while (matcher.find()) words.add(matcher.group());
+        for (int length = Math.min(6, words.size()); length >= 2 && hints.size() < limit; length--) {
+            for (int start = 0; start + length <= words.size() && hints.size() < limit; start++) {
+                String phrase = String.join(" ", words.subList(start, start + length));
+                String target = findTxtMatch(sourceLang, phrase, targetLang);
+                if (isBlank(target)) target = findCategoryTermMatch(category, sourceLang, phrase, targetLang);
+                if (!isBlank(target) && containsWholeWordUnicode(text, phrase)) {
+                    hints.putIfAbsent(phrase, target);
+                }
+            }
+        }
     }
 
     private void appendWordGlossaryHintsFromText(Map<String, String> out,
@@ -2276,7 +2338,7 @@ public final class GlossaryService {
         return Pattern.compile(pattern).matcher(input).find();
     }
 
-    private FreezeWordResult freezeWordsByGlossary(String sourceLang,
+    private FreezeWordResult freezeWordsByGlossary(Category category, String sourceLang,
                                                    String targetLang,
                                                    String input,
                                                    Map<String, String> tokenToTarget,
@@ -2294,6 +2356,7 @@ public final class GlossaryService {
             if (isBlank(word)) continue;
 
             String hit = findWordMatch(sourceLang, word, targetLang);
+            if (isBlank(hit)) hit = findCategoryTermMatch(category, sourceLang, word, targetLang);
             if (isBlank(hit)) continue;
 
             String token = "__SC2_TERM_" + counter + "__";

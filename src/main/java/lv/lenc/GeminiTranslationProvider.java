@@ -273,6 +273,8 @@ final class GeminiTranslationProvider {
                 + "8) Do not force glossary word order from the source; place glossary terms naturally in the target sentence.\n"
                 + "9) Adapt endings/case/gender only when grammar requires it.\n"
                 + "10) If input contains __SC2_TERM_n__ placeholders, keep those placeholders exactly; they will be resolved later.\n"
+                + "11) An input may mix languages. Translate every readable segment that is not already in the target language; preserve URLs, identifiers, and placeholders.\n"
+                + "12) For ambiguous or awkward source phrases, stay close to the source meaning. Do not invent a familiar weapon or unit name unless the source or glossary clearly identifies it.\n"
                 + glossarySection
                 + "Input JSON array:\n"
                 + inputArray;
